@@ -17,7 +17,7 @@
 <?php 
 require('./req.php');
 
-require('./conn.php');
+#require('./conn.php');
 ?>
     
 </head>
