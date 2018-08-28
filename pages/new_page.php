@@ -17,7 +17,7 @@
 <?php 
 require('./req.php');
 
-require('./conn.php');
+require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 
 ?>

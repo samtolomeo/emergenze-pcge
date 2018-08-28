@@ -12,21 +12,33 @@
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
+                                    <i class="fas fa-search"></i>
                                 </button>
                             </span>
                             </div>
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
                         </li>
-                                              
+                        
                         <li>
-                            <a href="new_page.php"><i class="fa fa-ambulance fa-fw"></i> New page </a>
+                            <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="add_volontario.php">Aggiunta volontari</a>
+                                </li>
+                                <li>
+                                    <a href="#">Morris.js Charts</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>                      
+                        <li>
+                            <a href="new_page.php"><i class="fas fa-ambulance fa-fw"></i> New page </a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fas fa-chart-line fa-fw"></i> Charts<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="flot.html">Flot Charts</a>
@@ -38,13 +50,13 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
+                            <a href="tables.html"><i class="fas fa-table fa-fw"></i> Tables</a>
                         </li>
                         <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                            <a href="forms.html"><i class="fas fa-edit fa-fw"></i> Forms</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fas fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="panels-wells.html">Panels and Wells</a>
@@ -68,7 +80,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fas fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="#">Second Level Item</a>
@@ -98,7 +110,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fas fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="blank.html">Blank Page</a>
