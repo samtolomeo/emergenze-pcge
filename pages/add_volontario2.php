@@ -97,7 +97,7 @@ $result = pg_query($conn, $query_log);
 //$idfascicolo=str_replace('B','',$idfascicolo);
 echo "<br>";
 echo $query_log;
-exit;
+//exit;
 header("location: lista_volontari.php");
 ?>
 

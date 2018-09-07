@@ -24,8 +24,10 @@
                     </ul-->
 <p></p>
 
-                    <span class="copyright">Gter copyleft, 2018 starting from <i>SB Admin 2</i>, a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com" target="_blank"> Start Bootstrap</a></span> <br>
-
+<span class="copyright">Gter copyleft, 2018 starting from <i>SB Admin 2</i>, a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com" target="_blank"> Start Bootstrap</a>
+ <br>
+ Progetto finanziato con i fondi... 
+	</span>
                     
                        </div>
             </div>

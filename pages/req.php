@@ -2,11 +2,15 @@
 ?>
 
 <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Bootstrap Plugins -->
     <link href="../vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="../vendor/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet">
+	
 
+    <!-- Leaflet CSS -->
+    <link href="../vendor/leaflet/leaflet.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">

@@ -19,25 +19,51 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+                            <a href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard (demo)</a>
                         </li>
-                        
+
                         <li>
-                            <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-stream fa-fw"></i> Gestione eventi<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="add_volontario.php">Aggiunta volontari</a>
+                            		<li>
+                                    <a href="nuovo_evento.php">Crea nuovo evento</a>
                                 </li>
                                 <li>
-                                    <a href="#">Morris.js Charts</a>
+                                    <a href="dettagli_evento.php">Dettagli evento in corso</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
-                        </li>                      
+                        </li>
+                         <li>
+                            <a href="#"><i class="fas fa-map-marked-alt"></i> Segnalazioni <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            		<li>
+                                    <a href="nuova_segnalazione.php">Inserisci segnalazione</a>
+                                </li>
+                                <li>
+                                    <a href="#">TO DO</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        
+                        
+                         <li>
+                            <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="lista_volontari.php">Lista volontari</a>
+                                </li>
+                                <li>
+                                    <a href="add_volontario.php">Aggiunta volontari</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                         <li>
                             <a href="new_page.php"><i class="fas fa-ambulance fa-fw"></i> New page </a>
                         </li>
-                        <li>
+                        <!--li>
                             <a href="#"><i class="fas fa-chart-line fa-fw"></i> Charts<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -47,7 +73,7 @@
                                     <a href="morris.html">Morris.js Charts</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
+                            
                         </li>
                         <li>
                             <a href="tables.html"><i class="fas fa-table fa-fw"></i> Tables</a>
@@ -77,7 +103,7 @@
                                     <a href="grid.html">Grid</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
+
                         </li>
                         <li>
                             <a href="#"><i class="fas fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
@@ -104,24 +130,18 @@
                                             <a href="#">Third Level Item</a>
                                         </li>
                                     </ul>
-                                    <!-- /.nav-third-level -->
+
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fas fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="blank.html">Blank Page</a>
-                                </li>
-                                <li>
-                                    <a href="login.html">Login Page</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+
+                        </li-->
+                        
                     </ul>
+                    
+						<div style="text-align: center;">
+						   <br>
+                		<img class="nav nav-second-level" src="../img/pc_ge.png" width="65%" alt="">
+                	</div>
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>

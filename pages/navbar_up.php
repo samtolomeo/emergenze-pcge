@@ -10,11 +10,148 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Gestione emergenze</a>
+                <!--a class="navbar-brand" href="index.php"> </a-->
+                <div class="navbar-brand"> <i class="fas fa-server"></i>
+                Gestione emergenze - <?php echo $subtitle?> </div>
             </div>
             <!-- /.navbar-header -->
-
             <ul class="nav navbar-top-links navbar-right">
+                             <li class="dropdown">
+				<?php
+					if($check_evento==0) {
+				?>		
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fas fa-circle fa-fw"></i> <i class="fas fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>Nessun evento in corso</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>...</em>
+                                    </span>
+                                </div>
+                                <div>Nessun evento in corso</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="nuovo_evento.php">
+                                <div>
+                                    <strong>Crea nuovo evento</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Link</em>
+                                    </span>
+                                </div>
+                                <div>Vai alla pagina di creazione eventi.</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        
+                    </ul> </li>
+                    <!-- /.dropdown-messages -->
+
+				<?php		
+					} else {
+				?>
+                <li class="dropdown">
+
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    		<i class="fas fa-chevron-circle-down fa-fw"></i> <i class="fas fa-caret-down"></i>
+                    		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i> 
+                    		<!--i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i--><?php echo $descrizione_foc; ?>
+                    </a>
+                     
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="dettagli_evento.php">
+                                <div>
+                                <?php if( $descrizione_allerta!= 'Nessuna allerta') {?>
+                                    <strong> Allerta <?php echo $descrizione_allerta; ?> in corso</strong>
+                                 <?php } else { ?>
+                                 	<strong> Nessuna allerta in corso</strong>
+                                 <?php }  ?> 
+                                    <span class="pull-right text-muted">
+                                        <em><i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i></em>
+                                    </span>
+                                </div>
+                                <div> Clicca per visualizzare tutte le allerte in corso, previste o passate. </div>
+                            </a>
+                        </li>
+
+                        <li class="divider"></li>
+                        <li>
+                            <a href="dettagli_evento.php">
+                                <div>
+                                    <?php if( $descrizione_foc!= '-') {?>
+                                    <strong> Fase di <?php echo $descrizione_foc; ?> in corso</strong>
+                                 <?php } else { ?>
+                                 	<strong> Nessuna Fase Operativa in corso</strong>
+                                 <?php }  ?> 
+                                    <span class="pull-right text-muted">
+                                        <em><i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i></em>
+                                    </span>
+                                </div>
+                                <div> Clicca per visualizzare tutte le Fasi Operative Comunali in corso, previste o passate.</div>
+                            </a>
+                        </li>
+
+                        <li class="divider"></li>
+                        <li>
+                            <a href="dettagli_evento.php">
+                                <div>
+                                <?php 
+                                $len=count($eventi_attivi);	               
+		               				if($len==1) {   
+	               				   ?>
+                                    <strong>Evento in corso di tipo</strong>
+                                 <?php } else {
+                                 	?>
+                                 	<strong>Eventi in corso di tipo</strong>
+                                 	<?php
+                                 	}
+                                 	?>
+                                 	
+                                    <span class="pull-right text-muted">
+                                        <em><i class="fas fa-play"></i></em>
+                                    </span>
+                                </div>
+                                <?php 
+                                for ($i=0;$i<$len;$i++){
+                                ?>
+                                   - Evento in corso di tipo <?php echo $tipo_eventi_attivi[$i][1];?>
+                                <?php
+                                }
+                                ?>
+                                
+                            </a>
+                        </li>
+                        <!--li class="divider"></li>
+                        <li>
+                            <a href="dettagli_evento.php">
+                                <div>
+                                    <strong>Dettagli</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Link</em>
+                                    </span>
+                                </div>
+                                <div>Vai alla pagina con i dettagli degli eventi in corso per visualizzare e gestire anche tutte le allerte.</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li-->
+                    </ul> </li>
+                    <!-- /.dropdown-messages -->
+
+				
+				
+				<?php		
+					}
+				?>
+
+
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fas fa-envelope fa-fw"></i> <i class="fas fa-caret-down"></i>
@@ -71,6 +208,17 @@
                         <i class="fas fa-tasks fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
+                        <li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fas fa-comment fa-fw"></i> DEMO
+                                    <span class="pull-right text-muted small">...</span>                              
+                                <div> ancora da decidere se utilizzare qualcosa di simile  </div>
+                            </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>                        
                         <li>
                             <a href="#">
                                 <div>
@@ -150,6 +298,16 @@
                         <i class="fas fa-bell fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
+                    <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fas fa-comment fa-fw"></i> DEMO
+                                    <span class="pull-right text-muted small">...</span>                              
+                                <div> ancora da decidere se utilizzare qualcosa di simile  </div>
+                            </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>                        
                         <li>
                             <a href="#">
                                 <div>
@@ -210,12 +368,12 @@
                         <i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fas fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="#"><i class="fas fa-user fa-fw"></i> User Profile (DEMO)</a>
                         </li>
-                        <li><a href="#"><i class="fas fa-gear fa-fw"></i> Settings</a>
+                        <li><a href="#"><i class="fas fa-gear fa-fw"></i> Settings (DEMO)</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fas fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="login.html"><i class="fas fa-sign-out fa-fw"></i> Logout (DEMO - TBD Paolo Di Gioia e CED</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

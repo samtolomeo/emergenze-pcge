@@ -1,5 +1,6 @@
 <?php 
 
+$subtitle="Visualizzazione di massima"
 
 ?>
 <!DOCTYPE html>
@@ -11,13 +12,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="roberto" >
 
     <title>Gestione emergenze</title>
 <?php 
 require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 //require('./conn.php');
+
+require('./check_evento.php');
+
+
 ?>
     
 </head>
@@ -42,10 +47,91 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <h1>Questo è solo un esempio della dashboard finale, non ancora sviluppato. Consultare le pagine a lato per vedere quanto fino ad ora sviluppato.</h1>
-            <br><br>
+            <h4>Questo è solo un esempio della dashboard finale, <b>sviluppato solo parzialmente</b> 
+            <br> Molti elementi o pannelli sono solo in versione demo. 
+            <br> Dalla sidebar a sinistra è possibile accedere alle pagine sino ad ora sviluppate.
+            <br> Per segnalare bug sulle parti già sviluppate o per semplici suggerimenti scrivi una mail al 
+            <a href="mailto:roberto.marzocchi@gter.it?subject=Nuovo%20Sistema%20PC%20GE%20bug">Project Manager</a>
+</h4>
+            <br>
+            
+            <style type="text/css">
+            
+            .panel-allerta {
+				  border-color: <?php echo $color_allerta; ?>;
+				}
+				.panel-allerta > .panel-heading {
+				  border-color: <?php echo $color_allerta; ?>;
+				  color: white;
+				  background-color: <?php echo $color_allerta; ?>;
+				}
+				.panel-allerta > a {
+				  color: <?php echo $color_allerta; ?>;
+				}
+				.panel-allerta > a:hover {
+				  color: #337ab7;
+				  /* <?php echo $color_allerta; ?>;*/
+				}
+            
+            
+            
+            
+            </style>
+            
+            
+            <!-- riga iniziale con i contatori -->
             <div class="row">
-
+				<!-- EVENTI IN CORSO -->
+            <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo $contatore_eventi; ?></div>
+                                    <div> <?php echo $preview_eventi; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="./dettagli_evento.php">
+                            <div class="panel-footer">
+                                <span class="pull-left">Vai ai dettagli</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            
+            
+            
+				<!-- ALLERTE -->
+            <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-allerta">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?php echo $contatore_allerte; ?></div>
+                                    <div><?php echo $preview_allerte; ?>!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="./dettagli_evento.php">
+                            <div class="panel-footer">
+                                <span class="pull-left">Aggiungi/modifica allerte</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            
+            
             
                 <div class="col-lg-3 col-md-6">
                     <div class="panel panel-primary">
@@ -56,7 +142,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge">26</div>
-                                    <div>New Comments!</div>
+                                    <div>New Comments (DEMO)!</div>
                                 </div>
                             </div>
                         </div>
@@ -69,28 +155,9 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-tasks fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
-                                    <div>New Tasks!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                
+                
+                
                 <div class="col-lg-3 col-md-6">
                     <div class="panel panel-yellow">
                         <div class="panel-heading">
@@ -100,7 +167,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge">124</div>
-                                    <div>New Orders!</div>
+                                    <div>New Orders (DEMO)!</div>
                                 </div>
                             </div>
                         </div>
@@ -113,35 +180,55 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                
+                
+                
+                
+                
+                
             </div>
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-8">
+                
+                
+
+
+
+
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Mappa demo (qua saranno visibili in anteprima tutte le segnalazioni)
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Action</a>
+                                        </li>
+                                        <li><a href="#">Another action</a>
+                                        </li>
+                                        <li><a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div id="mapid" style="width: 100%; height: 400px;"></div>
+                        <!-- /.panel-body -->
+                    </div>
+                
+                
+                
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example (DEMO)
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -171,7 +258,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                     <!-- /.panel -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example (DEMO)
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -273,7 +360,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                     <!-- /.panel -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+                            <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline (DEMO)
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -386,9 +473,24 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-4">
+                
+                
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-traffic-light fa-fw"></i> Mappa ufficiale <a target="_new" href="http://www.allertaliguria.gov.it">allertaliguria</a> 
+                        </div>
+                        <div class="panel-body">
+                           
+							  <img class="pull-right img-responsive" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" src="http://www.allertaliguria.gov.it/mappa_allerta_render.php">
+                        </div>                    
+                        <!-- /.panel-body -->
+                    </div>
+                
+                
+                
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                            <i class="fa fa-bell fa-fw"></i> Notifications Panel (DEMO)
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -445,9 +547,41 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
+                    
+                    <!--style type="text/css">
+                    .twitter-timeline {
+							  max-width: 100%;
+							  max-height: 1000px;
+							}
+                    </style-->
+                    
+                    
+                    
+                    
+                    
+                    
+                    <div class="panel panel-default">
+                     <div class="panel-heading">
+                            <i class="fab fa-twitter fa-fw"></i> Twitter
+                        </div>
+                        <div class="panel-body" style="max-height:1000px;overflow-y: scroll;">
+                     <a class="twitter-timeline" href="https://twitter.com/ProtCivileGE?ref_src=twsrc%5Etfw">
+                     Tweets by ProtCivileGE</a> 
+                     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                     </div>
+                     </div> 
+
+                     
+                                     
+                    
+                    
+                     
+                     
+                     
+                     
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example (DEMO)
                         </div>
                         <div class="panel-body">
                             <div id="morris-donut-chart"></div>
@@ -455,6 +589,14 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
                         </div>
                         <!-- /.panel-body -->
                     </div>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     <!-- /.panel -->
                     <div class="chat-panel panel panel-default">
                         <div class="panel-heading">
@@ -592,7 +734,36 @@ require('./req_bottom.php');
 
 ?>
 
+<script>
 
+	var mymap = L.map('mapid').setView([44.411156, 8.932661], 13);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+	L.marker([44.411156, 8.932661]).addTo(mymap)
+		.bindPopup("<b>Hello world!</b><br />I am a leafletJS popup.").openPopup();
+
+
+
+
+	var popup = L.popup();
+
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent("You clicked the map at " + e.latlng.toString())
+			.openOn(mymap);
+	}
+
+	mymap.on('click', onMapClick);
+
+</script>
     
 
 </body>

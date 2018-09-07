@@ -6,18 +6,19 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-    
+
     
     
     <!-- Bootstrap Plugins -->
     <script src="../vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="../vendor/bootstrap-table/dist/bootstrap-table.min.js"></script>
 
-
-
+	<!-- Leaflet JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="../vendor/leaflet/leaflet.js"></script>
 
     <!-- Morris Charts JavaScript -->
     <script src="../vendor/raphael/raphael.min.js"></script>
