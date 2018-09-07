@@ -1,5 +1,6 @@
 <?php 
 
+$subtitle="Form aggiunta volontario"
 
 ?>
 <!DOCTYPE html>
@@ -11,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="roberto" >
 
     <title>Gestione emergenze</title>
 <?php 
@@ -19,7 +20,7 @@ require('./req.php');
 
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
-
+require('./check_evento.php');
 ?>
     
 </head>
@@ -60,9 +61,9 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 
             <div class="form-group">
-                <label for="CD"> Codice fiscale:</label> <font color="red">*</font>
+                <label for="CF"> Codice fiscale:</label> <font color="red">*</font>
                 <input type="text"  pattern=".{16,16}" maxlenght="16" name="CF" class="form-control"  required>
-                <small id="emailHelp" class="form-text text-muted">Il Codice Fiscale è obbligatorio e sarà utilizzato per accedere al sistema tramite le credenziali <a target="_new" href=https://www.spid.gov.it/">SPID</a>.</small>
+                <small id="emailHelp" class="form-text text-muted">Il Codice Fiscale è obbligatorio e sarà utilizzato per accedere al sistema tramite le credenziali <a target="_new" href="https://www.spid.gov.it/">SPID</a>.</small>
 
               </div>
               
@@ -76,7 +77,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 					</div-->   
 
 
-            <div class="form-group"-->
+            <div class="form-group">
 
                 <label for="data_nascita"> Data nascita:</label> <font color="red">*</font>
 
@@ -254,7 +255,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
               
               <div class="form-group">
                 <label for="nome"> Mail</label> <font color="red">*</font>
-                <input type="text" name="mail" class="form-control" required>
+                <input type="email" name="mail" class="form-control" required>
               </div>           
               
                <div class="form-group">
