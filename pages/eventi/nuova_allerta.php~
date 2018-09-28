@@ -7,7 +7,7 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 $id=$_GET["id"];
 $id=str_replace("'", "", $id);
 
-
+$bollettino=$_POST["bollettino"];
 $data_inizio=$_POST["data_inizio"].' '.$_POST["hh_start"].':'.$_POST["mm_start"];
 $data_fine=$_POST["data_fine"].' '.$_POST["hh_end"].':'.$_POST["mm_end"];
 //$d1 = new DateTime($data_inizio);
@@ -31,7 +31,7 @@ if ($d1 > $d2) {
 }
 
 
-$query="INSERT INTO eventi.join_tipo_allerta (id_evento,id_tipo_allerta,data_ora_inizio_allerta,data_ora_fine_allerta) VALUES(".$id.",".$_POST["tipo"].",'".$data_inizio."','".$data_fine."');"; 
+$query="INSERT INTO eventi.join_tipo_allerta (id_evento,id_tipo_allerta,data_ora_inizio_allerta,data_ora_fine_allerta,allegato) VALUES(".$id.",".$_POST["tipo"].",'".$data_inizio."','".$data_fine."','".$bollettino."');"; 
 echo $query;
 exit;
 $result = pg_query($conn, $query);

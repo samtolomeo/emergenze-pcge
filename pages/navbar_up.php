@@ -62,7 +62,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     		<i class="fas fa-chevron-circle-down fa-fw"></i> <i class="fas fa-caret-down"></i>
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i> 
-                    		<!--i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i--><?php echo $descrizione_foc; ?>
+                    		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i>
                     </a>
                      
                     <ul class="dropdown-menu dropdown-messages">
@@ -107,10 +107,12 @@
                                 $len=count($eventi_attivi);	               
 		               				if($len==1) {   
 	               				   ?>
-                                    <strong>Evento in corso di tipo</strong>
+                                    <strong>Evento in corso</strong>
+												<?php } else if ($len==0) { ?>
+                                 	<strong>Nessun evento in corso</strong>
                                  <?php } else {
                                  	?>
-                                 	<strong>Eventi in corso di tipo</strong>
+                                 	<strong>Eventi in corso</strong>
                                  	<?php
                                  	}
                                  	?>
@@ -122,13 +124,50 @@
                                 <?php 
                                 for ($i=0;$i<$len;$i++){
                                 ?>
-                                   - Evento in corso di tipo <?php echo $tipo_eventi_attivi[$i][1];?>
+                                   - Tipo <?php echo $tipo_eventi_attivi[$i][1];?><br>
                                 <?php
                                 }
                                 ?>
                                 
                             </a>
                         </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="dettagli_evento_c.php">
+                                <div>
+                                <?php 
+                                $len_c=count($eventi_attivi_c);	               
+		               				if($len_c==1) {   
+	               				   ?>
+                                    <strong>Evento in chiusura</strong>
+                                 <?php } else if ($len_c==0) { ?>
+                                 	<strong>Nessun evento in fase di chiusura</strong>
+                                 <?php } else {
+                                 	?>
+                                 	<strong>Eventi in chiusura</strong>
+                                 	<?php
+                                 	}
+                                 	?>
+                                 	
+                                    <span class="pull-right text-muted">
+                                        <em><i class="fas fa-hourglass-end"></i></em>
+                                    </span>
+                                </div>
+                                <?php 
+                                for ($i=0;$i<$len_c;$i++){
+                                ?>
+                                   - Tipo <?php echo $tipo_eventi_c[$i][1];?><br>
+                                <?php
+                                }
+                                ?>
+                                
+                            </a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
                         <!--li class="divider"></li>
                         <li>
                             <a href="dettagli_evento.php">

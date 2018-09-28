@@ -7,6 +7,7 @@
     <!-- Bootstrap Plugins -->
     <link href="../vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet">
     <link href="../vendor/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 	
 
     <!-- Leaflet CSS -->

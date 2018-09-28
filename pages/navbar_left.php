@@ -29,7 +29,16 @@
                                     <a href="nuovo_evento.php">Crea nuovo evento</a>
                                 </li>
                                 <li>
-                                    <a href="dettagli_evento.php">Dettagli evento in corso</a>
+                                    <a href="dettagli_evento.php">Dettagli eventi in corso</a>
+                                </li>
+                                 <li>
+                                    <a href="dettagli_evento_c.php">Dettagli eventi in fase di chiusura</a>
+                                </li>
+                                <li>
+                                    <a href="bollettini_meteo.php">Lista bollettini</a>
+                                </li>
+                                <li>
+                                    <a href="log_update.php">Log update GeoDataBase</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

@@ -12,6 +12,7 @@
     <!-- Bootstrap Plugins -->
     <script src="../vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
     <script src="../vendor/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../vendor/bootstrap-select/dist/js/bootstrap-select.js"></script>
 
 	<!-- Leaflet JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
