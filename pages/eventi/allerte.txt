@@ -1,0 +1,1 @@
+AllertaIdrogeologica<br>pioggeDiffuse=FALSE<br>temporali=FALSE<br>tendenza=FALSE

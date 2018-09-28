@@ -44,25 +44,114 @@ require('./check_evento.php');
                     <h1 class="page-header">Titolo pagina</h1>
                 </div-->
                 <!-- /.col-lg-12 -->
-			<form action="segnalazioni/add_segnalazioni2.php" method="POST">
+			<form action="segnalazioni/import_segnalazione.php" method="POST">
         
 
-                    <div class="row">
+
        
             
             
-            
+            <div class="row">             
             <h4><i class="fa fa-address-card"></i> Generalità segnalante:</h4> 
+
+				 <div class="col-md-6">
+
+             
             <div class="form-group">
-                <label for="nome"> Identificativo segnalante</label> <font color="red">*</font>
-                <input type="text" name="nome" class="form-control" required>
+                <label for="nome"> Nome segnalante</label> <font color="red">*</font>
+                <input type="text" id="nome" name="nome" class="form-control" required>
+                <small>Se non specificato scrivere <i>Anonimo</i></small>
               </div>
+            <div class="form-group">
+             	<label for="telefono"> Telefono </label>
+                <input type="text" name="telefono" class="form-control" >
+                <small>Non è un dato obbligatorio, ma è fortemente consigliato avere un recapito telefonico del segnalante.<i>Anonimo</i></small>
+            </div>
+
+            </div>
+            
+            <div class="col-md-6">
+            <div class="form-group">
+            <label for="note_segnalante"> Note segnalante </label>
+             	<textarea class="form-control" rows="3" name="note_segnalante" id="note_segnalante"></textarea>
+            </div>
+            
+            </div>
+            </div>
+            <div class="row">
+            <div class="form-group col-md-6">
+              <label for="tipo_segn">Tipo segnalante:</label> <font color="red">*</font>
+                            <select class="form-control" name="tipo_segn" id="tipo_segn" required="" >
+                            <option name="tipo_segn" value="" > Specifica una tipologia segnalante </option>
+            <?php            
+            $query2="SELECT * FROM segnalazioni.tipo_segnalanti WHERE valido='t';";
+            echo $query2;
+	        $result2 = pg_query($conn, $query2);
+            //echo $query1;    
+            while($r2 = pg_fetch_assoc($result2)) { 
+            ?>    
+                    <option name="tipo_segn" value="<?php echo $r2['id'];?>" ><?php echo $r2['descrizione'];?></option>
+             <?php } ?>
+
+             </select>            
+             </div>
+               <div class="form-group col-md-6">
+                <label for="altro"> Specifica altro...</label>
+                <input type="text" id="altro" name="altro" class="form-control" disabled="">
+              </div>
+            
+            </div>
             <hr>
+				<div class="row">             
+            <h4><i class="fa fa-play"></i> Evento:</h4>
+            <div class="form-group col-md-12">
+            <label for="nome"> Evento</label> <font color="red">*</font>  
+ 				<?php 
+           $len=count($eventi_attivi);	               
+				                
+				if($len==1) {   
+			   ?>
+
+
+                <select disabled="" class="form-control"  name="evento" required>
+                 
+                    <?php 
+                     for ($i=0;$i<$len;$i++){
+                      
+                        echo '<option name="evento" value="'.$tipo_eventi_attivi[$i][0].'">'. $tipo_eventi_attivi[0][1].' (id='.$tipo_eventi_attivi[0][0].')</option>';
+                      }
+                    ?>
+                  </select>
+                                  <small id="eventohelp" class="form-text text-muted">Un solo evento attivo (per trasparenza lo mostriamo ma possiamo anche decidere di non farlo).</small>
+             
+            <?php } else {
+            	?>
+
+                  <select class="form-control"  name="evento" required>
+                     <option value=''>Seleziona un evento tra quelli attivi </option>
+                    <?php 
+                     for ($i=0;$i<$len;$i++){
+                      
+                        echo '<option name="evento" value="'.$tipo_eventi_attivi[$i][0].'">'. $tipo_eventi_attivi[$i][1].' (id='.$tipo_eventi_attivi[$i][0].')</option>';
+                      }
+                    ?>
+                  </select>
+
+            	<?php
+            	}
+            	?>
+              
+            </div>
+            
+             </div>
+             <hr>
+            <div class="row"> 
+
             <h4><i class="fa fa-tasks"></i> Oggetto della segnalazione:</h4> 
             
              <div class="form-group col-md-6">
               <label for="naz">Tipo criticità:</label> <font color="red">*</font>
-                            <select class="form-control" name="crit" id="crit">
+                            <select class="form-control" name="crit" id="crit" required="">
                             <option name="crit" value="" > ... </option>
             <?php            
             $query2="SELECT * FROM segnalazioni.tipo_criticita WHERE valido='t' ORDER BY descrizione;";
@@ -84,72 +173,34 @@ require('./check_evento.php');
              
              
             <div class="form-group col-md-6">
-                <label for="nome"> Descrizione</label> <font color="red">*</font>
-                <input type="text" name="descrizione" class="form-control" required>
-              </div>
+                <label for="descrizione"> Descrizione</label> <font color="red">*</font>
+                <input type="text" name="descrizione" class="form-control" required="">
+             </div>
 
 				</div> 
             <div class="row">       
 
-<div class="form-group col-md-6">
+				<div class="form-group col-md-6">
 					<label for="nome"> Ci sono persone a rischio?</label> <font color="red">*</font><br>
-					<label class="radio-inline"><input type="radio" name="optradio" value="" checked>Non specificato</label>
-					<label class="radio-inline"><input type="radio" name="optradio" value="t">Sì</label>
-					<label class="radio-inline"><input type="radio" name="optradio"value="f">Nessuna persona a rischio</label>
+					<label class="radio-inline"><input type="radio" name="rischio" value="" checked>Non specificato</label>
+					<label class="radio-inline"><input type="radio" name="rischio" value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="rischio"value="f">Nessuna persona a rischio</label>
 				</div>
 
 
-<div class="form-group col-md-6">
-            <label for="nome"> Evento</label> <font color="red">*</font>  
- 				<?php 
-           $len=count($eventi_attivi);	               
-				                
-				if($len==1) {   
-			   ?>
-
-
-                <select disabled="" class="form-control"  name="evento" required>
-                 
-                    <?php 
-                     for ($i=0;$i<$len;$i++){
-                      
-                        echo '<option value='.$tipo_eventi_attivi[$i][0].'>'. $tipo_eventi_attivi[0][1].' (id='.$tipo_eventi_attivi[0][0].')</option>';
-                      }
-                    ?>
-                  </select>
-                                  <small id="emailHelp" class="form-text text-muted">Un solo evento attivo (per trasparenza lo mostriamo ma possiamo anche decidere di non farlo).</small>
-             
-            <?php } else {
-            	?>
-
-                  <select class="form-control"  name="evento" required>
-                 
-                    <?php 
-                     for ($i=0;$i<$len;$i++){
-                      
-                        echo '<option value='.$tipo_eventi_attivi[$i][0].'>'. $tipo_eventi_attivi[0][1].' (id='.$tipo_eventi_attivi[0][0].')</option>';
-                      }
-                    ?>
-                  </select>
-
-            	<?php
-            	}
-            	?>
-              
-            </div>
+				
 
 				
 				
 				</div> 
-            <div class="row">
-
  				<hr>
+            <div class="row">
             <h4><i class="fa fa-map-marker-alt"></i> Geolocalizzazione:</h4> 
 
 
 				<div class="form-group">
-					<label for="nome"> Ci sono persone a rischio?</label> <font color="red">*</font><br>
-					<label class="radio-inline"><input type="radio" name="georef" id="civico">Tramite civico</label>
+					<label for="nome"> Seleziona l'opzione che intendi usare per georeferenziare la segnalazione</label> <font color="red">*</font><br>
+					<label class="radio-inline"><input type="radio" name="georef" id="civico" required="">Tramite civico</label>
 					<label class="radio-inline"><input type="radio" name="georef" id="mappa">Tramite mappa</label>
 					<label class="radio-inline"><input type="radio" name="georef" id="coord">Con coordinate note</label>
 				</div>
@@ -166,7 +217,7 @@ require('./check_evento.php');
 	            url: "get_civico.php",
 	            data:'cod='+val,
 	            success: function(data){
-		            $("#comune-list").html(data);
+		            $("#civico-list").html(data);
 	            }
 	            });
             }
@@ -177,11 +228,11 @@ require('./check_evento.php');
 
 				<div class="col-md-6"> 
              <div class="form-group  ">
-              <label for="provincia">Provincia:</label> <font color="red">*</font>
-                            <select disabled="" id="provincia-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required>
+              <label for="via">Via:</label> <font color="red">*</font>
+                            <select disabled="" id="via-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required>
                             <option value="">Seleziona la via</option>
             <?php            
-            $query2="SELECT * From \"geodb\".\"vie\";";
+            $query2="SELECT * From \"geodb\".\"m_vie_unite\";";
 	        $result2 = pg_query($conn, $query2);
             //echo $query1;    
             while($r2 = pg_fetch_assoc($result2)) { 
@@ -196,14 +247,21 @@ require('./check_evento.php');
 
 
             <div class="form-group">
-              <label for="comune">Comune:</label> <font color="red">*</font>
-                <select disabled="" class="form-control" name="comune" id="comune-list" class="demoInputBox" required>
+              <label for="civico">Civico:</label> <font color="red">*</font>
+                <select disabled="" class="form-control" name="civico" id="civico-list" class="demoInputBox" required>
                 <option value="">Seleziona il civico</option>
             </select>         
              </div>
 
-
+				<div class="form-group">
+					<label for="civrischio"> Il civico è a rischio?</label><br>
+					<label class="radio-inline"><input type="radio" name="civrischio" value="" checked>Non specificato</label>
+					<label class="radio-inline"><input type="radio" name="civrischio" value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="civrischio"value="f">No</label>
 				</div>
+
+
+				</div> <!-- Chiudo col-md-6-->
 				<div class="col-md-6"> 
 				
 	
@@ -212,16 +270,40 @@ require('./check_evento.php');
 					<div class="form-group">
                 <label for="nome"> Latitudine </label> <font color="red">*</font>
                 <input disabled="" type="text" name="lat" id="lat" class="form-control" required>
-                <small id="addrHelp" class="form-text text-muted"> Qua è possibile specificare altre annotazioni, </small> 
               </div>
 					
 					<div class="form-group">
                 <label for="nome"> Longitudine </label> <font color="red">*</font>
                 <input disabled="" type="text" name="lon" id="lon" class="form-control" required>
-                <small id="addrHelp" class="form-text text-muted"> Qua è possibile specificare altre annotazioni, </small> 
               </div>
 					
+				
+				
+				
+				<div class="form-group">
+					<label for="oggrischio"> C'è uno specifico oggetto a rischio?</label> <br>
+					<label class="radio-inline"><input type="radio" name="oggrischio" value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="oggrischio" value="f">No</label>
 				</div>
+				
+				<div class="form-group">
+              <label for="tipo_oggetto">Specica oggetto:</label> 
+                            <select class="form-control" name="tipo_oggetto" id="tipo_oggetto">
+                            <option name="tipo_oggetto" value="" > Specifica oggetto </option>
+            <?php            
+            $query2="SELECT * FROM segnalazioni.tipo_oggetti_rischio WHERE valido='t' ORDER BY descrizione;";
+            echo $query2;
+	        $result2 = pg_query($conn, $query2);
+            //echo $query1;    
+            while($r2 = pg_fetch_assoc($result2)) { 
+            ?>    
+                    <option name="tipo_oggetto" value="<?php echo $r2['id'];?>" ><?php echo $r2['descrizione'];?></option>
+             <?php } ?>
+
+             </select>            
+             </div>
+				
+				</div> <!-- Chiudo col-md-6-->
 				
 				</div> 
             <div class="row">
@@ -234,8 +316,8 @@ require('./check_evento.php');
                     
                      
               <div class="form-group">
-                <label for="nome"> Note</label> <font color="red">*</font>
-                <input type="text" name="note" class="form-control" required>
+                <label for="note_geo"> Altre note utili alla localizzazione </label>
+                <input type="text" name="note_geo" id="note_geo" class="form-control" >
                 <small id="addrHelp" class="form-text text-muted"> Qua è possibile specificare altre annotazioni, </small> 
               </div>
 
@@ -243,7 +325,7 @@ require('./check_evento.php');
 
 
 
-            <button disabled="" type="submit" class="btn btn-primary">Aggiungi</button>
+            <button  type="submit" class="btn btn-primary">Aggiungi</button> (Form DEMO- discutere di gestione DB)
             </div>
             <!-- /.row -->
             
@@ -307,20 +389,65 @@ var mymap = L.map('mapid').setView([44.411156, 8.932661], 13);
 			.openOn(mymap);
 	}
 
-
+$('input[type=radio][name=civrischio]').attr('disabled', true);
+$('input[type=radio][name=oggrischio]').attr('disabled', true);
+$('input[type=radio][name=oggrischio][value="f"]').attr('checked', true);
+$('#tipo_oggetto').attr('disabled',true);
 
 
 (function ($) {
     'use strict';
+   
+    $('[type="radio"][name="oggrischio"][value="t"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#tipo_oggetto').removeAttr('disabled');
+            return true;
+        }
+        $('#catName').attr('disabled', 'disabled');
+    });
     
+    $('[type="radio"][name="oggrischio"][value="f"]').on('change', function () {
+        if ($(this).is(':checked')) {
+        	   $('#tipo_oggetto').attr('disabled',true);
+            $('#tipo_oggetto').val('');
+            return true;
+        }
+        $('#catName').attr('disabled', 'disabled');
+    });
+    
+    
+    
+    $('select[name="tipo_segn"]').on('change', function () {
+
+    	var others = $(this).val();
+		//alert(others)
+		if (others=="999"){
+    		$('#altro').removeAttr('disabled');
+    	} else {
+    		$('#altro').attr('disabled', true);
+    		$('#altro').val('');
+    	}
+        
+    });
+    
+    
+    
+            
     $('[type="radio"][id="civico"]').on('change', function () {
         if ($(this).is(':checked')) {
-            $('#provincia-list').removeAttr('disabled');
-            $('#comune-list').removeAttr('disabled');
+            $('#via-list').removeAttr('disabled');
+            $('#via-list').selectpicker('refresh');
+            $('#civico-list').removeAttr('disabled');
+            $('input[type=radio][name=oggrischio][value="t"]').attr('checked', false);
+				$('input[type=radio][name=oggrischio][value="f"]').attr('checked', true);
+				$('input[type=radio][name=oggrischio]').attr('disabled', true);
+            $('input[type=radio][name=civrischio]').attr('disabled', false); 
             $('#lat').attr('disabled', true);
             $('#lon').attr('disabled', true);
             $('#lat').val('');
             $('#lon').val('');
+            $('#tipo_oggetto').attr('disabled',true);
+            $('#tipo_oggetto').val('');
             $("#mapid").off("onclick");
             	mymap.off('click', onMapClick);
             return true;
@@ -331,12 +458,13 @@ var mymap = L.map('mapid').setView([44.411156, 8.932661], 13);
         if ($(this).is(':checked')) {
             $('#lat').removeAttr('disabled');
             $('#lon').removeAttr('disabled');
-            $('#provincia-list').val('');
-            $('#comune-list').val('');
+            $('#via-list').val('');
+            $('#civico-list').val('');
             $('#lat').val('');
             $('#lon').val('');
-            $('#provincia-list').attr('disabled', true);
-            $('#comune-list').attr('disabled', true);
+            $('#via-list').attr('disabled', true);
+            $('#via-list').selectpicker('refresh');
+            $('#civico-list').attr('disabled', true);
             mymap.off('click', onMapClick);
             return true;
         }
@@ -347,12 +475,15 @@ var mymap = L.map('mapid').setView([44.411156, 8.932661], 13);
         if ($(this).is(':checked')) {
             $('#lat').attr('disabled', true);
             $('#lon').attr('disabled', true);
-             $('#lat').val('');
+            $("input[type=radio][name=oggrischio").attr('disabled', false);
+            $("input[type=radio][name=civrischio").attr('disabled', true);            
+            $('#lat').val('');
             $('#lon').val('');
-            $('#provincia-list').val('');
-            $('#comune-list').val('');
-            $('#provincia-list').attr('disabled', true);
-            $('#comune-list').attr('disabled', true);
+            $('#via-list').val('');
+            $('#civico-list').val('');
+            $('#via-list').attr('disabled', true);
+            $('#via-list').selectpicker('refresh');
+            $('#civico-list').attr('disabled', true);
             var offset = -200; //Offset of 100px
             	mymap.on('click', onMapClick);
 
