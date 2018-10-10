@@ -50,6 +50,9 @@
                                     <a href="nuova_segnalazione.php">Inserisci segnalazione</a>
                                 </li>
                                 <li>
+                                    <a href="mappa_segnalazioni.php">Mappa delle segnalazioni</a>
+                                </li>
+                                <li>
                                     <a href="#">TO DO</a>
                                 </li>
                             </ul>
