@@ -213,14 +213,15 @@ require('./check_evento.php');
                                         <li><a href="#">Something else here</a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
+                                        <li><a href="mappa_segnalazioni.php">Vai alla mappa delle senalazioni</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <!-- /.panel-heading -->
-                        <div id="mapid" style="width: 100%; height: 400px;"></div>
+                        <!--div id="mapid" style="width: 100%; height: 400px;"></div-->
+                        <iframe style="width:100%;height: 600px;position:relative" src="./mappa_leaflet.php"></iframe>
                         <!-- /.panel-body -->
                     </div>
                 
@@ -736,7 +737,7 @@ require('./req_bottom.php');
 
 <script>
 
-	var mymap = L.map('mapid').setView([44.411156, 8.932661], 13);
+	var mymap = L.map('mapid').setView([44.411156, 8.932661], 12);
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,

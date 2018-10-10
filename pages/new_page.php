@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Sottotitolo pagina"
+$subtitle="Mappa segnalazioni"
 
 ?>
 <!DOCTYPE html>
@@ -38,17 +38,12 @@ require('./check_evento.php');
             
 
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Titolo pagina</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
+            
             <!-- /.row -->
             
             <br><br>
             <div class="row">
-
+					<iframe style="width:100%;height: 100%;position:relative" src="./mappa_segnalazioni.php"></iframe>
             </div>
             <!-- /.row -->
     </div>

@@ -9,7 +9,7 @@ if(!empty($_POST["cod"])) {
      while($r = pg_fetch_assoc($result)) { 
     ?>
 
-        <option name="comune" value="<?php echo $r['id'];?>" ><?php echo $r['testo'];?></option>
+        <option name="id_civico" value="<?php echo $r['id'];?>" ><?php echo $r['testo'];?></option>
 <?php
     }
 }

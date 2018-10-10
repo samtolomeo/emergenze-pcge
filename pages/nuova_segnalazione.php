@@ -65,7 +65,7 @@ require('./check_evento.php');
             <div class="form-group">
              	<label for="telefono"> Telefono </label>
                 <input type="text" name="telefono" class="form-control" >
-                <small>Non è un dato obbligatorio, ma è fortemente consigliato avere un recapito telefonico del segnalante.<i>Anonimo</i></small>
+                <small>Non è un dato obbligatorio, ma è fortemente consigliato avere un recapito telefonico del segnalante.</small>
             </div>
 
             </div>
@@ -229,7 +229,7 @@ require('./check_evento.php');
 				<div class="col-md-6"> 
              <div class="form-group  ">
               <label for="via">Via:</label> <font color="red">*</font>
-                            <select disabled="" id="via-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required>
+                            <select disabled="" id="via-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required="">
                             <option value="">Seleziona la via</option>
             <?php            
             $query2="SELECT * From \"geodb\".\"m_vie_unite\";";
@@ -239,7 +239,7 @@ require('./check_evento.php');
                 $valore=  $r2['codvia']. ";".$r2['desvia'];            
             ?>
                         
-                    <option name="cod" value="<?php echo $r2['codvia'];?>" ><?php echo $r2['desvia'];?></option>
+                    <option name="codvia" value="<?php echo $r2['codvia'];?>" ><?php echo $r2['desvia'];?></option>
              <?php } ?>
 
              </select>            
@@ -247,8 +247,8 @@ require('./check_evento.php');
 
 
             <div class="form-group">
-              <label for="civico">Civico:</label> <font color="red">*</font>
-                <select disabled="" class="form-control" name="civico" id="civico-list" class="demoInputBox" required>
+              <label for="id_civico">Civico:</label> <font color="red">*</font>
+                <select disabled="" class="form-control" name="id_civico" id="civico-list" class="demoInputBox" required="">
                 <option value="">Seleziona il civico</option>
             </select>         
              </div>
@@ -268,13 +268,13 @@ require('./check_evento.php');
 
 				
 					<div class="form-group">
-                <label for="nome"> Latitudine </label> <font color="red">*</font>
-                <input disabled="" type="text" name="lat" id="lat" class="form-control" required>
+                <label for="lat"> Latitudine </label> <font color="red">*</font>
+                <input disabled="" type="text" name="lat" id="lat" class="form-control" required="">
               </div>
 					
 					<div class="form-group">
-                <label for="nome"> Longitudine </label> <font color="red">*</font>
-                <input disabled="" type="text" name="lon" id="lon" class="form-control" required>
+                <label for="lon"> Longitudine </label> <font color="red">*</font>
+                <input disabled="" type="text" name="lon" id="lon" class="form-control" required="">
               </div>
 					
 				
@@ -287,13 +287,13 @@ require('./check_evento.php');
 				</div>
 				
 				<div class="form-group">
-              <label for="tipo_oggetto">Specica oggetto:</label> 
-                            <select class="form-control" name="tipo_oggetto" id="tipo_oggetto">
+              <label for="tipo_oggetto">Oggetto:</label> 
+                            <select class="form-control" name="tipo_oggetto" id="tipo_oggetto" required="">
                             <option name="tipo_oggetto" value="" > Specifica oggetto </option>
             <?php            
             $query2="SELECT * FROM segnalazioni.tipo_oggetti_rischio WHERE valido='t' ORDER BY descrizione;";
             echo $query2;
-	        $result2 = pg_query($conn, $query2);
+	         $result2 = pg_query($conn, $query2);
             //echo $query1;    
             while($r2 = pg_fetch_assoc($result2)) { 
             ?>    
@@ -357,7 +357,9 @@ require('./req_bottom.php');
 
 <script>
 
-var mymap = L.map('mapid').setView([44.411156, 8.932661], 13);
+
+//var map = L.map('map', {scrollWheelZoom:false}).setView([44.41054697, 8.9342933893], 14);
+var mymap = L.map('mapid', {scrollWheelZoom:false}).setView([44.411156, 8.932661], 13);
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
@@ -458,6 +460,8 @@ $('#tipo_oggetto').attr('disabled',true);
         if ($(this).is(':checked')) {
             $('#lat').removeAttr('disabled');
             $('#lon').removeAttr('disabled');
+            $('#lat').removeAttr('readonly');
+            $('#lon').removeAttr('readonly');
             $('#via-list').val('');
             $('#civico-list').val('');
             $('#lat').val('');
@@ -473,8 +477,10 @@ $('#tipo_oggetto').attr('disabled',true);
     
     $('[type="radio"][id="mappa"]').on('change', function () {
         if ($(this).is(':checked')) {
-            $('#lat').attr('disabled', true);
-            $('#lon').attr('disabled', true);
+            $('#lat').attr('readonly', true);
+            $('#lon').attr('readonly', true);
+            $('#lat').removeAttr('disabled');
+            $('#lon').removeAttr('disabled');
             $("input[type=radio][name=oggrischio").attr('disabled', false);
             $("input[type=radio][name=civrischio").attr('disabled', true);            
             $('#lat').val('');
