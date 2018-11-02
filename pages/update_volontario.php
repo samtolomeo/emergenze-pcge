@@ -21,7 +21,7 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 $cf=$_GET["id"];
-
+$id=$cf;
 ?>
     
 </head>
@@ -45,7 +45,8 @@ $cf=$_GET["id"];
                     <h1 class="page-header"> <i class="fa fa-user"></i> Dettagli volontario
                     
                     <?php
-                        $query="SELECT * From \"users\".\"v_personale_volontario\" where \"cf\"=$cf;"; 
+                    $check_profilo=0;
+                        $query="SELECT * From \"users\".\"v_utenti_esterni\" where \"cf\"=$cf;"; 
                     
                     $result = pg_query($conn, $query);
 	                //$rows = array();
@@ -53,6 +54,7 @@ $cf=$_GET["id"];
 	                while($r = pg_fetch_assoc($result)) {
                     		//$rows[] = $r;
                     		echo $r['cognome']. " ".$r['nome'];
+                    		$profilo=$r['id_profilo'];
     		        ?>
                     
                     </h1>
@@ -68,14 +70,15 @@ $cf=$_GET["id"];
 		
 			<br-->
             <h4> <i class="fa fa-address-book"></i> Informazioni anagrafiche 
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_ana"> 
-				     <i class="fa fa-pencil-alt"></i>        
-            </button>
             </h4>
             <b>Cognome e nome</b>: <?php echo $r['cognome']. " ".$r['nome']  ?>  <br>
             <b>Codice fiscale</b>: <?php echo $r['cf'] ?>  <br>
             <b>Data di nascita</b>: <?php echo $r['data_nascita'] ?>  <br>   
             <b>Nazionalità:</b> <?php echo $r['nazione_nascita'] ?> <br>
+            <br>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_ana"> 
+				     <i class="fa fa-pencil-alt"></i>        
+            </button>
 
 
   
@@ -137,13 +140,15 @@ $cf=$_GET["id"];
 
          
             <h4> <i class="fa fa-home"></i> Residenza
-             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_res"> 
-				     <i class="fa fa-pencil-alt"></i>        
-            </button>
+            
             </h4>
 				<b>Indirizzo</b>: <?php echo $r['indirizzo'] ?><br>				
 				&emsp;&emsp;&emsp;&emsp;&emsp;<?php echo $r['cap']." - ". $r['comune']. " (".$r['provincia']  ?>)<br>
            
+           <br>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_res"> 
+				     <i class="fa fa-pencil-alt"></i>        
+            </button>
 
 <!-- Modal -->
 <div id="modal_res" class="modal fade" role="dialog">
@@ -284,15 +289,16 @@ $cf=$_GET["id"];
 
 				</div><div class="col-lg-3 col-md-auto">
 				<h4> <i class="fa fa-phone"></i> Contatti
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_con"> 
-				     <i class="fa fa-pencil-alt"></i>        
-            </button>
+				
             </h4>
 				<b>Telefono principale</b>: <?php echo $r['telefono1']?><br>
             <b>Mail</b>: <?php echo $r['mail'] ?>  <br>
             <b>Telefono secondario</b>: <?php echo $r['telefono2'] ?>  <br>   
             <b>Fax:</b> <?php echo $r['fax'] ?> <br>
-				
+				<br>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_con"> 
+				     <i class="fa fa-pencil-alt"></i>        
+            </button>
 				
 
 
@@ -350,18 +356,107 @@ $cf=$_GET["id"];
 				</div><div class="col-lg-3 col-md-auto">
 				<h4> <i class="fa fa-plus"></i> Altro</h4>
 				<b>N° Gruppo Genova</b>: <?php echo $r['numero_gg']?><br>
-				Gli ulteriori campi sono da modificare in seguito alla riunione del 10 dicembre in cui parleremo anche di come organizzare le Unità Operative <br>
+				Gli ulteriori campi sono da modificare durante la fase di test (18 ottobre-13 novembre)<br>
             <b>UO I livello (todo)</b>: <?php echo $r['id1'] ?>  <br>
             <b>UO II livello (todo)</b>: <?php echo $r['id2'] ?>  <br>   
             <b>UO III livello (todo)</b>: <?php echo $r['id3'] ?> <br>
             </div>
             
             
-            <<?php } #chiudo il while ?>
+            <?php
+             } #chiudo il while 
+             if ($profilo!=''){
+               	$check_profilo=1;
+               }
+             
+             
+             
+             ?>
+            
+            
             <!-- /.row -->
     </div>
     <!-- /#wrapper -->
-    <br><br><br><br><br>
+    <br><br>    
+    
+    <hr>
+     </div>
+
+		<div class="row">
+            
+            <?php
+            	if ($check_profilo==1){
+	            	$query="SELECT * From users.profili_utilizzatore where id=".$profilo.";";
+	            	//echo $query; 
+	               $result = pg_query($conn, $query);
+		            while($r = pg_fetch_assoc($result)) {
+		            	echo '<br><b>Profilo</b>: '. $r['descrizione'];
+		            }
+		            
+		            $query="SELECT * From users.utenti_sistema where matricola_cf=".$id.";";
+	            	//echo $query; 
+	               $result = pg_query($conn, $query);
+		            while($r = pg_fetch_assoc($result)) {
+		            	$valido = $r['valido'];
+		            	//echo $valido;
+		            } 
+		            
+		            if ($valido=='t'){
+		            	echo '<br> <br><a class="btn btn-warning" href="./permessi/permessi_sospendi.php?cf='.$id.'"><i class="fas fa-pause"></i> Sospendi </a>';
+		            } else {
+		            	echo ' (profilo sospeso)<br> <br><a class="btn btn-success" href="./permessi/permessi_riprendi.php?cf='.$id.'"><i class="fas fa-play"></i> Ri-attiva </a>';
+		            }
+		         } else {
+		          	echo "Attualmente l'utente non ha particolari profili impostati. ";
+		          	echo 'Potrà solo accedere al form semplificato di inserimento segnalazioni da numero verde.';
+		         } 
+	            
+	            
+            ?>
+
+            </div>
+            <hr>
+            </b>
+            <div class="row">
+            <form action="permessi/permessi_insert.php" method="POST">
+            <!-- Devo passare al php che gestisce l'aggiornamento permessi anche il CF con un campo nascosto-->
+            <input type="hidden" name="cf" id="hiddenField" value="<?php echo $id ?>" />
+            
+            <div class="form-group col-lg-12">
+            <label for="profilo"> Scegli il profilo </label> <font color="red">*</font><br>
+            <?php
+            	
+            	$query="SELECT * From users.profili_utilizzatore order by id;";
+               $result = pg_query($conn, $query);
+	            while($r = pg_fetch_assoc($result)) {
+	            	if($profilo==$r['id']){
+	            		echo '<label class="radio"><input type="radio" name="profilo" checked="" value="'.$r['id'].'"> '.$r['id'].' - '.$r['descrizione'].'</label>';
+						} else {
+	            		echo '<label class="radio"><input type="radio" name="profilo" value="'.$r['id'].'"> '.$r['id'].' - '.$r['descrizione'].'</label>';						
+						}
+
+
+	            }
+		       
+		       	if($check_profilo==0) {
+	            	echo '<label class="radio"><input type="radio" name="profilo" checked="" value="no"> Nessun profilo </label>';
+	            } else {
+	            	echo '<label class="radio"><input type="radio" name="profilo" value="no"> Nessun profilo </label>';            
+	            }
+            ?>
+
+            </div>           
+            <button type="submit" class="btn btn-primary">Aggiorna permessi</button>
+            </form>
+            </div>
+           
+            
+            
+            <!-- /.row -->    
+    
+    
+    
+    <hr>
 <?php 
 
 require('./footer.php');
@@ -380,6 +475,7 @@ require('./req_bottom.php');
         if ($(this).is(':checked')) {
             $('#catName').removeAttr('disabled');
             $('#provincia-list').removeAttr('disabled');
+            $('#provincia-list').selectpicker('refresh');
             $('#comune-list').removeAttr('disabled');
             $('#btn_comune').removeAttr('disabled');
             return true;

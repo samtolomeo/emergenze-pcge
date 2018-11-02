@@ -89,10 +89,33 @@ require('./check_evento.php');
 							}, 1000);
 							</script>	   					
 	   					<?php
-	   					
+	   					$query_a="SELECT * FROM eventi.v_allerte WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_allerta > now();";
+	   					//echo $query;
+							//exit;
+							$check_allerte=0;
+							$conto=0;
+							$result = pg_query($conn, $query_a);
+							while($r = pg_fetch_assoc($result)) {
+								$check_allerte=1;
+							}
+							
+							$query_f="SELECT * FROM eventi.v_foc WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_foc > now();";
+	   					//echo $query;
+							//exit;
+							$check_foc=0;
+							$result = pg_query($conn, $query_f);
+							while($r = pg_fetch_assoc($result)) {
+								$check_foc=1;
+							}
+							
+							
 	   					
 	   					echo '<div class="col-lg-2"><br>';
-	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi'.$eventi_attivi[$i].'"><i class="fas fa-times"></i> Inizia fase chiusura</button>';
+	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
+	   					if($check_allerte==1 OR $check_foc==1){
+	   						echo 'disabled=""';
+	   					}
+	   					echo 'data-target="#chiudi'.$eventi_attivi[$i].'"><i class="fas fa-times"></i> Inizia fase chiusura</button>';
 	   					echo '</div></div>';
 	   					echo '<div class="row">';
 	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_attivi[$i][1].'</h3>';
@@ -123,17 +146,9 @@ require('./check_evento.php');
 							</div>
 							<hr>
 							<?php
-	   					$query="SELECT * FROM eventi.v_allerte WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_allerta > now();";
-	   					//echo $query;
-							//exit;
-							$check_allerte=0;
-							$conto=0;
-							$result = pg_query($conn, $query);
-							while($r = pg_fetch_assoc($result)) {
-								$check_allerte=1;
-							}
+	   					
 							if($check_allerte==1) {echo "<h3> Allerte in corso o previste:</h3><ul>";}
-							$result = pg_query($conn, $query);
+							$result = pg_query($conn, $query_a);
 							while($r = pg_fetch_assoc($result)) {
 								$conto=$conto+1;
 								$timestamp = strtotime($r["data_ora_inizio_allerta"]);
@@ -186,16 +201,9 @@ require('./check_evento.php');
 							</div>
 	   					<hr>
 	   					<?php
-	   					$query="SELECT * FROM eventi.v_foc WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_foc > now();";
-	   					//echo $query;
-							//exit;
-							$check_foc=0;
-							$result = pg_query($conn, $query);
-							while($r = pg_fetch_assoc($result)) {
-								$check_foc=1;
-							}
+	   					
 							if($check_foc==1) {echo "<h3> Fasi Operative Comunali in corso o previste:</h3><ul>";}
-							$result = pg_query($conn, $query);
+							$result = pg_query($conn, $query_f);
 							while($r = pg_fetch_assoc($result)) {
 							
 								$timestamp = strtotime($r["data_ora_inizio_foc"]);

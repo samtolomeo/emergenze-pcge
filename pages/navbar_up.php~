@@ -1,6 +1,6 @@
 <?php ?>
 
-<html>
+
 <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -108,7 +108,7 @@
 		               				if($len==1) {   
 	               				   ?>
                                     <strong>Evento in corso</strong>
-												<?php } else ($len==0) { ?>
+												<?php } else if ($len==0) { ?>
                                  	<strong>Nessun evento in corso</strong>
                                  <?php } else {
                                  	?>

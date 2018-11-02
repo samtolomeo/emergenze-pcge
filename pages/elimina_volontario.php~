@@ -9,7 +9,7 @@ $cf=$_GET["id"];
 
 
 
-$query="DELETE FROM users.personale_volontario WHERE cf=$cf;";
+$query="DELETE FROM users.utenti_esterni WHERE cf=$cf;";
 echo $query;
 //exit;
 

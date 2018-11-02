@@ -92,7 +92,11 @@ require('./check_evento.php');
 	   					
 	   					
 	   					echo '<div class="col-lg-2"><br>';
-	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi'.$eventi_attivi[$i].'"><i class="fas fa-times"></i> Inizia fase chiusura</button>';
+	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
+	   					if($check_allerte==1 OR $check_foc==1){
+	   						echo 'disabled=""';
+	   					}
+	   					echo 'data-target="#chiudi'.$eventi_attivi[$i].'"><i class="fas fa-times"></i> Inizia fase chiusura</button>';
 	   					echo '</div></div>';
 	   					echo '<div class="row">';
 	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_attivi[$i][1].'</h3>';
@@ -375,7 +379,7 @@ require('./check_evento.php');
 
 
 
-        <button disabled="" id="conferma<?php echo $i; ?>" type="submit" class="btn btn-danger">Conferma chiusura evento</button>
+        <button disabled="" id="conferma<?php echo $i; ?>" type="submit" class="btn btn-danger">Conferma inizio fase di chiusura evento</button>
             </form>
 
       </div>

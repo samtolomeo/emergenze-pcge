@@ -26,11 +26,11 @@ require('./check_evento.php');
 
 <!--link rel="stylesheet" href="l_map/css/leaflet.css"-->
 <!--link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"-->
-<link rel="stylesheet" href="css/L.Control.Locate.min.css">
-        <link rel="stylesheetl_map/" href="l_map/css/qgis2web.css">
-        <link rel="stylesheet" href="l_map/css/MarkerCluster.css">
-        <link rel="stylesheet" href="l_map/css/MarkerCluster.Default.css">
-        <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
+	<link rel="stylesheet" href="l_map/css/L.Control.Locate.min.css">
+   <link rel="stylesheetl_map/" href="l_map/css/qgis2web.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.Default.css">
+   <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
         <style>
         html, body, #map {
             width: 100%;
@@ -257,7 +257,7 @@ require('./req_bottom.php');
         var segn_non_lav = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE lavorazione=0;";
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione is null;";
 
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -287,7 +287,7 @@ require('./req_bottom.php');
         var segn_lav = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE lavorazione=1;";
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione > 0 and in_lavorazione='t';";
 
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -360,7 +360,7 @@ require('./req_bottom.php');
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pause-circle"></i> Da prendere in carico </div>'+
 				'<h4><b>Tipo</b>: '+
 				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id="'+
+				'<a class="btn btn-primary active" role="button" target="_new" href="./dettagli_segnalazione.php?id='+
 				feature.properties.id +
 				'"> Dettagli segnalazione </a>' );
 			}
@@ -375,7 +375,7 @@ require('./req_bottom.php');
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-play-circle"></i> In lavorazione </div>'+
 				'<h4><b>Tipo</b>: '+
 				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id="'+
+				'<a class="btn btn-primary active" role="button" target="_new" href="./dettagli_segnalazione.php?id="'+
 				feature.properties.id +
 				'"> Dettagli segnalazione </a>' );
 			}
@@ -397,7 +397,15 @@ require('./req_bottom.php');
         
         
         var baseMaps = {/*'OSM': basemap0, 'OSM B&W': basemap1,*/ 'Humanitarian OpensStreetMap': basemap2/*, 'OSM-Mapbox': basemap3*/};
-        L.control.layers(baseMaps,{'Segnalazioni non ancora in lavorazione': layer_v_segnalazioni_0,'Segnalazioni in lavorazione': markers1},{collapsed:false}).addTo(map);
+        
+        //legenda
+        L.control.layers(baseMaps,
+        {'Segnalazioni non ancora in lavorazione': layer_v_segnalazioni_0,
+        'Segnalazioni in lavorazione': markers1}
+        ,
+        {collapsed:true}
+        ).addTo(map);
+        
         setBounds();
         </script>
 

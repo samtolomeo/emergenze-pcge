@@ -7,7 +7,20 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 //$id=$_GET["id"];
 $id=str_replace("'", "", $id);
 
-echo "La gestione della segnalazione e' attualmente in fase di sviluppo. Ci scusiamo per il disagio<br>";
+
+
+$descrizione= str_replace("'", "''", $_POST["descrizione"]);
+$nome= str_replace("'", "''", $_POST["nome"]);
+//$cognome= str_replace("'", "''", $_POST["cognome"]);
+$altro= str_replace("'", "''", $_POST["altro"]);
+$note_segnalante= str_replace("'", "''", $_POST["note_segnalante"]);
+$note_geo= str_replace("'", "''", $_POST["note_geo"]);
+
+
+
+
+
+//echo "La gestione della segnalazione e' attualmente in fase di sviluppo. Ci scusiamo per il disagio<br>";
 #segnalante
 
 $query_max= "SELECT max(id) FROM segnalazioni.t_segnalanti;";
@@ -25,25 +38,25 @@ echo "<br>";
 
 
 $query= "INSERT INTO segnalazioni.t_segnalanti( id, id_tipo_segnalante, nome_cognome";
-if ($_POST["altro"]!=''){
+if ($altro!=''){
 	$query= $query .", altro_tipo";
 }
 if ($_POST["telefono"]!=''){
 	$query= $query .", telefono";
 }
-if ($_POST["note_segnalante"]!=''){
+if ($note_segnalante!=''){
 	$query= $query .", note";
 }
 //values
-$query=$query.") VALUES (".$id_segnalante.", ".$_POST["tipo_segn"].", '".$_POST["nome"]."' ";
-if ($_POST["altro"]!=''){
-	$query= $query .", '".$_POST["altro"]."'";
+$query=$query.") VALUES (".$id_segnalante.", ".$_POST["tipo_segn"].", '".$nome."' ";
+if ($altro!=''){
+	$query= $query .", '".$altro."'";
 }
 if ($_POST["telefono"]!=''){
 	$query= $query .", '".$_POST["telefono"]."'";
 }
-if ($_POST["note_segnalante"]!=''){
-	$query= $query .", '".$_POST["note_segnalante"]."'";
+if ($note_segnalante!=''){
+	$query= $query .", '".$note_segnalante."'";
 }
 
 $query=$query.");";
@@ -78,7 +91,7 @@ $operatore="MRZRRT84B01D969U";
 //*************************************
 
 $id_oggetto=''; // inizializzazione
-$descrizione= str_replace("'", "''", $_POST["descrizione"]);
+
 
 
 echo "id_civico: ". $_POST["id_civico"];
@@ -110,6 +123,10 @@ if ($_POST["id_civico"]!=''){
 	}
 } else if($_POST["lat"]!='') {
 	$geom="ST_GeomFromText('POINT(".$_POST["lon"]." ".$_POST["lat"].")',4326)";
+	
+	
+	
+	
 	echo "Oggetto a rischio?:" .$_POST["oggrischio"]."<br>";
 	if($_POST["oggrischio"]=='t') {
 		// devo cercare l'oggetto più vicino
@@ -142,6 +159,15 @@ if ($_POST["id_civico"]!=''){
 	exit;
 }
 
+
+$query_municipio="select codice_mun from geodb.municipi WHERE st_intersects(st_transform(geom,4326),".$geom.");";
+	$result_m = pg_query($conn, $query_municipio);
+      //echo $query1;    
+      while($r_m = pg_fetch_assoc($result_m)) {
+      	$municipio=$r_m['codice_mun'];
+      }
+      
+      
 echo "<br>";
 /* INSERT INTO segnalazioni.t_segnalazioni(
             id, data_ora, id_segnalante, descrizione, id_criticita, rischio, 
@@ -151,7 +177,7 @@ echo "<br>";
             ?, ?, ?, ?, ?, ?, 
             ?);*/
 
-$query="INSERT INTO segnalazioni.t_segnalazioni(id, id_segnalante, descrizione, id_criticita, id_evento, geom, id_operatore";
+$query="INSERT INTO segnalazioni.t_segnalazioni(id, id_segnalante, descrizione, id_criticita, id_evento, geom, id_operatore, id_municipio";
 
 
 if ($_POST["rischio"]!=''){
@@ -160,7 +186,7 @@ if ($_POST["rischio"]!=''){
 if ($_POST["id_civico"]!=''){
 	$query=$query. ", id_civico";
 }
-if ($_POST["note_geo"]!=''){
+if ($note_geo!=''){
 	$query=$query. ", note";
 }
 /*if ($id_oggetto!=''){
@@ -169,7 +195,7 @@ if ($_POST["note_geo"]!=''){
 $query=$query.") VALUES ("; 
 
 //valori obbligatori
-$query=$query." ".$id_segnalazione.", ".$id_segnalante.",'".$descrizione."',".$_POST["crit"].",".$_POST["evento"].",".$geom.",'".$operatore."'";
+$query=$query." ".$id_segnalazione.", ".$id_segnalante.",'".$descrizione."',".$_POST["crit"].",".$_POST["evento"].",".$geom.",'".$operatore."',".$municipio." ";
 
 if ($_POST["rischio"]!=''){
 	$query=$query. ",'". $_POST["rischio"]."'";
@@ -177,8 +203,8 @@ if ($_POST["rischio"]!=''){
 if ($_POST["id_civico"]!=''){
 	$query=$query. ", ".$_POST["id_civico"];
 }
-if ($_POST["note_geo"]!=''){
-	$query=$query. ",'".$_POST["note_geo"]."'";
+if ($note_geo!=''){
+	$query=$query. ",'".$note_geo."'";
 }
 /*if ($id_oggetto!=''){
 	$query=$query. ",". $id_oggetto;

@@ -17,7 +17,7 @@ session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 // controllo CF
-$query_cf= "SELECT cf FROM users.personale_volontario;";
+$query_cf= "SELECT cf FROM users.utenti_esterni;";
 $result_cf = pg_query($conn, $query_cf);
 while($r_cf = pg_fetch_assoc($result_cf)) {
     if("'".$r_cf['cf']."'"== "'".$_POST['CF']."'") {
@@ -33,7 +33,7 @@ while($r_cf = pg_fetch_assoc($result_cf)) {
 echo "<br>";
 
 
-$query = "INSERT INTO users. personale_volontario(cf,
+$query = "INSERT INTO users. utenti_esterni(cf,
         cognome,
         nome,
         nazione_nascita,
