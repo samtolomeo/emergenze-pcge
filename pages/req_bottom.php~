@@ -1,4 +1,5 @@
 <?php 
+
 ?>
 
     <!-- jQuery -->
@@ -12,6 +13,11 @@
     <!-- Bootstrap Plugins -->
     <script src="../vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
     <script src="../vendor/bootstrap-table/dist/bootstrap-table.min.js"></script>
+	 <script src="../vendor/bootstrap-table/src/extensions/export/bootstrap-table-export.js" ></script>
+	 <script src="../vendor/bootstrap-select/dist/js/bootstrap-select.js"></script>
+	 
+	 
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 
 	<!-- Leaflet JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>

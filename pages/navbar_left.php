@@ -53,6 +53,16 @@
                                     <a href="mappa_segnalazioni.php">Mappa delle segnalazioni</a>
                                 </li>
                                 <li>
+                                    <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
+                                    <br><small> (<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="elenco_segnalazioni_ev_chiusi.php">Elenco storico delle segnalazioni
+                                    <br><small> (<i class="fas fa-stop"></i>eventi chiusi)</small>
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="#">TO DO</a>
                                 </li>
                             </ul>
@@ -63,11 +73,17 @@
                          <li>
                             <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="lista_volontari.php">Lista volontari</a>
+                            	  <li>
+                                    <a href="lista_dipendenti.php">Permessi dipendenti</a>
                                 </li>
                                 <li>
-                                    <a href="add_volontario.php">Aggiunta volontari</a>
+                                    <a href="lista_volontari.php">Permessi utenti esterni</a>
+                                </li>
+                                <li>
+                                    <a href="add_volontario.php">Aggiunta utenti esterni</a>
+                                </li>
+                                <li>
+                                    <a href="lista_mail.php">Contatti a cui notificare incarichi</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

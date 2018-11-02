@@ -9,7 +9,7 @@ $cf=$_GET["id"];
 
 
 
-$query="UPDATE users.personale_volontario SET indirizzo='".$_POST["indirizzo"]."'";
+$query="UPDATE users.utenti_esterni SET indirizzo='".$_POST["indirizzo"]."'";
 if ($_POST["cap"]){
 	$query= $query. " , cap='".$_POST["cap"]."' ";
 }

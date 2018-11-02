@@ -4,7 +4,7 @@
 
 ?>
 
-<html>
+
 <footer>
 
             <div class="row">
@@ -34,4 +34,4 @@
 
     </footer>
     
-  </html>  
+

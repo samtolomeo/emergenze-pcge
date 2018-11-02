@@ -6,7 +6,7 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT \"cf\", \"nome\",\"cognome\", \"comune\", \"provincia\" From \"users\".\"v_personale_volontario\" ORDER BY \"cognome\" ;";
+	$query="SELECT * From users.v_utenti_esterni ORDER BY cognome ;";
     
     //echo $query;
 	$result = pg_query($conn, $query);

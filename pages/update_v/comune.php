@@ -9,7 +9,7 @@ $cf=$_GET["id"];
 
 
 
-$query="UPDATE users.personale_volontario SET comune_residenza='".$_POST["comune"]."'";
+$query="UPDATE users.utenti_esterni SET comune_residenza='".$_POST["comune"]."'";
 $query= $query. " where cf=$cf;";
 
 echo $query;

@@ -113,12 +113,12 @@ require('./check_evento.php');
 			   ?>
 
 
-                <select disabled="" class="form-control"  name="evento" required>
+                <select readonly="" class="form-control"  name="evento" required>
                  
                     <?php 
                      for ($i=0;$i<$len;$i++){
                       
-                        echo '<option name="evento" value="'.$tipo_eventi_attivi[$i][0].'">'. $tipo_eventi_attivi[0][1].' (id='.$tipo_eventi_attivi[0][0].')</option>';
+                        echo '<option name="evento" value="'.$tipo_eventi_attivi[0][0].'">'. $tipo_eventi_attivi[0][1].' (id='.$tipo_eventi_attivi[0][0].')</option>';
                       }
                     ?>
                   </select>

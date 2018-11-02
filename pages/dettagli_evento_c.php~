@@ -49,14 +49,22 @@ require('./check_evento.php');
 					$len=count($eventi_attivi_c);	               
 	               for ($i=0;$i<$len;$i++){
 	               	echo '<div class="row">';
-	               	echo '<div class="col-lg-4"><h2><i class="fa fa-chevron-circle-down"></i> Evento in corso </h2></div>';
+	               	echo '<div class="col-lg-4"><h2><i class="fa fa-chevron-circle-down"></i> Evento in chiusura <small>(id='.$eventi_attivi_c[$i].')</small> </h2></div>';
 	   					echo '<div class="col-lg-6"><div style="text-align: center;"><h2 id=timer'.$i.' > </h2></div></div>';
+	   					$check_segnalazioni=0;
+	   					$query="SELECT id FROM segnalazioni.v_segnalazioni where id_evento=".$eventi_attivi_c[$i]." and (in_lavorazione='t' OR in_lavorazione is null) ";
+	   					$result = pg_query($conn, $query);
+							while($r = pg_fetch_assoc($result)) {
+								$check_segnalazioni=1;
+							}
+	   					
+	   					
 	   					?>
 	   					<?php //echo $start[$i]; ?>
 							<script>
 							// Set the date we're counting down to
 							//var countDownDate = new Date("Jan 5, 2019 15:37:25").getTime();
-							var countDownDate<?php echo $i; ?> = new Date("<?php echo $start[$i]; ?>").getTime();
+							var countDownDate<?php echo $i; ?> = new Date("<?php echo $start_c[$i]; ?>").getTime();
 							
 							// Update the count down every 1 second
 							var x<?php echo $i; ?> = setInterval(function() {
@@ -92,10 +100,15 @@ require('./check_evento.php');
 	   					
 	   					
 	   					echo '<div class="col-lg-2"><br>';
-	   					echo '<button type="button" class="btn btn-danger btn-lg"  data-toggle="modal" data-target="#chiudi'.$eventi_attivi_c[$i].'"><i class="fas fa-times"></i> Chiudi evento</button>';
+	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi'.$eventi_attivi_c[$i].'"';
+	   					if($check_segnalazioni) {
+	   						echo 'disabled=""';
+	   					}
+	   					echo '><i class="fas fa-times"></i> Chiudi evento</button>';	   					
 	   					echo '</div></div>';
 	   					echo '<div class="row">';
-	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_attivi_c[$i][1].'</h3>';
+	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_c[$i][1].'</h3>';
+
 	   					echo '</div><div class="col-lg-6"><h3>Municipi interessati: ';
 	   					$len2=count($municipi_c);
 	   					//echo $len2;	               
@@ -109,6 +122,10 @@ require('./check_evento.php');
 	               	}
 	   					//echo '</h3>Qua ci vuole la mappa dei municipi interessati';
 	   					echo '</div></div><hr>';
+	   					if($check_segnalazioni) {
+	   						echo '<div align="center"><a class="btn btn-info" href="./elenco_segnalazione.php">Vai alle segnalazioni non ancora chiuse</a></div><hr>';
+	   					}
+	   					
 	   					?>
 	   					
 	   					
@@ -245,7 +262,7 @@ require('./check_evento.php');
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Chiudi evento</h4>
+        <h4 class="modal-title">Chiudi evento definitivamente</h4>
       </div>
       <div class="modal-body">
       

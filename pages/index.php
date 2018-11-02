@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Visualizzazione di massima"
+$subtitle="Gestione emergenze - Protezione Civile Comune di Genova"
 
 ?>
 <!DOCTYPE html>
@@ -36,6 +36,9 @@ require('./check_evento.php');
         ?>  
         <?php 
             require('./navbar_left.php')
+            
+            
+            
         ?> 
             
 
@@ -47,6 +50,7 @@ require('./check_evento.php');
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+            
             <h4>Questo è solo un esempio della dashboard finale, <b>sviluppato solo parzialmente</b> 
             <br> Molti elementi o pannelli sono solo in versione demo. 
             <br> Dalla sidebar a sinistra è possibile accedere alle pagine sino ad ora sviluppate.
@@ -138,17 +142,22 @@ require('./check_evento.php');
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
+                                    <i class="fa fa-map-marked-alt  fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
-                                    <div>New Comments (DEMO)!</div>
+                                    <div class="huge">
+                                    <?php
+                                   		echo $segn_tot;
+                                    ?>
+                                    
+                                    </div>
+                                    <div>Segnalazioni pervenute</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="elenco_segnalazioni.php">
                             <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
+                                <span class="pull-left">Elenco segnalazioni</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
@@ -163,17 +172,22 @@ require('./check_evento.php');
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                    <i class="fa fa-cogs fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
-                                    <div>New Orders (DEMO)!</div>
+                                    <div class="huge">
+                                    <?php
+													echo $segn_lav;
+                                    ?>
+                                    
+                                    </div>
+                                    <div>Segnalazioni in lavorazione</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="mappa_segnalazioni.php">
                             <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
+                                <span class="pull-left">Vedi su mappa</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                 <div class="clearfix"></div>
                             </div>
@@ -198,7 +212,7 @@ require('./check_evento.php');
 
                 <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Mappa demo (qua saranno visibili in anteprima tutte le segnalazioni)
+                            <i class="fa fa-map-marked-alt fa-fw"></i> Mappa demo
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -206,14 +220,10 @@ require('./check_evento.php');
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="#">Another action</a>
-                                        </li>
-                                        <li><a href="#">Something else here</a>
+                                        <li><a href="elenco_segnalazioni.php">Elenco</a>
                                         </li>
                                         <li class="divider"></li>
-                                        <li><a href="mappa_segnalazioni.php">Vai alla mappa delle senalazioni</a>
+                                        <li><a href="mappa_segnalazioni.php">Vai alla mappa delle segnalazioni</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -227,9 +237,15 @@ require('./check_evento.php');
                 
                 
                 
-                    <div class="panel panel-default">
+                  
+                  
+                  
+                    
+                    
+                    
+                    <div id="segn_limbo_table" class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example (DEMO)
+                            <i class="fa fa-exclamation fa-fw" style="color:red"></i> Sintesi segnalazioni ancora da elaborare
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -237,44 +253,8 @@ require('./check_evento.php');
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="#">Another action</a>
-                                        </li>
-                                        <li><a href="#">Something else here</a>
-                                        </li>
                                         <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div id="morris-area-chart"></div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example (DEMO)
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="#">Another action</a>
-                                        </li>
-                                        <li><a href="#">Something else here</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
+                                        <li><a href="elenco_segnalazioni.php">Vai all'elenco completo delle segnalazioni</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -283,82 +263,83 @@ require('./check_evento.php');
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-12">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th>Amount</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>3326</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:29 PM</td>
-                                                    <td>$321.33</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3325</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:20 PM</td>
-                                                    <td>$234.34</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3324</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:03 PM</td>
-                                                    <td>$724.17</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3323</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:00 PM</td>
-                                                    <td>$23.71</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3322</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:49 PM</td>
-                                                    <td>$8345.23</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3321</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:23 PM</td>
-                                                    <td>$245.12</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3320</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:15 PM</td>
-                                                    <td>$5663.54</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3319</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:13 PM</td>
-                                                    <td>$943.45</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    
+
+<table  id="segnalazioni" class="table-hover" style="word-break:break-all; word-wrap:break-word;" data-toggle="table" data-url="./tables/griglia_segnalazioni_limbo.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+			
+
+        
+        
+<thead>
+
+ 	<tr>
+            <!--th data-field="state" data-checkbox="true"></th-->
+            <!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th--> 
+            <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
+            <th style="word-break:break-all; word-wrap:break-word;" data-field="criticita" data-sortable="true"   data-visible="true">Tipo criticità</th>
+            <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
+            <th style="word-break:break-all; word-wrap:break-word;" data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo evento</th>
+            <!--th style="word-break:break-all; word-wrap:break-word;" data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th-->
+            <th style="word-break:break-all; word-wrap:break-word;" data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
+            <!--th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>            
+
+    </tr>
+</thead>
+<script>
+
+
+ function nameFormatter(value) {
+        if (value=='t'){
+        		return '<i class="fas fa-play" style="color:#5cb85c"></i>';
+        } else if (value=='f') {
+        	   return '<i class="fas fa-stop" style="color:#5cb85c"></i>';
+        } else {
+        	   return '<i class="fas fa-pause" style="color:#ff0000"></i>';;
+        }
+
+    }
+    
+ function nameFormatterEdit(value) {
+        
+		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+ 
+    }
+
+  function nameFormatterRischio(value) {
+        //return '<i class="fas fa-'+ value +'"></i>' ;
+        
+        if (value=='t'){
+        		return '<i class="fas fa-exclamation-triangle" style="color:#ff0000"></i>';
+        } else if (value=='f') {
+        	   return '<i class="fas fa-check" style="color:#5cb85c"></i>';
+        }
+        else {
+        		return '<i class="fas fa-question" style="color:#505050"></i>';
+        }
+    }
+
+
+</script>
+
+</table>
+                                    
+                                    
                                     </div>
                                     <!-- /.table-responsive -->
                                 </div>
-                                <!-- /.col-lg-4 (nested) -->
-                                <div class="col-lg-8">
-                                    <div id="morris-bar-chart"></div>
-                                </div>
-                                <!-- /.col-lg-8 (nested) -->
                             </div>
                             <!-- /.row -->
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
+                    
+                    
+                    
+                    
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline (DEMO)
@@ -491,16 +472,20 @@ require('./check_evento.php');
                 
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Notifications Panel (DEMO)
+                            <i class="fa fa-bell fa-fw"></i> Pannello notifiche
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                    </span>
-                                </a>
+                               
+                                		<?php if($segn_limbo>0){?>
+                                			 <a href="#segn_limbo_table" class="list-group-item">
+	                                    <i class="fa fa-exclamation fa-fw" style="color:red"></i> Nuove segnalazioni da elaborare!
+	                                    <span class="pull-right text-muted small"><em><?php echo $segn_limbo; ?></em>
+	                                    </span>
+	                                    </a>
+                                    <?php }?>
+                                
                                 <a href="#" class="list-group-item">
                                     <i class="fa fa-twitter fa-fw"></i> 3 New Followers
                                     <span class="pull-right text-muted small"><em>12 minutes ago</em>
