@@ -72,7 +72,7 @@ require('./check_evento.php');
 	            while($r = pg_fetch_assoc($result)) {
 	            	echo '<div class="col-6 col-sm-6">';
 	            	echo '<h4><i class="fa fa-address-book"></i> Anagrafica dipendente</h4>';
-	            	echo "<b>Matricola</b>:".$r['cognome']. "<br>";
+	            	echo "<b>Matricola</b>:".$r['matricola']. "<br>";
                	echo "<b>Cognome</b>:".$r['cognome']. "<br>";
                	echo "<b>Nome</b>:".$r['nome']. "<br>";
                	echo '</div>';

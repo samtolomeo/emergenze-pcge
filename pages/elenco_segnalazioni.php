@@ -64,12 +64,17 @@ require('./tables/filtri_segnalazioni.php');
             <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             <i class="fas fa-filter"></i>  Filtra per criticità
           </a>
-           <?php if ($filtro_evento_attivo < 1){?>
-      	
+           <?php //if ($filtro_evento_attivo < 1){
+			   if ($getfiltri=='' and $filtro_evento_attivo==''){
+		    ?>
           <a class="btn btn-primary" href="<?php echo $uri;?>?a=1">
             <i class="fas fa-play"></i> Vedi solo eventi attivi
           </a>
-          <?php } ?>
+          <?php } else if  ($filtro_evento_attivo==''){?>
+			 <a class="btn btn-primary" href="<?php echo $uri;?>&a=1">
+            <i class="fas fa-play"></i> Vedi solo eventi attivi
+          </a> 
+		  <?php }?>
         </p>
         <div class="collapse" id="collapseExample">
           <div class="card card-body">
@@ -105,7 +110,7 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         <hr>
 			<?php
-			if (strpos($getfiltri, '1') !== false) {
+			if (strpos($getfiltri, '1') !== false or $filtro_evento_attivo!='') {
 			    echo '<i class="fas fa-filter"></i> I dati visualizzati sono filtrati per criticità, per modificare il filtro usa i dati qua sopra';
 			?>
 			<br><br>
@@ -131,9 +136,9 @@ require('./tables/filtri_segnalazioni.php');
         
       	<?php if ($filtro_evento_attivo == 1){
       	?>
-        <table  id="segnalazioni" class="table-hover" style="word-break:break-all; word-wrap:break-word;" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_attivi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_attivi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
       	<?php } else { ?>
-        <table  id="segnalazioni" class="table-hover" style="word-break:break-all; word-wrap:break-word;" data-toggle="table" data-url="./tables/griglia_segnalazioni.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 			<?php } ?>
 
         
@@ -144,13 +149,16 @@ require('./tables/filtri_segnalazioni.php');
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th> 
             <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="criticita" data-sortable="true"   data-visible="true">Tipo criticità</th>
+            <th data-field="criticita" data-sortable="true"   data-visible="true">Tipo<br>criticità</th>
             <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo evento</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
+            <th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th>
+            <th data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
+            <th data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
+            <th data-field="nome_munic" data-sortable="true"  data-visible="true">Municipio</th>
+            <th data-field="localizzazione" data-sortable="true"  data-visible="true">Civico</th>
             <th data-field="note" data-sortable="false" data-visible="true" >Note</th>
-            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>            
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>                  
 
     </tr>
 </thead>
@@ -158,17 +166,7 @@ require('./tables/filtri_segnalazioni.php');
 </table>
 
 
-<script>
-    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
-    var $table = $('#segnalazioni');
-    $(function () {
-        $('#toolbar').find('select').change(function () {
-            $table.bootstrapTable('destroy').bootstrapTable({
-                exportDataType: $(this).val()
-            });
-        });
-    })
-</script>
+
 
 <br><br>
 
@@ -206,6 +204,34 @@ require('./tables/filtri_segnalazioni.php');
     }
 
 
+function nameFormatterMappa1(value, row) {
+	//var test_id= row.id;
+	return' <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myMap'+value+'"><i class="fas fa-map-marked-alt"></i></button> \
+    <div class="modal fade" id="myMap'+value+'" role="dialog"> \
+    <div class="modal-dialog"> \
+      <div class="modal-content">\
+        <div class="modal-header">\
+          <button type="button" class="close" data-dismiss="modal">&times;</button>\
+          <h4 class="modal-title">Anteprima segnalazione '+value+'</h4>\
+        </div>\
+        <div class="modal-body">\
+        <iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#17/'+row.lat +'/'+row.lon +'"></iframe>\
+        </div>\
+        <!--div class="modal-footer">\
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
+        </div-->\
+      </div>\
+    </div>\
+  </div>\
+</div>';
+}
+	
+	
+
+
+
+
+
 </script>
 
 
@@ -232,6 +258,16 @@ require('./req_bottom.php');
     
 </body>
 
-
+<script>
+    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
+    $(function () {
+    	var $table = $('#segnalazioni');
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('destroy').bootstrapTable({
+                exportDataType: $(this).val()
+            });
+        });
+    });
+</script>
 
 </html>

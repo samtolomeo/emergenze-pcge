@@ -3,6 +3,8 @@
 session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+require('../check_evento.php');
+
 
 //$id=$_GET["id"];
 $id=str_replace("'", "", $id);
@@ -85,10 +87,7 @@ echo $id_segnalazione;
 echo "<br>";
 
 
-//************************************
-// DEMO da rimuovere quando ci sarà le gestione utenti
-$operatore="MRZRRT84B01D969U";
-//*************************************
+
 
 $id_oggetto=''; // inizializzazione
 
@@ -226,7 +225,7 @@ if ($id_oggetto!=''){
 	echo $query_oggetto;
 	echo "<br>";	
 }
-
+//exit;
 $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Creazione segnalazione ".$id_segnalazione."');";
 $result = pg_query($conn, $query_log);
 

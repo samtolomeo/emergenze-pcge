@@ -5,8 +5,8 @@ session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 
-$matr=str_replace("'", "", $_POST["matr"]);
-$cf=str_replace("'", "", $_POST["cf"]);
+$matr=str_replace("'", "", $_GET["matr"]);
+$cf=str_replace("'", "", $_GET["cf"]);
 $matr_cf=$matr;
 $matr_cf=$matr_cf."".$cf;
 echo "matricola_cf:".$matr_cf."<br>";
@@ -29,7 +29,7 @@ $result = pg_query($conn, $query_log);
 echo "<br>";
 echo $query_log;
 
-exit;
+//exit;
 if ($matr==''){
 	header("location: ../lista_volontari.php");
 } else {

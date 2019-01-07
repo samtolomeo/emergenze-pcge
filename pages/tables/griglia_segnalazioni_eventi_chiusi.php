@@ -2,7 +2,7 @@
 session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
-require('../check_evento.php');
+//require('../check_evento.php');
 
 
 // Filtro per tipologia di criticità
@@ -18,12 +18,13 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id,  data_ora, id_segnalante, descrizione, id_criticita, criticita, 
+	$query="SELECT id, data_ora, id_segnalante, descrizione, id_criticita, criticita, 
        rischio, id_evento, tipo_evento, id_civico, id_municipio, id_operatore, 
-       note From segnalazioni.v_segnalazioni_eventi_chiusi ".$filter." ;";
+       note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat 
+       FROM segnalazioni.v_segnalazioni_eventi_chiusi_lista ".$filter." ;";
    //echo $query;
 	$result = pg_query($conn, $query);
-	#echo $query;
+	//echo $query;
 	#exit;
 	$rows = array();
 	while($r = pg_fetch_assoc($result)) {

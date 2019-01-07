@@ -22,8 +22,15 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
+$page=basename($_SERVER['PHP_SELF']);
+
+if ($profilo_sistema > 6){
+	header("location: ./divieto_accesso.php");
+}
 ?>
-    
+
+   <link rel="stylesheet" href="../vendor//leaflet-search/src/leaflet-search.css">
+   
 </head>
 
 <body>
@@ -181,7 +188,7 @@ require('./check_evento.php');
             <div class="row">       
 
 				<div class="form-group col-md-6">
-					<label for="nome"> Ci sono persone a rischio?</label> <font color="red">*</font><br>
+					<label for="nome"> Ci sono persone in pericolo?</label> <font color="red">*</font><br>
 					<label class="radio-inline"><input type="radio" name="rischio" value="" checked>Non specificato</label>
 					<label class="radio-inline"><input type="radio" name="rischio" value="t">Sì</label>
 					<label class="radio-inline"><input type="radio" name="rischio"value="f">Nessuna persona a rischio</label>
@@ -254,7 +261,7 @@ require('./check_evento.php');
              </div>
 
 				<div class="form-group">
-					<label for="civrischio"> Il civico è a rischio?</label><br>
+					<label for="civrischio"> Il civico è in pericolo?</label><br>
 					<label class="radio-inline"><input type="radio" name="civrischio" value="" checked>Non specificato</label>
 					<label class="radio-inline"><input type="radio" name="civrischio" value="t">Sì</label>
 					<label class="radio-inline"><input type="radio" name="civrischio"value="f">No</label>
@@ -281,7 +288,7 @@ require('./check_evento.php');
 				
 				
 				<div class="form-group">
-					<label for="oggrischio"> C'è uno specifico oggetto a rischio?</label> <br>
+					<label for="oggrischio"> C'è uno specifico oggetto in pericolo?</label> <br>
 					<label class="radio-inline"><input type="radio" name="oggrischio" value="t">Sì</label>
 					<label class="radio-inline"><input type="radio" name="oggrischio" value="f">No</label>
 				</div>
@@ -291,7 +298,7 @@ require('./check_evento.php');
                             <select class="form-control" name="tipo_oggetto" id="tipo_oggetto" required="">
                             <option name="tipo_oggetto" value="" > Specifica oggetto </option>
             <?php            
-            $query2="SELECT * FROM segnalazioni.tipo_oggetti_rischio WHERE valido='t' ORDER BY descrizione;";
+            $query2="SELECT * FROM segnalazioni.tipo_oggetti_rischio WHERE valido='t' and elenco_elementi_segnalazione='t' ORDER BY descrizione;";
             echo $query2;
 	         $result2 = pg_query($conn, $query2);
             //echo $query1;    
@@ -306,8 +313,13 @@ require('./check_evento.php');
 				</div> <!-- Chiudo col-md-6-->
 				
 				</div> 
-            <div class="row">
+            <div class="row">    
+
+
 								<div id="mapid" style="width: 100%; height: 600px;"></div>
+								
+								       
+				
             </div> 
             <div class="row">
 
@@ -325,7 +337,7 @@ require('./check_evento.php');
 
 
 
-            <button  type="submit" class="btn btn-primary">Aggiungi</button> (Form DEMO- discutere di gestione DB)
+            <button  type="submit" class="btn btn-primary">Invia segnalazione</button>
             </div>
             <!-- /.row -->
             
@@ -351,184 +363,16 @@ require('./footer.php');
 
 require('./req_bottom.php');
 
+require('./mappa_georef.php');
 
 ?>
 
-
-<script>
-
-
-//var map = L.map('map', {scrollWheelZoom:false}).setView([44.41054697, 8.9342933893], 14);
-var mymap = L.map('mapid', {scrollWheelZoom:false}).setView([44.411156, 8.932661], 13);
-
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox.streets'
-	}).addTo(mymap);
-
-
-
-
-
-
-	var popup = L.popup();
-
-	function onMapClick(e) {
-		    document.getElementById('lat').value = e.latlng.lat.toString();
-			 document.getElementById('lon').value = e.latlng.lng.toString();
 		
-		/*popup
-			.setLatLng(e.latlng)
-			.setContent("Le coordinate di questo punto sulla mappa sono le seguenti lat:" + e.latlng.lat.toString() +" e lon:"+ e.latlng.lng.toString() +" e sono state automaticamente inserite nel form")
-			.openOn(mymap);*/
-			
-			popup
-			.setLatLng(e.latlng)
-			.setContent("Le coordinate di questo punto sulla mappa sono state automaticamente inserite nel form sottostante")
-			.openOn(mymap);
-	}
-
-$('input[type=radio][name=civrischio]').attr('disabled', true);
-$('input[type=radio][name=oggrischio]').attr('disabled', true);
-$('input[type=radio][name=oggrischio][value="f"]').attr('checked', true);
-$('#tipo_oggetto').attr('disabled',true);
-
-
-(function ($) {
-    'use strict';
-   
-    $('[type="radio"][name="oggrischio"][value="t"]').on('change', function () {
-        if ($(this).is(':checked')) {
-            $('#tipo_oggetto').removeAttr('disabled');
-            return true;
-        }
-        $('#catName').attr('disabled', 'disabled');
-    });
-    
-    $('[type="radio"][name="oggrischio"][value="f"]').on('change', function () {
-        if ($(this).is(':checked')) {
-        	   $('#tipo_oggetto').attr('disabled',true);
-            $('#tipo_oggetto').val('');
-            return true;
-        }
-        $('#catName').attr('disabled', 'disabled');
-    });
-    
-    
-    
-    $('select[name="tipo_segn"]').on('change', function () {
-
-    	var others = $(this).val();
-		//alert(others)
-		if (others=="999"){
-    		$('#altro').removeAttr('disabled');
-    	} else {
-    		$('#altro').attr('disabled', true);
-    		$('#altro').val('');
-    	}
-        
-    });
-    
-    
-    
-            
-    $('[type="radio"][id="civico"]').on('change', function () {
-        if ($(this).is(':checked')) {
-            $('#via-list').removeAttr('disabled');
-            $('#via-list').selectpicker('refresh');
-            $('#civico-list').removeAttr('disabled');
-            $('input[type=radio][name=oggrischio][value="t"]').attr('checked', false);
-				$('input[type=radio][name=oggrischio][value="f"]').attr('checked', true);
-				$('input[type=radio][name=oggrischio]').attr('disabled', true);
-            $('input[type=radio][name=civrischio]').attr('disabled', false); 
-            $('#lat').attr('disabled', true);
-            $('#lon').attr('disabled', true);
-            $('#lat').val('');
-            $('#lon').val('');
-            $('#tipo_oggetto').attr('disabled',true);
-            $('#tipo_oggetto').val('');
-            $("#mapid").off("onclick");
-            	mymap.off('click', onMapClick);
-            return true;
-        }
-        $('#catName').attr('disabled', 'disabled');
-    });
-      $('[type="radio"][id="coord"]').on('change', function () {
-        if ($(this).is(':checked')) {
-            $('#lat').removeAttr('disabled');
-            $('#lon').removeAttr('disabled');
-            $('#lat').removeAttr('readonly');
-            $('#lon').removeAttr('readonly');
-            $('#via-list').val('');
-            $('#civico-list').val('');
-            $('#lat').val('');
-            $('#lon').val('');
-            $('#via-list').attr('disabled', true);
-            $('#via-list').selectpicker('refresh');
-            $('#civico-list').attr('disabled', true);
-            mymap.off('click', onMapClick);
-            return true;
-        }
-        $('#catName').attr('disabled', 'disabled');
-    });  
-    
-    $('[type="radio"][id="mappa"]').on('change', function () {
-        if ($(this).is(':checked')) {
-            $('#lat').attr('readonly', true);
-            $('#lon').attr('readonly', true);
-            $('#lat').removeAttr('disabled');
-            $('#lon').removeAttr('disabled');
-            $("input[type=radio][name=oggrischio").attr('disabled', false);
-            $("input[type=radio][name=civrischio").attr('disabled', true);            
-            $('#lat').val('');
-            $('#lon').val('');
-            $('#via-list').val('');
-            $('#civico-list').val('');
-            $('#via-list').attr('disabled', true);
-            $('#via-list').selectpicker('refresh');
-            $('#civico-list').attr('disabled', true);
-            var offset = -200; //Offset of 100px
-            	mymap.on('click', onMapClick);
-
-    $('html, body').animate({
-        scrollTop: $("#mapid").offset().top + offset
-    }, 2000);
-            
-            return true;
-        }
-        $('#catName').attr('disabled', 'disabled');
-    });  
-        /*$('[type="radio"][id="mappa"]').on('change', function () {
-        if ($(this).is(':checked')) {
-        	
-        	
-        	$('#my-modal').modal({
-        show: 'false'
-    }
-            
-        }
-    });*/
-    
-    
-    
-}(jQuery));
-
-    
-
-</script> 
 
 
 
 
-<script>
 
-
-
-
-</script>
     
 
 </body>

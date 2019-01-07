@@ -69,7 +69,8 @@ require('./check_evento.php');
             <th data-field="tipo" data-sortable="false"  data-visible="true">Tipo</th>
             <th data-field="ente" data-sortable="false"  data-visible="true">Ente competente</th>
             <th style="word-break:break-all; word-wrap:break-word; " data-field="data_ora_emissione" data-sortable="true"  data-visible="true">Data e ora<br>emissione</th>
-            <th style="word-break:break-all; word-wrap:break-word; " data-field="nomepdf" data-sortable="true"  data-visible="true">Nome</th>
+            <th style="word-break:break-all; word-wrap:break-word; " data-field="data_download" data-sortable="true"  data-visible="true">Data e ora<br>download</th>
+			<th style="word-break:break-all; word-wrap:break-word; " data-field="nomepdf" data-sortable="true"  data-visible="true">Nome</th>
             <th data-field="nomefile" data-sortable="false" data-formatter="nameFormatter" data-visible="true" > Altro </th>            
 
     </tr>
@@ -96,7 +97,7 @@ require('./check_evento.php');
 
 
  function nameFormatter(value) {
-        return '<a href="../../bollettini/'+ value + '" class="btn btn-warning" title="Download PdfM" role="button"><i class="fa fa-file-pdf" aria-hidden="true"></i> </a>' ;
+        return '<a href="../../bollettini/'+ value + '" target="_blank" class="btn btn-warning" title="Download PdfM" role="button"><i class="fa fa-file-pdf" aria-hidden="true"></i> </a>' ;
     }
 
 

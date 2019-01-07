@@ -57,7 +57,7 @@ $result = pg_query($conn, $query_log);
 echo "<br>";
 echo $query_log;
 
-exit;
+//exit;
 header("location: ../dettagli_segnalazione.php?id=".$id);
 
 

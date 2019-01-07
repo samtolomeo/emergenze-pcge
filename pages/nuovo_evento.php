@@ -20,7 +20,11 @@ require('./req.php');
 
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
+require('./check_evento.php');
 
+if ($profilo_sistema > 2){
+	header("location: ./divieto_accesso.php");
+}
 ?>
     
 </head>

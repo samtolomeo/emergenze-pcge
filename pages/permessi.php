@@ -136,7 +136,7 @@ require('./check_evento.php');
             <label for="profilo"> Scegli il profilo </label> <font color="red">*</font><br>
             <?php
             	
-            	$query="SELECT * From users.profili_utilizzatore order by id;";
+            	$query="SELECT * From users.v_profili_utilizzatore order by id;";
                $result = pg_query($conn, $query);
 	            while($r = pg_fetch_assoc($result)) {
 	            	if($profilo==$r['id']){

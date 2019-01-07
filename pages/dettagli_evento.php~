@@ -89,7 +89,26 @@ require('./check_evento.php');
 							}, 1000);
 							</script>	   					
 	   					<?php
-	   					
+	   					$query_a="SELECT * FROM eventi.v_allerte WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_allerta > now();";
+	   					//echo $query;
+							//exit;
+							$check_allerte=0;
+							$conto=0;
+							$result = pg_query($conn, $query_a);
+							while($r = pg_fetch_assoc($result)) {
+								$check_allerte=1;
+							}
+							
+							$query_f="SELECT * FROM eventi.v_foc WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_foc > now();";
+	   					//echo $query;
+							//exit;
+							$check_foc=0;
+							$result = pg_query($conn, $query_f);
+							while($r = pg_fetch_assoc($result)) {
+								$check_foc=1;
+							}
+							
+							
 	   					
 	   					echo '<div class="col-lg-2"><br>';
 	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
@@ -127,17 +146,9 @@ require('./check_evento.php');
 							</div>
 							<hr>
 							<?php
-	   					$query="SELECT * FROM eventi.v_allerte WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_allerta > now();";
-	   					//echo $query;
-							//exit;
-							$check_allerte=0;
-							$conto=0;
-							$result = pg_query($conn, $query);
-							while($r = pg_fetch_assoc($result)) {
-								$check_allerte=1;
-							}
+	   					
 							if($check_allerte==1) {echo "<h3> Allerte in corso o previste:</h3><ul>";}
-							$result = pg_query($conn, $query);
+							$result = pg_query($conn, $query_a);
 							while($r = pg_fetch_assoc($result)) {
 								$conto=$conto+1;
 								$timestamp = strtotime($r["data_ora_inizio_allerta"]);
@@ -190,16 +201,9 @@ require('./check_evento.php');
 							</div>
 	   					<hr>
 	   					<?php
-	   					$query="SELECT * FROM eventi.v_foc WHERE id_evento=".$eventi_attivi[$i]." and data_ora_fine_foc > now();";
-	   					//echo $query;
-							//exit;
-							$check_foc=0;
-							$result = pg_query($conn, $query);
-							while($r = pg_fetch_assoc($result)) {
-								$check_foc=1;
-							}
+	   					
 							if($check_foc==1) {echo "<h3> Fasi Operative Comunali in corso o previste:</h3><ul>";}
-							$result = pg_query($conn, $query);
+							$result = pg_query($conn, $query_f);
 							while($r = pg_fetch_assoc($result)) {
 							
 								$timestamp = strtotime($r["data_ora_inizio_foc"]);
@@ -405,6 +409,11 @@ require('./check_evento.php');
       </div>
       <div class="modal-body">
       
+	  
+		Questa <b>funzionalità evolutiva</b> è stata individuata sin dalla prima fase di sviluppo SW. Attualmente è solo disponibile in modalita' demo. <br> 
+		Terminate le fasi di sviluppo del Nuovo Sistema di Gestione Emergenze ci si occuperà del parsing completo del bollettino 
+		e della corretta impaginazione. - Gter srl
+		<br><br><hr>
  			<?php
 
 							$myfile = fopen("/opt/rh/httpd24/root/var/www/html/bollettini/allerte.txt", "r") or die("Unable to open file!");
@@ -423,7 +432,7 @@ require('./check_evento.php');
 							
 							
 							?>
-        Da completare processo lettura e impaginazione... 
+        <br><br>Da completare processo lettura e impaginazione... 
 
       </div>
       <div class="modal-footer">
@@ -457,7 +466,7 @@ require('./check_evento.php');
                             <select class="form-control" name="bollettino" id="bollettino" required="">
                             <!--option name="tipo" value="" > ... </option-->
             <?php            
-            $query2="SELECT * From \"eventi\".\"t_bollettini\" ORDER BY data_ora_emissione DESC ;";
+            $query2="SELECT * From eventi.v_bollettini WHERE tipo ilike 'Bollettino allerte' ;";
 	        $result2 = pg_query($conn, $query2);
             //echo $query1;    
             while($r2 = pg_fetch_assoc($result2)) { 
@@ -576,7 +585,7 @@ require('./check_evento.php');
                   <select class="form-control"  name="mm_end" required>
                   <option name="mm_end" value="00" > 00 </option>
                     <?php 
-                      $start_date = 0;
+                      $start_date = 59;
                       $end_date   = 59;
                       $incremento = 15;
                       for( $j=$start_date; $j<=$end_date; $j+=$incremento ) {
@@ -736,7 +745,7 @@ require('./check_evento.php');
                   <select class="form-control"  name="mm_end" required>
                   <option name="mm_end" value="00" > 00 </option>
                     <?php 
-                      $start_date = 0;
+                      $start_date = 59;
                       $end_date   = 59;
                       $incremento = 15;
                       for( $j=$start_date; $j<=$end_date; $j+=$incremento ) {

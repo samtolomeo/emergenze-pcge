@@ -21,8 +21,22 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
+
+    
+    //Controllo se autorizzato a modificare permessi
+$check_operatore=0;
+if ($profilo_sistema == 1){
+	$check_operatore=1;
+}
+
+if ($profilo_sistema > 6){
+	header("location: ./divieto_accesso.php");
+}
+
 ?>
     
+
+}
 </head>
 
 <body>
@@ -46,7 +60,13 @@ require('./check_evento.php');
             </div>
             <!-- /.row -->
             
-            <br><br>
+            <br>
+            <?php
+				if ($check_operatore == 0){
+					echo '<h4><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a modificare i permessi utenti</h4><hr> ';
+				}
+				?>
+            <br>
             <div class="row">
 
 
@@ -74,7 +94,13 @@ require('./check_evento.php');
             <th data-field="id_profilo" data-sortable="true"  data-visible="true" >Tipo<br>Profilo</th>
             <th data-field="stato_profilo" data-sortable="true" data-formatter="nameFormatter0" data-visible="true" >Stato<br>profilo</th>
             <!--th data-field="cod" data-sortable="false" data-formatter="nameFormatter0" data-visible="true" >Fragilità</th-->
+            <?php
+				if ($check_operatore == 1){
+ù				?>
             <th data-field="matricola" data-sortable="false" data-formatter="nameFormatter1" data-visible="true" >Edit<br>permessi</th>            
+				<?php 
+				}
+				?>
 
     </tr>
 </thead>

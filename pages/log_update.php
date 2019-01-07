@@ -19,7 +19,7 @@ if (isset($_POST['LightON'])){
 
 $subtitle="Log aggiornamenti";
 $page = $_SERVER['PHP_SELF'];
-$sec = "10";
+$sec = "60";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,14 +77,20 @@ require('./check_evento.php');
 							
 							
 							
-							
+							if ($profilo_sistema == 1){
 							?>
                     
                     <hr> 
                     <form method="post">
 							<button class="btn btn-primary" name="LightON"> <i class="fas fa-sync-alt"></i> Aggiornamento manuale</button> 
 							</form>
-							<?php } ?>
+							<?php 
+							} else {
+								echo '<hr><h4><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a lanciare l\'update manuale</h4>';
+							
+							}
+							
+							} ?>
 							<hr>
                     <small><i>Pagina aggiornata automaticamente ogni <?php echo $sec;?> secondi</i></small>
                     

@@ -1,12 +1,15 @@
 <?php
 
+
 session_start();
+
+header('Content-Type: text/html; charset=utf-8');
 
 //echo $_SESSION['user'];
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
-
+require('../check_evento.php');
 
 
 
@@ -25,14 +28,15 @@ $descrizione= str_replace("'", "''", $_POST["descrizione"]);
 $uo= str_replace("'", "''", $_POST["uo"]);
 
 
-echo "Segnalazione in lavorazione:".$id. "<br>";
-echo "Segnalazione:".$segn. "<br>";
-echo "Descrizione:".$descrizione. "<br>";
-echo "Unita_operativa:".$uo. "<br>";
+//echo "Segnalazione in lavorazione:".$id. "<br>";
+//echo "Segnalazione:".$segn. "<br>";
+//echo "Descrizione:".$descrizione. "<br>";
+//echo "Unita_operativa:".$uo. "<br>";
 
 
 
 //echo "<h2>La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2> <br> ";
+
 
 
 
@@ -46,7 +50,7 @@ while($r_max = pg_fetch_assoc($result_max)) {
 		$id_incarico=1;	
 	}
 }
-echo "Id incarico:".$id_incarico. "<br>";
+//echo "Id incarico:".$id_incarico. "<br>";
 
 
 
@@ -62,7 +66,7 @@ $result_uo = pg_query($conn, $query_uo);
 while($r_uo = pg_fetch_assoc($result_uo)) {
 	$uo_descrizione=$r_uo['descrizione'];
 }
-echo $query_uo."<br>";
+//echo $query_uo."<br>";
 
 //echo "Descrizione uo:".$uo_descrizione. "<br>";
 
@@ -71,7 +75,7 @@ echo $query_uo."<br>";
 $query= "INSERT INTO segnalazioni.t_incarichi( id, descrizione, id_profilo, id_UO";
 
 //values
-$query=$query.") VALUES (".$id_incarico.", '".$descrizione."', '".$_SESSION['user']."', '".$uo."' ";
+$query=$query.") VALUES (".$id_incarico.", '".$descrizione."', '".$profilo_sistema."', '".$uo."' ";
 
 $query=$query.");";
 
@@ -185,11 +189,11 @@ $mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo incarico alla seguente Unità  oerativa 
+$mail->Body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo incarico alla seguente Unità  operativa 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
- con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/" > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
+ con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id='.$id_incarico.'" " > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
- Per modificare queste impostazioni è possibile inviare una mail a xxxx@comune.genova.it ';
+ Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
 
 
 //$mail->Body =  'Corpo del messaggio';
@@ -205,11 +209,11 @@ if (!$mail->send()) {
 	?>
 	<script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script>
 	<?php
-	echo '<br>L\'incarico Ã¨ stato correttamente assegnato, ma si Ã¨ riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 30" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
-	echo '<a href="../dettagli_segnalazione.php?id="'.$segn.'">link</a> per saltare l\'attesa.</h3>' ;
+	echo '<br>L\'incarico è stato correttamente assegnato, ma si è riscontrato un problema nell\'invio della mail.';
+	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+	echo '<a href="../dettagli_segnalazione.php?id='.$segn.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
-    header("refresh:30;url=../dettagli_segnalazione.php?id=".$segn);
+    header("refresh:15;url=../dettagli_segnalazione.php?id=".$segn);
 } else {
     echo "Message sent!";
 	header("location: ../dettagli_segnalazione.php?id=".$segn);

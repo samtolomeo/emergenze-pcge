@@ -226,8 +226,8 @@ if ($id_oggetto!=''){
 	echo $query_oggetto;
 	echo "<br>";	
 }
-
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Creazione segnalazione ".$id_segnalazione."');";
+//exit;
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Creazione segnalazione ".$id_segnalazione."');";
 $result = pg_query($conn, $query_log);
 
 

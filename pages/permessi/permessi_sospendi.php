@@ -29,7 +29,7 @@ $result = pg_query($conn, $query_log);
 echo "<br>";
 echo $query_log;
 
-exit;
+//exit;
 if ($matr==''){
 	header("location: ../lista_volontari.php");
 } else {

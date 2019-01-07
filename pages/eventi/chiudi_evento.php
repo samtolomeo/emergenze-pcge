@@ -25,7 +25,7 @@ echo "<br>";
 echo $query_log;
 
 //exit;
-header("location: ../dettagli_evento.php");
+header("location: ../dettagli_evento_c.php");
 
 
 ?>

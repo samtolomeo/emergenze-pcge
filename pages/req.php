@@ -1,5 +1,18 @@
 <?php 
+
+//$page = $_SERVER['PHP_SELF'];
+//$sec = "60";
+
+
 ?>
+
+<!-- REFRESH automatico pagine -->
+     <!--meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'" content="IE=edge"-->
+
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+
 
 <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -24,6 +37,10 @@
 
     <!-- Custom Fonts -->
     <link href="../vendor/fontawesome-free-5.2.0-web/css/all.css" rel="stylesheet" type="text/css">
+    
+    
+    
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

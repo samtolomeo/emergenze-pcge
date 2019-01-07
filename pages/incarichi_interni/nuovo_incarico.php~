@@ -1,0 +1,140 @@
+<?php
+
+session_start();
+
+//echo $_SESSION['user'];
+
+include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+
+require('./check_evento.php');
+
+
+
+//$id=$_GET["id"];
+$id=str_replace("'", "", $_GET['id']); //segnazione in lavorazione
+
+$segn=str_replace("'", "", $_GET['s']); //segnazione in lavorazione
+
+$descrizione= str_replace("'", "''", $_POST["descrizione"]);
+
+$uo= str_replace("'", "''", $_POST["uo"]);
+
+
+echo "Segnalazione in lavorazione:".$id. "<br>";
+echo "Segnalazione:".$segn. "<br>";
+echo "Descrizione:".$descrizione. "<br>";
+echo "Squadra:".$uo. "<br>";
+
+
+
+//echo "<h2>La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2> <br> ";
+
+
+
+
+$query_max= "SELECT max(id) FROM segnalazioni.t_incarichi_interni;";
+$result_max = pg_query($conn, $query_max);
+while($r_max = pg_fetch_assoc($result_max)) {
+	if ($r_max["max"]>0) {
+		$id_incarico=$r_max["max"]+1;
+	} else {
+		$id_incarico=1;	
+	}
+}
+echo "Id incarico interno:".$id_incarico. "<br>";
+
+
+
+// recupero info su U.O. 
+
+$query_uo= "SELECT * FROM users.v_squadre where id='".$uo."';";
+
+
+$result_uo = pg_query($conn, $query_uo);
+while($r_uo = pg_fetch_assoc($result_uo)) {
+	$uo_descrizione=$r_uo['nome'];
+}
+echo $query_uo."<br>";
+
+//echo "Descrizione uo:".$uo_descrizione. "<br>";
+
+
+$query="UPDATE users.t_squadre SET id_stato=1 WHERE id=".$uo.";";
+echo $query;
+//exit;
+$result=pg_query($conn, $query);
+
+
+
+$query= "INSERT INTO segnalazioni.t_incarichi_interni ( id, descrizione, id_profilo, id_squadra";
+
+//values
+$query=$query.") VALUES (".$id_incarico.", '".$descrizione."', '".$profilo_sistema."', '".$uo."' ";
+
+$query=$query.");";
+
+//echo $query;
+//exit;
+$result=pg_query($conn, $query);
+
+
+
+
+
+echo "<br>";
+$query= "INSERT INTO segnalazioni.join_segnalazioni_incarichi_interni(id_incarico, id_segnalazione_in_lavorazione";
+
+//values
+$query=$query.") VALUES (".$id_incarico.", ".$id." ";
+
+$query=$query.");";
+
+//echo $query;
+//exit;
+$result=pg_query($conn, $query);
+
+
+$query= "INSERT INTO segnalazioni.stato_incarichi_interni(id_incarico, id_stato_incarico";
+
+//values
+$query=$query.") VALUES (".$id_incarico.", 1 ";
+
+$query=$query.");";
+
+//echo $query."<br>";
+//exit;
+$result=pg_query($conn, $query);
+
+
+
+$query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(	id_segnalazione_in_lavorazione, log_aggiornamento";
+
+//values
+$query=$query.") VALUES (".$id.", ' Assegnato nuovo incarico interno alla seguente squadra: ".$uo_descrizione." - <a class=\"btn btn-info\" href=\"dettagli_incarico_interno.php?id=".$id_incarico."\"> Visualizza dettagli </a>'";
+
+$query=$query.");";
+
+//echo $query;
+//exit;
+$result=pg_query($conn, $query);
+
+
+$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato incarico interno ".$id_incarico."');";
+$result = pg_query($conn, $query_log);
+
+
+
+
+//$idfascicolo=str_replace('A','',$idfascicolo);
+//$idfascicolo=str_replace('B','',$idfascicolo);
+echo "<br>";
+//echo $query_log;
+
+
+
+
+//exit;
+//header("location: ../dettagli_segnalazione.php?id=".$segn);
+
+
+?>

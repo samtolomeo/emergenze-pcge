@@ -49,7 +49,7 @@ require('./check_evento.php');
 					$len=count($eventi_attivi);	               
 	               for ($i=0;$i<$len;$i++){
 	               	echo '<div class="row">';
-	               	echo '<div class="col-lg-4"><h2><i class="fa fa-chevron-circle-down"></i> Evento in corso </h2></div>';
+	               	echo '<div class="col-lg-4"><h2><i class="fa fa-chevron-circle-down"></i> Evento in corso  <small>(id='.$eventi_attivi[$i].')</small></h2></div>';
 	   					echo '<div class="col-lg-6"><div style="text-align: center;"><h2 id=timer'.$i.' > </h2></div></div>';
 	   					?>
 	   					<?php //echo $start[$i]; ?>
@@ -111,11 +111,13 @@ require('./check_evento.php');
 							
 	   					
 	   					echo '<div class="col-lg-2"><br>';
+						if ($profilo_sistema <= 2){
 	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
 	   					if($check_allerte==1 OR $check_foc==1){
 	   						echo 'disabled=""';
 	   					}
 	   					echo 'data-target="#chiudi'.$eventi_attivi[$i].'"><i class="fas fa-times"></i> Inizia fase chiusura</button>';
+						}
 	   					echo '</div></div>';
 	   					echo '<div class="row">';
 	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_attivi[$i][1].'</h3>';
@@ -141,9 +143,15 @@ require('./check_evento.php');
 	   					
 	   					<div class="col-lg-6">
 	   					<div style="text-align: center;">
+						<?php
+						if ($profilo_sistema <= 2){
+						?>	
 	   					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#allertaRLG"><i class="fas fa-info"></i> Bollettino regionale (demo)</button>
 	   					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_allerta<?php echo $i; ?>"><i class="fas fa-plus"></i> Aggiungi allerta manualmente</button>
-							</div>
+						<?php
+						}
+						?>
+						</div>
 							<hr>
 							<?php
 	   					
@@ -184,9 +192,14 @@ require('./check_evento.php');
 								//echo $color;
 								echo " <h5><i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b>Allerta ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " ";
 								echo '- <a href="'.$link_bollettino.'"><i class="fas fa-file-pdf"></i> '.$bollettino.'</a> '.$stato. '</h5>';
-								echo "<a class=\"btn btn-info\"  href=\"./prolunga_allerta.php?e=".$r["id_evento"]."&a=".$r["id_tipo_allerta"]."&t='".$r["data_ora_inizio_allerta"]."'\"><i class=\"fas fa-clock\"></i> Prolunga / accorcia allerta</a> - ";
-								echo "<a class=\"btn btn-danger\"  href=\"eventi/remove_allerta.php?e=".$r["id_evento"]."&a=".$r["id_tipo_allerta"]."&t='".$r["data_ora_inizio_allerta"]."'\"><i class=\"fas fa-trash\"></i> Cancella allerta</a></li>";
-							
+								
+								if ($profilo_sistema <= 2){
+								
+									echo "<a class=\"btn btn-info\"  href=\"./prolunga_allerta.php?e=".$r["id_evento"]."&a=".$r["id_tipo_allerta"]."&t='".$r["data_ora_inizio_allerta"]."'\"><i class=\"fas fa-clock\"></i> Prolunga / accorcia allerta</a> - ";
+									echo "<a class=\"btn btn-danger\"  href=\"eventi/remove_allerta.php?e=".$r["id_evento"]."&a=".$r["id_tipo_allerta"]."&t='".$r["data_ora_inizio_allerta"]."'\"><i class=\"fas fa-trash\"></i> Cancella allerta</a></li>";
+								
+								}
+								
 							}
 							if($check_allerte==1) {echo "</ul>";}
 							if($check_allerte==0) { echo "<h3>Nessuna allerta in corso</h3>";}
@@ -196,9 +209,15 @@ require('./check_evento.php');
 
 		
 							</div><div class="col-lg-6">
+							<?php
+							if ($profilo_sistema <= 2){
+							?>
 						   <div style="text-align: center;">
 								<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_foc<?php echo $i; ?>"><i class="fas fa-plus"></i> Aggiungi F.O.C.</button>			   					
 							</div>
+							<?php
+							}
+						?>
 	   					<hr>
 	   					<?php
 	   					
@@ -217,9 +236,10 @@ require('./check_evento.php');
 								$ora_end = date('H:i', $timestamp);								
 								$color=str_replace("'","",$r["rgb_hex"]);
 								echo "<li> <h5><i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b>Fase di ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " ".$stato."</h5>";
-								echo "<a class=\"btn btn-info\"  href=\"./prolunga_foc.php?e=".$r["id_evento"]."&a=".$r["id_tipo_foc"]."&t='".$r["data_ora_inizio_foc"]."'\"><i class=\"fas fa-clock\"></i> Prolunga / accorcia F.O.C.</a> - ";
-								echo "<a class=\"btn btn-danger\"  href=\"eventi/remove_foc.php?e=".$r["id_evento"]."&a=".$r["id_tipo_foc"]."&t='".$r["data_ora_inizio_foc"]."'\"><i class=\"fas fa-trash\"></i> Cancella F.O.C. </a></li>";
-							
+								if ($profilo_sistema <= 2){
+									echo "<a class=\"btn btn-info\"  href=\"./prolunga_foc.php?e=".$r["id_evento"]."&a=".$r["id_tipo_foc"]."&t='".$r["data_ora_inizio_foc"]."'\"><i class=\"fas fa-clock\"></i> Prolunga / accorcia F.O.C.</a> - ";
+									echo "<a class=\"btn btn-danger\"  href=\"eventi/remove_foc.php?e=".$r["id_evento"]."&a=".$r["id_tipo_foc"]."&t='".$r["data_ora_inizio_foc"]."'\"><i class=\"fas fa-trash\"></i> Cancella F.O.C. </a></li>";
+								}
 							}							
 							if($check_allerte==1) {echo "</ul>";}
 							if($check_foc==0) { echo "<h3>Nessuna Fase Operativa in corso</h3>";}
@@ -409,6 +429,11 @@ require('./check_evento.php');
       </div>
       <div class="modal-body">
       
+	  
+		Questa <b>funzionalità evolutiva</b> è stata individuata sin dalla prima fase di sviluppo SW. Attualmente è solo disponibile in modalita' demo. <br> 
+		Terminate le fasi di sviluppo del Nuovo Sistema di Gestione Emergenze ci si occuperà del parsing completo del bollettino 
+		e della corretta impaginazione. - Gter srl
+		<br><br><hr>
  			<?php
 
 							$myfile = fopen("/opt/rh/httpd24/root/var/www/html/bollettini/allerte.txt", "r") or die("Unable to open file!");
@@ -427,7 +452,7 @@ require('./check_evento.php');
 							
 							
 							?>
-        Da completare processo lettura e impaginazione... 
+        <br><br>Da completare processo lettura e impaginazione... 
 
       </div>
       <div class="modal-footer">
@@ -461,7 +486,7 @@ require('./check_evento.php');
                             <select class="form-control" name="bollettino" id="bollettino" required="">
                             <!--option name="tipo" value="" > ... </option-->
             <?php            
-            $query2="SELECT * From \"eventi\".\"t_bollettini\" ORDER BY data_ora_emissione DESC ;";
+            $query2="SELECT * From eventi.v_bollettini WHERE tipo ilike 'Bollettino allerte' ;";
 	        $result2 = pg_query($conn, $query2);
             //echo $query1;    
             while($r2 = pg_fetch_assoc($result2)) { 
@@ -580,7 +605,7 @@ require('./check_evento.php');
                   <select class="form-control"  name="mm_end" required>
                   <option name="mm_end" value="00" > 00 </option>
                     <?php 
-                      $start_date = 0;
+                      $start_date = 59;
                       $end_date   = 59;
                       $incremento = 15;
                       for( $j=$start_date; $j<=$end_date; $j+=$incremento ) {
@@ -740,7 +765,7 @@ require('./check_evento.php');
                   <select class="form-control"  name="mm_end" required>
                   <option name="mm_end" value="00" > 00 </option>
                     <?php 
-                      $start_date = 0;
+                      $start_date = 59;
                       $end_date   = 59;
                       $incremento = 15;
                       for( $j=$start_date; $j<=$end_date; $j+=$incremento ) {

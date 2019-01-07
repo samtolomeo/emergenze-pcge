@@ -113,11 +113,16 @@ def main():
             if zona == 'B':
                 #print zona
                 for allerte in zone.findall('AllertaIdrogeologica'):
-                    log_file_allerte.write('<b>Allerta Idrogeologica Zona B</b>')
+                    log_file_allerte.write('<br><b>Allerta Idrogeologica Zona B</b>')
                     log_file_allerte.write("\n<br>PioggeDiffuse={}".format(allerte.attrib['pioggeDiffuse']))
                     log_file_allerte.write("\n<br>Temporali={}".format(allerte.attrib['temporali']))
                     log_file_allerte.write("\n<br>Tendenza={}".format(allerte.attrib['tendenza']))
                     #bollettino=elem.attrib['nomeFilePDF']
+                for allerte in zone.findall('AllertaNivologica'):
+                    log_file_allerte.write('<br><b>Allerta Nivologica Zona B</b>')
+                    log_file_allerte.write("\n<br>Neve={}".format(allerte.attrib['neve']))
+                    log_file_allerte.write("\n<br>tendenza={}".format(allerte.attrib['tendenza']))
+                    
             
     log_file_allerte.close
         

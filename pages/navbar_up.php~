@@ -16,7 +16,13 @@
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
-                             <li class="dropdown">
+                
+				
+				 <li class="nav-item active">
+					<a class="nav-link" href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+				</li>
+				
+				<li class="dropdown">
 				<?php
 					if($check_evento==0) {
 				?>		
@@ -191,7 +197,7 @@
 				?>
 
 
-                <li class="dropdown">
+                <!--li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fas fa-envelope fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
@@ -204,7 +210,7 @@
                                         <em>To do</em>
                                     </span>
                                 </div>
-                                <div>E' una componente che si potrà utilizzare (da decidere)</div>
+                                <div>Componente da filtrare per tipologia di utente</div>
                             </a>
                         </li>
                         <li class="divider"></li>
@@ -239,10 +245,11 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
+                </li-->
+				
+				
                 <!-- /.dropdown -->
-                <li class="dropdown">
+                <!--li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fas fa-tasks fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
@@ -329,90 +336,221 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-tasks -->
-                </li>
+					</li-->
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fas fa-bell fa-fw"></i> <i class="fas fa-caret-down"></i>
-                    </a>
+				
+				 <!--li class="nav-item active">
+					<a class="nav-link" href="#panel-notifiche"><i class="fas fa-bell fa-fw"></i><span class="sr-only">(current)</span></a>
+				</li-->
+				
+				<style>
+				.fa-stack[data-count]:after{
+				  position:absolute;
+				  right:10%;
+				  top:10%;
+				  content: attr(data-count);
+				  font-size:60%;
+				  padding:.6em;
+				  border-radius:999px;
+				  line-height:.75em;
+				  color: white;
+				  background:rgba(255,0,0,.85);
+				  text-align:center;
+				  min-width:2em;
+				  font-weight:bold;
+				}
+				</style>
+				<?php if($segn_limbo>0){?>
+					
+					<li id="limbo" class="dropdown">
+                    <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
+						<i class="fa fa-exclamation fa-fw" style="color:red"></i> <i class="fas fa-caret-down"></i>
+                    </a>	
                     <ul class="dropdown-menu dropdown-alerts">
+					<li>
+						<a href="index.php#segn_limbo_table">
+							<div>
+								Nuove segnalazioni da elaborare!
+							</div>
+						</a>
+					</li>
+					</ul>
+					</li>
+					
+				<?php }?>
+				
+				
+				
+				
+                <li id="notifiche" class="dropdown">
+                    <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
+					<?php if ($count_resp >0) { ?>
+						<i class="fas fa-bell fa-fw" style="color:#ff0000"></i> <?php echo $count_resp;?> <i class="fas fa-caret-down"></i>
+					<?php } else { ?>	
+                        <i class="fas fa-bell fa-fw"></i>  <i class="fas fa-caret-down"></i>
+					<?php } ?>	
+                    </a>	
+                    <ul class="dropdown-menu dropdown-alerts">
+					<li>
+						<a href="#">
+							<div>
+								Notifiche <?php echo $descrizione_profilo;?>
+							</div>
+						</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-user-shield"></i> Incarichi
+                                    <span class="pull-right text-muted small"><?php echo $i_assegnati_resp;?> non presi in carico</span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $i_assegnati_resp; $ii++) {
+									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_i_assegnati_resp[$ii]."\">Tipo: ".$descrizione_i_assegnati_resp[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                        <li class="divider"></li>
+					<li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-user-tag"></i> Incarichi interni
+                                    <span class="pull-right text-muted small"><?php echo $ii_assegnati_resp;?> non presi in carico</span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $ii_assegnati_resp; $ii++) {
+									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_ii_assegnati_resp[$ii]."\">Tipo: ".$descrizione_ii_assegnati_resp[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                        <li class="divider"></li>
+					<li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-pencil-ruler"></i> Sopralluoghi
+                                    <span class="pull-right text-muted small"><?php echo $s_assegnati_resp;?> non presi in carico</span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $s_assegnati_resp; $ii++) {
+									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_s_assegnati_resp[$ii]."\">Tipo: ".$descrizione_s_assegnati_resp[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                        <li class="divider"></li>
                     <li>
-                            <a href="#">
+					<a href="#">
                                 <div>
-                                    <i class="fas fa-comment fa-fw"></i> DEMO
-                                    <span class="pull-right text-muted small">...</span>                              
-                                <div> ancora da decidere se utilizzare qualcosa di simile  </div>
-                            </div>
-                            </a>
+                                    <i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari
+                                    <span class="pull-right text-muted small"><?php echo $pc_assegnati_resp;?> non presi in carico</span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $pc_assegnati_resp; $ii++) {
+									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_pc_assegnati_resp[$ii]."\">Tipo: ".$tipo_pc_assegnati_resp[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
                         </li>
-                        <li class="divider"></li>                        
+						<li class="divider"></li>
                         <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fas fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fas fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fas fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fas fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fas fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
+                            <a class="text-center" href="index.php#panel-notifiche">
+                                <strong>Vedi tutti i conteggi</strong>
                                 <i class="fas fa-angle-right"></i>
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-alerts -->
                 </li>
+				
+				<li id="notifiche" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <?php if ($count_squadra >0) { ?>
+						<i class="fas fa-users" style="color:#ff0000"></i> <?php echo $count_squadra;?> <i class="fas fa-caret-down"></i>
+					<?php } else { ?>	
+                        <i class="fas fa-users"></i>  <i class="fas fa-caret-down"></i>
+					<?php } ?>	
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+					<li>
+						<a href="#">
+							<div>
+								Notifiche squadra <?php echo $nome_squadra_operatore;?>
+							</div>
+						</a>
+					</li>
+
+                        <li class="divider"></li>
+					<li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-user-tag"></i> Incarichi interni
+                                    <span class="pull-right text-muted small"><?php echo $ii_assegnati_squadra;?></span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $ii_assegnati_squadra; $ii++) {
+									echo "<br><a href=\"dettagli_incarico_interno.php?id=".$id_ii_assegnati_squadra[$ii]."\">Vai ai dettagli</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                        <li class="divider"></li>
+					<li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-pencil-ruler"></i> Sopralluoghi
+                                    <span class="pull-right text-muted small"><?php echo $s_assegnati_squadra;?></span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $s_assegnati_squadra; $ii++) {
+									echo "<br><a href=\"dettagli_soprallluogo.php?id=".$id_ii_assegnati_squadra[$ii]."\">Tipo: ".$descrizione_ii_assegnati_squadra[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                        <li class="divider"></li>
+                    <li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari
+                                    <span class="pull-right text-muted small"><?php echo $pc_assegnati_squadra;?></span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $pc_assegnati_squadra; $ii++) {
+									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_pc_assegnati_squadra[$ii]."\">Tipo: ".$tipo_pc_assegnati_squadra[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                    </ul>
+                </li>
+
+				
+				
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fas fa-user fa-fw"></i> User Profile (DEMO)</a>
+						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (dettagli)</a>
                         </li>
-                        <li><a href="#"><i class="fas fa-gear fa-fw"></i> Settings (DEMO)</a>
-                        </li>
+                        <!--li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> User Profile</a>
+                        </li-->
+                        <!--li><a href="#"><i class="fas fa-gear fa-fw"></i> Settings (DEMO)</a>
+                        </li-->
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fas fa-sign-out fa-fw"></i> Logout (DEMO - TBD Paolo Di Gioia e CED</a>
+                        <li><a href="https://gestemert.comune.genova.it/Shibboleth.sso/Logout"><i class="fas fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -422,4 +560,4 @@
             <!-- /.navbar-top-links -->
             
             
-</html>
+
