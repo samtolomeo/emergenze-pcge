@@ -100,11 +100,15 @@ require('./check_evento.php');
 	   					
 	   					
 	   					echo '<div class="col-lg-2"><br>';
+						
+						if ($profilo_sistema <= 2){
+						
 	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi'.$eventi_attivi_c[$i].'"';
 	   					if($check_segnalazioni) {
 	   						echo 'disabled=""';
 	   					}
-	   					echo '><i class="fas fa-times"></i> Chiudi evento</button>';	   					
+	   					echo '><i class="fas fa-times"></i> Chiudi evento</button>';
+	   					}
 	   					echo '</div></div>';
 	   					echo '<div class="row">';
 	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_c[$i][1].'</h3>';
@@ -354,8 +358,8 @@ require('./req_bottom.php');
     'use strict';
 
 <?php
-if ($check_evento==1){
-$len=count($eventi_attivi);	               
+if ($contatore_eventi_chiusura > 0){
+$len=$contatore_eventi_chiusura;	               
 for ($i=0;$i<$len;$i++){
 ?>   
  

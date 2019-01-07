@@ -19,7 +19,7 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard (demo)</a>
+                            <a href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
                         </li>
 
                         <li>
@@ -50,7 +50,7 @@
                                     <a href="nuova_segnalazione.php">Inserisci segnalazione</a>
                                 </li>
                                 <li>
-                                    <a href="mappa_segnalazioni.php">Mappa delle segnalazioni</a>
+                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa delle segnalazioni</a>
                                 </li>
                                 <li>
                                     <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
@@ -62,18 +62,49 @@
                                     <br><small> (<i class="fas fa-stop"></i>eventi chiusi)</small>
                                     </a>
                                 </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-pencil-ruler"></i> Sopralluoghi <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            		<li>
+                                    <a href="nuovo_sopralluogo.php">Inserisci sopralluogo</a>
+                                </li>
                                 <li>
-                                    <a href="#">TO DO</a>
+                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa sopralluoghi</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        
-                        
+                        <li>
+                            <a href="#"><i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            		<li>
+                                    <a href="nuovo_pc_sgombero.php">Sgombero civici</a>
+                                </li>
+								<li>
+                                    <a href="nuovo_pc_sottopasso.php">Interdizione accesso sottopassi</a>
+                                </li>
+								<li>
+                                    <a href="nuovo_pc_strada.php">Chiusura strada</a>
+                                </li>
+								<li>
+                                    <a href="elenco_pc.php">Elenco provvedimenti cautelari</a>
+                                </li>
+                                <!--li>
+                                    <a href="mappa_segnalazioni.php">Mappa sopralluoghi</a>
+                                </li-->
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                          <li>
                             <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                             	  <li>
+                                    <a href="gestione_squadre.php">Gestione squadre</a>
+                                </li>
+                                <li>
                                     <a href="lista_dipendenti.php">Permessi dipendenti</a>
                                 </li>
                                 <li>
@@ -85,11 +116,14 @@
                                 <li>
                                     <a href="lista_mail.php">Contatti a cui notificare incarichi</a>
                                 </li>
+								<li>
+                                    <a href="rubrica.php">Rubrica Comune di Genova</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="new_page.php"><i class="fas fa-ambulance fa-fw"></i> New page </a>
+                            <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>
                         </li>
                         <!--li>
                             <a href="#"><i class="fas fa-chart-line fa-fw"></i> Charts<span class="fa arrow"></span></a>

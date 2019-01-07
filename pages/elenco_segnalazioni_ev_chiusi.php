@@ -125,7 +125,7 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
       	
-        <table  id="segnalazioni" class="table-hover" style="word-break:break-all; word-wrap:break-word;" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 
         
         
@@ -133,15 +133,18 @@ require('./tables/filtri_segnalazioni.php');
 
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
-            <!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th--> 
+            <th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th> 
             <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="criticita" data-sortable="true"   data-visible="true">Tipo criticità</th>
+            <th data-field="criticita" data-sortable="true"   data-visible="true">Tipo<br>criticità</th>
             <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo evento</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
+            <th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo evento</th>
+            <th data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
+            <th data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
+            <th data-field="nome_munic" data-sortable="true"  data-visible="true">Municipio</th>
+            <th data-field="localizzazione" data-sortable="true"  data-visible="true">Civico</th>
             <th data-field="note" data-sortable="false" data-visible="true" >Note</th>
-            <!--th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th-->            
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>                  
 
     </tr>
 </thead>
@@ -196,7 +199,27 @@ require('./tables/filtri_segnalazioni.php');
         }
     }
 
-
+function nameFormatterMappa1(value, row, index) {
+	
+	return' <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myMap'+value+'"><i class="fas fa-map-marked-alt"></i></button> \
+    <div class="modal fade" id="myMap'+value+'" role="dialog"> \
+    <div class="modal-dialog"> \
+      <div class="modal-content">\
+        <div class="modal-header">\
+          <button type="button" class="close" data-dismiss="modal">&times;</button>\
+          <h4 class="modal-title">Anteprima segnalazione</h4>\
+        </div>\
+        <div class="modal-body">\
+        <iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#17/'+row.lat +'/'+row.lon +'"></iframe>\
+        </div>\
+        <!--div class="modal-footer">\
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
+        </div-->\
+      </div>\
+    </div>\
+  </div>\
+</div>';
+}
 </script>
 
 

@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Mappa segnalazioni"
+$subtitle="Mappa segnalazioni e sopralluoghi"
 
 ?>
 <!DOCTYPE html>
@@ -13,6 +13,14 @@ $subtitle="Mappa segnalazioni"
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="roberto" >
+
+<link rel="stylesheet" href="l_map/css/L.Control.Locate.min.css">
+   <link rel="stylesheetl_map/" href="l_map/css/qgis2web.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.Default.css">
+   <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
+   <link rel="stylesheet" href="../vendor//leaflet-search/src/leaflet-search.css">
+
 
     <title>Gestione emergenze</title>
 <?php 
@@ -42,9 +50,15 @@ require('./check_evento.php');
             <!-- /.row -->
             
             <!--div class="row"-->
-            <div class="embed-responsive embed-responsive-16by9">
+            <!--div class="embed-responsive embed-responsive-16by9">
 				  <iframe class="embed-responsive-item" src="./mappa_leaflet.php"></iframe>
-				</div>
+				</div-->
+
+						<div id="map" style="width: 100%; padding-top: 100%;">
+						</div>
+						
+
+
 					<!--iframe style="width:100%;height:100%;position:relative" src="./mappa_leaflet.php"></iframe-->
             <!--/div-->
             <!-- /.row -->
@@ -56,6 +70,8 @@ require('./check_evento.php');
 require('./footer.php');
 
 require('./req_bottom.php');
+
+include './mappa_leaflet_embedded.php';							
 
 
 ?>

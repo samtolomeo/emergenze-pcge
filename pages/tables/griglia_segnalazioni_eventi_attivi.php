@@ -2,7 +2,7 @@
 session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
-require('../check_evento.php');
+//require('../check_evento.php');
 
 
 if ($check_evento==1){
@@ -41,7 +41,7 @@ if(!$conn) {
 	//$idcivico=$_GET["id"];
 	$query="SELECT id, data_ora, id_segnalante, descrizione, id_criticita, criticita, 
        rischio, id_evento, tipo_evento, id_civico, id_municipio, id_operatore, 
-       note, in_lavorazione From segnalazioni.v_segnalazioni ".$filter_completo." ;";
+       note, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter_completo." ;";
 	
 	// vecchia query per evento attivo.
 	/*$query="SELECT id, data_ora, id_segnalante, descrizione, id_criticita, criticita, 

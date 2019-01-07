@@ -14,6 +14,16 @@ echo "matricola_cf:".$matr_cf."<br>";
 $profilo=$_POST["profilo"];
 echo "profilo:".$profilo."<br>";
 
+$profilo_array=explode('_', $profilo);
+
+$profilo=$profilo_array[0];
+$municipio=$profilo_array[1];
+
+echo "profilo:".$profilo."<br>";
+echo "codice_municipio:".$municipio."<br>";
+//exit;
+
+
 // verifico se necessario update o insert
 $check_update=0;
 $query0= "SELECT * FROM users.utenti_sistema where matricola_cf='".$matr_cf."' ;";
@@ -34,7 +44,13 @@ if ($profilo=='no' and $check_update==1 ){
 
 
 } else if ($profilo!='no' and $check_update==1){
-	$query="UPDATE users.utenti_sistema SET id_profilo=".$_POST["profilo"]." where matricola_cf='".$matr_cf."' ;";
+	$query="UPDATE users.utenti_sistema SET id_profilo=".$profilo." ";
+	if($municipio!='') {
+		$query=$query. ", cod_municipio='".$municipio."' ";
+	} else {
+		$query=$query. ", cod_municipio=NULL ";
+	}
+	$query=$query. " WHERE matricola_cf='".$matr_cf."' ;";
 	echo $query;
 	$result = pg_query($conn, $query);
 	$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["Utente"] ."', 'Update permessi di : ".$matr_cf."');";
@@ -42,8 +58,16 @@ if ($profilo=='no' and $check_update==1 ){
 
 
 } else  if ($profilo!='no' and $check_update==0){
-	$query="INSERT INTO users.utenti_sistema (matricola_cf, id_profilo) VALUES (";
-	$query=$query. "'".$matr_cf."', ". $profilo.");";
+	$query="INSERT INTO users.utenti_sistema (matricola_cf, id_profilo";
+	if($municipio!='') {
+		$query=$query. ", cod_municipio ";
+	}
+	$query=$query. ") VALUES (";
+	$query=$query. "'".$matr_cf."', ". $profilo." ";
+	if($municipio!='') {
+		$query=$query. " '".$municipio."' ";
+	}
+	$query=$query.");";
 	echo $query;
 	$result = pg_query($conn, $query);
 	$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["Utente"] ."', 'Aggiunta permessi utente : ".$matr_cf."');";

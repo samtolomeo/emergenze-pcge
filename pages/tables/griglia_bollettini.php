@@ -6,7 +6,7 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT * From \"eventi\".\"v_bollettini\" ORDER BY  \"data_ora_emissione\" DESC ;";
+	$query="SELECT * From \"eventi\".\"v_bollettini\" ;";
     
     //echo $query;
 	$result = pg_query($conn, $query);

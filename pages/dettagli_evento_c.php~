@@ -123,7 +123,7 @@ require('./check_evento.php');
 	   					//echo '</h3>Qua ci vuole la mappa dei municipi interessati';
 	   					echo '</div></div><hr>';
 	   					if($check_segnalazioni) {
-	   						echo '<div align="center"><a class="btn btn-info" href="./elenco_segnalazione.php">Vai alle segnalazioni non ancora chiuse</a></div><hr>';
+	   						echo '<div align="center"><a class="btn btn-info" href="./elenco_segnalazioni.php">Vai alle segnalazioni non ancora chiuse</a></div><hr>';
 	   					}
 	   					
 	   					?>

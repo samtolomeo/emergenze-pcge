@@ -1,11 +1,28 @@
 <?php 
 // Start the session
 session_start();
-$_SESSION['user']="MRZRRT84B01D969U";
+
 
 $id=$_GET["id"];
 $subtitle="Dettagli segnalazione ricevuta n. ".$id;
 
+
+$query_evento_aperto="SELECT s.id,
+       e.valido 
+		FROM segnalazioni.t_segnalazioni s
+		JOIN eventi.t_eventi e on e.id=s.id_evento
+		WHERE s.id=".$id.";";
+echo 
+$result_e=pg_query($conn, $query_evento_aperto);
+while($r_e = pg_fetch_assoc($result_e)) {
+	if($r_e['valido']=='f') {
+		$table='v_segnalazioni_eventi_chiusi';
+		echo "false";
+	} else {
+		$table='v_segnalazioni';
+		echo "true";
+	}
+}
 
 ?>
 <!DOCTYPE html>
@@ -26,8 +43,36 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
+
+$query_evento_aperto="SELECT s.id,
+       e.valido 
+		FROM segnalazioni.t_segnalazioni s
+		JOIN eventi.t_eventi e on e.id=s.id_evento
+		WHERE s.id=".$id.";";
+
+$result_e=pg_query($conn, $query_evento_aperto);
+while($r_e = pg_fetch_assoc($result_e)) {
+	if($r_e['valido']=='f') {
+		$table='v_segnalazioni_eventi_chiusi';
+		//echo "false";
+	} else {
+		$table='v_segnalazioni';
+		//echo "true";
+	}
+}
+
 ?>
-    
+
+ 
+
+
+<link rel="stylesheet" href="l_map/css/L.Control.Locate.min.css">
+   <link rel="stylesheetl_map/" href="l_map/css/qgis2web.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.Default.css">
+   <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
+   <link rel="stylesheet" href="../vendor/leaflet-search/src/leaflet-search.css">
+        
 </head>
 
 <body>
@@ -54,11 +99,14 @@ require('./check_evento.php');
             <div class="row">
             <div class="col-md-6">
 				<?php
-					$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.v_segnalazioni WHERE id=".$id.";";
+					$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.".$table." WHERE id=".$id.";";
 					//echo $query
            
 					$result=pg_query($conn, $query);
 					while($r = pg_fetch_assoc($result)) {
+						
+						$lon=$r['lon'];
+						$lat=$r['lat'];
 					?>            
             
                <h4><br><b>Tipo criticità</b>: <?php echo $r['criticita']; ?></h4>
@@ -66,21 +114,48 @@ require('./check_evento.php');
             	
 						
 						<?php 
-            $id_lavorazione=$r['id_lavorazione'];
+            		$id_lavorazione=$r['id_lavorazione'];
 						$check_lav=0;
+						//$check_operatore=0; //controllo se l'operatore può fare qualcosa o meno
+						$id_profilo=$r['id_profilo'];
+						require('./check_operatore.php');
+						
 						if ($r['id_lavorazione'] !='' and $r['in_lavorazione']=='t') {
 									$check_lav=1;
-									echo '<h4> <i class="fas fa-play"></i> La segnalazione è in lavorazione </h4><hr>';
+									echo '<h4> <i class="fas fa-play"></i> La segnalazione è in lavorazione </h4>';
 									
+									require('./check_responsabile.php');
+									
+									if($r['id_profilo']==5) {	
+										//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Municipio";
+										if ($check_operatore == 1){ ?>
+											<!--div style="text-align: center;"-->
+												<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=3" class="btn btn-info"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale PC</a><br>
+											<!--/div-->
+										<?php 
+											//$check_operatore=1;
+										}
+										echo '</h4>';	
+									} else if($r['id_profilo']==6) {
+										//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Distretto";
+										if ($check_operatore == 1){ ?>
+										<!--div style="text-align: center;"-->										
+											<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=4" class="btn btn-info"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale COA</a><br>
+										<!--/div-->
+											<?php
+											//$check_operatore=1;
+										}
+									echo '</h4>';
+								}
 								} else if ($r['id_lavorazione'] !=''  and $r['in_lavorazione']=='f') {
 									$check_lav=-1;
-									echo '<h4> <i class="fas fa-stop"></i> La segnalazione è chiusa </h4><hr>';
+									echo '<h4> <i class="fas fa-stop"></i> La segnalazione è chiusa </h4>';
 						}
 						
 						
 						if ($check_lav==1 OR $check_lav==-1 ){
 								?>
-								
+								<hr>
 								
 								<div class="panel-group">
 									  <div class="panel panel-warning">
@@ -94,7 +169,7 @@ require('./check_evento.php');
 										<?php
 										// cerco l'id_lavorazione
 										$query_storico="SELECT to_char(data_ora,'DD/MM/YY HH24:MI:SS')as data_ora,log_aggiornamento";
-										$query_storico= $query_storico." FROM segnalazioni.t_storico_segnalazioni_in_lavorazione WHERE id_segnalazione_in_lavorazione=".$r['id_lavorazione'].";";
+										$query_storico= $query_storico." FROM segnalazioni.t_storico_segnalazioni_in_lavorazione WHERE id_segnalazione_in_lavorazione=".$id_lavorazione.";";
 										//echo $query_storico;
 										$result_storico=pg_query($conn, $query_storico);
 										while($r_storico = pg_fetch_assoc($result_storico)) {
@@ -112,105 +187,586 @@ require('./check_evento.php');
 						  </div>
 						</div>
 						
-						<?php 
-						}
-						if ($check_lav==1){ ?>
-						<div style="text-align: center;">
 						
-				      <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico (DEMO)</button>
-						 - 
-						<a class="btn btn-info" disabled=""> Crea sopralluogo (DEMO)</a>
-						<hr>
+						<?php
+
+						$check_chiusura=0;  // se 0 posso chiudere se minore di 0 NO
+						
+						
+						$check_incarichi_aperti=0; // check se incarichi ancora aperti o rifiutati
+						$check_incarichi_rifiutati=0;
+						$queryi="SELECT * FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_incarico = 2;";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$check_incarichi_aperti=1; // aperti
+						}
+						$queryi="SELECT * FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_incarico = 1 OR id_stato_incarico = 4);";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$check_incarichi_rifiutati=1; // aperti
+							if ($ri['id_stato_incarico']==1){
+								$check_chiusura=$check_chiusura-1;
+							}
+						}
+						
+						
+						
+						$check_incarichi_interni_aperti=0; // check se incarichi interni ancora aperti o rifiutati
+						$check_incarichi_interni_rifiutati=0;
+						$queryi="SELECT * FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_incarico =2;";
+						//echo $queryi;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$check_incarichi_interni_aperti=1;
+						}
+						$queryi="SELECT * FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_incarico = 1 OR id_stato_incarico = 4) ;";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$check_incarichi_interni_rifiutati=1;
+							if ($ri['id_stato_incarico']==1){
+								$check_chiusura=$check_chiusura-1;
+							}
+						}					
+						
+						
+						
+						
+						
+						// attenzione all'ordine con cui li controllo (dal maggiore al minore)
+						// -1 non preso in carico
+						// 1 in corso
+						// 2 completato
+						$check_sopralluoghi=0; // check se incarichi interni ancora aperti
+						
+						$queryi="SELECT * FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 3;";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$check_sopralluoghi=2;
+						}
+						$queryi="SELECT * FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 2;";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$check_sopralluoghi=1;
+						}						
+												$queryi="SELECT * FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 1;";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$check_sopralluoghi=-1;
+							$check_chiusura=$check_chiusura-1;
+						}
+						
+						
+						
+						
+						
+						$check_provvedimenti=0; // check se incarichi interni ancora aperti
+						
+						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 3);";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$id_provvedimento=['id'];
+							$check_provvedimenti=2;
+						}
+						
+						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 2);";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$id_provvedimento=['id'];
+							$check_provvedimenti=1;
+						}
+						
+						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 1);";
+						//echo $query;
+						$resulti=pg_query($conn, $queryi);
+						while($ri = pg_fetch_assoc($resulti)) {
+							$id_provvedimento=['id'];
+							$check_provvedimenti=-1;
+							$check_chiusura=$check_chiusura-1;
+						}
+						
+						?>
+					
+						<div class="panel-group">
+									  <div class="panel panel-info">
+									    <div class="panel-heading">
+									      <h4 class="panel-title">
+									        <a data-toggle="collapse" href="#list_incarichi"><i class="fa fa-briefcase"></i> Incarichi 
+									        <?php
+									        		if($check_incarichi_rifiutati==1) {
+									        			echo	' - <i class="fa fa-exclamation fa-fw" style="color:red"></i>';
+									        	  	}
+													if($check_incarichi_aperti==1) {
+									        			echo	' - <i class="fa fa-play" style="color:green"></i>';
+									        	  	}
+													
+									        ?>
+									        </a>
+									      </h4>
+									    </div>
+									    <div id="list_incarichi" class="panel-collapse collapse">
+									      <div class="panel-body"-->
+										<?php
+										// cerco l'id_lavorazione
+										$query_incarichi="SELECT id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente";
+										$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										$query_incarichi= $query_incarichi." GROUP BY id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente;";
+										
+										//echo $query_incarichi;
+										$result_incarichi=pg_query($conn, $query_incarichi);
+										$i=0;
+										while($r_incarichi = pg_fetch_assoc($result_incarichi)) {
+											if ($i>0){
+												echo "<hr>";
+											}
+											$i=$i+1;
+											if ($r_incarichi['id_stato_incarico']==1){
+												echo '<i class="fa fa-exclamation fa-fw" style="color:red"></i>';
+											} else if ($r_incarichi['id_stato_incarico']==2){
+												echo '<i class="fa fa-check" style="color:green"></i>';
+											} else if ($r_incarichi['id_stato_incarico']==3){
+												echo '<i class="fa fa-check-double" style="color:blue"></i>';
+											} else if ($r_incarichi['id_stato_incarico']==4){
+												echo '<i class="fa fa-times" style="color:orange"></i>';
+											}
+										
+											echo $r_incarichi['descrizione'];
+											echo " - " .$r_incarichi['descrizione_stato'];
+											if($r_incarichi['note_ente']!=''){
+												echo " (Note chiusura:" .$r_incarichi['note_ente']. ")";
+											}
+											echo " - " .$r_incarichi['descrizione_uo'];
+											echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico.php?id=".$r_incarichi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+										}
+										
+							
+									if($check_operatore==1 and $r['in_lavorazione']!='f') {
+										?>
+									<hr><p>
+				      			<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
+						 			</p>
+									<?php } ?>
+									</div>
+						    </div>
+						  </div>
+						</div>
+						
+						
+						<div class="panel-group">
+									  <div class="panel panel-info">
+									    <div class="panel-heading">
+									      <h4 class="panel-title">
+									        <a data-toggle="collapse" href="#list_incarichi_interni"><i class="fa fa-briefcase"></i> Incarichi interni
+									        <?php
+									        		if($check_incarichi_interni_rifiutati==1) {
+									        			echo	' - <i class="fa fa-exclamation fa-fw" style="color:red"></i>';
+									        	  	}
+													if($check_incarichi_interni_aperti==1) {
+									        			echo	' - <i class="fa fa-play" style="color:green"></i>';
+									        	  	}
+									        ?>
+									        </a>
+									      </h4>
+									    </div>
+									    <div id="list_incarichi_interni" class="panel-collapse collapse">
+									      <div class="panel-body"-->
+										<?php
+										// cerco l'id_lavorazione
+										$query_incarichi="SELECT id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente";
+										$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione;
+										$query_incarichi= $query_incarichi." GROUP BY id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente;";
+										
+										//echo $query_incarichi;
+										$result_incarichi=pg_query($conn, $query_incarichi);
+										$i=0;
+										while($r_incarichi = pg_fetch_assoc($result_incarichi)) {
+											if ($i>0){
+												echo "<hr>";
+											}
+											$i=$i+1;
+											if ($r_incarichi['id_stato_incarico']==1){
+												echo '<i class="fa fa-exclamation fa-fw" style="color:red"></i>';
+											} else if ($r_incarichi['id_stato_incarico']==2){
+												echo '<i class="fa fa-check" style="color:green"></i>';
+											} else if ($r_incarichi['id_stato_incarico']==3){
+												echo '<i class="fa fa-check-double" style="color:blue"></i>';
+											} else if ($r_incarichi['id_stato_incarico']==4){
+												echo '<i class="fa fa-times" style="color:orange"></i>';
+											}
+										
+											echo $r_incarichi['descrizione'];
+											echo " - " .$r_incarichi['descrizione_stato'];
+											if($r_incarichi['note_ente']!=''){
+												echo " (Note chiusura:" .$r_incarichi['note_ente']. ")";
+											}
+											echo " - " .$r_incarichi['descrizione_uo'];
+											echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico_interno.php?id=".$r_incarichi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+										}
+										
+							
+									if($check_operatore==1 and $r['in_lavorazione']!='f') {
+										?>
+									
+									 <hr><p>
+									<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico_interno"><i class="fas fa-plus"></i> Assegna incarico interno </button>
+						 			</p>
+						 			<?php } ?>
+									</div>
+						    </div>
+						  </div>
+						</div>
+						
+						
+						
+						
+						<div class="panel-group">
+									  <div class="panel panel-info">
+									    <div class="panel-heading">
+									      <h4 class="panel-title">
+									        <a data-toggle="collapse" href="#list_sopralluoghi"><i class="fa fa-pencil-ruler"></i> Sopralluoghi
+									        <?php
+									        		if($check_sopralluoghi==1) {
+									        			echo	' - <i class="fa fa-play" style="color:green"></i>';
+									        	  	} else if($check_sopralluoghi==-1) {
+									        			echo	' - <i class="fa fa-exclamation" style="color:red"></i>';
+									        	  	} else if($check_sopralluoghi==2) {
+									        			echo	' - <i class="fa fa-check-double" style="color:blue"></i>';
+									        	  	}
+									        ?>
+									        </a>
+									      </h4>
+									    </div>
+									    <div id="list_sopralluoghi" class="panel-collapse collapse">
+									      <div class="panel-body"-->
+										<?php
+										// cerco l'id_lavorazione
+										$query_sopralluoghi="SELECT id, id_stato_sopralluogo,descrizione,descrizione_stato,descrizione_uo, note_ente";
+										$query_sopralluoghi= $query_sopralluoghi." FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										$query_sopralluoghi= $query_sopralluoghi." GROUP BY id, id_stato_sopralluogo,descrizione,descrizione_stato,descrizione_uo, note_ente;";
+										
+										//echo $query_sopralluoghi;
+										$result_sopralluoghi=pg_query($conn, $query_sopralluoghi);
+										$i=0;
+										while($r_sopralluoghi = pg_fetch_assoc($result_sopralluoghi)) {
+											if ($i>0){
+												echo "<hr>";
+											}
+											$i=$i+1;
+											if ($r_sopralluoghi['id_stato_sopralluogo']==1){
+												echo '<i class="fa fa-exclamation fa-fw" style="color:red"></i>';
+											} else if ($r_sopralluoghi['id_stato_sopralluogo']==2){
+												echo '<i class="fa fa-check" style="color:blue"></i>';
+											} else if ($r_sopralluoghi['id_stato_sopralluogo']==3){
+												echo '<i class="fa fa-check-double" style="color:green"></i>';
+											} else if ($r_sopralluoghi['id_stato_sopralluogo']==4){
+												echo '<i class="fa fa-times" style="color:orange"></i>';
+											}
+										
+											echo $r_sopralluoghi['descrizione'];
+											echo " - " .$r_sopralluoghi['descrizione_stato'];
+											if($r_sopralluoghi['note_ente']!=''){
+												echo " (Note chiusura:" .$r_sopralluoghi['note_ente']. ")";
+											}
+											echo " - " .$r_sopralluoghi['descrizione_uo'];
+											echo " - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$r_sopralluoghi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+										}
+										
+							
+										if($check_operatore==1 and $r['in_lavorazione']!='f') {
+										?>
+									
+									 <hr><p>
+									<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_sopralluogo"><i class="fas fa-pencil-ruler"></i> Assegna sopralluogo </button>
+									</p>
+									<?php } ?>
+									</div>
+						    </div>
+						  </div>
+						</div>
+						
+						
+						<div class="panel-group">
+									  <div class="panel panel-info">
+									    <div class="panel-heading">
+									      <h4 class="panel-title">
+									        <a data-toggle="collapse" href="#list_pc"><i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari
+									        <?php
+									        		if($check_provvedimenti==1) {
+									        			echo	' - <i class="fa fa-play" style="color:green"></i>';
+									        		} else if($check_provvedimenti==-1) {
+									        			echo	' - <i class="fa fa-exclamation" style="color:red"></i>';
+									        	  	} else if($check_provvedimenti==2) {
+									        			echo	' - <i class="fa fa-check-double" style="color:blue"></i>';
+									        	  	}
+									        ?>
+									        </a>
+									      </h4>
+									    </div>
+									    <div id="list_pc" class="panel-collapse collapse">
+									      <div class="panel-body"-->
+										<?php
+										// cerco l'id_lavorazione
+										$query_provvedimenti="SELECT id, id_stato_provvedimenti_cautelari,descrizione,descrizione_stato,descrizione_uo, note_ente";
+										$query_provvedimenti= $query_provvedimenti." FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione;
+										$query_provvedimenti= $query_provvedimenti." GROUP BY id, id_stato_provvedimenti_cautelari,descrizione,descrizione_stato,descrizione_uo, note_ente;";
+										
+										//echo $query_sopralluoghi;
+										$result_provvedimenti=pg_query($conn, $query_provvedimenti);
+										$i=0;
+										while($r_provvedimenti = pg_fetch_assoc($result_provvedimenti)) {
+											if ($i>0){
+												echo "<hr>";
+											}
+											$i=$i+1;
+											if ($r_provvedimenti['id_stato_provvedimenti_cautelari']==1){
+												echo '<i class="fa fa-exclamation fa-fw" style="color:red"></i>';
+											} else if ($r_provvedimenti['id_stato_provvedimenti_cautelari']==2){
+												echo '<i class="fa fa-check" style="color:blue"></i>';
+											} else if ($r_provvedimenti['id_stato_provvedimenti_cautelari']==3){
+												echo '<i class="fa fa-check-double" style="color:green"></i>';
+											} else if ($r_provvedimenti['id_stato_provvedimenti_cautelari']==4){
+												echo '<i class="fa fa-times" style="color:orange"></i>';
+											}
+										
+											echo $r_provvedimenti['descrizione'];
+											echo " - " .$r_provvedimenti['descrizione_stato'];
+											if($r_provvedimenti['note_ente']!=''){
+												echo " (Note chiusura:" .$r_provvedimenti['note_ente']. ")";
+											}
+											echo " - " .$r_provvedimenti['descrizione_uo'];
+											echo " - <a class=\"btn btn-info\" href=\"dettagli_provvedimento_cautelare.php?id=".$r_provvedimenti['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+										}
+										
+							
+							
+										?>
+									<hr>Si possono aggiungere eventuali provvedimenti cautelari dalla sezione degli oggetti a rischio.
+									 
+									</div>
+						    </div>
+						  </div>
+						</div>
+						
+						
+						
 						<?php
 						
+						include 'incarichi/panel_comunicazioni.php';
+						 
+						}
+						if ($check_lav==1){ ?>
+						<div style="text-align: center; line-height: 1.6;">
+						<!--p>
+				      <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
+						 - 
+					  <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico_interno"><i class="fas fa-plus"></i> Assegna incarico interno </button>
+						  - 
+					  <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_sopralluogo"><i class="fas fa-pencil-ruler"></i> Assegna sopralluogo </button>
+						</p-->
+						<hr>
+						<?php
+						if($check_operatore==1) {
 	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
-	   					// andra messo un check sugli incarichi / sopralluoghi attivi
-	   					/*if($check_allerte==1 OR $check_foc==1){
-	   						echo 'disabled=""';
-	   					}*/
+	   					// check sugli incarichi / sopralluoghi attivi
+	   					if($check_incarichi_aperti==1 OR $check_incarichi_interni_aperti==1 OR $check_sopralluoghi==1 OR $check_chiusura<0 ){
+	   						echo 'disabled="" title="Impossibile chiudere la segnalazione. Incarichi / sopralluoghi / provvedimenti cautelari risultano ancora in corso o non presi in carico."';
+	   					}
 	   					echo 'data-target="#chiudi"><i class="fas fa-times"></i> Chiudi segnalazione </button>';
-	   					
+	   				}
 						?>
 						</div>
 						
 						
 						
-						<!-- Modal allerta-->
-<div id="new_incarico" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+						<!-- Modal incarico-->
+						<div id="new_incarico" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Nuovo incarico</h4>
-      </div>
-      <div class="modal-body">
-      
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Nuovo incarico</h4>
+							  </div>
+							  <div class="modal-body">
+							  
 
-        <form autocomplete="off" action="incarichi/nuovo_incarico.php?id=<?php echo $id_lavorazione; ?>&s=<?php echo $id; ?>" method="POST">
-		
-		<div class="form-group">
-         <label for="tipo">Tipologia di incarico:</label> <font color="red">*</font>
-			<select class="form-control" name="tipo" id="tipo" onChange="getUO(this.value);"  required="">
-			   <option name="tipo" value="" >  </option>
-         	<option name="tipo" value="comune" > Incarico a uffici periferici del comune </option>
-         	<option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option>
-        </select>
-        </div>
-             
-                         <script>
-            function getUO(val) {
-	            $.ajax({
-	            type: "POST",
-	            url: "get_uo.php",
-	            data:'cod='+val,
-	            success: function(data){
-		            $("#uo-list").html(data);
-	            }
-	            });
-            }
+								<form autocomplete="off" action="incarichi/nuovo_incarico.php?id=<?php echo $id_lavorazione; ?>&s=<?php echo $id; ?>" method="POST">
+								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
+								<div class="form-group">
+								 <label for="tipo">Tipologia di incarico:</label> <font color="red">*</font>
+									<select class="form-control" name="tipo" id="tipo" onChange="getUO(this.value);"  required="">
+									   <option name="tipo" value="" >  </option>
+									<option name="tipo" value="comune" > Incarico a uffici periferici del comune </option>
+									<option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option>
+								</select>
+								</div>
+									 
+												 <script>
+									function getUO(val) {
+										$.ajax({
+										type: "POST",
+										url: "get_uo.php",
+										data:'cod='+val,
+										success: function(data){
+											$("#uo-list").html(data);
+										}
+										});
+									}
 
-            </script>
+									</script>
 
-             
-             
-            <div class="form-group">
-              <label for="id_civico">Seleziona l'Unità Operativa cui assegnare l'incarico:</label> <font color="red">*</font>
-                <select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
-                <option value=""> ...</option>
-            </select>         
-             </div>       
-             
-            <div class="form-group">
-					 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
-                <input type="text" name="descrizione" class="form-control" required="">
-		      </div>            
-                  
+									 
+									 
+									<div class="form-group">
+									  <label for="id_civico">Seleziona l'Unità Operativa cui assegnare l'incarico:</label> <font color="red">*</font>
+										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
+										<option value=""> ...</option>
+									</select>         
+									 </div>       
+									 
+									<div class="form-group">
+											 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
+										<input type="text" name="descrizione" class="form-control" required="">
+									  </div>            
+										  
 
 
 
-        <button  id="conferma" type="submit" class="btn btn-primary">Invia incarico</button>
-            </form>
+								<button  id="conferma" type="submit" class="btn btn-primary">Invia incarico</button>
+									</form>
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
-      </div>
-    </div>
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+							  </div>
+							</div>
 
-  </div>
-</div>
+						  </div>
+						</div>
 						
 						
+						<!-- Modal incarico interno-->
+						<div id="new_incarico_interno" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Nuovo incarico interno</h4>
+							  </div>
+							  <div class="modal-body">
+							  
+
+								<form autocomplete="off" action="incarichi_interni/nuovo_incarico.php?id=<?php echo $id_lavorazione; ?>&s=<?php echo $id; ?>" method="POST">
+								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
+								
+									<?php
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
+									$result2 = pg_query($conn, $query2);
+									?>
+									<div class="form-group">
+									  <label for="id_civico">Seleziona squadra:</label> <font color="red">*</font>
+										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
+										<option  id="uo" name="uo" value="">Seleziona la squadra</option>
+										<?php    
+										while($r2 = pg_fetch_assoc($result2)) { 
+											$valore=  $r2['cf']. ";".$r2['nome'];            
+										?>
+													
+												<option id="uo" name="uo" value="<?php echo $r2['id'];?>" ><?php echo $r2['nome'].' ('.$r2['id'].')';?></option>
+										 <?php } ?>
+									</select>
+									<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
+									 </div>       
+									 
+									<div class="form-group">
+											 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
+										<input type="text" name="descrizione" class="form-control" required="">
+									  </div>            
+										  
+
+
+
+								<button  id="conferma" type="submit" class="btn btn-primary">Invia incarico</button>
+									</form>
+
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+							  </div>
+							</div>
+
+						  </div>
+						</div>
 						
 						
-						
-						
+						<!-- Modal sopralluogo-->
+						<div id="new_sopralluogo" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Nuovo sopralluogo</h4>
+							  </div>
+							  <div class="modal-body">
+							  
+
+								<form autocomplete="off" action="sopralluoghi/nuovo_sopralluogo.php?id=<?php echo $id_lavorazione; ?>&s=<?php echo $id; ?>" method="POST">
+								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
+								
+									<?php
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
+									$result2 = pg_query($conn, $query2);
+									?>
+									<div class="form-group">
+									  <label for="id_civico">Seleziona squadra:</label> <font color="red">*</font>
+										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
+										<option  id="uo" name="uo" value="">Seleziona la squadra</option>
+										<?php    
+										while($r2 = pg_fetch_assoc($result2)) { 
+											$valore=  $r2['cf']. ";".$r2['nome'];            
+										?>
+													
+												<option id="uo" name="uo" value="<?php echo $r2['id'];?>" ><?php echo $r2['nome'].' ('.$r2['id'].')';?></option>
+										 <?php } ?>
+									</select>
+									<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
+									 </div>       
+									 
+									<div class="form-group">
+											 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
+										<input type="text" name="descrizione" class="form-control" required="">
+									  </div>            
+										  
+
+
+
+								<button  id="conferma" type="submit" class="btn btn-primary">Assegna sopralluogo</button>
+									</form>
+
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+							  </div>
+							</div>
+
+						  </div>
+						</div>
 						
 						
 						<!-- Modal chiusura-->
-						<div id="chiudi<?php echo $eventi_attivi[$i]; ?>" class="modal fade" role="dialog">
+						<div id="chiudi" class="modal fade" role="dialog">
 						  <div class="modal-dialog">
 						
 						    <!-- Modal content-->
@@ -222,12 +778,12 @@ require('./check_evento.php');
 						      <div class="modal-body">
 						      
 						
-						        <form autocomplete="off" action="./segnalazioni/chiudi_segnalazione.php?id_lav=<?php echo $r['id_lavorazione'];?>&id=<?php echo $r['id'];?>" method="POST">
+						        <form autocomplete="off" action="./segnalazioni/chiudi_segnalazione.php?id_lav=<?php echo $id_lavorazione;?>&id=<?php echo $r['id'];?>" method="POST">
 								Proseguendo chiuderai la lavorazione di questa segnalazione e di tutte quelle unite a questa.
 								<br>Non sarà più possibile assegnare incarichi o sopralluoghi associati a questa segnalazione.
 								<hr>
 								<div class="form-group">
-								  <label for="note">Note chiusura:</label>
+								  <label for="note">Note chiusura:</label> <font color="red">*</font><br>
 								  <textarea class="form-control" rows="5" id="note" nama="note" required=""></textarea>
 								</div>
 								
@@ -239,7 +795,7 @@ require('./check_evento.php');
 
 
 							<div class="form-group">
-								<label for="nome"> Pensi sia necessario inviarla a Manutenzioni/ LLPP?</label> <font color="red">*</font><br>
+								<label for="nome"> Pensi sia necessario inviarla a Manutenzioni/ LLPP?</label> <br>
 								<label class="radio-inline"><input type="radio" name="invio" value="man">Manutenzioni</label>
 								<label class="radio-inline"><input type="radio" name="invio" value="llpp">LLPP</label>
 							</div>
@@ -276,10 +832,10 @@ require('./check_evento.php');
 						
 						
 						
-						
+						if($check_lav==0){
 						// controllo se ci sono altre segnalazioni sullo stesso civico
 						$check_civico=0;
-						$query_civico="SELECT * FROM segnalazioni.v_segnalazioni where id_civico=".$r['id_civico']." and id !=".$id." and id_evento=".$r['id_evento'].";";
+						$query_civico="SELECT * FROM segnalazioni.".$table." where id_civico=".$r['id_civico']." and id !=".$id." and id_evento=".$r['id_evento'].";";
 						$result_civico=pg_query($conn, $query_civico);
 								while($r_civico = pg_fetch_assoc($result_civico)) {
 									$check_civico=1;
@@ -347,9 +903,9 @@ require('./check_evento.php');
 						$geom_s=$r['geom'];
 						$id_evento_s=$r['id_evento'];
 						if ($r['id_civico']!=''){
-							$query_vic="SELECT * FROM segnalazioni.v_segnalazioni where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and (id_civico!=".$r['id_civico']." or id_civico is null) and id !=".$id.";";
+							$query_vic="SELECT * FROM segnalazioni.".$table." where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and (id_civico!=".$r['id_civico']." or id_civico is null) and id !=".$id.";";
 						} else {
-							$query_vic="SELECT * FROM segnalazioni.v_segnalazioni where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and id !=".$id.";";
+							$query_vic="SELECT * FROM segnalazioni.".$table." where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and id !=".$id.";";
 						}
 						//echo $query_vic."<br>";
 						$result_vic=pg_query($conn, $query_vic);
@@ -395,7 +951,7 @@ require('./check_evento.php');
 									<a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r_vic['id'];?>"> <i class="fas fa-angle-right"></i> Vai alla segnalazione </a>
 									<br> <br>
 									<?php
-									if ($r_vic['id_lavorazione']!='' and $r['id_lavorazione']==''){
+									if ($r_vic['id_lavorazione']!='' and $r['id_lavorazione']=='' and $profilo_sistema <= 6){
 										echo '<a class="btn btn-info" href="./segnalazioni/unisci_segnalazione.php?id_from='.$id.'&id_to='.$r_vic['id'].'"><i class="fas fa-link"></i> Unisci segnalazione. </a>';
 									} 
 									?>
@@ -417,20 +973,19 @@ require('./check_evento.php');
 						<div style="text-align: center;">
 						<?php
 						
-						 if ($r['id_lavorazione']==''){ ?>
+						 if ($r['id_lavorazione']=='' and $profilo_sistema <= 6){ ?>
 								<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#lavorazione"> <i class="fas fa-plus"></i> 
 								<?php
 								 // solo se non ancora in lavorazione
 									if ($check_civico==0 and $check_vic==0){
 										echo "Elabora segnalazione";
 									} else {
-										echo "Elabora come nuova segnalazione";
+										echo "Elabora come nuova segnalazione<br><small>dopo aver verificato che non si possa unire</small>";
 									}
 								
 								?>
 								</button>	
-						<?php }?>
-
+						<?php }	?>
 						</div>
 
 
@@ -455,19 +1010,21 @@ require('./check_evento.php');
          
 			<div class="form-group">
 					<label for="nome"> Chi si occuperà della gestione della segnalazione ?</label> <font color="red">*</font><br>
-					<label class="radio-inline"><input type="radio" name="uo" required="" value="3">Invia alla centrale PC </label>
-					<label class="radio-inline"><input type="radio" name="uo" required="" value="4">Invia alla centrale COA </label>
-					<label class="radio-inline"><input type="radio" name="uo" required="" value="5">Elabora come Municipio  </label>
-					<label class="radio-inline"><input type="radio" name="uo" required="" value="6">Elabora come Distretto PM </label>
+					<?php if ($profilo_sistema <= 3) { ?>
+						<label class="radio-inline"><input type="radio" name="uo" required="" value="3" checked="checked" >Prendi in carico come centrale PC </label>
+					<?php } else if ($profilo_sistema == 4) { ?>
+						<label class="radio-inline"><input type="radio" name="uo" required="" value="4" checked="checked" >Prendi in carico come centrale COA </label>
+					<?php } else if ($profilo_sistema == 5) { ?>
+						<label class="radio-inline"><input type="radio" name="uo" required="" value="3">Invia alla centrale PC </label>
+						<label class="radio-inline"><input type="radio" name="uo" required="" value="5">Elabora come Municipio  </label>
+					<?php } else if ($profilo_sistema == 6) { ?>
+						<label class="radio-inline"><input type="radio" name="uo" required="" value="4">Invia alla centrale COA </label>
+						<label class="radio-inline"><input type="radio" name="uo" required="" value="6">Elabora come Distretto PM </label>
+					<?php } ?>
 				</div>
 		
 			<hr>
-			! in assenza del login questa funzione è ancora in versione DEMO.. 
-			<br>a seconda della scelta la segnalazione verrà presa in carico dal municipio o dalla centrale di PC 
-			<hr>
 			
-
-
         <button  id="conferma" type="submit" class="btn btn-primary" >Inserisci in lavorazione</button>
             </form>
 
@@ -479,10 +1036,10 @@ require('./check_evento.php');
 
   </div>
 </div>   
-
-
-
-						<hr>
+<hr>
+						
+<?php } ?>
+						
 						<!--h4> Persona a rischio? </h4-->
 						<h3><i class="fas fa-list-ul"></i> Dettagli segnalazione n. <?php echo $r['id'];?></h3>
 						<?php 
@@ -498,9 +1055,16 @@ require('./check_evento.php');
 						<br><b>Identificativo evento</b>: <?php echo $r['id_evento']; ?>
 						<br><b>Descrizione</b>: <?php echo $r['descrizione']; ?>
 						<br><b>Data e ora inserimento</b>: <?php echo $r['data_ora']; ?>
-						<br><b>Operatore inserimento</b>: <?php echo $r['id_operatore']; ?>
-						
-						
+						<br><b>Matricola operatore inserimento segnalazione</b>: <?php echo $r['id_operatore']; ?>
+						<br>
+						<?php 
+						$query_altre="SELECT * FROM segnalazioni.".$table." where id_lavorazione=".$id_lavorazione." and id <>".$r['id']."";
+						//echo $query_altre;
+						$result_altre=pg_query($conn, $query_altre);
+						while($r_altre = pg_fetch_assoc($result_altre)) {
+							echo '<br><br><a class="btn btn-info" href="dettagli_segnalazione.php?id='.$r_altre["id"].'">Vai alla segnalazione congiunta (id='.$r_altre["id"].')</a>';
+						}
+						?>
 						
 						<!--div class="panel-group">
 						  <div class="panel panel-default">
@@ -564,20 +1128,35 @@ require('./check_evento.php');
 								
 						
 						}
-						$lon=$r['lon'];
-						$lat=$r['lat'];
+						
+						//echo $lon;
+						$zoom=16;
 						?>
 						<hr>
 						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
 						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
+						<div id="map" style="width: 100%; padding-top: 100%;">
+						</div>
+						
+						
 						
 						<!--div style="width: 100%; padding-top: 100%;"-->
-							<iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe>
+							<!--iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe-->
 						<!--/div-->
+						
+						
+						
 						<hr>
+						<div id="er">
 						<?php
+						require('./req_bottom.php');
+						   
+
 						   $id_segnalazione=$id;
-							include './segnalazioni/section_oggetto_rischio.php'; 
+						   
+							include './segnalazioni/section_oggetto_rischio.php';
+
+							include './mappa_leaflet_embedded.php';							
 							// cerco l'oggetto a rischio
 							/*$check_or=0;
 							$query_or="SELECT * FROM segnalazioni.join_oggetto_rischio WHERE id_segnalazione=".$id." AND attivo='t';";
@@ -608,154 +1187,29 @@ require('./check_evento.php');
 							//$query_or3="SELECT * from ".$nome_tabella_oggetto_rischio."  where ".$nome_campo_id_oggetto_rischio." = ".$id_oggetto_rischio.";";
 							
  						?>	
+ 						</div>
 						</div>
 			
 					<?php
 					}
 					?>
 
-
+				
             </div>
+            <br>
             <!-- /.row -->
     </div>
     <!-- /#wrapper -->
 
 <?php 
 
+
+
+
 require('./footer.php');
-
-require('./req_bottom.php');
-
-
 ?>
 
 
-<script type="text/javascript">
-						
-		var lat=<?php echo $lat;?>;
-		var lon=<?php echo $lon;?>;
-		var mymap = L.map('map_dettaglio', {scrollWheelZoom:false}).setView([lat, lon], 16);
-	
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-			id: 'mapbox.streets'
-		}).addTo(mymap);
-	
-		L.marker([lat, lon]).addTo(mymap)
-    		.bindPopup('Segnalazione n. <?php echo $id;?>');
-    		//.openPopup();
-	
-	
-		
-		var segn_non_lav = [
-        
-        <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE lavorazione=0 and st_distance(st_transform('<?php echo $geom_s;?>'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=<?php echo $id_evento;?;";
-
-
-			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
-			
-
-    		$i=0;
-			$result_g = pg_query($conn, $query_g);
-	      while($r_g = pg_fetch_assoc($result_g)) {
-				if ($i==0){ 
-					echo '{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
-					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
-					echo $r_g["geo"].'}';
-				} else {
-					//echo ",". $r_g["geo"];
-					echo ',{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
-					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
-					echo $r_g["geo"].'}';
-					
-				}
-				$i=$i+1;
-			}
-			?>
-			];
-			
-			
-			
-			
-			
-			
-			var stile_non_lavorazione = {
-		    radius: 8,
-		    fillColor: "#FFD700",
-		    color: "#000",
-		    weight: 1,
-		    opacity: 1,
-		    fillOpacity: 0.8
-		};
-		
-		var stile_lavorazione = {
-		    radius: 8,
-		    fillColor: "#228B22",
-		    color: "#000",
-		    weight: 1,
-		    opacity: 1,
-		    fillOpacity: 0.8
-		};
-		/*var layer_v_segnalazioni_0 = new L.geoJson(geojsonFeature, {
-		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, geojsonMarkerOptions);
-		    }
-		}).addTo(map);*/
-        
-        
-        //var markers0 = L.markerClusterGroup();
-        var markers1 = L.markerClusterGroup();   
-		  
-		  var layer_v_segnalazioni_0 = L.geoJson(segn_non_lav, {
-		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, stile_non_lavorazione);
-		    }
-		    ,
-			onEachFeature: function (feature, layer) {
-				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pause-circle"></i> Da prendere in carico </div>'+
-				'<h4><b>Tipo</b>: '+
-				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" target="_new" href="./dettagli_segnalazione.php?id='+
-				feature.properties.id +
-				'"> Dettagli segnalazione </a>' );
-			}
-		});
-		
-	   mymap.addLayer(layer_v_segnalazioni_0);
-</script>
-
-
-<script type="text/javascript" >
-
-$('input[type=radio][name=invio]').attr('disabled', true);
-
-(function ($) {
-    'use strict';
-    
-    
-    $('[type="radio"][name="risolta"][value="f"]').on('change', function () {
-        if ($(this).is(':checked')) {
-            $('input[type=radio][name=invio]').removeAttr('disabled');
-            return true;
-        }
-    });
-    
-	$('[type="checkbox"][id="cat"]').on('change', function () {
-        if ($(this).is(':checked')) {
-            $('#conferma_chiudi').removeAttr('disabled');
-            return true;
-        }
-        
-    });
-}(jQuery));
-
-
-
-</script>  
 
 </body>
 

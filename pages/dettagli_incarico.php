@@ -54,14 +54,28 @@ require('./check_evento.php');
             <div class="row">
             <div class="col-md-6">
 				<?php
-					$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.v_incarichi WHERE id=".$id." ORDER BY data_ora_stato LIMIT 1;";
+					$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.v_incarichi WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
 					//echo $query
            
 					$result=pg_query($conn, $query);
 					while($r = pg_fetch_assoc($result)) {
+						//$id_squadra=$r['id_squadra'];
+						$id_uo=$r['id_uo'];
+               	$id_profilo=$r['id_profilo'];
+						require('./check_operatore.php');
+						
 					?>            
             	
-               <h4><br><b>Unità operativa</b>: <?php echo $r['descrizione_uo']; ?></h4>
+               <h4><br><b>Unità operativa</b>: <?php echo $r['descrizione_uo']; ?>
+               <?php
+               if ($check_uo==1){
+						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
+					}
+					require('./check_responsabile.php');
+					               
+               //require('./check_responsabile.php');
+               ?>
+               </h4>
                <h4><br><b>Descrizione incarico</b>: <?php echo $r['descrizione']; ?></h4>
                <h4><br><b>Data e ora invio incarico</b>: <?php echo $r['data_ora_invio']; ?></h4>
                
@@ -72,7 +86,7 @@ require('./check_evento.php');
 						$lon=$r['lon'];
 						$lat=$r['lat'];
             		$id_lavorazione=$r['id_lavorazione'];
-						
+					$id_evento=$r['id_evento'];
 						echo "<h2>";
 						//1;"Inviato ma non ancora preso in carico"
 						//2;"Preso in carico"
@@ -83,7 +97,11 @@ require('./check_evento.php');
 						if ($r["id_stato_incarico"]==1){
 							echo '<i class="fas fa-pause" style="color:orange"></i> ';
 						} else if  ($r["id_stato_incarico"]==2) {
-							echo '<i class="fas fa-play"></i> ';
+							if ($r['time_start']!=null) {
+								echo '<i class="fas fa-play" style="color:green"></i> ';
+							} else {
+								echo '<i class="fas fa-play" style="color:orange"></i> ';
+							}
 						} else if  ($r["id_stato_incarico"]==3) {
 							echo '<i class="fas fa-stop"></i> ';
 						} else if  ($r["id_stato_incarico"]==4) {
@@ -93,15 +111,31 @@ require('./check_evento.php');
 						
 						
 						echo $r['descrizione_stato'];
-						if ($r["parzioale"]=='t'){
-							echo '<br>  Presa in carico parziale';
+						if ($r["parziale"]=='t'){
+							echo '<br><br><i class="fas fa-battery-quarter"></i>  Presa in carico parziale';
 						}
 						echo "</h2><hr>";
 						if ($r["id_stato_incarico"]==1){
 						?>
 				      <div style="text-align: center;">
-				      <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#accetta"><i class="fas fa-thumbs-up"></i> Presa in carico /DEMO)</button>
-						<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#rifiuta"><i class="fas fa-thumbs-down"></i> Rifiuta (DEMO)</button>
+				      <?php 
+				      	$check_mail=0; //check se ci sono mail a sistema
+				      	$query2="SELECT mail FROM users.t_mail_incarichi WHERE cod='".$r['id_uo']."';";
+							$result2=pg_query($conn, $query2);
+							while($r2 = pg_fetch_assoc($result2)) {
+							  $check_mail=1; //check se ci sono mail a sistema
+							}
+							if($check_mail==1 and $check_operatore==1) {
+								//echo $r['id_uo'];
+								echo '<a class="btn btn-info" href="incarichi/sollecito.php?id='.$id.'&u='.$r['id_uo'].'"> <i class="fas fa-at"></i> Invia sollecito </a> ';
+							
+							}
+				      if ($check_uo==1 or $check_operatore==1){
+				      ?>
+				      <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#accetta"><i class="fas fa-thumbs-up"></i> Presa in carico</button>
+
+						<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#rifiuta"><i class="fas fa-thumbs-down"></i> Rifiuta</button>
+						<?php } ?>
 						</div>
 						
 						<!-- Modal accetta-->
@@ -119,10 +153,11 @@ require('./check_evento.php');
 						
 						   <form autocomplete="off" action="incarichi/accetta.php?id=<?php echo $id; ?>" method="POST">
 							<input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" />
+							<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
 							<!--input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" /-->
 								
 									 <div class="form-group">
-						<label for="data_inizio" >Data prevista per eseguire l'incarico (AAAA-MM-GG) </label>                 
+						<label for="data_inizio" >Data prevista per eseguire l'incarico (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
 						<div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
@@ -217,10 +252,10 @@ require('./check_evento.php');
 						      
 						
 						        <form autocomplete="off" action="incarichi/rifiuta.php?id=<?php echo $id; ?>" method="POST">
-								
-								
+									<input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" />
+									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
 										 <div class="form-group">
-									    <label for="note_rifiuto">Note rifiuto</label>
+									    <label for="note_rifiuto">Note rifiuto</label>  <font color="red">*</font>
 									    <textarea required="" class="form-control" id="note_rifiuto"  name="note_rifiuto" rows="3"></textarea>
 									  </div>
 						
@@ -245,17 +280,207 @@ require('./check_evento.php');
 							
 							
 							
+						} else if ($r["id_stato_incarico"]==2) {
+						?>
+							<h4><br><b>Ora prevista per eseguire l'incarico</b>: <?php echo $r['time_preview']; ?></h4>
+							<?php if ($r['time_start']==''){
+								if ($check_uo==1 or $check_operatore==1){
+								?>
+							
+								<a class="btn btn-success" href="./incarichi/start.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> In esecuzione</a><br><br> 
+								<?php 
+								}
+								} else { 
+								?>
+								<h4><br><b>Ora inizio esecuzione incarico</b>: <?php echo $r['time_start']; ?></h4>
+							<?php } 
+							if ($check_uo==1 or $check_operatore==1){
+							?>
+							<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi"><i class="fas fa-stop"></i> Chiudi</button>
+						<?php	
 						}
+						} else if ($r["id_stato_incarico"]==3) {
+						?>
+							<h4><br><b>Ora prevista per eseguire l'incarico</b>: <?php echo $r['time_preview']; ?></h4>
+							<h4><br><b>Ora inizio esecuzione incarico</b>: 
+							<?php 
+							if($r['time_start']!=''){
+								echo $r['time_start']; 
+							} else {
+								echo 'n.d (non in corso o avvio non inserito a sistema)';
+							}
+							?>
+							</h4>
+							<h4><br><b>Ora chiusura</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura</b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
+						<?php	
+						} else if ($r["id_stato_incarico"]==4) {
+						?>	
+							<h4><br><b>Note rifiuto</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
+						<?php	
+						}
+					?>
+					
+					
+					<!-- Modal rifiuta-->
+						<div id="chiudi" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+						
+						    <!-- Modal content-->
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        <h4 class="modal-title">Chiudi incarico</h4>
+						      </div>
+						      <div class="modal-body">
+						      
+						
+						        <form autocomplete="off" action="incarichi/chiudi.php?id=<?php echo $id; ?>" method="POST">
+									<input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" />
+									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
+										 <div class="form-group">
+									    <label for="note_rifiuto">Note chiusura</label>  <font color="red">*</font>
+									    <textarea required="" class="form-control" id="note_rifiuto"  name="note_rifiuto" rows="3"></textarea>
+									  </div>
+						
+						
+						
+						        <button  id="conferma" type="submit" class="btn btn-primary">Chiudi incarico</button>
+						            </form>
+						
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+						      </div>
+						    </div>
+						
+						  </div>
+						</div>
+					
+					<?php
+
+					
 					}
+					echo "<hr>";
+					include 'incarichi/panel_comunicazioni.php';
+					if ($stato_attuale<3){
+					?>
+					<div style="text-align: center;">
+					<?php 
+					if ($check_uo==1 or $check_operatore==1){
+					?>
+					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_da_UO"><i class="fas fa-comment"></i> Invia comunicazione a Centrale</button>
+					<?php }
+					if ($check_operatore==1){
+					?>
+					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_a_UO"><i class="fas fa-comment"></i> Invia comunicazione a UO</button>
+					<?php }
+					?>
+					</div>
+					
+					<!-- Modal comunicazione da UO-->
+						<div id="comunicazione_da_UO" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+						
+						    <!-- Modal content-->
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        <h4 class="modal-title">Chiudi incarico</h4>
+						      </div>
+						      <div class="modal-body">
+						      
+						
+						        <form autocomplete="off"  enctype="multipart/form-data"  action="incarichi/comunicazione_da_UO.php?id=<?php echo $id; ?>" method="POST">
+									<input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" />
+									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
+									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
+										 <div class="form-group">
+									    <label for="note">Testo comunicazione <?php echo $id_evento;?></label>  <font color="red">*</font>
+									    <textarea required="" class="form-control" id="note"  name="note" rows="3"></textarea>
+									  </div>
+									
+									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
+									<div class="form-group">
+									   <label for="note">Eventuale allegato</label>
+										<input type="file" class="form-control-file" name="userfile" id="userfile">
+									</div>
+						
+						        <button  id="conferma" type="submit" class="btn btn-primary">Invia comunicazione</button>
+						            </form>
+						
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+						      </div>
+						    </div>
+						
+						  </div>
+						</div>
 					
 					
+					<!-- Modal comunicazione a UO-->
+						<div id="comunicazione_a_UO"  class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+						
+						    <!-- Modal content-->
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        <h4 class="modal-title">Chiudi incarico</h4>
+						      </div>
+						      <div class="modal-body">
+						      
+						
+						        <form autocomplete="off"  enctype="multipart/form-data" action="incarichi/comunicazione_a_UO.php?id=<?php echo $id; ?>" method="POST">
+									<input type="hidden" name="uo" value="<?php echo $r['id_uo'];?>" />
+									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
+									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
+										 <div class="form-group">
+									    <label for="note">Testo comunicazione</label>
+									    <textarea required="" class="form-control" id="note"  name="note" rows="3"></textarea>
+									  </div>
+									  
+									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
+									<div class="form-group">
+									   <label for="note">Eventuale allegato</label>
+										<input type="file" class="form-control-file" name="userfile" id="userfile">
+									</div>
+						
+						
+						        <button  id="conferma" type="submit" class="btn btn-primary">Invia comunicazione e mail</button>
+						            </form>
+						
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+						      </div>
+						    </div>
+						
+						  </div>
+						</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					<hr>
+					
+					<?php
+					}
 					?>
 					<h3><i class="fas fa-list-ul"></i> Segnalazioni collegate all'incarico </h3><br>
 
 					<?php
+					
 					// fine $query che verifica lo stato
 					$query= "SELECT * FROM segnalazioni.v_incarichi WHERE id=".$id." and id_stato_incarico =".$stato_attuale."  ORDER BY id_segnalazione;";
+					
+					
 					//echo $query
         
 					$result=pg_query($conn, $query);
@@ -304,8 +529,13 @@ require('./check_evento.php');
 									  </div>
 									</div>
 						
-					
+								<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r["id_segnalazione"];?>"><i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r["id_segnalazione"];?></a>
+								<br><br>
+
 						
+						<?php
+					}
+					?>
 						
 						<br>
 						
@@ -322,9 +552,7 @@ require('./check_evento.php');
 						
 						</div>
 			
-					<?php
-					}
-					?>
+					
 
 
             </div>

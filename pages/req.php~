@@ -1,5 +1,13 @@
 <?php 
+
+//$page = $_SERVER['PHP_SELF'];
+//$sec = "60";
+
+
 ?>
+
+<!-- REFRESH automatico pagine -->
+     <!--meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'" content="IE=edge"-->
 
 <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -7,7 +15,7 @@
     <!-- Bootstrap Plugins -->
     <link href="../vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet">
     <link href="../vendor/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet">
-    <link href="../vendor/bootstrap-table/dist/css/bootstrap-select.css" rel="stylesheet">
+    <link href="../vendor/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
 	
 
     <!-- Leaflet CSS -->
@@ -24,6 +32,10 @@
 
     <!-- Custom Fonts -->
     <link href="../vendor/fontawesome-free-5.2.0-web/css/all.css" rel="stylesheet" type="text/css">
+    
+    
+    
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

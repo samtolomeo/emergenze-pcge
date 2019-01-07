@@ -21,6 +21,17 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
+
+$check_operatore=0;
+if ($profilo_sistema <= 3){
+	$check_operatore=1;
+}
+
+
+if ($profilo_sistema > 6){
+	header("location: ./divieto_accesso.php");
+}
+
 ?>
     
 </head>
@@ -40,13 +51,19 @@ require('./check_evento.php');
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Elenco volontari</h1>
+                    <h1 class="page-header">Elenco utenti esterni</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             
-            <br><br>
+            <br>
+            <?php
+				if ($check_operatore == 0){
+					echo '<h4><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a modificare i permessi utenti</h4><hr> ';
+				}
+				?>
+            <br>
             <div class="row">
 
 
@@ -68,11 +85,18 @@ require('./check_evento.php');
             <th data-field="cf" data-sortable="false"  data-visible="true">CF</th>
             <th style="word-break:break-all; word-wrap:break-word; " data-field="cognome" data-sortable="true"  data-visible="true">Cognome</th>
             <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
-	        <th data-field="comune" data-sortable="true"  data-visible="true" >Comune</th>
+				<th data-field="livello1" data-sortable="true"  data-visible="true" >Unità<br>operativa</th>
+	         <th data-field="comune" data-sortable="true"  data-visible="true" >Comune</th>
 	    		<th data-field="provincia" data-sortable="true"  data-visible="true" >PR</th>
              <th data-field="id_profilo" data-sortable="true"  data-visible="true" >Tipo<br>Profilo</th>
+            <?php
+				if ($check_operatore == 1){
+				?>
             <th data-field="stato_profilo" data-sortable="true" data-formatter="nameFormatter0" data-visible="true" >Stato<br>profilo</th>
             <th data-field="cf" data-sortable="false" data-formatter="nameFormatter" data-visible="true" > Edit </th>
+            <?php
+            }
+            ?>
             <!--th data-field="cf" data-sortable="false" data-formatter="nameFormatter1" data-visible="true" >Edit<br>permessi</th-->            
 
     </tr>

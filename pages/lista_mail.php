@@ -21,6 +21,14 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
+
+
+$check_operatore=0;
+if ($profilo_sistema <= 4.){
+	$check_operatore=1;
+}
+
+
 ?>
     
 </head>
@@ -46,7 +54,12 @@ require('./check_evento.php');
             </div>
             <!-- /.row -->
             
-            <br><br>
+            <?php
+				if ($check_operatore == 0){
+					echo '<h4><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a modificare le mail di contatto.</h4><hr> ';
+				}
+				?>
+            <br>
             <div class="row">
 
 
@@ -68,7 +81,13 @@ require('./check_evento.php');
             <th style="word-break:break-all; word-wrap:break-word; " data-field="tipo" data-sortable="true"  data-visible="true">Tipo</th>
             <th style="word-break:break-all; word-wrap:break-word; " data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione<br>U.O.</th>
 	          <th data-field="mails" data-sortable="true"  data-visible="true" >Mail</th>
-            <th data-field="cod" data-sortable="false" data-formatter="nameFormatter" data-visible="true" > Edit </th>           
+            <?php
+				if ($check_operatore == 1){
+				?>
+					<th data-field="cod" data-sortable="false" data-formatter="nameFormatter" data-visible="true" > Edit </th>           
+				<?php
+				}
+				?>
     </tr>
 </thead>
 
