@@ -312,13 +312,13 @@ require('./check_evento.php');
 							}
 							?>
 							</h4>
-							<h4><br><b>Ora chiusura</b>: <?php echo $r['time_stop']; ?></h4><hr>
-							<h4><br><b>Note chiusura</b>: <?php echo $r['note_ente']; ?></h4><hr>
+							<h4><br><b>Ora chiusura incarico</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura incarico </b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
 						<?php	
 						} else if ($r["id_stato_incarico"]==4) {
 						?>	
-							<h4><br><b>Note rifiuto</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
+							<h4><br><b>Note rifiuto incarico</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
 						<?php	
 						}
 					?>

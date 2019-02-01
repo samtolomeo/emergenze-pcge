@@ -340,6 +340,14 @@
 		    fillOpacity: 0.8
 		};
 		
+		var icon_no_lav = L.icon({
+		  iconUrl: 'icon/segn_no_lavorazione.png',
+		  iconSize: [32, 37],
+		  iconAnchor: [16, 37],
+		  popupAnchor: [0, -28]
+		});
+		
+		
 		var stile_lavorazione = {
 		    radius: 8,
 		    fillColor: "#228B22",
@@ -348,7 +356,12 @@
 		    opacity: 1,
 		    fillOpacity: 0.8
 		};
-		
+		var icon_lav = L.icon({
+		  iconUrl: 'icon/segn_lavorazione.png',
+		  iconSize: [24, 28],
+		  iconAnchor: [16, 37],
+		  popupAnchor: [0, -28]
+		});
 		
 		var stile_rischio = {
 		    radius: 10,
@@ -358,7 +371,12 @@
 		    opacity: 1,
 		    fillOpacity: 0.8
 		};
-		
+		var icon_rischio = L.icon({
+		  iconUrl: 'icon/elemento_rischio.png',
+		  iconSize: [32, 37],
+		  iconAnchor: [16, 37],
+		  popupAnchor: [0, -28]
+		});
 		
 		var stile_sopralluogo = {
 		    radius: 6,
@@ -368,6 +386,13 @@
 		    opacity: 1,
 		    fillOpacity: 0.8
 		};
+		
+		var icon_sopralluogo = L.icon({
+		  iconUrl: 'icon/sopralluogo.png',
+		  iconSize: [24, 28],
+		  iconAnchor: [16, 37],
+		  popupAnchor: [0, -28]
+		});
 		
 		var stile_pc = {
 		    radius: 6,
@@ -399,11 +424,22 @@
 
         
         //var markers0 = L.markerClusterGroup();
-        var markers1 = L.markerClusterGroup();
+        var markers1 = L.markerClusterGroup({			
+        
+        maxClusterRadius: 120,
+
+  spiderfyOnMaxZoom: true,
+  showCoverageOnHover: false,
+  zoomToBoundsOnClick: true,
+  disableClusteringAtZoom: 20
+});
+
+
 		  
 		  var layer_v_segnalazioni_0 = L.geoJson(segn_non_lav, {
 		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, stile_non_lavorazione);
+		        //return L.circleMarker(latlng, stile_non_lavorazione);
+		        return L.marker(latlng, {icon: icon_no_lav});
 		    }
 		    ,
 			onEachFeature: function (feature, layer) {
@@ -416,11 +452,14 @@
 			}
 		});
 		
-		var layer_v_segnalazioni_1 = L.geoJson(segn_lav, {
+		
+
+
+		var layer_v_segnalazioni_1 =  L.geoJson(segn_lav, {
 		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, stile_lavorazione);
-		    }
-		    ,
+		        //return L.circleMarker(latlng, stile_lavorazione);
+		        return L.marker(latlng, {icon: icon_lav});
+		    },
 			onEachFeature: function (feature, layer) {
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-play-circle"></i> In lavorazione </div>'+
 				'<h4><b>Tipo</b>: '+
@@ -436,7 +475,8 @@
 		var layer_v_sopralluoghi = L.geoJson(sopralluoghi_no_segnalazione, {
 		    pointToLayer: function (feature, latlng) {
 		        //return createSquare(latlng, stile_sopralluogo); // rettangolo (vedi funzione definita sopra)
-		        return L.circleMarker(latlng, stile_sopralluogo);
+		        //return L.circleMarker(latlng, stile_sopralluogo);
+		        return L.marker(latlng, {icon: icon_sopralluogo});
 		    }
 		    ,
 			onEachFeature: function (feature, layer) {
@@ -456,7 +496,8 @@
 		var layer_v_pc = L.geoJson(pc_punti, {
 		    pointToLayer: function (feature, latlng) {
 		        //return createSquare(latlng, stile_sopralluogo); // rettangolo (vedi funzione definita sopra)
-		        return L.circleMarker(latlng, stile_pc);
+		        //return L.circleMarker(latlng, stile_pc);
+		        return L.marker(latlng, {icon: icon_rischio});
 		    }
 		    ,
 			onEachFeature: function (feature, layer) {
@@ -464,12 +505,12 @@
 				'<h4><b>Squadra</b>: '+
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Stato</b>: '+
-				feature.properties.stato_provvedimento+'</h4>'+
+				feature.properties.descrizione_stato+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" target="_new" href="./dettagli_sopralluogo.php?id='+
+				'<a class="btn btn-info active" role="button" target="_new" href="./dettagli_provvedimento_cautelare.php?id='+
 				feature.properties.id +
-				'"> Dettagli sopralluogo </a>' );
+				'"> Dettagli PC </a>' );
 			}
 		});
 		
@@ -480,12 +521,12 @@
 				'<h4><b>Squadra</b>: '+
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Stato</b>: '+
-				feature.properties.stato_provvedimento+'</h4>'+
+				feature.properties.descrizione_stato+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" target="_new" href="./dettagli_sopralluogo.php?id='+
+				'<a class="btn btn-info active" role="button" target="_new" href="./dettagli_provvedimento_cautelare.php?id='+
 				feature.properties.id +
-				'"> Dettagli sopralluogo </a>' );
+				'"> Dettagli PC </a>' );
 			}
 		});
 		
@@ -717,9 +758,10 @@ var civico = [
         		'Realvista e-geos': realvista
         	};
         
-        var overlayLayers = {'Segnalazioni non ancora in lavorazione': layer_v_segnalazioni_0,
-        'Segnalazioni in lavorazione': markers1,
-        'Altri sopralluoghi': layer_v_sopralluoghi,
+        var overlayLayers = {'<img src="icon/segn_no_lavorazione.png" width="20" height="24" alt=""> Segnalazioni da elaborare': layer_v_segnalazioni_0,
+        '<img src="icon/segn_lavorazione.png" width="20" height="24" alt="">  Segnalazioni in lavorazione': markers1,
+        '<img src="icon/sopralluogo.png" width="20" height="24" alt="">  Altri sopralluoghi (o presidi)': layer_v_sopralluoghi,
+        '<img src="icon/elemento_rischio.png" width="20" height="24" alt=""> Provvedimenti cautelari':pc
         }
         
         //legenda

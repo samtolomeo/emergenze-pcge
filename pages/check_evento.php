@@ -193,6 +193,8 @@ foreach ($headers as $name => $content)
 	while($r = pg_fetch_assoc($result)) {
 		$profilo_sistema = $r['id_profilo'];
 		$descrizione_profilo = $r['descrizione'];
+		$profilo_cod_munic = $r['cod_municipio'];
+		$profilo_nome_munic = $r['nome_munic'];
 		
 	}
 	$query= "SELECT * FROM users.v_componenti_squadre WHERE matricola_cf ='".$matricola_cf."';";

@@ -15,6 +15,12 @@ $data_fine=$_POST["data_fine"].' '.$_POST["hh_end"].':'.$_POST["mm_end"];
 $d1 =  strtotime($data_inizio);
 $d2 =  strtotime($data_fine);
 
+
+if ($d1 > $d2) {
+	echo 'La data di fine allerta deve essere posteriore alla data di inizio allerta. ';
+	echo '<br><a href="../dettagli_evento.php"> Torna alla pagina precedente';
+	exit;
+}
 //$d1 = DateTime::createFromFormat('Y-m-d H:M', strtotime($data_inizio));
 //$d2 = DateTime::createFromFormat('Y-m-d H:M', $data_fine);
 echo $data_inizio;
@@ -56,7 +62,7 @@ echo "<br>";
 echo $query_log;
 
 //exit;
-header("location: ../dettagli_evento.php?id=".$cf);
+header("location: ../dettagli_evento.php");
 
 
 ?>

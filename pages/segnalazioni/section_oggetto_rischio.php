@@ -4,7 +4,11 @@
 
 
 $check_or=0;
-$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE id_segnalazione_in_lavorazione=".$id_lavorazione." AND attivo='t';";
+if ($id_lavorazione==''){
+	$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE  id_segnalazione=".$id." AND attivo='t';";
+} else {
+	$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE id_segnalazione_in_lavorazione=".$id_lavorazione."  AND attivo='t';";
+}
 //echo $query_or;
 $result_or=pg_query($conn, $query_or);
 while($r_or = pg_fetch_assoc($result_or)) {

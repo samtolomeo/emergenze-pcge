@@ -50,10 +50,7 @@ echo $id_segnalazione;
 echo "<br>";
 
 
-//************************************
-// DEMO da rimuovere quando ci sarà le gestione utenti
-$operatore="MRZRRT84B01D969U";
-//*************************************
+
 
 $query="INSERT INTO segnalazioni.t_segnalazioni_in_lavorazione(id, id_profilo, geom ";
 $query=$query.") VALUES ("; 
@@ -80,7 +77,7 @@ echo "<br>";
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Presa in carico segnalazione ".$id_segnalazione."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$CF ."', 'Presa in carico segnalazione ".$id_segnalazione."');";
 $result = pg_query($conn, $query_log);
 echo "<br>";
 echo $query_log;

@@ -12,7 +12,7 @@ $query_evento_aperto="SELECT s.id,
 		FROM segnalazioni.t_segnalazioni s
 		JOIN eventi.t_eventi e on e.id=s.id_evento
 		WHERE s.id=".$id.";";
-echo 
+//echo 
 $result_e=pg_query($conn, $query_evento_aperto);
 while($r_e = pg_fetch_assoc($result_e)) {
 	if($r_e['valido']=='f') {
@@ -118,6 +118,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$check_lav=0;
 						//$check_operatore=0; //controllo se l'operatore può fare qualcosa o meno
 						$id_profilo=$r['id_profilo'];
+						$id_municipio=$r['id_municipio'];
+						
+						
+						//echo 'Munic'. $id_municipio.'<br>';
+						//echo 'Profilo'. $profilo_sistema.'<br>';
 						require('./check_operatore.php');
 						
 						if ($r['id_lavorazione'] !='' and $r['in_lavorazione']=='t') {
@@ -150,6 +155,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								} else if ($r['id_lavorazione'] !=''  and $r['in_lavorazione']=='f') {
 									$check_lav=-1;
 									echo '<h4> <i class="fas fa-stop"></i> La segnalazione è chiusa </h4>';
+									?>
+									<h4><br><b>Note chiusura</b>: <?php echo $r['descrizione_chiusura']; ?></h4>
+									<?php
 						}
 						
 						
@@ -576,7 +584,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
 	   					// check sugli incarichi / sopralluoghi attivi
 	   					if($check_incarichi_aperti==1 OR $check_incarichi_interni_aperti==1 OR $check_sopralluoghi==1 OR $check_chiusura<0 ){
-	   						echo 'disabled="" title="Impossibile chiudere la segnalazione. Incarichi o sopralluoghi ancora in corso."';
+	   						echo 'disabled="" title="Impossibile chiudere la segnalazione. Incarichi / sopralluoghi / provvedimenti cautelari risultano ancora in corso o non presi in carico."';
 	   					}
 	   					echo 'data-target="#chiudi"><i class="fas fa-times"></i> Chiudi segnalazione </button>';
 	   				}
@@ -600,6 +608,39 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 								<form autocomplete="off" action="incarichi/nuovo_incarico.php?id=<?php echo $id_lavorazione; ?>&s=<?php echo $id; ?>" method="POST">
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
+								
+								<?php
+								if($id_profilo==5 or $id_profilo==6) {
+									if($id_profilo==5){
+										$query = "select concat('com_',cod) as cod, descrizione from varie.t_incarichi_comune";
+										$query = $query ." where (cod like '%MU%' and descrizione not like '% ".integerToRoman($id_municipio)."') or (cod not like '%MU%' and descrizione ilike 'distretto ".$id_municipio."')";
+										$query = $query ." order by descrizione;";
+										//echo $query;
+									} else {
+										$query = "select concat('com_',cod) as cod, descrizione from varie.t_incarichi_comune";
+										$query = $query ." where (cod not like '%MU%' and descrizione not like '%".$id_municipio."%') or (cod like '%MU%' and descrizione like '% ".integerToRoman($id_municipio)."%')";
+										$query = $query ." order by descrizione;";
+									}
+								//$result = pg_query($conn, $query);
+
+								?>
+								<div class="form-group">
+									  <label for="id_civico">Seleziona l'Unità Operativa cui assegnare l'incarico:</label> <font color="red">*</font>
+										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
+										<option value=""> ...</option>
+										<?php
+										$resultr = pg_query($conn, $query);
+										while($rr = pg_fetch_assoc($resultr)) {
+										?>	
+										<option name="id_uo" value="<?php echo $rr['cod'];?>" ><?php echo $rr['descrizione'];?></option>
+										<?php } ?>
+									</select>         
+									 </div>
+								<?php
+								
+									} else {
+									
+									?>
 								<div class="form-group">
 								 <label for="tipo">Tipologia di incarico:</label> <font color="red">*</font>
 									<select class="form-control" name="tipo" id="tipo" onChange="getUO(this.value);"  required="">
@@ -631,7 +672,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										<option value=""> ...</option>
 									</select>         
 									 </div>       
-									 
+									<?php
+									}
+									
+									?>
 									<div class="form-group">
 											 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
 										<input type="text" name="descrizione" class="form-control" required="">
@@ -798,6 +842,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<label for="nome"> Pensi sia necessario inviarla a Manutenzioni/ LLPP?</label> <br>
 								<label class="radio-inline"><input type="radio" name="invio" value="man">Manutenzioni</label>
 								<label class="radio-inline"><input type="radio" name="invio" value="llpp">LLPP</label>
+								<label class="radio-inline"><input type="radio" name="invio" value="">No</label>
 							</div>
 
 								<!--div class="form-group">
@@ -881,7 +926,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r_civico['id'];?>"> <i class="fas fa-angle-right"></i> Vai alla segnalazione </a>
 									<br> <br>
 									<?php
-									if ($r_civico['id_lavorazione']!='' and $r['id_lavorazione']==''){
+									if ($r_civico['id_lavorazione']!='' and $r['id_lavorazione']=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <=6 ){
 										echo '<a class="btn btn-info" href="./segnalazioni/unisci_segnalazione.php?id_from='.$id.'&id_to='.$r_civico['id'].'"><i class="fas fa-link"></i> Unisci segnalazione. </a>';
 									} 
 									?>
@@ -951,7 +996,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r_vic['id'];?>"> <i class="fas fa-angle-right"></i> Vai alla segnalazione </a>
 									<br> <br>
 									<?php
-									if ($r_vic['id_lavorazione']!='' and $r['id_lavorazione']=='' and $profilo_sistema <= 6){
+									if ($r_vic['id_lavorazione']!='' and $r['id_lavorazione']=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <= 6){
 										echo '<a class="btn btn-info" href="./segnalazioni/unisci_segnalazione.php?id_from='.$id.'&id_to='.$r_vic['id'].'"><i class="fas fa-link"></i> Unisci segnalazione. </a>';
 									} 
 									?>
@@ -973,15 +1018,17 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<div style="text-align: center;">
 						<?php
 						
-						 if ($r['id_lavorazione']=='' and $profilo_sistema <= 6){ ?>
+						 if ($r['id_lavorazione']=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <= 6){ ?>
 								<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#lavorazione"> <i class="fas fa-plus"></i> 
 								<?php
 								 // solo se non ancora in lavorazione
+								 
 									if ($check_civico==0 and $check_vic==0){
 										echo "Elabora segnalazione";
 									} else {
 										echo "Elabora come nuova segnalazione<br><small>dopo aver verificato che non si possa unire</small>";
 									}
+								 
 								
 								?>
 								</button>	

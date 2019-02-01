@@ -491,7 +491,7 @@ require('./check_evento.php');
             //echo $query1;    
             while($r2 = pg_fetch_assoc($result2)) { 
             ?>    
-                    <option name="bollettino" value="<?php echo $r2['nomefile'];?>" ><?php echo $r2['nomefile'];?></option>
+                    <option name="bollettino" value="<?php echo $r2['nomefile'];?>" ><?php echo $r2['nomefile'].' ('.$r2['data_download'].")";?></option>
              <?php } ?>
 
              </select>            

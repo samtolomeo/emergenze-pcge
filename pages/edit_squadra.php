@@ -86,7 +86,7 @@ require('./check_evento.php');
 				while($r = pg_fetch_assoc($result)) {
 					echo '<div class="col-md-2"> <b>Cognome e nome</b>:</div>';
 					echo '<div class="col-md-2">'. $r['cognome'].' '.$r['nome'] .'</div>';
-					echo '<div class="col-md-4">';
+					echo '<div class="col-md-3">';
 					if ($r['mail']!=''){
 						/*if (strlen($r['matricola_cf'])==16){
 							echo '('.$r['mail'].')';
@@ -117,8 +117,41 @@ require('./check_evento.php');
 						</form>
 						<?php
 					}
+					echo '</div><div class="col-md-3">';
+					if ($r['telefono']!=''){
+						/*if (strlen($r['matricola_cf'])==16){
+							echo '('.$r['mail'].')';
+						} else {*/
+					$edit_telefono=$r['telefono'];
+					?>
+					
+					
+						<form class="form-inline" action="./incarichi_interni/cambia_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST">
+						<div class="form-group">
+							<label for="telefono" class="sr-only">Tel</label>
+							<input type="telefono" class="form-control-plaintext" name="telsq" value="<?php echo $r['telefono']; ?>" >
+						</div>
+						<button  type="submit" class="btn btn-primary">Edit</button>
+						</form>
+						
+						
+					<?php
+						//}	
+					} else {
+						?>
+						<form class="form-inline" action="./incarichi_interni/import_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST">
+						<div class="form-group">
+							<label for="telefono" class="sr-only">Tel</label>
+							<input required="" type="telefono" class="form-control-plaintext" name="telsq" >
+						</div>
+						<button  type="submit" class="btn btn-primary">Aggiungi tel</button>
+						</form>
+						<?php
+					}
+					
+					
 					echo '</div>';
-					echo '<div class="col-md-4">';
+					echo '<div class="col-md-2">';
 					if($r['capo_squadra']=='t'){
 						echo '<i class="fas fa-user-check"></i>  <a class="btn btn-danger" href="./squadre/elimina_capo_squadra.php?m='.$r['matricola_cf'].'&s='.$r['id'].'"> <i class="fas fa-user-times"></i> Rimuovi come capo squadra </a>';					
 					} else {
@@ -227,7 +260,7 @@ require('./check_evento.php');
             <div class="col-md-12"> 
                 <div class="form-group">
 			        <label for="mail-input">Mail:</label> <font color="red">*</font>
-			            <input class="form-control" type="mail" name="mail" id="mail-input"  required="">
+			            <input class="form-control" type="mail" name="mailsq" id="mail-input"  required="">
 			                
 			    </div>
             </div>

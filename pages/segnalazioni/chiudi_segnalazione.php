@@ -12,6 +12,7 @@ $note= str_replace("'", "''", $_POST["note"]);
 
 
 $query= "UPDATE segnalazioni.t_segnalazioni_in_lavorazione SET in_lavorazione='f'";
+$query=$query.", descrizione_chiusura='".$note."' ";
 if($_POST["invio"]=='man') {
 	$query=$query.", invio_manutenzioni='t' ";
 }

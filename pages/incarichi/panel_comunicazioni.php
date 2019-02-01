@@ -33,15 +33,64 @@
 					//echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico.php?id=".$r_comunicazioni['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 				}
 				
-	
-	
-				?>
+					$page = basename($_SERVER['PHP_SELF']);
+					if ($page=='dettagli_segnalazione.php'){
+					?>
+						<br><hr>
+						<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione"><i class="fas fa-comment"></i> Invia comunicazione</button>
+					<?php
+					}
+					?>
+				
 			
 			
 			</div>
     </div>
   </div>
 </div>
+
+
+<!-- Modal comunicazione da UO-->
+<div id="comunicazione" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+	<!-- Modal content-->
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4 class="modal-title">Comunicazioni sulla segnalazione</h4>
+	  </div>
+	  <div class="modal-body">
+	  
+
+		<form autocomplete="off"  enctype="multipart/form-data"  action="incarichi/comunicazione.php?id=<?php echo $id; ?>" method="POST">
+			<input type="hidden" name="mittente" value="<?php echo $cognome." " .$nome. " (".$descrizione_profilo.")";?>" />
+			<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
+			<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
+				 <div class="form-group">
+				<label for="note">Testo comunicazione <?php echo $id_evento;?></label>  <font color="red">*</font>
+				<textarea required="" class="form-control" id="note"  name="note" rows="3"></textarea>
+			  </div>
+			
+			<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
+			<div class="form-group">
+			   <label for="note">Eventuale allegato</label>
+				<input type="file" class="form-control-file" name="userfile" id="userfile">
+			</div>
+
+		<button  id="conferma" type="submit" class="btn btn-primary">Invia comunicazione</button>
+			</form>
+
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+	  </div>
+	</div>
+
+  </div>
+</div>
+	
+
 
 
 <?php

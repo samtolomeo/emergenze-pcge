@@ -18,10 +18,11 @@ $result=pg_query($conn, $query);
 echo "<br>";
 
 
-$query_mail="SELECT mail FROM users.v_utenti_esterni WHERE cf='".$matricola_cf."';";
+$query_mail="SELECT mail, telefono1 FROM users.v_utenti_esterni WHERE cf='".$matricola_cf."';";
 $result_mail=pg_query($conn, $query_mail);
 while($r_mail= pg_fetch_assoc($result_mail)) { 
 	$mail=$r_mail['mail'];
+	$telefono=$r_mail['telefono1'];
 }
 
 echo $query_mail."<br>";
@@ -30,6 +31,16 @@ echo $query_mail."<br>";
 if ($mail!=''){
 	$query="INSERT INTO users.t_mail_squadre(cod, matricola_cf, mail) 
 	VALUES (".$id_squadra.", '".$matricola_cf."','".$mail."');";
+	echo $query;
+	//exit;
+	$result=pg_query($conn, $query);
+}
+
+
+
+if ($telefono!=''){
+	$query="INSERT INTO users.t_telefono_squadre(cod, matricola_cf, telefono) 
+	VALUES (".$id_squadra.", '".$matricola_cf."','".$telefono."');";
 	echo $query;
 	//exit;
 	$result=pg_query($conn, $query);

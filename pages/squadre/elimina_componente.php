@@ -16,6 +16,17 @@ echo $query;
 //exit;
 $result=pg_query($conn, $query);
 
+$query="DELETE FROM users.t_mail_squadre 
+WHERE matricola_cf= '".$matricola_cf."' AND cod='".$id_squadra."';";
+echo $query;
+//exit;
+$result=pg_query($conn, $query);
+
+$query="DELETE FROM users.t_telefono_squadre 
+WHERE matricola_cf= '".$matricola_cf."' AND cod='".$id_squadra."';";
+echo $query;
+//exit;
+$result=pg_query($conn, $query);
 
 $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Eliminato componente quadra con id: ".$id_squadra."');";
 $result = pg_query($conn, $query_log);
