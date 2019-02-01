@@ -122,10 +122,30 @@ if ($profilo_sistema > 6){
 <script>
 
 
-  function nameFormatter(value) {
+function nameFormatter(value,row) {
 
-        return '<a href="./update_volontario.php?id=\''+ value + '\'" class="btn btn-warning" title="Modifica dati" role="button"><i class="fa fa-user-edit" aria-hidden="true"></i> </a> <a href="./elimina_volontario.php?id=\''+ value + '\'" class="btn btn-danger" role="button" title="Elimina persona" ><i class="fa fa-times" aria-hidden="true"></i> </a>';
-    }
+    //return '<a href="./update_volontario.php?id=\''+ value + '\'" class="btn btn-warning" title="Modifica dati" role="button"><i class="fa fa-user-edit" aria-hidden="true"></i> </a> <a href="./elimina_volontario.php?id=\''+ value + '\'" class="btn btn-danger" role="button" title="Elimina persona" ><i class="fa fa-times" aria-hidden="true"></i> </a>';
+    return' <a href="./update_volontario.php?id=\''+ value + '\'" class="btn btn-warning" title="Modifica dati" role="button"><i class="fa fa-user-edit" aria-hidden="true"></i> </a>\
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#conferma_elimina'+value+'"><i class="fas fa-times"></i></button> \
+    <div class="modal fade" id="conferma_elimina'+value+'" role="dialog"> \
+    <div class="modal-dialog"> \
+      <div class="modal-content">\
+        <div class="modal-header">\
+          <button type="button" class="close" data-dismiss="modal">&times;</button>\
+          <h4 class="modal-title">Conferma eliminazione utente '+row.cognome+' '+row.nome+'</h4>\
+        </div>\
+        <div class="modal-body">\
+        Se confermi di voler l\'utente? clicca qua \
+		<a href="./elimina_volontario.php?id=\''+ value + '\'" class="btn btn-danger" role="button" title="Elimina persona" ><i class="fa fa-times" aria-hidden="true"></i> Elimina </a>\
+        </div>\
+        <!--div class="modal-footer">\
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
+        </div-->\
+      </div>\
+    </div>\
+  </div>\
+</div>';
+}
 
 
 

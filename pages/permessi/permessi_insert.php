@@ -57,18 +57,19 @@ if ($profilo=='no' and $check_update==1 ){
 	$result = pg_query($conn, $query_log);
 
 
-} else  if ($profilo!='no' and $check_update==0){
+} else if ($profilo!='no' and $check_update==0){
 	$query="INSERT INTO users.utenti_sistema (matricola_cf, id_profilo";
 	if($municipio!='') {
-		$query=$query. ", cod_municipio ";
+		$query=$query. ", cod_municipio";
 	}
 	$query=$query. ") VALUES (";
 	$query=$query. "'".$matr_cf."', ". $profilo." ";
 	if($municipio!='') {
-		$query=$query. " '".$municipio."' ";
+		$query=$query. ", '".$municipio."' ";
 	}
 	$query=$query.");";
 	echo $query;
+	//exit;
 	$result = pg_query($conn, $query);
 	$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["Utente"] ."', 'Aggiunta permessi utente : ".$matr_cf."');";
 	$result = pg_query($conn, $query_log);

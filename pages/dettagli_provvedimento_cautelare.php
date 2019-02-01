@@ -448,7 +448,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<?php 
 								}
 							} else { ?>
-								<h4><br><b>Ora inizio esecuzione il provvedimento</b>: <?php echo $r['time_start']; ?></h4> 
+								<h4><br><b>Ora inizio esecuzione del provvedimento</b>: <?php echo $r['time_start']; ?></h4> 
 							<?php } 
 							 	if ($check_squadra==1 or $check_operatore==1){
 							?>
@@ -467,13 +467,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							}
 							?>
 							</h4>
-							<h4><br><b>Ora chiusura</b>: <?php echo $r['time_stop']; ?></h4><hr>
-							<h4><br><b>Note chiusura</b>: <?php echo $r['note_ente']; ?></h4><hr>
+							<h4><br><b>Ora chiusura provvedimento cautelare</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura provvedimento cautelare</b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
 						<?php	
 						} else if ($r["id_stato_provvedimenti_cautelari"]==4) {
 						?>	
-							<h4><br><b>Note rifiuto</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
+							<h4><br><b>Note rifiuto provvedimento cautelare</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
 						<?php	
 						}
 					?>

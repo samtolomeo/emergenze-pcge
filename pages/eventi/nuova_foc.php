@@ -15,6 +15,11 @@ $data_fine=$_POST["data_fine"].' '.$_POST["hh_end"].':'.$_POST["mm_end"];
 $d1 =  strtotime($data_inizio);
 $d2 =  strtotime($data_fine);
 
+if ($d1 > $d2) {
+	echo 'La data di fine Fase Operativa deve essere posteriore alla data di inizio Fase Operativa. ';
+	echo '<br><a href="../dettagli_evento.php"> Torna alla pagina precedente';
+	exit;
+}
 //$d1 = DateTime::createFromFormat('Y-m-d H:M', strtotime($data_inizio));
 //$d2 = DateTime::createFromFormat('Y-m-d H:M', $data_fine);
 echo $data_inizio;

@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Nuovo Provvedimento Cautelare (Sgombero Civico)"
+$subtitle="Nuovo Provvedimento Cautelare (Interdizione all'accesso)"
 
 ?>
 <!DOCTYPE html>
@@ -67,7 +67,7 @@ if ($profilo_sistema > 6){
 
             <div class="row"> 
 
-            <h4><i class="fas fa-pencil-ruler"></i> Descrizione sgombero</h4> 
+            <h4><i class="fas fa-pencil-ruler"></i> Descrizione</h4> 
             <div class="form-group col-md-3">
             <label for="nome"> Evento</label> <font color="red">*</font>  
  				<?php 

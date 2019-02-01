@@ -311,13 +311,13 @@ require('./check_evento.php');
 							}
 							?>
 							</h4>
-							<h4><br><b>Ora chiusura</b>: <?php echo $r['time_stop']; ?></h4><hr>
-							<h4><br><b>Note chiusura</b>: <?php echo $r['note_ente']; ?></h4><hr>
+							<h4><br><b>Ora chiusura incarico</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura incarico</b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
 						<?php	
 						} else if ($r["id_stato_incarico"]==4) {
 						?>	
-							<h4><br><b>Note rifiuto</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
+							<h4><br><b>Note rifiuto incarico</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
 						<?php	
 						}
 					?>
@@ -387,7 +387,7 @@ require('./check_evento.php');
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Chiudi incarico</h4>
+						        <h4 class="modal-title">Comunicazioni al responsabile segnalazione</h4>
 						      </div>
 						      <div class="modal-body">
 						      
@@ -428,7 +428,7 @@ require('./check_evento.php');
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Chiudi incarico</h4>
+						        <h4 class="modal-title">Comunicazioni al responsabile incarico</h4>
 						      </div>
 						      <div class="modal-body">
 						      

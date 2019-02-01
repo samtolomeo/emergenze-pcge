@@ -10,6 +10,13 @@ $id=$_POST["id"];
 echo $profilo;
 
 
+echo "Id".$id."<br>";
+
+echo "Id_lav".$id_segnalazione_lav."<br>";
+
+
+//exit;
+
 
 
 $geom="ST_GeomFromText('POINT(".$_POST["lon"]." ".$_POST["lat"].")',4326)";

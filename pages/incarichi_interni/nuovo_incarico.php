@@ -20,10 +20,10 @@ $descrizione= str_replace("'", "''", $_POST["descrizione"]);
 $uo= str_replace("'", "''", $_POST["uo"]);
 
 
-echo "Segnalazione in lavorazione:".$id. "<br>";
-echo "Segnalazione:".$segn. "<br>";
-echo "Descrizione:".$descrizione. "<br>";
-echo "Squadra:".$uo. "<br>";
+//echo "Segnalazione in lavorazione:".$id. "<br>";
+//echo "Segnalazione:".$segn. "<br>";
+//echo "Descrizione:".$descrizione. "<br>";
+//echo "Squadra:".$uo. "<br>";
 
 
 
@@ -41,7 +41,7 @@ while($r_max = pg_fetch_assoc($result_max)) {
 		$id_incarico=1;	
 	}
 }
-echo "Id incarico interno:".$id_incarico. "<br>";
+//echo "Id incarico interno:".$id_incarico. "<br>";
 
 
 
@@ -54,13 +54,13 @@ $result_uo = pg_query($conn, $query_uo);
 while($r_uo = pg_fetch_assoc($result_uo)) {
 	$uo_descrizione=$r_uo['nome'];
 }
-echo $query_uo."<br>";
+//echo $query_uo."<br>";
 
 //echo "Descrizione uo:".$uo_descrizione. "<br>";
 
 
 $query="UPDATE users.t_squadre SET id_stato=1 WHERE id=".$uo.";";
-echo $query;
+//echo $query;
 //exit;
 $result=pg_query($conn, $query);
 
@@ -142,7 +142,7 @@ while($r = pg_fetch_assoc($result)) {
 echo "<br>";
 //echo $query;
 //echo "<br>";
-echo count($mails). " registrate a sistema";
+echo count($mails). " mail registrate a sistema";
 
 //Import the PHPMailer class into the global namespace
 use PHPMailer\PHPMailer\PHPMailer;
@@ -205,11 +205,12 @@ $mail->AltBody = 'This is a plain-text message body';
 //send the message, check for errors
 //echo "<br>OK 2<br>";
 if (!$mail->send()) {
-    echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
+   //echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
+    echo "<h3>Problema nell'invio della mail";
 	?>
-	<script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script>
+	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
-	echo '<br>L\'incarico è stato correttamente assegnato, ma si è riscontrato un problema nell\'invio della mail.';
+	echo '<br>L\'incarico &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
 	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
 	echo '<a href="../dettagli_segnalazione.php?id='.$segn.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);

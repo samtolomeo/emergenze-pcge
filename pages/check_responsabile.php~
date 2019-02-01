@@ -11,7 +11,7 @@ if ($id_profilo<=3 and $id_profilo>0){
 }
 
 //echo $check_operatore;
-if ($check_operatore==1 and $id_profilo==$profilo_sistema){
+if ($check_operatore==1){
 	echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
 }
 

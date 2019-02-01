@@ -53,6 +53,9 @@ require('./check_evento.php');
 						echo "<br><b>Matricola</b>: ". $matricola;
 					}
 					echo "<br><b>Profilo</b>: ". $descrizione_profilo;
+					if ($profilo_nome_munic!=''){
+						echo "<br><b>Municipio</b>: ". $profilo_nome_munic;
+					}
 					echo "<br><b>Squadra</b>: ". $nome_squadra_operatore;
 				?> 
 				

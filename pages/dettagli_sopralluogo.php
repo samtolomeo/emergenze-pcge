@@ -82,6 +82,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					//$check_operatore=0;
 					$id_squadra=$r['id_squadra'];
                $id_profilo=$r['id_profilo'];
+			   //echo $id_profilo;
+			   //echo "<br>";
 					require('./check_operatore.php');
 					?>            
             	
@@ -90,7 +92,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
                <?php
                if ($check_squadra==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
-					}
+				}
 					require('./check_responsabile.php');
 					?>
                </h4>
@@ -463,8 +465,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							}
 							?>
 							</h4>
-							<h4><br><b>Ora chiusura</b>: <?php echo $r['time_stop']; ?></h4><hr>
-							<h4><br><b>Note chiusura</b>: <?php echo $r['note_ente']; ?></h4><hr>
+							<h4><br><b>Ora chiusura sopralluogo</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura sopralluogo</b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
 						<?php	
 						} else if ($r["id_stato_sopralluogo"]==4) {

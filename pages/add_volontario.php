@@ -112,7 +112,7 @@ if ($profilo_sistema > 3){
                     <?php for( $m=1; $m<=12; ++$m ) { 
                       setlocale(LC_TIME, 'it_IT.iso88591');
                       #$month_label = date('F', mktime(0, 0, 0, $m, 1));
-                      $month_label = strftime('%B', mktime(0, 0, 0, $m));
+                      $month_label = strftime('%B', mktime(0, 0, 0, $m, 1));
 
                       
                     ?>

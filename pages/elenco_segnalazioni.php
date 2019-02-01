@@ -133,7 +133,8 @@ require('./tables/filtri_segnalazioni.php');
                 <option value="selected">Esporta solo selezionati</option>
             </select>
         </div>
-        
+        <div style="overflow-x:auto;">
+
       	<?php if ($filtro_evento_attivo == 1){
       	?>
         <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_attivi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
@@ -147,24 +148,24 @@ require('./tables/filtri_segnalazioni.php');
 
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th> 
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>
+            <th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Stato</th> 
             <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
             <th data-field="criticita" data-sortable="true"   data-visible="true">Tipo<br>criticità</th>
-            <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
-            <th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th>
             <th data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
             <th data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
             <th data-field="nome_munic" data-sortable="true"  data-visible="true">Municipio</th>
             <th data-field="localizzazione" data-sortable="true"  data-visible="true">Civico</th>
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>
             <th data-field="note" data-sortable="false" data-visible="true" >Note</th>
-            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>
-            <th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>                  
+            <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
+            <th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th>
 
     </tr>
 </thead>
 
 </table>
-
+</div>
 
 
 
@@ -175,11 +176,11 @@ require('./tables/filtri_segnalazioni.php');
 
  function nameFormatter(value) {
         if (value=='t'){
-        		return '<i class="fas fa-play" style="color:#5cb85c"></i>';
+        		return '<i class="fas fa-play" style="color:#5cb85c"></i> in lavorazione';
         } else if (value=='f') {
-        	   return '<i class="fas fa-stop"></i>';
+        	   return '<i class="fas fa-stop"></i> chiusa';
         } else {
-        	   return '<i class="fas fa-pause" style="color:#ff0000"></i>';;
+        	   return '<i class="fas fa-exclamation" style="color:#ff0000"></i> da prendere in carico';;
         }
 
     }
