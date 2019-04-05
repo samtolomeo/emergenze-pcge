@@ -23,7 +23,7 @@ require ('./note_ambiente.php');
                 </button>
                 <!--a class="navbar-brand" href="index.php"> </a-->
                 <div class="navbar-brand"> <i class="fas fa-server"></i>
-                Gestione emergenze <font color=red> <?php echo $note_ambiente?> </font>- <?php echo $subtitle?> </div>
+                Gestione emergenze <?php echo $note_ambiente?> - <?php echo $subtitle?> </div>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
