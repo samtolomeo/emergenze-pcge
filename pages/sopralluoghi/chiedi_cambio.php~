@@ -12,8 +12,6 @@ $id_sopralluogo= $_GET['id'];
 $id_lavorazione= $_GET['l'];
 
 
-echo "Attualmente in lavorazione.. ci scusiamo per il disagio.";
-exit;
 
 
 $query="INSERT INTO segnalazioni.t_sopralluoghi_richiesta_cambi (id_sopralluogo)

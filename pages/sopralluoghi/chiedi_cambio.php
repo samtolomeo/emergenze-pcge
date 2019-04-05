@@ -45,7 +45,7 @@ if ($id_lavorazione!=''){
 	$query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, log_aggiornamento";
 	
 	//values
-	$query=$query.") VALUES (".$id_lavorazione.", 'Chiesto cambio squadra per il sopralluogo ".$id_sopralluogo." </i><br>- <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id."\"> Visualizza dettagli </a>'";
+	$query=$query.") VALUES (".$id_lavorazione.", 'Chiesto cambio squadra per il presidio ".$id_sopralluogo." </i><br>- <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id."\"> Visualizza dettagli </a>'";
 	
 	$query=$query.");";
 	
@@ -55,7 +55,7 @@ if ($id_lavorazione!=''){
 	$result=pg_query($conn, $query);
 }
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('sopralluoghi','".$operatore ."', 'Chiesto cambio squadra per sopralluogo ".$id_sopralluogo."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('sopralluoghi','".$operatore ."', 'Chiesto cambio squadra per presidio (o sopralluogo) ".$id_sopralluogo."');";
 echo $query_log."<br>";
 $result = pg_query($conn, $query_log);
 

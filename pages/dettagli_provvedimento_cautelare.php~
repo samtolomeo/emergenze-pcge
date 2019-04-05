@@ -87,7 +87,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
                // 2 : permessi squadra
                
                //$check_operatore=0;
-					$id_squadra=$r['id_profilo'];
+					$id_squadra=$r['id_squadra'];
                $id_profilo=$r['id_profilo'];
 					require('./check_operatore.php');	
 					?>            
@@ -142,6 +142,88 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					}
 				   
 				   
+			   }
+			   
+			   
+			   
+			   //anagrafe civico
+			   if ($r['tipo_oggetto']=='geodb.civici'){
+				
+				$query_or3="SELECT * FROM geodb.civici WHERE id = ".$r['id_oggetto'].";";
+				$result_or3=pg_query($conn, $query_or3);
+				while($r_or3 = pg_fetch_assoc($result_or3)) {
+					$numciv=ltrim($r_or3["numero"],'0');
+					$via=$r_or3["desvia"];
+					$lettera=$r_or3["lettera"];	
+				}
+				//echo "<br><b>Indirizzo</b>: ".$via. ", " .$numciv;
+				?>
+				<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#anagrafe_civico"><i class="fas fa-address-book"></i> Visualizza anagrafe civico </button>
+				<!-- Modal incarico-->
+						<div id="anagrafe_civico" class="modal fade" role="dialog">
+						  <div class="modal-dialog modal-lg">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Anagrafe civico di <?php echo $via. " Numero: " .$numciv. " " .$lettera ;?></h4>
+							  </div>
+							  <div class="modal-body">
+							  
+
+								<div id="toolbar">
+				            <select class="form-control">
+				                <option value="">Esporta i dati visualizzati</option>
+				                <option value="all">Esporta tutto (lento)</option>
+				                <option value="selected">Esporta solo selezionati</option>
+				            </select>
+				        </div>
+				        
+				        <table  id="t_anagrafe_civico" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_anagrafe_civico.php?id=<?php echo $r['id_oggetto'];?>" data-height="900"  data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+				        
+				        
+						<thead>
+				
+				 			<tr>
+			            <th data-field="state" data-checkbox="true"></th>
+			             <th data-field="codfisc" data-sortable="false" data-visible="true">CF</th>
+			            <th data-field="matricola" data-sortable="false" data-visible="true">Matricola</th>
+			            <th data-field="famiglia" data-sortable="false"  data-visible="true">Fam</th>
+			            <th data-field="cognome" data-sortable="false"  data-visible="true">Cognome</th>
+			            <th data-field="nome" data-sortable="false"  data-visible="true">Nome</th>
+			            <th data-field="anni" data-sortable="false"  data-visible="true">Anni</th>
+			            <th data-field="sesso" data-sortable="false"  data-visible="true">M/F</th>
+			            <th data-field="numint" data-sortable="false"  data-visible="true">Interno</th>
+			            <th data-field="scala" data-sortable="false"  data-visible="true">Scala</th>
+				    	</tr>
+						</thead>
+				
+				</table>
+				
+				
+				<script>
+				    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
+				    var $table = $('#t_anagrafe_civico');
+				    $(function () {
+				        $('#toolbar').find('select').change(function () {
+				            $table.bootstrapTable('destroy').bootstrapTable({
+				                exportDataType: $(this).val()
+				            });
+				        });
+				    })
+				</script>
+
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+							  </div>
+							</div>
+
+						  </div>
+						</div>
+
+				<?php 
 			   }
 			   ?>
 			   
@@ -366,7 +448,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<?php 
 								}
 							} else { ?>
-								<h4><br><b>Ora inizio esecuzione il provvedimento</b>: <?php echo $r['time_start']; ?></h4> 
+								<h4><br><b>Ora inizio esecuzione del provvedimento</b>: <?php echo $r['time_start']; ?></h4> 
 							<?php } 
 							 	if ($check_squadra==1 or $check_operatore==1){
 							?>
@@ -385,13 +467,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							}
 							?>
 							</h4>
-							<h4><br><b>Ora chiusura</b>: <?php echo $r['time_stop']; ?></h4><hr>
-							<h4><br><b>Note chiusura</b>: <?php echo $r['note_ente']; ?></h4><hr>
+							<h4><br><b>Ora chiusura provvedimento cautelare</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura provvedimento cautelare</b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
 						<?php	
 						} else if ($r["id_stato_provvedimenti_cautelari"]==4) {
 						?>	
-							<h4><br><b>Note rifiuto</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
+							<h4><br><b>Note rifiuto provvedimento cautelare</b>: <?php echo $r['note_rifiuto']; ?></h4><hr>
 						<?php	
 						}
 					?>
@@ -463,7 +545,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					<?php 
 					if ($check_squadra==1 or $check_operatore==1 ){
 					?>
-					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_da_UO"><i class="fas fa-comment"></i> Invia comunicazione a Centra</button>
+					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_da_UO"><i class="fas fa-comment"></i> Invia comunicazione a Centrale</button>
 					<?php }
 					if ($check_operatore==1){ ?>
 					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_a_UO"><i class="fas fa-comment"></i> Invia comunicazione a Squadra</button>
@@ -488,7 +570,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
 									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
 										 <div class="form-group">
-									    <label for="note">Testo comunicazione <?php echo $id_evento;?></label>  <font color="red">*</font>
+									    <label for="note">Testo comunicazione</label>  <font color="red">*</font>
 									    <textarea required="" class="form-control" id="note"  name="note" rows="3"></textarea>
 									  </div>
 									

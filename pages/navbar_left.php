@@ -37,17 +37,17 @@
                                 <li>
                                     <a href="bollettini_meteo.php">Lista bollettini</a>
                                 </li>
-                                <li>
-                                    <a href="log_update.php">Log update GeoDataBase</a>
-                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="gestione_squadre.php"><i class="fa fa-users"></i>  Gestione squadre</a>
                         </li>
                          <li>
                             <a href="#"><i class="fas fa-map-marked-alt"></i> Segnalazioni <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                             		<li>
-                                    <a href="nuova_segnalazione.php">Inserisci segnalazione</a>
+                                    <a href="nuova_segnalazione.php">Nuova segnalazione</a>
                                 </li>
                                 <li>
                                     <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa delle segnalazioni</a>
@@ -66,13 +66,22 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fas fa-pencil-ruler"></i> Sopralluoghi <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fas fa-pencil-ruler"></i> Presidi <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                             		<li>
-                                    <a href="nuovo_sopralluogo.php">Inserisci sopralluogo</a>
+                                    <a href="nuovo_sopralluogo.php">Nuovo presidio fisso</a>
                                 </li>
                                 <li>
-                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa sopralluoghi</a>
+                                    <a href="nuovo_sopralluogo_mobile.php">Nuovo presidio mobile</a>
+                                </li>
+                                <li>
+                                    <a href="elenco_sopralluoghi.php">Elenco presidi fissi</a>
+                                </li>
+                                <li>
+                                    <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili</a>
+                                </li>
+                                <li>
+                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa presidi</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -98,11 +107,13 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        
+
                          <li>
                             <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                             	  <li>
-                                    <a href="gestione_squadre.php">Gestione squadre</a>
+                                    <a href="add_volontario.php">Aggiunta utenti esterni</a>
                                 </li>
                                 <li>
                                     <a href="lista_dipendenti.php">Permessi dipendenti</a>
@@ -110,9 +121,7 @@
                                 <li>
                                     <a href="lista_volontari.php">Permessi utenti esterni</a>
                                 </li>
-                                <li>
-                                    <a href="add_volontario.php">Aggiunta utenti esterni</a>
-                                </li>
+                                
                                 <li>
                                     <a href="lista_mail.php">Contatti a cui notificare incarichi</a>
                                 </li>
@@ -124,6 +133,18 @@
                         </li>
                         <li>
                             <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-user-shield"></i> Funzionalità amministratore sistema<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            		<li>
+                                    <a href="elenco_amm.php">Modifica tabelle decodifica</a>
+                                </li>
+                                <li>
+                                    <a href="log_update.php">Log update GeoDataBase</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
                         </li>
                         
                     </ul>

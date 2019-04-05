@@ -112,7 +112,7 @@ $result=pg_query($conn, $query);
 $query= "INSERT INTO segnalazioni.t_sopralluoghi ( id, descrizione, id_profilo, id_evento, geom";
 
 //values
-$query=$query.") VALUES (".$id_sopralluogo.", '".$descrizione."', '".$profilo_sistema."',  ". $id_evento. ", ". $geom." ";
+$query=$query.") VALUES (".$id_sopralluogo.", '".$descrizione."', '".$profilo_ok."',  ". $id_evento. ", ". $geom." ";
 
 $query=$query.");";
 
@@ -173,7 +173,7 @@ $query=$query.");";
 $result=pg_query($conn, $query);*/
 
 
-$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato sopralluogo ".$id_sopralluogo."');";
+$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato presidio/sopralluogo ".$id_sopralluogo."');";
 $result = pg_query($conn, $query_log);
 
 
@@ -237,12 +237,12 @@ while (list ($key, $val) = each ($mails)) {
   $mail->AddAddress($val);
 }
 //Set the subject line
-$mail->Subject = 'Urgente - Nuovo sopralluogo assegnato tramite il Sistema di Gestione Emergenze del Comune di Genova';
+$mail->Subject = 'Urgente - Nuovo presidio assegnato tramite il Sistema di Gestione Emergenze del Comune di Genova';
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo sopralluogo alla squadra di tua appartenenza 
- '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del sopralluogo accedendo 
+$mail->Body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo presidio alla squadra di tua appartenenza 
+ '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del presidio accedendo 
  con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/pages/dettagli_sopralluogo.php?id='.$id_sopralluogo.'" > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
@@ -262,7 +262,7 @@ if (!$mail->send()) {
 	?>
 	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
-	echo '<br>Il sopralluogo &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
+	echo '<br>Il presidio &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
 	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
 	echo '<a href="../dettagli_sopralluogo.php?id='.$id_sopralluogo.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);

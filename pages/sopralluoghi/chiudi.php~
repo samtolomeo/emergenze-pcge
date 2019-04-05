@@ -68,7 +68,7 @@ if ($id_lavorazione!=''){
 	$result=pg_query($conn, $query);
 }
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'sopralluogo ".$id." chiuso');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('sopralluoghi','".$operatore ."', 'sopralluogo ".$id." chiuso');";
 echo $query_log."<br>";
 $result = pg_query($conn, $query_log);
 

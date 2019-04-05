@@ -22,6 +22,9 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
+if ($profilo_sistema > 4){
+	header("location: ./divieto_accesso.php");
+}
 
 ?>
 
@@ -62,7 +65,7 @@ require('./check_evento.php');
 
             <div class="row"> 
 
-            <h4><i class="fas fa-pencil-ruler"></i> Descrizione sgombero</h4> 
+            <h4><i class="fas fa-pencil-ruler"></i> Descrizione</h4> 
             <div class="form-group col-md-3">
             <label for="nome"> Evento</label> <font color="red">*</font>  
  				<?php 

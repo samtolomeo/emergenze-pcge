@@ -83,7 +83,7 @@ require('./tables/filtri_segnalazioni.php');
 
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="descrizione_stato" data-sortable="false" data-visible="true" >Stato</th> 
+            <th data-field="descrizione_stato" data-sortable="true" data-visible="true" >Stato</th> 
             <th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th>
 			<th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th>
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>

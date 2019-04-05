@@ -104,13 +104,18 @@
         
 		var realvista = L.tileLayer.wms("https://mappe.comune.genova.it/realvista/reflector/open/service", {
                 layers: 'rv1',
-                format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a> | <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'
+                format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a>.'
               });
 
         var basemap2 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
             maxZoom: 28
         });
+        
+        var base_genova = L.tileLayer.wms("https://mappe.comune.genova.it/geoserver/ows?", {
+                layers: 'BASE_CARTOGRAFICA',maxZoom: 22,
+                format: 'image/jpeg',attribution: '<a href="https://geoportale.comune.genova.it/" target="_blank">Comune di Genova &copy; CC-BY Tiles</a>.'
+              });
 
         map.addLayer(basemap2);
         
@@ -221,6 +226,35 @@
 			];
 
 
+			var segn_chiuse = [
+        
+        <?php 
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione > 0 and in_lavorazione='f';";
+
+
+			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
+			
+
+    		$i=0;
+			$result_g = pg_query($conn, $query_g);
+	      while($r_g = pg_fetch_assoc($result_g)) {
+				if ($i==0){ 
+					echo '{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
+					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
+					echo $r_g["geo"].'}';
+				} else {
+					//echo ",". $r_g["geo"];
+					echo ',{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
+					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
+					echo $r_g["geo"].'}';
+					
+				}
+				$i=$i+1;
+			}
+			?>
+			];
+
+
 
 			var sopralluoghi_no_segnalazione = [
         
@@ -250,6 +284,35 @@
 			?>
 			];
 			
+			
+			
+			var sopralluoghi_mobili = [
+        
+        <?php 
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, descrizione_uo, descrizione FROM segnalazioni.v_sopralluoghi_mobili_last_update WHERE id_stato_sopralluogo < 3 ;";
+
+
+			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
+			
+
+    		$i=0;
+			$result_g = pg_query($conn, $query_g);
+	      while($r_g = pg_fetch_assoc($result_g)) {
+				if ($i==0){ 
+					echo '{"type": "Feature","properties": {"id":'.$r_g["id"].', "descrizione_uo": "';
+					echo $r_g["descrizione_uo"].'",  "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
+					echo $r_g["geo"].'}';
+				} else {
+					//echo ",". $r_g["geo"];
+					echo ',{"type": "Feature","properties": {"id":'.$r_g["id"].', "descrizione_uo": "';
+					echo $r_g["descrizione_uo"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
+					echo $r_g["geo"].'}';
+					
+				}
+				$i=$i+1;
+			}
+			?>
+			];
 			
 			
 			var pc_punti = [
@@ -371,6 +434,16 @@
 		    opacity: 1,
 		    fillOpacity: 0.8
 		};
+
+
+		var icon_chiuse = L.icon({
+		  iconUrl: 'icon/segn_chiusa.png',
+		  iconSize: [18, 21],
+		  iconAnchor: [16, 37],
+		  popupAnchor: [0, -28]
+		});		
+		
+		
 		var icon_rischio = L.icon({
 		  iconUrl: 'icon/elemento_rischio.png',
 		  iconSize: [32, 37],
@@ -411,6 +484,12 @@
 	};	
 		
 		
+		var stile_sopralluogo_linea = {
+	    "color": "#16b5ff",
+	    "weight": 5,
+	    "opacity": 0.75
+	};	
+		
 		
 		/*var layer_v_segnalazioni_0 = new L.geoJson(geojsonFeature, {
 		    pointToLayer: function (feature, latlng) {
@@ -446,7 +525,7 @@
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pause-circle"></i> Da prendere in carico </div>'+
 				'<h4><b>Tipo</b>: '+
 				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" target="_new" href="./dettagli_segnalazione.php?id='+
+				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id='+
 				feature.properties.id +
 				'"> Dettagli segnalazione </a>' );
 			}
@@ -464,13 +543,26 @@
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-play-circle"></i> In lavorazione </div>'+
 				'<h4><b>Tipo</b>: '+
 				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" target="_new" href="./dettagli_segnalazione.php?id='+
+				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id='+
 				feature.properties.id +
 				'"> Dettagli segnalazione </a>' );
 			}
 		});
 		
-		
+		var layer_v_segnalazioni_2 =  L.geoJson(segn_chiuse, {
+		    pointToLayer: function (feature, latlng) {
+		        //return L.circleMarker(latlng, stile_lavorazione);
+		        return L.marker(latlng, {icon: icon_chiuse});
+		    },
+			onEachFeature: function (feature, layer) {
+				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-stop-circle"></i> Chiuse </div>'+
+				'<h4><b>Tipo</b>: '+
+				feature.properties.criticita+'</h4>'+
+				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id='+
+				feature.properties.id +
+				'"> Dettagli segnalazione </a>' );
+			}
+		});
 		
 		var layer_v_sopralluoghi = L.geoJson(sopralluoghi_no_segnalazione, {
 		    pointToLayer: function (feature, latlng) {
@@ -480,18 +572,30 @@
 		    }
 		    ,
 			onEachFeature: function (feature, layer) {
-				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pencil-ruler"></i> Sopralluogo </div>'+
+				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pencil-ruler"></i> Presidio fisso </div>'+
 				'<h4><b>Squadra</b>: '+
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" target="_new" href="./dettagli_sopralluogo.php?id='+
+				'<a class="btn btn-info active" role="button" href="./dettagli_sopralluogo.php?id='+
 				feature.properties.id +
-				'"> Dettagli sopralluogo </a>' );
+				'"> Dettagli presidio </a>' );
 			}
 		});
 		
-		
+		var layer_v_sopralluoghi_mobili = L.geoJson(sopralluoghi_mobili, {
+		    style:stile_sopralluogo_linea,
+			onEachFeature: function (feature, layer) {
+				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pencil-ruler"></i> Presidio mobile </div>'+
+				'<h4><b>Squadra</b>: '+
+				feature.properties.descrizione_uo+'</h4>'+
+				'<h4><b>Descrizione</b>: '+
+				feature.properties.descrizione+'</h4>'+
+				'<a class="btn btn-info active" role="button" href="./dettagli_sopralluogo.php?id='+
+				feature.properties.id +
+				'"> Dettagli presidio </a>' );
+			}
+		});
 		
 		var layer_v_pc = L.geoJson(pc_punti, {
 		    pointToLayer: function (feature, latlng) {
@@ -508,7 +612,7 @@
 				feature.properties.descrizione_stato+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" target="_new" href="./dettagli_provvedimento_cautelare.php?id='+
+				'<a class="btn btn-info active" role="button" href="./dettagli_provvedimento_cautelare.php?id='+
 				feature.properties.id +
 				'"> Dettagli PC </a>' );
 			}
@@ -524,7 +628,7 @@
 				feature.properties.descrizione_stato+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" target="_new" href="./dettagli_provvedimento_cautelare.php?id='+
+				'<a class="btn btn-info active" role="button" href="./dettagli_provvedimento_cautelare.php?id='+
 				feature.properties.id +
 				'"> Dettagli PC </a>' );
 			}
@@ -535,19 +639,32 @@
 		map.addLayer(layer_v_segnalazioni_0);
 		
 		markers1.addLayer(layer_v_segnalazioni_1);
+		
+		map.addLayer(layer_v_segnalazioni_2);
+		
 		map.addLayer(markers1);
 		
-		
-		map.addLayer(layer_v_sopralluoghi);
+		var presidi=L.layerGroup([layer_v_sopralluoghi, layer_v_sopralluoghi_mobili]);
+		//map.addLayer(layer_v_sopralluoghi);
+       map.addLayer(presidi);
+    
     
     	var pc = L.layerGroup([layer_v_pc, layer_v_pc_linee]);
-
       //map.addLayer(layer_v_pc);   
       //map.addLayer(layer_v_pc_linee);  
 		map.addLayer(pc);
 		
 		
 		<?php
+
+ 		if ($check_lav==-1 or $no_segn==1 ){
+		?>
+			var marker_segnalazione = L.marker([<?php echo $lat.", ".$lon;?>]).addTo(map);
+			
+
+		<?php
+		}
+
 
  if ($descrizione_oggetto_rischio=='Sottopassi'){
 
@@ -754,13 +871,15 @@ var civico = [
         
         
         var baseLayers = {
-        		'Humanitarian OpensStreetMap': basemap2, 
-        		'Realvista e-geos': realvista
+        		'OpenStreetMap': basemap2, 
+        		'Realvista e-geos': realvista,
+        		'Sfondo comunale': base_genova
         	};
         
         var overlayLayers = {'<img src="icon/segn_no_lavorazione.png" width="20" height="24" alt=""> Segnalazioni da elaborare': layer_v_segnalazioni_0,
         '<img src="icon/segn_lavorazione.png" width="20" height="24" alt="">  Segnalazioni in lavorazione': markers1,
-        '<img src="icon/sopralluogo.png" width="20" height="24" alt="">  Altri sopralluoghi (o presidi)': layer_v_sopralluoghi,
+        '<img src="icon/segn_chiusa.png" width="20" height="24" alt="">  Segnalazioni chiuse': layer_v_segnalazioni_2,
+        '<img src="icon/sopralluogo.png" width="20" height="24" alt="">  Altri presidi': presidi,
         '<img src="icon/elemento_rischio.png" width="20" height="24" alt=""> Provvedimenti cautelari':pc
         }
         

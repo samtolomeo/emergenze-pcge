@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Nuovo sopralluogo"
+$subtitle="Nuovo presidio"
 
 ?>
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
-if ($profilo_sistema > 4){
+if ($profilo_sistema > 6){
 	header("location: ./divieto_accesso.php");
 }
 
@@ -55,16 +55,9 @@ if ($profilo_sistema > 4){
                 <!-- /.col-lg-12 -->
 			<form action="sopralluoghi/nuovo_sopralluogo2.php" method="POST">
         
+<div class="row"> 
 
-
-       
-            
-            
-
-
-            <div class="row"> 
-
-            <h4><i class="fas fa-pencil-ruler"></i> Descrizione sopralluogo</h4> 
+            <h4><i class="fas fa-pencil-ruler"></i> Descrizione presidio</h4> 
             <div class="form-group col-md-3">
             <label for="nome"> Evento</label> <font color="red">*</font>  
  				<?php 
@@ -135,12 +128,17 @@ if ($profilo_sistema > 4){
 
 				</div> 
  				<hr>
+
+       
+            
+
+            
             <div class="row">
             <h4><i class="fa fa-map-marker-alt"></i> Geolocalizzazione:</h4> 
 
 
 				<div class="form-group">
-					<label for="nome"> Seleziona l'opzione che intendi usare per localizzare il sopralluogo </label> <font color="red">*</font><br>
+					<label for="nome"> Seleziona l'opzione che intendi usare per localizzare il presidio </label> <font color="red">*</font><br>
 					<label class="radio-inline"><input type="radio" name="georef" id="civico" required="">Tramite civico</label>
 					<label class="radio-inline"><input type="radio" name="georef" id="mappa">Tramite mappa</label>
 					<label class="radio-inline"><input type="radio" name="georef" id="coord">Con coordinate note</label>
@@ -224,7 +222,7 @@ if ($profilo_sistema > 4){
                <h4><i class="fa fa-plus"></i> Altro:</h4>      
 
 
-            <button  type="submit" class="btn btn-primary">Assegna sopralluogo</button>
+            <button  type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Cliccando su questo tasto confermi le informazioni precedenti e assegni il presidio alla squadra specificata">Assegna presidio</button>
             </div>
             <!-- /.row -->
             

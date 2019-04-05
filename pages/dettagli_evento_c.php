@@ -112,7 +112,7 @@ require('./check_evento.php');
 	   					echo '</div></div>';
 	   					echo '<div class="row">';
 	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_c[$i][1].'</h3>';
-
+							echo '<h3>Note: '. $nota_eventi_c[$i][1].'</h3>';
 	   					echo '</div><div class="col-lg-6"><h3>Municipi interessati: ';
 	   					$len2=count($municipi_c);
 	   					//echo $len2;	               

@@ -1,4 +1,15 @@
-<?php ?>
+<?php 
+
+require ('./note_ambiente.php');
+
+?>
+
+<style>
+.dropdown-menu > li > a {
+  white-space: normal;
+}
+</style>
+
 
 
 <!-- Navigation -->
@@ -12,7 +23,7 @@
                 </button>
                 <!--a class="navbar-brand" href="index.php"> </a-->
                 <div class="navbar-brand"> <i class="fas fa-server"></i>
-                Gestione emergenze - <?php echo $subtitle?> </div>
+                Gestione emergenze <font color=red> <?php echo $note_ambiente?> </font>- <?php echo $subtitle?> </div>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
@@ -22,7 +33,7 @@
 					<a class="nav-link" href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
 				</li>
 				
-				<li class="dropdown">
+				
 				<?php
 					if($check_evento==0) {
 				?>		
@@ -197,151 +208,6 @@
 				?>
 
 
-                <!--li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fas fa-envelope fa-fw"></i> <i class="fas fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>DEMO</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>To do</em>
-                                    </span>
-                                </div>
-                                <div>Componente da filtrare per tipologia di utente</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
-                                <i class="fas fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li-->
-				
-				
-                <!-- /.dropdown -->
-                <!--li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fas fa-tasks fa-fw"></i> <i class="fas fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fas fa-comment fa-fw"></i> DEMO
-                                    <span class="pull-right text-muted small">...</span>                              
-                                <div> ancora da decidere se utilizzare qualcosa di simile  </div>
-                            </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>                        
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 1</strong>
-                                        <span class="pull-right text-muted">40% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 2</strong>
-                                        <span class="pull-right text-muted">20% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 3</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">80% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete (danger)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fas fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-					</li-->
-                <!-- /.dropdown -->
-				
-				 <!--li class="nav-item active">
-					<a class="nav-link" href="#panel-notifiche"><i class="fas fa-bell fa-fw"></i><span class="sr-only">(current)</span></a>
-				</li-->
 				
 				<style>
 				.fa-stack[data-count]:after{
@@ -381,9 +247,9 @@
 				<?php }?>
 				
 				
+
 				
-				
-                <li id="notifiche" class="dropdown">
+                <li id="notifiche_profilo" class="dropdown" >
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
 					<?php if ($count_resp >0) { ?>
@@ -392,7 +258,7 @@
                         <i class="fas fa-bell fa-fw"></i>  <i class="fas fa-caret-down"></i>
 					<?php } ?>	
                     </a>	
-                    <ul class="dropdown-menu dropdown-alerts">
+                    <ul class="dropdown-menu dropdown-alerts" style="white-space: normal;">
 					<li>
 						<a href="#">
 							<div>
@@ -409,7 +275,7 @@
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $i_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_i_assegnati_resp[$ii]."\">Tipo: ".$descrizione_i_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_incarico.php?id=".$id_i_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_i_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             
@@ -424,7 +290,7 @@
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $ii_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_ii_assegnati_resp[$ii]."\">Tipo: ".$descrizione_ii_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_incarico_interno.php?id=".$id_ii_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_ii_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             
@@ -434,22 +300,40 @@
 					<li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-pencil-ruler"></i> Sopralluoghi
+                                    <i class="fas fa-pencil-ruler"></i> Presidi fissi
                                     <span class="pull-right text-muted small"><?php echo $s_assegnati_resp;?> non presi in carico</span>
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $s_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_s_assegnati_resp[$ii]."\">Tipo: ".$descrizione_s_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_sopralluogo.php?id=".$id_s_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_s_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             
 							</a>
                         </li>
+                        
+                        
+                        <li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-pencil-ruler"></i> Presidi mobili
+                                    <span class="pull-right text-muted small"><?php echo $sm_assegnati_resp;?> non presi in carico</span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $sm_assegnati_resp; $ii++) {
+									echo "<br><a href=\"dettagli_sopralluogo_mobile.php?id=".$id_sm_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_sm_assegnati_resp[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                        
+                        
                         <li class="divider"></li>
                     <li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari
+                                    <i class="fas fa-exclamation-triangle"></i> Provv. cautelari
                                     <span class="pull-right text-muted small"><?php echo $pc_assegnati_resp;?> non presi in carico</span>
 								</div>                              
                                 <?php
@@ -470,7 +354,7 @@
                     </ul>
                 </li>
 				
-				<li id="notifiche" class="dropdown">
+				<li id="notifiche_squadra" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <?php if ($count_squadra >0) { ?>
 						<i class="fas fa-users" style="color:#ff0000"></i> <?php echo $count_squadra;?> <i class="fas fa-caret-down"></i>
@@ -506,12 +390,12 @@
 					<li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-pencil-ruler"></i> Sopralluoghi
+                                    <i class="fas fa-pencil-ruler"></i> Presidi
                                     <span class="pull-right text-muted small"><?php echo $s_assegnati_squadra;?></span>
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $s_assegnati_squadra; $ii++) {
-									echo "<br><a href=\"dettagli_soprallluogo.php?id=".$id_ii_assegnati_squadra[$ii]."\">Tipo: ".$descrizione_ii_assegnati_squadra[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_sopralluogo.php?id=".$id_ii_assegnati_squadra[$ii]."\">Tipo: ".$descrizione_ii_assegnati_squadra[$ii]."</a>" ;
 								}
 								?>
                             
@@ -521,7 +405,7 @@
                     <li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari
+                                    <i class="fas fa-exclamation-triangle"></i> Provv. cautelari
                                     <span class="pull-right text-muted small"><?php echo $pc_assegnati_squadra;?></span>
 								</div>                              
                                 <?php
@@ -543,7 +427,7 @@
                         <i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (dettagli)</a>
+						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (Clicca per visualizzare i dettagli)</a>
                         </li>
                         <!--li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> User Profile</a>
                         </li-->

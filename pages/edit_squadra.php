@@ -76,6 +76,7 @@ require('./check_evento.php');
 				<?php
 				$check_capo=0; // non ci sono ma diventa 1 se ce ne sono già
 				$query="SELECT * FROM users.v_componenti_squadre WHERE id=".$id.";";
+				//echo $query;
 				$result = pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
 					if($r['capo_squadra']=='t'){

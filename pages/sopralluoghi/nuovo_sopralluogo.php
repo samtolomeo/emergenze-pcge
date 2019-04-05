@@ -82,7 +82,7 @@ $result=pg_query($conn, $query);
 $query= "INSERT INTO segnalazioni.t_sopralluoghi ( id, descrizione, id_profilo, id_evento, geom";
 
 //values
-$query=$query.") VALUES (".$id_sopralluogo.", '".$descrizione."', '".$profilo_sistema."', ". $id_evento. ", '". $geom."'";
+$query=$query.") VALUES (".$id_sopralluogo.", '".$descrizione."', '".$profilo_ok."', ". $id_evento. ", '". $geom."'";
 
 $query=$query.");";
 
@@ -132,7 +132,7 @@ $result=pg_query($conn, $query);
 $query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione( id_segnalazione_in_lavorazione, log_aggiornamento";
 
 //values
-$query=$query.") VALUES (".$id.", ' Assegnato nuovo sopralluogo alla seguente squadra: ".$uo_descrizione." - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id_sopralluogo."\"> Visualizza dettagli </a>'";
+$query=$query.") VALUES (".$id.", ' Assegnato nuovo presidio alla seguente squadra: ".$uo_descrizione." - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id_sopralluogo."\"> Visualizza dettagli </a>'";
 
 $query=$query.");";
 
@@ -141,7 +141,7 @@ $query=$query.");";
 $result=pg_query($conn, $query);
 
 
-$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato sopralluogo ".$id_sopralluogo."');";
+$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato sopralluogo/presidio ".$id_sopralluogo."');";
 $result = pg_query($conn, $query_log);
 
 
@@ -228,7 +228,7 @@ if (!$mail->send()) {
     //echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
     echo "<h3>Problema nell'invio della mail: ";
 	?>
-	<script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script>
+	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
 	echo '<br>Il sopralluogo &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
 	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';

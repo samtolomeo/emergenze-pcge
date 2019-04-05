@@ -81,42 +81,25 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				while($r = pg_fetch_assoc($result)) {
 					
 					//echo $profilo_sistema;
-               //operatore 
-               // 0 : no permessi 
-               // 1 : permessi centrale PC
-               // 2 : permessi squadra
-               
-               //$check_operatore=0;
+				   //operatore 
+				   // 0 : no permessi 
+				   // 1 : permessi centrale PC
+				   // 2 : permessi squadra
+				   $id_squadra_attiva=$r['id_squadra'];
+				   //$check_operatore=0;
 					$id_squadra=$r['id_squadra'];
-               $id_profilo=$r['id_profilo'];
+					$id_profilo=$r['id_profilo'];
 					require('./check_operatore.php');	
 					?>            
             	
-               <h4><br><b>Unità operativa</b>: <?php echo $r['descrizione_uo'];?>
+               <h4><br><b>Squadra</b>: <?php echo $r['descrizione_uo'];?>
                <?php
                if ($check_squadra==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
-					}
-					?>
+				}
+				require('./check_responsabile.php');
+				?>
                </h4>
-               <?php
-               
-              
-               if ($r['id_profilo']==3){
-						echo "<h4><br><b>Responsabile</b>: Centrale PC";
-					} else if($r['id_profilo']==4) {
-						echo "<h4><br><b>Responsabile</b>: Centrale COA";
-					} else if($r['id_profilo']==5) {
-						echo "<h4><br><b>Responsabile</b>: Municipio";
-					} else if($r['id_profilo']==6) {
-						echo "<h4><br><b>Responsabile</b>: Distretto";
-					}
-					//echo $check_operatore;
-					if ($check_operatore==1){
-						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
-					}
-					?>
-					</h4>
                <h4><br><b>Tipo provvedimento</b>: <?php echo $r['tipo_provvedimento']; ?></h4>
 			   
 			   <?php 
@@ -709,6 +692,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php
 					}
 					}
+					$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
+					$zoom=16;
 					?>
 						
 						<br>

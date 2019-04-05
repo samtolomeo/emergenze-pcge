@@ -7,22 +7,6 @@ $id=$_GET["id"];
 $subtitle="Dettagli segnalazione ricevuta n. ".$id;
 
 
-$query_evento_aperto="SELECT s.id,
-       e.valido 
-		FROM segnalazioni.t_segnalazioni s
-		JOIN eventi.t_eventi e on e.id=s.id_evento
-		WHERE s.id=".$id.";";
-//echo 
-$result_e=pg_query($conn, $query_evento_aperto);
-while($r_e = pg_fetch_assoc($result_e)) {
-	if($r_e['valido']=='f') {
-		$table='v_segnalazioni_eventi_chiusi';
-		echo "false";
-	} else {
-		$table='v_segnalazioni';
-		echo "true";
-	}
-}
 
 ?>
 <!DOCTYPE html>
@@ -44,6 +28,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
+$check_evento_aperto=1;
 $query_evento_aperto="SELECT s.id,
        e.valido 
 		FROM segnalazioni.t_segnalazioni s
@@ -53,7 +38,8 @@ $query_evento_aperto="SELECT s.id,
 $result_e=pg_query($conn, $query_evento_aperto);
 while($r_e = pg_fetch_assoc($result_e)) {
 	if($r_e['valido']=='f') {
-		$table='v_segnalazioni_eventi_chiusi';
+		$check_evento_aperto=0;
+		$table='v_segnalazioni_eventi_chiusi_lista';
 		//echo "false";
 	} else {
 		$table='v_segnalazioni';
@@ -324,7 +310,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										<?php
 										// cerco l'id_lavorazione
 										$query_incarichi="SELECT id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente";
-										$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										if($check_evento_aperto==1){
+											$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										} else if($check_evento_aperto==0){
+											$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_eventi_chiusi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										}
 										$query_incarichi= $query_incarichi." GROUP BY id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente;";
 										
 										//echo $query_incarichi;
@@ -388,7 +378,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										<?php
 										// cerco l'id_lavorazione
 										$query_incarichi="SELECT id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente";
-										$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione;
+										
+										if($check_evento_aperto==1){
+											$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione;
+										} else if($check_evento_aperto==0){
+											$query_incarichi= $query_incarichi." FROM segnalazioni.v_incarichi_interni_eventi_chiusi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										}
+										
 										$query_incarichi= $query_incarichi." GROUP BY id, id_stato_incarico,descrizione,descrizione_stato,descrizione_uo, note_ente;";
 										
 										//echo $query_incarichi;
@@ -438,7 +434,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									  <div class="panel panel-info">
 									    <div class="panel-heading">
 									      <h4 class="panel-title">
-									        <a data-toggle="collapse" href="#list_sopralluoghi"><i class="fa fa-pencil-ruler"></i> Sopralluoghi
+									        <a data-toggle="collapse" href="#list_sopralluoghi"><i class="fa fa-pencil-ruler"></i> Presidi
 									        <?php
 									        		if($check_sopralluoghi==1) {
 									        			echo	' - <i class="fa fa-play" style="color:green"></i>';
@@ -456,7 +452,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										<?php
 										// cerco l'id_lavorazione
 										$query_sopralluoghi="SELECT id, id_stato_sopralluogo,descrizione,descrizione_stato,descrizione_uo, note_ente";
-										$query_sopralluoghi= $query_sopralluoghi." FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										if($check_evento_aperto==1){
+											$query_sopralluoghi= $query_sopralluoghi." FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										} else if($check_evento_aperto==0){
+											$query_sopralluoghi= $query_sopralluoghi." FROM segnalazioni.v_sopralluoghi_eventi_chiusi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										}
 										$query_sopralluoghi= $query_sopralluoghi." GROUP BY id, id_stato_sopralluogo,descrizione,descrizione_stato,descrizione_uo, note_ente;";
 										
 										//echo $query_sopralluoghi;
@@ -491,7 +491,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										?>
 									
 									 <hr><p>
-									<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_sopralluogo"><i class="fas fa-pencil-ruler"></i> Assegna sopralluogo </button>
+									<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_sopralluogo"><i class="fas fa-pencil-ruler"></i> Assegna nuovo presidio </button>
 									</p>
 									<?php } ?>
 									</div>
@@ -522,7 +522,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										<?php
 										// cerco l'id_lavorazione
 										$query_provvedimenti="SELECT id, id_stato_provvedimenti_cautelari,descrizione,descrizione_stato,descrizione_uo, note_ente";
-										$query_provvedimenti= $query_provvedimenti." FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione;
+										if($check_evento_aperto==1){
+											$query_provvedimenti= $query_provvedimenti." FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione;
+										} else if($check_evento_aperto==0){
+											$query_provvedimenti= $query_provvedimenti." FROM segnalazioni.v_provvedimenti_cautelari_eventi_chiusi_last_update WHERE id_lavorazione=".$id_lavorazione;
+										}
 										$query_provvedimenti= $query_provvedimenti." GROUP BY id, id_stato_provvedimenti_cautelari,descrizione,descrizione_stato,descrizione_uo, note_ente;";
 										
 										//echo $query_sopralluoghi;
@@ -584,7 +588,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
 	   					// check sugli incarichi / sopralluoghi attivi
 	   					if($check_incarichi_aperti==1 OR $check_incarichi_interni_aperti==1 OR $check_sopralluoghi==1 OR $check_chiusura<0 ){
-	   						echo 'disabled="" title="Impossibile chiudere la segnalazione. Incarichi / sopralluoghi / provvedimenti cautelari risultano ancora in corso o non presi in carico."';
+	   						echo 'disabled="" title="Impossibile chiudere la segnalazione. Incarichi / presidi / provvedimenti cautelari risultano ancora in corso o non presi in carico."';
 	   					}
 	   					echo 'data-target="#chiudi"><i class="fas fa-times"></i> Chiudi segnalazione </button>';
 	   				}
@@ -677,8 +681,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									
 									?>
 									<div class="form-group">
-											 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
+											 <label for="descrizione"> Descrizione operativa</label> <font color="red">*</font>
 										<input type="text" name="descrizione" class="form-control" required="">
+									   <small>Specificare in cosa consiste l'incarico da un punto di vista operativo</small>
 									  </div>            
 										  
 
@@ -733,8 +738,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									 </div>       
 									 
 									<div class="form-group">
-											 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
+											 <label for="descrizione">Descrizione operativa</label> <font color="red">*</font>
 										<input type="text" name="descrizione" class="form-control" required="">
+										<small>Specificare in cosa consiste l'incarico da un punto di vista operativo</small>
 									  </div>            
 										  
 
@@ -761,7 +767,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<div class="modal-content">
 							  <div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Nuovo sopralluogo</h4>
+								<h4 class="modal-title">Nuovo presidio</h4>
 							  </div>
 							  <div class="modal-body">
 							  
@@ -796,7 +802,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 
-								<button  id="conferma" type="submit" class="btn btn-primary">Assegna sopralluogo</button>
+								<button  id="conferma" type="submit" class="btn btn-primary"  data-toggle="tooltip" data-placement="top" title="Cliccando su questo tasto confermi le informazioni precedenti e assegni il presidio alla squadra specificata">Assegna presidio</button>
 									</form>
 
 							  </div>
@@ -824,11 +830,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						        <form autocomplete="off" action="./segnalazioni/chiudi_segnalazione.php?id_lav=<?php echo $id_lavorazione;?>&id=<?php echo $r['id'];?>" method="POST">
 								Proseguendo chiuderai la lavorazione di questa segnalazione e di tutte quelle unite a questa.
-								<br>Non sarà più possibile assegnare incarichi o sopralluoghi associati a questa segnalazione.
+								<br>Non sarà più possibile assegnare incarichi, presidi o provvedimenti cautelari associati a questa segnalazione.
 								<hr>
 								<div class="form-group">
 								  <label for="note">Note chiusura:</label> <font color="red">*</font><br>
-								  <textarea class="form-control" rows="5" id="note" nama="note" required=""></textarea>
+								  <textarea class="form-control" rows="5" id="note" name="note" required=""></textarea>
 								</div>
 								
 								<div class="form-group">
@@ -962,7 +968,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									  <div class="panel panel-info">
 									    <div class="panel-heading">
 									      <h4 class="panel-title">
-									        <a data-toggle="collapse" href="#c_civico_s<?php echo $r_vic['id'];?>"> <?php echo $r['criticita'].' (n. segn. '.$r_vic['id'].')';?></a>
+									        <a data-toggle="collapse" href="#c_civico_s<?php echo $r_vic['id'];?>"> <?php echo $r_vic['criticita'].' (n. segn. '.$r_vic['id'].')';?></a>
 									      <?php
 									      if($r_vic['rischio'] =='t') {
 												echo ' <i class="fas fa-circle fa-1x" style="color:#ff0000"></i>';

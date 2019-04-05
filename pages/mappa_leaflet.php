@@ -30,7 +30,7 @@ require('./check_evento.php');
    <link rel="stylesheetl_map/" href="l_map/css/qgis2web.css">
    <link rel="stylesheet" href="l_map/css/MarkerCluster.css">
    <link rel="stylesheet" href="l_map/css/MarkerCluster.Default.css">
-   <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
+  
    <link rel="stylesheet" href="../vendor//leaflet-search/src/leaflet-search.css">
         <style>
         html, body, #map {

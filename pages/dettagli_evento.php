@@ -121,6 +121,7 @@ require('./check_evento.php');
 	   					echo '</div></div>';
 	   					echo '<div class="row">';
 	   					echo '<div class="col-lg-6"><h3>Tipologia: '. $tipo_eventi_attivi[$i][1].'</h3>';
+	   					echo '<h3>Note: '. $nota_eventi_attivi[$i][1].'</h3>';
 	   					echo '</div><div class="col-lg-6"><h3>Municipi interessati: ';
 	   					$len2=count($municipi);
 	   					//echo $len2;	               
@@ -272,10 +273,10 @@ require('./check_evento.php');
   								<div class="panel panel-primary">
 								    <div class="panel-heading">
 								      <h4 class="panel-title">
-								        <a data-toggle="collapse" href="#collapse_allerte">Allerte passate</a>
+								        <a data-toggle="collapse" href="#collapse_allerte<?php echo $eventi_attivi[$i];?>">Allerte passate</a>
 								      </h4>
 								    </div>
-								    <div id="collapse_allerte" class="panel-collapse collapse">
+								    <div id="collapse_allerte<?php echo $eventi_attivi[$i];?>" class="panel-collapse collapse">
 								      <div class="panel-body"><ul>
 								<?php
 							}
@@ -330,10 +331,10 @@ require('./check_evento.php');
   								<div class="panel panel-primary">
 								    <div class="panel-heading">
 								      <h4 class="panel-title">
-								        <a data-toggle="collapse" href="#collapse_foc">Fasi Operative Comunali passate</a>
+								        <a data-toggle="collapse" href="#collapse_foc<?php echo $eventi_attivi[$i];?>">Fasi Operative Comunali passate</a>
 								      </h4>
 								    </div>
-								    <div id="collapse_foc" class="panel-collapse collapse">
+								    <div id="collapse_foc<?php echo $eventi_attivi[$i];?>" class="panel-collapse collapse">
 								      <div class="panel-body">
 								<?php
 								}
