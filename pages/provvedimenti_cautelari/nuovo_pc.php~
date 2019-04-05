@@ -34,15 +34,15 @@ $desc_via= str_replace("'", "''", $_POST["desc_via"]);
 
 
 
-echo "Segnalazione in lavorazione:".$id. "<br>";
-echo "Segnalazione:".$segn. "<br>";
-echo "Descrizione:".$descrizione. "<br>";
-echo "Squadra:".$uo. "<br>";
-echo "Id evento:".$id_evento. "<br>";
+//echo "Segnalazione in lavorazione:".$id. "<br>";
+//echo "Segnalazione:".$segn. "<br>";
+//echo "Descrizione:".$descrizione. "<br>";
+//echo "Squadra:".$uo. "<br>";
+//echo "Id evento:".$id_evento. "<br>";
 
-echo "codvia:".$codvia. "<br>";
-echo "id_civico1:".$id_civico1. "<br>";
-echo "id_civico2:".$id_civico2. "<br>";
+//echo "codvia:".$codvia. "<br>";
+//echo "id_civico1:".$id_civico1. "<br>";
+//echo "id_civico2:".$id_civico2. "<br>";
 
 
 
@@ -68,11 +68,11 @@ if($_POST['id_oggetto_rischio']!='') {
 }
 
 
-echo "tipo_pc: " .$tipo_pc. "<br>";
-echo "nome_tabella_oggetto_rischio: " .$nome_tabella_oggetto_rischio. "<br>";
-echo "descrizione_oggetto_rischio: " .$descrizione_oggetto_rischio. "<br>";
-echo "nome_campo_id_oggetto_rischio: " .$nome_campo_id_oggetto_rischio. "<br>";
-echo "id_oggetto_rischio: " .$id_oggetto_rischio. "<br>";
+//echo "tipo_pc: " .$tipo_pc. "<br>";
+//echo "nome_tabella_oggetto_rischio: " .$nome_tabella_oggetto_rischio. "<br>";
+//echo "descrizione_oggetto_rischio: " .$descrizione_oggetto_rischio. "<br>";
+//echo "nome_campo_id_oggetto_rischio: " .$nome_campo_id_oggetto_rischio. "<br>";
+//echo "id_oggetto_rischio: " .$id_oggetto_rischio. "<br>";
 
 
 
@@ -92,7 +92,7 @@ $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
 	$punto1=$r['punto1'];
 }
-echo $query;
+//echo $query;
 //exit;
 echo "<br>";
 
@@ -105,14 +105,14 @@ while($r = pg_fetch_assoc($result)) {
 	$punto2=$r['punto2'];
 }
 
-echo $query;
+//echo $query;
 //exit;
 echo "<br>";
 
 
-echo "Punto1:" .$punto1."<br>";
+//echo "Punto1:" .$punto1."<br>";
 
-echo "Punto2:" .$punto2."<br>";
+//echo "Punto2:" .$punto2."<br>";
 
 if ($punto1=='' or $punto2 ==''){
 	$query=" SELECT testo FROM geodb.civici WHERE id='".$id_civico1."';";
@@ -130,7 +130,7 @@ if ($punto1=='' or $punto2 ==''){
 	$desc_via= "da civico ".$civico1." a civico ".$civico2." (geometria non individuabile su mappa)";
 }
 
-echo "Desc via:" .$desc_via."<br>";
+//echo "Desc via:" .$desc_via."<br>";
 
 if ($punto1 < $punto2) {
 	$query="SELECT ST_transform(ST_LineMerge(ST_LineSubstring (
@@ -155,7 +155,7 @@ WHERE  v.codvia='".$codvia."' and c.id='".$id_civico1."' and cc.id='".$id_civico
 }
 
 
-echo $query;
+//echo $query;
 //exit;
 echo "<br>";
 
@@ -174,7 +174,7 @@ if ($geom1=='') {
 	while($r_g = pg_fetch_assoc($result_g)) {
 		$geom1=$r_g['geom'];
 	}
-	echo $query_g."<br>";
+	//echo $query_g."<br>";
 }
 
 
@@ -188,7 +188,7 @@ while($r_max = pg_fetch_assoc($result_max)) {
 		$id_provvedimento=1;	
 	}
 }
-echo "Id provvedimento:".$id_provvedimento. "<br>";
+//echo "Id provvedimento:".$id_provvedimento. "<br>";
 
 
 
@@ -199,7 +199,7 @@ while($r_g = pg_fetch_assoc($result_g)) {
 	//$geom=$r_g['geom'];
 	$id_evento=$r_g['id_evento'];
 }
-echo $query_g."<br>";
+//echo $query_g."<br>";
 
 
 
@@ -212,7 +212,7 @@ $result_uo = pg_query($conn, $query_uo);
 while($r_uo = pg_fetch_assoc($result_uo)) {
 	$uo_descrizione=$r_uo['nome'];
 }
-echo $query_uo."<br>";
+//echo $query_uo."<br>";
 
 
 
@@ -227,7 +227,7 @@ if ($geom1 =='') {
 	while($r_g = pg_fetch_assoc($result_g)) {
 		$geom=$r_g['geom'];
 	}
-	echo $query_g."<br>";
+	//echo $query_g."<br>";
 }
 
 // qua bisogna aggiungere la verifica su civico o edificio
@@ -237,7 +237,7 @@ $result_g = pg_query($conn, $query_g);
 while($r_g = pg_fetch_assoc($result_g)) {
 	$id_edificio=$r_g['idoggettoriferimento'];
 }
-echo $query_g."<br>";
+//echo $query_g."<br>";
 }
 
 //check e segnalazione errore
@@ -250,7 +250,7 @@ while($r_ce = pg_fetch_assoc($result_ce)) {
 	echo "<h2>ATTENZIONE: L'edificio e' gia' stato oggetto di provvedimento cautelare. <a href=../dettagli_provvedimento_cautelare.php?id=".$r_ce['id']."> visualizza dettagli provvedimento</a>.</h2> <br> ";
 	exit;
 }
-echo $query_ce."<br>";
+//echo $query_ce."<br>";
 
 
 $query_ce="SELECT * FROM segnalazioni.v_provvedimenti_cautelari WHERE tipo_oggetto='geodb.civici' AND id_oggetto=".$id_oggetto_rischio.";";
@@ -261,7 +261,7 @@ while($r_ce = pg_fetch_assoc($result_ce)) {
 	exit;
 }
 
-echo $query_ce."<br>";
+//echo $query_ce."<br>";
 
 
 
@@ -274,7 +274,7 @@ while($r_ce = pg_fetch_assoc($result_ce)) {
 	exit;
 }
 
-echo $query_ce."<br>";
+//echo $query_ce."<br>";
 
 //exit;
 //echo "Descrizione uo:".$uo_descrizione. "<br>";
@@ -292,7 +292,7 @@ $query=$query.") VALUES (".$id_provvedimento.", '".$descrizione."', '".$profilo_
 
 $query=$query.");";
 
-echo $query;
+//echo $query;
 //exit;
 $result=pg_query($conn, $query);
 
@@ -316,7 +316,7 @@ if ($geom1=='') {
 
 $query=$query.");";
 
-echo $query;
+//echo $query;
 //exit;
 $result=pg_query($conn, $query);
 
@@ -335,7 +335,7 @@ $query=$query.") VALUES (".$id_provvedimento.", ".$id." ";
 
 $query=$query.");";
 
-echo $query;
+//echo $query;
 echo "<br>";
 //exit;
 $result=pg_query($conn, $query);
@@ -348,13 +348,13 @@ $query=$query.") VALUES (".$id_provvedimento.", 1 ";
 
 $query=$query.");";
 
-echo $query."<br>";
+//echo $query."<br>";
 //exit;
 $result=pg_query($conn, $query);
 
 
 $query="UPDATE users.t_squadre SET id_stato=1 WHERE id=".$uo.";";
-echo $query;
+//echo $query;
 //exit;
 $result=pg_query($conn, $query);
 echo "<br>";
@@ -369,7 +369,7 @@ $query=$query.") VALUES (".$id.", ' Assegnato nuovo provvedimento cautelare alla
 
 $query=$query.");";
 
-echo $query;
+//echo $query;
 //exit;
 $result=pg_query($conn, $query);
 
@@ -395,7 +395,7 @@ while($r = pg_fetch_assoc($result)) {
 echo "<br>";
 //echo $query;
 //echo "<br>";
-echo count($mails). " registrate a sistema";
+echo count($mails). " mail registrate a sistema";
 
 //Import the PHPMailer class into the global namespace
 use PHPMailer\PHPMailer\PHPMailer;
@@ -458,11 +458,12 @@ $mail->AltBody = 'This is a plain-text message body';
 //send the message, check for errors
 //echo "<br>OK 2<br>";
 if (!$mail->send()) {
-    echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
+    //echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
+    echo "<h3>Problema nell'invio della mail: ";
 	?>
-	<script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script>
+	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
-	echo '<br>Il provvedimento cautelare è stato correttamente assegnato, ma si è riscontrato un problema nell\'invio della mail.';
+	echo '<br>Il provvedimento cautelare &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
 	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
 	echo '<a href="../dettagli_provvedimento_cautelare.php?id='.$id_provvedimento.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);

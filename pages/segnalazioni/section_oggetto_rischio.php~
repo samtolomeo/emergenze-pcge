@@ -4,7 +4,11 @@
 
 
 $check_or=0;
-$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE id_segnalazione_in_lavorazione=".$id_lavorazione." AND attivo='t';";
+if ($id_lavorazione==''){
+	$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE  id_segnalazione=".$id." AND attivo='t';";
+} else {
+	$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE id_segnalazione_in_lavorazione=".$id_lavorazione."  AND attivo='t';";
+}
 //echo $query_or;
 $result_or=pg_query($conn, $query_or);
 while($r_or = pg_fetch_assoc($result_or)) {
@@ -43,7 +47,7 @@ if($check_or==1) {
 	echo "<h4> <i class=\"fas fa-exclamation-triangle\"></i> Oggetto a rischio </h4>";
 	echo "<b>Tipo oggetto a rischio</b>:".$descrizione_oggetto_rischio;
 	echo "<br><b>Id oggetto a rischio </b>:".$id_oggetto_rischio;
-} else if ($check_or==0) {
+} else if ($check_or==0 and $check_lav>=0) {
 	echo "<h4> Nessun oggetto a rischio segnalato.</h4>";
 	
 	
@@ -79,6 +83,7 @@ if($check_or==1) {
 }
 // eventualmente da tirare fuori altri dettagli
 if ($descrizione_oggetto_rischio=='Civici'){
+
 	//$query_or3="SELECT * from ".$nome_tabella_oggetto_rischio."  where ".$nome_campo_id_oggetto_rischio." = ".$id_oggetto_rischio.";";
 	$query_or3="SELECT * FROM geodb.civici WHERE id = ".$id_oggetto_rischio.";";
 	$result_or3=pg_query($conn, $query_or3);
@@ -98,7 +103,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 							<div class="modal-content">
 							  <div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Anagrafe civico di <?php echo $via. "Numero:" .$numciv. " " .$lettera ;?></h4>
+								<h4 class="modal-title">Anagrafe civico di <?php echo $via. " Numero: " .$numciv. " " .$lettera ;?></h4>
 							  </div>
 							  <div class="modal-body">
 							  
@@ -153,9 +158,8 @@ if ($descrizione_oggetto_rischio=='Civici'){
 
 						  </div>
 						</div>
-	
-	
-	<?php		
+
+<?php
 				if ($check_lav==1){
 					
 					$check_pc=0;
@@ -327,7 +331,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 			<input type="hidden" name="descrizione_oggetto_rischio" id="hiddenField" value="<?php echo $descrizione_oggetto_rischio; ?>" />
 			<input type="hidden" name="nome_campo_id_oggetto_rischio" id="hiddenField" value="<?php echo $nome_campo_id_oggetto_rischio; ?>" />
 			<input type="hidden" name="id_oggetto_rischio" id="hiddenField" value="<?php echo $id_oggetto_rischio; ?>" />
-			
+			<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 	
 			<?php
 			$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";

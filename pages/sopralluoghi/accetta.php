@@ -76,9 +76,9 @@ $query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(id_segna
 
 //values
 if ($parziale=='t'){
-	$query=$query.") VALUES (".$id_lavorazione.", ' sopralluogo".$id." preso in carico (parzialmente) dalla seguente squadra.: ".$uo." - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id."\"> Visualizza dettagli </a>'";
+	$query=$query.") VALUES (".$id_lavorazione.", ' sopralluogo ".$id." preso in carico (parzialmente) dalla seguente squadra.: ".$uo." - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id."\"> Visualizza dettagli </a>'";
 } else {
-	$query=$query.") VALUES (".$id_lavorazione.", ' sopralluogo".$id." preso in carico dalla seguente squadra.: ".$uo." - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id."\"> Visualizza dettagli </a>'";
+	$query=$query.") VALUES (".$id_lavorazione.", ' sopralluogo ".$id." preso in carico dalla seguente squadra.: ".$uo." - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$id."\"> Visualizza dettagli </a>'";
 }
 $query=$query.");";
 
@@ -92,7 +92,7 @@ echo "Result:". $result."<br>";
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'sopralluogo ".$id." preso in carico');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'presidio (o sopralluogo) ".$id." preso in carico');";
 echo $query_log."<br>";
 $result = pg_query($conn, $query_log);
 

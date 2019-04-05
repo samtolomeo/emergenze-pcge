@@ -4,7 +4,7 @@ session_start();
 //$_SESSION['user']="MRZRRT84B01D969U";
 
 $id=$_GET["id"];
-$subtitle="Dettagli sopralluogo n. ".$id;
+$subtitle="Dettagli presidio n. ".$id;
 
 
 ?>
@@ -82,15 +82,17 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					//$check_operatore=0;
 					$id_squadra=$r['id_squadra'];
                $id_profilo=$r['id_profilo'];
+			   //echo $id_profilo;
+			   //echo "<br>";
 					require('./check_operatore.php');
 					?>            
             	
             	
-               <h4><br><b>Unità operativa</b>: <?php echo $r['descrizione_uo'];?>
+               <h4><br><b>Squadra</b>: <?php echo $r['descrizione_uo'];?>
                <?php
                if ($check_squadra==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
-					}
+				}
 					require('./check_responsabile.php');
 					?>
                </h4>
@@ -463,8 +465,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							}
 							?>
 							</h4>
-							<h4><br><b>Ora chiusura</b>: <?php echo $r['time_stop']; ?></h4><hr>
-							<h4><br><b>Note chiusura</b>: <?php echo $r['note_ente']; ?></h4><hr>
+							<h4><br><b>Ora chiusura sopralluogo</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura sopralluogo</b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
 						<?php	
 						} else if ($r["id_stato_sopralluogo"]==4) {
@@ -552,7 +554,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
 									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
 										 <div class="form-group">
-									    <label for="note">Testo comunicazione <?php echo $id_evento;?></label>  <font color="red">*</font>
+									    <label for="note">Testo comunicazione</label>  <font color="red">*</font>
 									    <textarea required="" class="form-control" id="note"  name="note" rows="3"></textarea>
 									  </div>
 									
@@ -689,7 +691,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						} // chiudi if
-					}
+					
+					
+					$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
+					$zoom=16;
+					
 					?>
 						
 						<br>
@@ -700,8 +706,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
 						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
 						
+						<div id="map" style="width: 100%; padding-top: 100%;">
+						</div>
+						
 						<!--div style="width: 100%; padding-top: 100%;"-->
-							<iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe>
+							<!--iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe-->
 						<!--/div-->
 						<hr>
 						
@@ -717,11 +726,19 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 <?php 
 
-require('./footer.php');
 
 require('./req_bottom.php');
 
+include './mappa_leaflet_embedded.php';
 
+
+}
+
+
+
+
+
+require('./footer.php');
 ?>
 
 

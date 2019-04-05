@@ -70,12 +70,9 @@ require('./tables/filtri_segnalazioni.php');
             </select>
         </div>
         
-      	<?php if ($filtro_evento_attivo == 1){
-      	?>
-        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_attivi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
-      	<?php } else { ?>
+
         <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_pc.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
-			<?php } ?>
+
 
         
         

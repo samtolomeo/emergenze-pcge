@@ -47,9 +47,9 @@ if($check_or==1) {
 	echo "<h4> <i class=\"fas fa-exclamation-triangle\"></i> Oggetto a rischio </h4>";
 	echo "<b>Tipo oggetto a rischio</b>:".$descrizione_oggetto_rischio;
 	echo "<br><b>Id oggetto a rischio </b>:".$id_oggetto_rischio;
-} else if ($check_or==0) {
+} else if ($check_or==0 ) {
 	echo "<h4> Nessun oggetto a rischio segnalato.</h4>";
-	
+	if ($check_lav>=0){
 	
 	if (basename($_SERVER['PHP_SELF'])=='dettagli_segnalazione.php') {
 	?>
@@ -79,6 +79,7 @@ if($check_or==1) {
      </form>
 	
 	<?php
+	} // check_lav
 	}
 }
 // eventualmente da tirare fuori altri dettagli

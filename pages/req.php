@@ -61,6 +61,7 @@ function integerToRoman($integer)
 
     <!-- Leaflet CSS -->
     <link href="../vendor/leaflet/leaflet.css" rel="stylesheet">
+     <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">

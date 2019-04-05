@@ -47,17 +47,34 @@
 //var map = L.map('map', {scrollWheelZoom:false}).setView([44.41054697, 8.9342933893], 14);
 var mymap = L.map('mapid', {scrollWheelZoom:false}).setView([44.411156, 8.932661], 13);
 
-	var basemap2= L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+	var mapbox= L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		id: 'mapbox.streets'
-	}).addTo(mymap);
+	});//.addTo(mymap);
+
+var basemap2 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
+            maxZoom: 28
+        });
+        
+        
 var realvista = L.tileLayer.wms("https://mappe.comune.genova.it/realvista/reflector/open/service", {
                 layers: 'rv1',
-                format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a> | <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'
+                format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a>.'
               });
+
+var base_genova = L.tileLayer.wms("https://mappe.comune.genova.it/geoserver/ows?", {
+                layers: 'BASE_CARTOGRAFICA',maxZoom: 22,
+                format: 'image/jpeg',attribution: '<a href="https://geoportale.comune.genova.it/" target="_blank">Comune di Genova &copy; CC-BY Tiles</a>.'
+              });              
+              
+// qua decido lo sfondo da precaricare
+mymap.addLayer(basemap2);              
+              
+              
 function formatJSON(rawjson) {	//callback that remap fields name
 		var json = {},
 			key, loc, disp = [];
@@ -76,6 +93,10 @@ function formatJSON(rawjson) {	//callback that remap fields name
 		return json;
 	}
 	
+	
+	
+	
+	//nominatim search
 	var searchOpts = {
 			url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}&viewbox=8.65,44.35,9.15,44.53&bounded=1&countrycodes=IT',
 			jsonpParam: 'json_callback',
@@ -88,6 +109,24 @@ function formatJSON(rawjson) {	//callback that remap fields name
 				animate: false
 			}
 		};
+		
+		
+		
+		// WFS comunale search
+		
+		//https://mappe.comune.genova.it/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&outputFormat=application%2Fjson&maxFeatures=20&typeName=SITGEO:V_ASTE_STRADALI_TOPONIMO_SUB
+		/*var searchOpts = {
+			url: 'https://mappe.comune.genova.it/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&outputFormat=application%2Fjson&maxFeatures=20&typeName=SITGEO:V_ASTE_STRADALI_TOPONIMO_SUB',
+			//jsonpParam: 'json_callback',
+			formatData: formatJSON,
+			zoom: 17,
+			minLength: 2,
+			autoType: false,
+			marker: {
+				icon: false,
+				animate: false
+			}
+		};*/
 		
 	mymap.addControl( new L.Control.Search(searchOpts) );
 
@@ -222,11 +261,15 @@ $('#tipo_oggetto').attr('disabled',true);
             $('input[type=radio][name=civrischio]').attr('disabled', false); 
             $('#lat').attr('disabled', true);
             $('#lon').attr('disabled', true);
+            $("#collapse1").collapse('hide');
             $('#lat').val('');
             $('#lon').val('');
             $('#tipo_oggetto').attr('disabled',true);
             $('#tipo_oggetto').val('');
             $("#mapid").off("onclick");
+            if (marker) { // check
+        mymap.removeLayer(marker); // remove
+    	}
             	mymap.off('click', onMapClick);
             return true;
         }
@@ -242,9 +285,13 @@ $('#tipo_oggetto').attr('disabled',true);
             $('#civico-list').val('');
             $('#lat').val('');
             $('#lon').val('');
+            $("#collapse1").collapse('hide');
             $('#via-list').attr('disabled', true);
             $('#via-list').selectpicker('refresh');
             $('#civico-list').attr('disabled', true);
+            if (marker) { // check
+        mymap.removeLayer(marker); // remove
+    	}
             mymap.off('click', onMapClick);
             return true;
         }
@@ -257,11 +304,15 @@ $('#tipo_oggetto').attr('disabled',true);
             $('#lon').attr('readonly', true);
             $('#lat').removeAttr('disabled');
             $('#lon').removeAttr('disabled');
-            $("input[type=radio][name=oggrischio").attr('disabled', false);
-            $("input[type=radio][name=civrischio").attr('disabled', true);            
+            $("input[type=radio][name=oggrischio]").attr('disabled', false);
+            $("input[type=radio][name=civrischio]").attr('disabled', true);            
             $('#lat').val('');
             $('#lon').val('');
             $('#via-list').val('');
+            $("#collapse1").collapse('show');
+            $('#collapse1').on('shown.bs.collapse', function (e) {
+				    mymap.invalidateSize(true);
+				});
             $('#civico-list').val('');
             $('#via-list').attr('disabled', true);
             $('#via-list').selectpicker('refresh');
@@ -293,7 +344,7 @@ $('#tipo_oggetto').attr('disabled',true);
 }(jQuery));
 
     
-var baseMaps = {/*'OSM': basemap0, 'OSM B&W': basemap1,*/  'Realvista e-geos': realvista, 'Humanitarian OpensStreetMap': basemap2/*, 'OSM-Mapbox': basemap3*/};
+var baseMaps = {'OpenStreetMap': basemap2, 'Realvista e-geos': realvista, 'Sfondo comunale': base_genova, 'OSM-Mapbox':mapbox};
         
         //legenda
         /*L.control.layers(baseMaps ,
@@ -302,7 +353,7 @@ var baseMaps = {/*'OSM': basemap0, 'OSM B&W': basemap1,*/  'Realvista e-geos': r
 		
 		
 		mymap.addControl( new L.control.layers(baseMaps ,  {},
-        {collapsed:true}
+        {collapsed:false}
         ) );
 		
 </script> 

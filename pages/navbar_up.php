@@ -1,4 +1,8 @@
-<?php ?>
+<?php 
+
+require ('./note_ambiente.php');
+
+?>
 
 <style>
 .dropdown-menu > li > a {
@@ -19,7 +23,7 @@
                 </button>
                 <!--a class="navbar-brand" href="index.php"> </a-->
                 <div class="navbar-brand"> <i class="fas fa-server"></i>
-                Gestione emergenze - <?php echo $subtitle?> </div>
+                Gestione emergenze <font color=red> <?php echo $note_ambiente?> </font>- <?php echo $subtitle?> </div>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
@@ -296,7 +300,7 @@
 					<li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-pencil-ruler"></i> Sopralluoghi
+                                    <i class="fas fa-pencil-ruler"></i> Presidi fissi
                                     <span class="pull-right text-muted small"><?php echo $s_assegnati_resp;?> non presi in carico</span>
 								</div>                              
                                 <?php
@@ -307,11 +311,30 @@
                             
 							</a>
                         </li>
+                        
+                        <li class="divider"></li>
+                        
+                        <li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-pencil-ruler"></i> Presidi mobili
+                                    <span class="pull-right text-muted small"><?php echo $sm_assegnati_resp;?> non presi in carico</span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $sm_assegnati_resp; $ii++) {
+									echo "<br><a href=\"dettagli_sopralluogo_mobile.php?id=".$id_sm_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_sm_assegnati_resp[$ii]."</a>" ;
+								}
+								?>
+                            
+							</a>
+                        </li>
+                        
+                        
                         <li class="divider"></li>
                     <li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari
+                                    <i class="fas fa-exclamation-triangle"></i> Provv. cautelari
                                     <span class="pull-right text-muted small"><?php echo $pc_assegnati_resp;?> non presi in carico</span>
 								</div>                              
                                 <?php
@@ -368,7 +391,7 @@
 					<li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-pencil-ruler"></i> Sopralluoghi
+                                    <i class="fas fa-pencil-ruler"></i> Presidi
                                     <span class="pull-right text-muted small"><?php echo $s_assegnati_squadra;?></span>
 								</div>                              
                                 <?php
@@ -383,7 +406,7 @@
                     <li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari
+                                    <i class="fas fa-exclamation-triangle"></i> Provv. cautelari
                                     <span class="pull-right text-muted small"><?php echo $pc_assegnati_squadra;?></span>
 								</div>                              
                                 <?php
@@ -405,7 +428,7 @@
                         <i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (dettagli)</a>
+						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (Clicca per visualizzare i dettagli)</a>
                         </li>
                         <!--li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> User Profile</a>
                         </li-->

@@ -26,6 +26,35 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
+
+
+
+$check_evento_aperto=1;
+$query_evento_aperto="SELECT e.valido
+   FROM segnalazioni.join_segnalazioni_incarichi i
+   JOIN segnalazioni.join_segnalazioni_in_lavorazione l ON i.id_segnalazione_in_lavorazione=l.id_segnalazione_in_lavorazione
+	JOIN segnalazioni.t_segnalazioni s ON s.id=l.id_segnalazione
+	JOIN eventi.t_eventi e on e.id=s.id_evento
+	WHERE i.id_incarico=".$id.";";
+
+//echo $query_evento_aperto;
+
+
+$result_e=pg_query($conn, $query_evento_aperto);
+while($r_e = pg_fetch_assoc($result_e)) {
+	if($r_e['valido']=='f') {
+		$check_evento_aperto=0;
+		$table='v_incarichi_eventi_chiusi';
+		//echo "false";
+	} else {
+		$table='v_incarichi';
+		//echo "true";
+	}
+}
+
+
+
+
 ?>
     
 </head>
@@ -54,28 +83,29 @@ require('./check_evento.php');
             <div class="row">
             <div class="col-md-6">
 				<?php
-					$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.v_incarichi WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
-					//echo $query
+					$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
+					//echo $query;
            
 					$result=pg_query($conn, $query);
 					while($r = pg_fetch_assoc($result)) {
 						//$id_squadra=$r['id_squadra'];
 						$id_uo=$r['id_uo'];
-               	$id_profilo=$r['id_profilo'];
+						$id_profilo=$r['id_profilo'];
 						require('./check_operatore.php');
-						
+						//echo $id_profilo;
 					?>            
-            	
+            
                <h4><br><b>Unità operativa</b>: <?php echo $r['descrizione_uo']; ?>
                <?php
                if ($check_uo==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
-					}
-					require('./check_responsabile.php');
+				}
+				require('./check_responsabile.php');
 					               
                //require('./check_responsabile.php');
                ?>
                </h4>
+			   
                <h4><br><b>Descrizione incarico</b>: <?php echo $r['descrizione']; ?></h4>
                <h4><br><b>Data e ora invio incarico</b>: <?php echo $r['data_ora_invio']; ?></h4>
                
@@ -478,7 +508,7 @@ require('./check_evento.php');
 					<?php
 					
 					// fine $query che verifica lo stato
-					$query= "SELECT * FROM segnalazioni.v_incarichi WHERE id=".$id." and id_stato_incarico =".$stato_attuale."  ORDER BY id_segnalazione;";
+					$query= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_incarico =".$stato_attuale."  ORDER BY id_segnalazione;";
 					
 					
 					//echo $query
@@ -534,8 +564,10 @@ require('./check_evento.php');
 
 						
 						<?php
-					}
-					?>
+						$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
+						$zoom=16;
+						}
+						?>
 						
 						<br>
 						
@@ -545,8 +577,13 @@ require('./check_evento.php');
 						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
 						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
 						
+						<div id="map" style="width: 100%; padding-top: 100%;">
+						</div>
+						
+						
+						
 						<!--div style="width: 100%; padding-top: 100%;"-->
-							<iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe>
+							<!--iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe-->
 						<!--/div-->
 						<hr>
 						
@@ -562,117 +599,20 @@ require('./check_evento.php');
 
 <?php 
 
-require('./footer.php');
-
 require('./req_bottom.php');
 
+include './mappa_leaflet_embedded.php';
 
+
+
+
+
+require('./footer.php');
 ?>
 
 
-<script type="text/javascript">
-						
-		var lat=<?php echo $lat;?>;
-		var lon=<?php echo $lon;?>;
-		var mymap = L.map('map_dettaglio', {scrollWheelZoom:false}).setView([lat, lon], 16);
-	
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-			id: 'mapbox.streets'
-		}).addTo(mymap);
-	
-		L.marker([lat, lon]).addTo(mymap)
-    		.bindPopup('Segnalazione n. <?php echo $id;?>');
-    		//.openPopup();
-	
-	
-		
-		var segn_non_lav = [
-        
-        <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE lavorazione=0 and st_distance(st_transform('<?php echo $geom_s;?>'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=<?php echo $id_evento;?;";
-
-
-			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
-			
-
-    		$i=0;
-			$result_g = pg_query($conn, $query_g);
-	      while($r_g = pg_fetch_assoc($result_g)) {
-				if ($i==0){ 
-					echo '{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
-					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
-					echo $r_g["geo"].'}';
-				} else {
-					//echo ",". $r_g["geo"];
-					echo ',{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
-					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
-					echo $r_g["geo"].'}';
-					
-				}
-				$i=$i+1;
-			}
-			?>
-			];
-			
-			
-			
-			
-			
-			
-			var stile_non_lavorazione = {
-		    radius: 8,
-		    fillColor: "#FFD700",
-		    color: "#000",
-		    weight: 1,
-		    opacity: 1,
-		    fillOpacity: 0.8
-		};
-		
-		var stile_lavorazione = {
-		    radius: 8,
-		    fillColor: "#228B22",
-		    color: "#000",
-		    weight: 1,
-		    opacity: 1,
-		    fillOpacity: 0.8
-		};
-		/*var layer_v_segnalazioni_0 = new L.geoJson(geojsonFeature, {
-		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, geojsonMarkerOptions);
-		    }
-		}).addTo(map);*/
-        
-        
-        //var markers0 = L.markerClusterGroup();
-        var markers1 = L.markerClusterGroup();   
-		  
-		  var layer_v_segnalazioni_0 = L.geoJson(segn_non_lav, {
-		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, stile_non_lavorazione);
-		    }
-		    ,
-			onEachFeature: function (feature, layer) {
-				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pause-circle"></i> Da prendere in carico </div>'+
-				'<h4><b>Tipo</b>: '+
-				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" target="_new" href="./dettagli_segnalazione.php?id='+
-				feature.properties.id +
-				'"> Dettagli segnalazione </a>' );
-			}
-		});
-		
-	   mymap.addLayer(layer_v_segnalazioni_0);
-</script>
-
-
 <script type="text/javascript" >
-
 $('input[type=radio][name=invio]').attr('disabled', true);
-
 (function ($) {
     'use strict';
     
@@ -692,11 +632,6 @@ $('input[type=radio][name=invio]').attr('disabled', true);
         
     });
 }(jQuery));
-
-
-
-
-
 $(document).ready(function() {
     $('#js-date').datepicker({
         format: "yyyy-mm-dd",
@@ -705,9 +640,7 @@ $(document).ready(function() {
         todayHighlight: true
     });
 });
-
-
-</script>  
+</script>
 
 </body>
 

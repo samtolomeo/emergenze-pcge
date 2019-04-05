@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Gestione emergenze - Protezione Civile Comune di Genova";
+$subtitle="Pagina iniziale (dashboard)";
 
 
 
@@ -24,7 +24,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 //require('./conn.php');
 
 require('./check_evento.php');
-
+require('./conteggi_dashboard.php');
 
 ?>
     
@@ -47,21 +47,16 @@ require('./check_evento.php');
 
         <div id="page-wrapper">
             <div class="row">
-                <div class="col-lg-12">
+                <!--div class="col-lg-12">
                     <h1 class="page-header">Dashboard</h1>
-                </div>
+                </div-->
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             
-            <!--h4
-            Questo è solo un esempio della dashboard finale, <b>sviluppato solo parzialmente</b> 
-            <br> Molti elementi o pannelli sono solo in versione demo. 
-            <br> Dalla sidebar a sinistra è possibile accedere alle pagine sino ad ora sviluppate.
-            <br--> 
-            <h4> Per segnalare bug sulle parti già sviluppate o per semplici suggerimenti scrivi una mail a 
-            <a href="mailto:roberto.marzocchi@gter.it?subject=Nuovo%20Sistema%20PC%20GE%20bug">Gter srl</a>
-</h4>
+            
+            <?php echo $note_debug; ?>
+           
 
             <br>
             
@@ -218,7 +213,7 @@ require('./check_evento.php');
 
                 <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-map-marked-alt fa-fw"></i> Mappa segnalazioni e sopralluoghi in corso
+                            <i class="fa fa-map-marked-alt fa-fw"></i> Mappa segnalazioni e presidi in corso
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -454,7 +449,7 @@ require('./check_evento.php');
 							<div class="list-group-item" >
 											
                                 
-                                    <i class="fa fa-pencil-ruler"></i> <b>Sopralluoghi</b>
+                                    <i class="fa fa-pencil-ruler"></i> <b>Presidi</b>
                                     <br><br>
                                      - <i class="fa fa-pause"></i> Assegnati
                                     <span class="pull-right text-muted small"><em><?php echo $sopralluoghi_assegnati; ?></em>
@@ -469,13 +464,13 @@ require('./check_evento.php');
                                     <span class="pull-right text-muted small"><em><?php echo $sopralluoghi_conclusi; ?></em>
                                     </span>
                                     <hr>
-                                    Totale sopralluoghi eventi attivi:
+                                    Totale presidi eventi attivi:
                                     <span class="pull-right text-muted small"><em><?php echo $sopralluoghi_tot; ?></em>
                                     </span>
                                 </div>
                             
                             <!-- /.list-group -->
-                            <a href="./nuovo_sopralluogo.php" class="btn btn-default btn-block">Crea un nuovo sopralluogo</a>
+                            <a href="./nuovo_sopralluogo.php" class="btn btn-default btn-block">Crea un nuovo presidio</a>
 							
 							</div>
 							

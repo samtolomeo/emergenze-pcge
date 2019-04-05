@@ -56,7 +56,13 @@ if ($profilo_sistema > 6){
 
 
        
-            
+            <?php 
+				if ($contatore_eventi==0){
+					echo '<hr> <h2> <font color="red"> <i class="fas fa-ban"></i> ';
+					echo 'In questo momento non è possibile inserire nuove segnalazioni in quanto non ci sono eventi attivi.';
+					echo '</font></h2><hr>';
+				}
+        		?> 
             
             <div class="row">             
             <h4><i class="fa fa-address-card"></i> Generalità segnalante:</h4> 
@@ -289,8 +295,8 @@ if ($profilo_sistema > 6){
 				
 				<div class="form-group">
 					<label for="oggrischio"> C'è uno specifico oggetto in pericolo?</label> <br>
-					<label class="radio-inline"><input type="radio" name="oggrischio" value="t">Sì</label>
-					<label class="radio-inline"><input type="radio" name="oggrischio" value="f">No</label>
+					<label class="radio-inline"><input type="radio" name="oggrischio" id=oggrischiot value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="oggrischio" id=oggrischiof value="f">No</label>
 				</div>
 				
 				<div class="form-group">
@@ -315,8 +321,27 @@ if ($profilo_sistema > 6){
 				</div> 
             <div class="row">    
 
+				<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#collapse1">Mappa</a>
+      </h4>
+    </div>
+    <div id="collapse1" class="panel-collapse collapse">
+			<div id="mapid" style="width: 100%; height: 600px;"></div>
+    </div>
+  </div>
+</div>
 
-								<div id="mapid" style="width: 100%; height: 600px;"></div>
+
+
+<!--script type="text/javascript" >
+$('#collapse1').on('shown.bs.collapse', function (e) {
+    mymap.invalidateSize(true);
+});
+</script-->
+								
 								
 								       
 				

@@ -2,6 +2,11 @@
 //require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 $check_evento=0;
+$contatore_eventi==0;
+$contatore_allerte=0;
+$descrizione_allerta='Nessuna allerta';
+$color_allerta='#5cb85c';
+
 //require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 $query1="SELECT * From \"eventi\".\"t_eventi\" WHERE valido='TRUE' ORDER BY id;";
@@ -19,6 +24,12 @@ while($r1 = pg_fetch_assoc($result1)) {
 	while($r2 = pg_fetch_assoc($result2)) {
 		$tipo_eventi_attivi[]=array($r1["id"],$r2["descrizione"]);
 	}
+	$query2="SELECT  nota From eventi.t_note_eventi WHERE id_evento=".$r1["id"]." ;";
+	//echo $query2;
+	$result2 = pg_query($conn, $query2);
+	while($r2 = pg_fetch_assoc($result2)) {
+		$nota_eventi_attivi[]=array($r1["id"],$r2["nota"]);
+	}	
 	$query3="SELECT  b.nome_munic From eventi.join_municipi a,geodb.municipi b  WHERE a.id_evento=".$r1["id"]." and a.id_municipio::integer=b.codice_mun::integer;";
 	//echo $query3;
 	$result3 = pg_query($conn, $query3);
@@ -117,6 +128,12 @@ while($r1 = pg_fetch_assoc($result1)) {
 	while($r2 = pg_fetch_assoc($result2)) {
 		$tipo_eventi_c[]=array($r1["id"],$r2["descrizione"]);
 	}
+	$query2="SELECT nota From eventi.t_note_eventi WHERE id_evento=".$r1["id"]." ;";
+	//echo $query2;
+	$result2 = pg_query($conn, $query2);
+	while($r2 = pg_fetch_assoc($result2)) {
+		$nota_eventi_c[]=array($r1["id"],$r2["nota"]);
+	}	
 	$query3="SELECT  b.nome_munic From eventi.join_municipi a,geodb.municipi b  WHERE a.id_evento=".$r1["id"]." and a.id_municipio::integer=b.codice_mun::integer;";
 	//echo "<br>".$query3;
 	$result3 = pg_query($conn, $query3);
@@ -164,11 +181,14 @@ foreach ($headers as $name => $content)
 		$cognome = $r['cognome'];
 		$codfisc = $r['cf'];
 		$matricola_cf=$codfisc;
+		$uo_inc='uo_'.$r['id1'];
 		$livello1=$r['livello1'];
 		$livello2=$r['livello2'];
 		$livello3=$r['livello3'];
-		
 	}
+
+
+
 
 	//dipendenti
 	$query= "SELECT * FROM varie.dipendenti WHERE codice_fiscale='".$CF."';";
@@ -195,8 +215,15 @@ foreach ($headers as $name => $content)
 		$descrizione_profilo = $r['descrizione'];
 		$profilo_cod_munic = $r['cod_municipio'];
 		$profilo_nome_munic = $r['nome_munic'];
-		
 	}
+	
+	$query= "SELECT cod FROM varie.t_incarichi_comune WHERE profilo ='".$profilo_sistema."';";
+	$result = pg_query($conn, $query);
+	while($r = pg_fetch_assoc($result)) {
+		$periferico_inc = 'com_'.$r['cod'];
+	}
+	
+	
 	$query= "SELECT * FROM users.v_componenti_squadre WHERE matricola_cf ='".$matricola_cf."';";
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
@@ -212,7 +239,9 @@ foreach ($headers as $name => $content)
 	//notifiche
 	if ($profilo_sistema>0 and $profilo_sistema<=3){
 		$profilo_ok=3;
-	}
+	} else {
+   $profilo_ok=$profilo_sistema;
+   }
 	
 	
 	// segnalazioni da elaborare (il resto dei conteggi serve solo alla dashboard)
@@ -223,7 +252,7 @@ foreach ($headers as $name => $content)
 	}
 
 	// Conteggi incarichi
-	$query= "SELECT  id, descrizione FROM segnalazioni.v_incarichi_last_update where id_stato_incarico=1 and id_profilo='".$profilo_ok."' GROUP BY id,descrizione;";
+	$query= "SELECT  id, descrizione FROM segnalazioni.v_incarichi_last_update where id_stato_incarico=1 and (id_profilo='".$profilo_ok."' OR id_uo='".$uo_inc."'  OR id_uo='".$periferico_inc."' ) GROUP BY id,descrizione;";
 	//echo $query;
 	$result = pg_query($conn, $query);
 	$id_i_assegnati_resp=array();
@@ -261,6 +290,19 @@ foreach ($headers as $name => $content)
 	$s_assegnati_resp = count($id_s_assegnati_resp);
 
 
+	// Conteggi sopralluoghi
+	$query= "SELECT  id, descrizione FROM segnalazioni.v_sopralluoghi_mobili_last_update where id_stato_sopralluogo=1 and id_profilo='".$profilo_ok."' GROUP BY id,descrizione;";
+	//echo $query;
+	$result = pg_query($conn, $query);
+	$id_sm_assegnati_resp=array();
+	$descrizione_sm_assegnati_resp=array();
+	while($r = pg_fetch_assoc($result)) {
+		$id_sm_assegnati_resp[] = $r['id'];
+		$descrizione_sm_assegnati_resp[] = $r['descrizione'];
+	}
+	$sm_assegnati_resp = count($id_sm_assegnati_resp);
+
+
 	// Conteggi provvedimenti cautelari
 	$query= "SELECT  id, tipo_provvedimento FROM segnalazioni.v_provvedimenti_cautelari_last_update where id_stato_provvedimenti_cautelari=1 and id_profilo='".$profilo_ok."';";
 	
@@ -274,7 +316,7 @@ foreach ($headers as $name => $content)
 	$pc_assegnati_resp = count($id_pc_assegnati_resp);
 	
 	
-	$count_resp=$i_assegnati_resp + $ii_assegnati_resp + $s_assegnati_resp + $pc_assegnati_resp;
+	$count_resp=$i_assegnati_resp + $ii_assegnati_resp + $s_assegnati_resp + $sm_assegnati_resp + $pc_assegnati_resp;
 	
 	
 	//******************************************************
@@ -355,5 +397,5 @@ foreach ($headers as $name => $content)
 	$pc_assegnati_squadra = count($id_pc_assegnati_squadra);*/
 	
 	
-	$count_squadra = $ii_assegnati_squadra + $s_assegnati_squadrap + $pc_assegnati_squadra;
+	$count_squadra = $ii_assegnati_squadra + $s_assegnati_squadra + $pc_assegnati_squadra;
 ?>       

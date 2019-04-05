@@ -47,20 +47,20 @@ if ($profilo_sistema <= 8){
         <div id="page-wrapper">
              <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Elenco squadre</h1>
-                </div>
+                    <h3>Creazione squadre <i class="fas fa-arrow-right"></i> <!--/h3-->
+                <!--/div-->
                 <!-- /.col-lg-12 -->
-            </div>
+            <!--/div-->
             <!-- /.row -->
 
-            <div class="row">
-            
+            <!--div class="row"-->
+            <!--div class="col-lg-6"-->
             <?php
 				if ($check_operatore == 0){
-					echo '<h4><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a creare nuove squadre</h4><hr> ';
+					echo '<!--h4--><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a creare nuove squadre</h3><hr> ';
 				} else {
 				?>
-					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_squadra"><i class="fas fa-plus"></i> Nuova squadra </button>
+					<!--h3--><button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_squadra"><i class="fas fa-plus"></i> Nuova squadra </button></h3>
 					<!-- Modal incarico-->
 					<div id="new_squadra" class="modal fade" role="dialog">
 					  <div class="modal-dialog">
@@ -162,9 +162,15 @@ if ($profilo_sistema <= 8){
 				<?php
 				} // chiudo if check operatore
 				?>
-
+			</div>
             </div>
             <hr>
+			<div class="row">
+                <div class="col-lg-12">
+                    <h3>Elenco squadre</h3>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
             <div class="row">
 
 				 <div id="toolbar">

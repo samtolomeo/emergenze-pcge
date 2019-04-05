@@ -69,7 +69,7 @@ $result=pg_query($conn, $query);
 $query= "INSERT INTO segnalazioni.t_incarichi_interni ( id, descrizione, id_profilo, id_squadra";
 
 //values
-$query=$query.") VALUES (".$id_incarico.", '".$descrizione."', '".$profilo_sistema."', '".$uo."' ";
+$query=$query.") VALUES (".$id_incarico.", '".$descrizione."', '".$profilo_ok."', '".$uo."' ";
 
 $query=$query.");";
 

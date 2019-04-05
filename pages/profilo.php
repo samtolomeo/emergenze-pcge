@@ -57,6 +57,8 @@ require('./check_evento.php');
 						echo "<br><b>Municipio</b>: ". $profilo_nome_munic;
 					}
 					echo "<br><b>Squadra</b>: ". $nome_squadra_operatore;
+					echo "<br><b>Unità operativa</b>: ". $uo_inc;
+					echo "<br><b>Unità operativa municipale</b>: ". $periferico_inc;
 				?> 
 				
 				

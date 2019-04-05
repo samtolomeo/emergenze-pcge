@@ -75,11 +75,11 @@ while($r_uo = pg_fetch_assoc($result_uo)) {
 $query= "INSERT INTO segnalazioni.t_incarichi( id, descrizione, id_profilo, id_UO";
 
 //values
-$query=$query.") VALUES (".$id_incarico.", '".$descrizione."', '".$profilo_sistema."', '".$uo."' ";
+$query=$query.") VALUES (".$id_incarico.", '".$descrizione."', '".$profilo_ok."', '".$uo."' ";
 
 $query=$query.");";
 
-//echo $query;
+//echo $query."<br>";
 //exit;
 $result=pg_query($conn, $query);
 
@@ -91,7 +91,7 @@ $query=$query.") VALUES (".$id_incarico.", ".$id." ";
 
 $query=$query.");";
 
-//echo $query;
+//echo $query."<br>";
 //exit;
 $result=pg_query($conn, $query);
 
