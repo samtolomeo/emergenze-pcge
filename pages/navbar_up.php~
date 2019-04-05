@@ -312,6 +312,7 @@ require ('./note_ambiente.php');
 							</a>
                         </li>
                         
+                        <li class="divider"></li>
                         
                         <li>
 					<a href="#">
