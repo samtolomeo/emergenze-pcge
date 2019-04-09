@@ -82,6 +82,8 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
             <h4><i class="fas fa-edit"></i> Editing tabella 
             <i><?php echo $schema;?>.<?php echo $tabella;?></i> - 
             <a href="#c_t" class="btn btn-primary"><i class="fas fa-table"></i> Cambia tabella da editare</a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_tipo_modal"><i class="fa fa-plus"></i> Aggiungi tipologia</button>
+            
             </h4> 
 
 	
@@ -94,7 +96,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
         </div>
         
 
-        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_amm.php?s=<?php echo $schema;?>&t=<?php echo $tabella;?>" data-height="auto" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_amm.php?s=<?php echo $schema;?>&t=<?php echo $tabella;?>" data-height="auto" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -217,6 +219,81 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 <?php
 	}
 ?>
+
+
+
+<!-- Modal -->
+<div id="new_tipo_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit record </h4>
+      </div>
+      <div class="modal-body">
+      
+		<div class="row">
+        <form action="amministratore/new_tipo_tabella.php?s=<?php echo $schema;?>&t=<?php echo $tabella;?>&id='<?php echo $r0['id']?>'" method="POST">
+
+
+			<?php 
+			$query="select * from information_schema.columns WHERE table_schema='".$schema."' and table_name ilike '".$tabella."';";
+			//echo $query;
+			$result = pg_query($conn, $query);
+			#exit;
+			while($r = pg_fetch_assoc($result)) {
+				if ($r['data_type']!='boolean' and $r['column_name']!='id'){
+			?>
+				<div class="form-group col-lg-12">
+                <label for="<?php echo $r['column_name']?>"> <?php echo $r['column_name']?></label> *
+                <input type="text" value='<?php echo $r0[$r['column_name']]?>' name="<?php echo $r['column_name']?>" class="form-control" required>
+				</div>
+				<?php } else if ($r['column_name'] =='id') { ?>
+				<!--div class="form-group col-lg-12">
+                <label for="<?php echo $r['column_name']?>"> <?php echo $r['column_name']?></label> *
+                <input type="text" value='<?php echo $r0[$r['column_name']]?>' name="<?php echo $r['column_name']?>" readonly class="form-control" required>
+				</div-->
+				
+				<?php } else { ?>
+				<div class="form-group col-lg-12">
+                <label for="<?php echo $r['column_name']?>"> <?php echo $r['column_name']?> </label> * <br>
+				<?php
+                //if($r0[$r['column_name']]=='t'){
+					echo '<label class="radio-inline"><input type="radio" name="'.$r['column_name'].'" checked="" value="t"> Vero </label>';
+					echo '<label class="radio-inline"><input type="radio" name="'.$r['column_name'].'" value="f"> Falso </label>';
+				//} else {
+				//	echo '<label class="radio-inline"><input type="radio" name="'.$r['column_name'].'" value="t"> Vero </label>';
+				//	echo '<label class="radio-inline"><input type="radio" name="'.$r['column_name'].'" checked="" value="f"> Falso </label>';
+				//}
+				echo '</div>';
+			}
+			}
+			?>
+			
+
+
+              
+
+			  
+              <div class="form-group col-lg-12">
+            <button type="submit" class="btn btn-primary">Aggiorna</button>
+			</div>
+            </form>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      </div>
+    </div>
+
+  </div>
+</div>   
+
+
+
+
 
 
 
