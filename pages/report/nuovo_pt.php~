@@ -38,7 +38,7 @@ if ($d1 > $d2) {
 }
 
 
-$query="INSERT INTO report.t_coordinamento (matricola_cf,data_start,data_end) VALUES";
+$query="INSERT INTO report.t_presidio_territoriale (matricola_cf,data_start,data_end) VALUES";
 $query= $query." ('".$cf."','".$data_inizio."','".$data_fine."');"; 
 echo $query;
 //exit;
