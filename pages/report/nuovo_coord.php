@@ -64,7 +64,9 @@ echo "<br>";
 echo $query_log;
 
 //exit;
-header("location: ../reportistica.php");
+//header("location: ../reportistica.php");
+header('Location: ' . $_SERVER['HTTP_REFERER']);
+
 
 
 ?>

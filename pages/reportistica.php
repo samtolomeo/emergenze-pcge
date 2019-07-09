@@ -396,11 +396,17 @@ data-show-toggle="false" data-show-columns="false" data-toolbar="#toolbar">
 </tr>
 </thead>
 </table>
+               
+               <?php
+               $query="SELECT sum(residenti) from segnalazioni.v_residenti_allontanati 
+               where id_evento=".$id.";";
+               $result = pg_query($conn, $query);
+					while($r = pg_fetch_assoc($result)) {
+						echo "<br><br><b>Residenti allontanati in questo momento::</b>".$r['sum']."<br><br>";
+					}
                 
                 
-                
-                
-
+				?>
             </div>
                 <!-- /.col-sm-4 -->
             </div>

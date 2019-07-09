@@ -38,7 +38,7 @@ if ($d1 > $d2) {
 }
 
 
-$query="INSERT INTO report.t_tecnico_pc (matricola_cf,data_start,data_end) VALUES";
+$query="INSERT INTO report.t_operatore_nverde (matricola_cf,data_start,data_end) VALUES";
 $query= $query." ('".$cf."','".$data_inizio."','".$data_fine."');"; 
 echo $query;
 //exit;
@@ -53,7 +53,7 @@ echo "<br>";
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('report','".$operatore ."', 'Inserimento tecnico P.C.: ".$cf."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('report','".$operatore ."', 'Inserimento operatore Numero Verde: ".$cf."');";
 $result = pg_query($conn, $query_log);
 
 

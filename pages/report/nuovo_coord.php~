@@ -53,7 +53,7 @@ echo "<br>";
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('report','".$operaratore ."', 'Inserimento coordinatore sala. CF: ".$cf."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('report','".$operatore ."', 'Inserimento coordinatore sala. CF: ".$cf."');";
 $result = pg_query($conn, $query_log);
 
 
