@@ -318,7 +318,7 @@
 			var pc_punti = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom_inizio) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom is null ;";
+        $query_g="SELECT id, ST_AsGeoJson(geom_inizio) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom is null AND rimosso='f' ;";
 			//echo $query_g;
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -351,7 +351,7 @@
 			var pc_linee = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom_inizio is null ;";
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom_inizio is null AND rimosso='f';";
 			//echo $query_g;
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -606,7 +606,7 @@
 		    ,
 			onEachFeature: function (feature, layer) {
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pencil-ruler"></i>' +feature.properties.tipo_provvedimento+ '</div>'+
-				'<h4><b>Squadra</b>: '+
+				'<h4><b>Unità operativa</b>: '+
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Stato</b>: '+
 				feature.properties.descrizione_stato+'</h4>'+
@@ -622,7 +622,7 @@
 		    style:stile_pc_linea,
 			onEachFeature: function (feature, layer) {
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pencil-ruler"></i>' +feature.properties.tipo_provvedimento+ '</div>'+
-				'<h4><b>Squadra</b>: '+
+				'<h4><b>Unità operativa</b>: '+
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Stato</b>: '+
 				feature.properties.descrizione_stato+'</h4>'+

@@ -20,9 +20,9 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT * From ".$schema.".".$tabella." ".$filter." order by id;";
+	$query="SELECT * From \"".$schema."\".\"".$tabella."\" ".$filter." order by 1;";
     
-   //echo $query;
+  //echo $query;
 	$result = pg_query($conn, $query);
 	#echo $query;
 	#exit;

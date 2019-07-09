@@ -61,6 +61,7 @@ function integerToRoman($integer)
 
     <!-- Leaflet CSS -->
     <link href="../vendor/leaflet/leaflet.css" rel="stylesheet">
+     <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
@@ -74,7 +75,11 @@ function integerToRoman($integer)
     <!-- Custom Fonts -->
     <link href="../vendor/fontawesome-free-5.2.0-web/css/all.css" rel="stylesheet" type="text/css">
     
-    
+    <style type="text/css">
+    #wrapper { 
+    		style="padding-top:50px;
+    }
+    </style>
     
     
 

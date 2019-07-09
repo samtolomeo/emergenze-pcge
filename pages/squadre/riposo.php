@@ -14,7 +14,7 @@ echo $query;
 $result=pg_query($conn, $query);
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Squadra con id: ".$id_squadra." messa a riposo');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Squadra con id: ".$id." messa a riposo');";
 $result = pg_query($conn, $query_log);
 
 //exit;

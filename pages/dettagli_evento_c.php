@@ -253,10 +253,64 @@ require('./check_evento.php');
 					?>
 
 					</div> <!-- Chiudo la colonna larga 6 -->
-					
+					</div> <!-- Chiudo la row -->
+
+					<div class="row">
+<hr>
+<?php
+	   					$query="SELECT * FROM eventi.t_attivazione_nverde WHERE id_evento=".$eventi_attivi_c[$i]." and data_ora_fine <= now();";
+	   					//echo $query;
+							//exit;
+							$result = pg_query($conn, $query);
+							while($r = pg_fetch_assoc($result)) {
+								$check_nverde=2;
+							}
+							if($check_nverde==2) {
+								//echo "<h3> Fasi Operative Comunali passate:</h3><ul>";
+								?>
+								<div class="panel-group">
+  								<div class="panel panel-success">
+								    <div class="panel-heading">
+								      <h4 class="panel-title">
+								        <a data-toggle="collapse" href="#collapse_nverde">Fasi Operative Comunali passate</a>
+								      </h4>
+								    </div>
+								    <div id="collapse_nverde" class="panel-collapse collapse">
+								      <div class="panel-body">
+								<?php
+								}
+							$result = pg_query($conn, $query);
+							while($r = pg_fetch_assoc($result)) {
+								$timestamp = strtotime($r["data_ora_inizio"]);
+								setlocale(LC_TIME, 'it_IT.UTF8');
+								$data_start = strftime('%A %e %B %G', $timestamp);
+								$ora_start = date('H:i', $timestamp);
+								$timestamp = strtotime($r["data_ora_fine"]);
+								$data_end = strftime('%A %e %B %G', $timestamp);
+								$ora_end = date('H:i', $timestamp);
+								$color=str_replace("'","",$r["rgb_hex"]);								
+								echo "<li> <i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b> Fase di ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " </li>";
+							}
+							if($check_nverde==2) {
+								//echo "<h3> Allerte passate:</h3><ul>";
+								?>
+								 </div>
+								      
+								    </div>
+								  </div>
+								</div>
+								<?php
+								      
+								     
+							}
+							
+	   					if($check_nverde==0) { echo "<ul><li>Nessuna attivazione del numero verde</li></ul>";}
+	   			
+	   					
+					?>
 
 
-
+					</div> <!-- Chiudo la row -->
 
 <!-- Modal chiusura-->
 <div id="chiudi<?php echo $eventi_attivi_c[$i]; ?>" class="modal fade" role="dialog">
@@ -304,7 +358,7 @@ require('./check_evento.php');
 
 
 <?php
-echo "</div>";
+//echo "</div>";
 echo '<hr style="border:2px solid #000;">';
 
 ?>

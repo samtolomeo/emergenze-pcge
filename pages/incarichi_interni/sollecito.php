@@ -87,7 +87,7 @@ $mail->Subject = 'Urgente - Sollecito per incarico ricevuto dalla Protezione Civ
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Squadra
+$body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Squadra
  '.$uo_descrizione.' Non ha ancora risposto all\'assegnazione incarico interno.
   <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali alla
@@ -96,7 +96,10 @@ $mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Squad
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> 
  Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
+  
+require('../informativa_privacy_mail.php');
 
+$mail-> Body=$body ;
 
 //$mail->Body =  'Corpo del messaggio';
 //$mail->msgHTML(file_get_contents('E\' arrivato un nuovo incarico da parte del Comune di Genova. Visualizza lo stato dell\'incarico al seguente link e aggiornalo quanto prima. <br> Ti chiediamo di non rispondere a questa mail'), __DIR__);

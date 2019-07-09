@@ -19,6 +19,9 @@ $id_lavorazione=$_POST["id_lavorazione"];
 $note= str_replace("'", "''", $_POST["note"]);
 $uo=$_POST["uo"];
 
+$id_evento=$_POST["id_evento"];
+
+
 echo "Incarico:".$id. "<br>";
 echo "Note:".$note. "<br>";
 
@@ -26,9 +29,75 @@ echo "Note:".$note. "<br>";
 
 
 
-$query= "INSERT INTO segnalazioni.t_comunicazioni_incarichi_inviate(
-            id_incarico, testo)
-    VALUES (".$id.", '".$note."');";
+// per prima cosa verifico che il file sia stato effettivamente caricato
+if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_name'])) {
+  echo 'Non hai inviato nessun file...';    
+} else {
+
+	//percorso della cartella dove mettere i file caricati dagli utenti
+
+
+	$uploaddir0="../../../emergenze_uploads/";
+
+	$uploaddir1= $uploaddir0. "e_".$id_evento."/";
+
+	if (file_exists($uploaddir1)) {
+		echo "The file $uploaddir1 exists <br>";
+	} else {
+		echo "The file $uploaddir1 does not exist <br>";
+		$crea_folder="mkdir ".$uploaddir1;
+		exec($crea_folder);
+	}
+
+	$uploaddir= $uploaddir1. "ii_".$id."/";
+
+	if (file_exists($uploaddir)) {
+		echo "The file $uploaddir exists <br>";
+	} else {
+		echo "The file $uploaddir does not exist <br>";
+		$crea_folder="mkdir ".$uploaddir;
+		exec($crea_folder);
+	}
+
+	//Recupero il percorso temporaneo del file
+	$userfile_tmp = $_FILES['userfile']['tmp_name'];
+
+	//recupero il nome originale del file caricato e tolgo gli spazi
+	//$userfile_name = $_FILES['userfile']['name'];
+	$userfile_name = preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($_FILES['userfile']["name"]));
+
+
+	$datafile=date("YmdHis");
+	$allegato=$uploaddir .$datafile."_". $userfile_name;
+
+	echo $allegato."<br>";
+
+	//copio il file dalla sua posizione temporanea alla mia cartella upload
+	if (move_uploaded_file($userfile_tmp, $allegato)) {
+	  //Se l'operazione è andata a buon fine...
+	  echo 'File inviato con successo.';
+	}else{
+	  //Se l'operazione è fallta...
+	  echo 'Upload NON valido!'; 
+	}
+
+
+	$allegato=str_replace("../../../", "", $allegato); //allegato database
+}
+
+//exit;
+
+$query= "INSERT INTO segnalazioni.t_comunicazioni_incarichi_interni_inviate(id_incarico, testo";
+if ($allegato!=''){
+	$query= $query . ", allegato";
+}
+$query= $query .")VALUES (".$id.", '".$note."'";
+if ($allegato!=''){
+	$query= $query . ",'". $allegato."'";
+}
+$query= $query .");";
+
+
 
 
 //echo $query."<br>";
@@ -38,7 +107,7 @@ $result=pg_query($conn, $query);
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviata comunicazione a PC (incarico ".$id.")');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviata comunicazione a PC (incarico interno ".$id.")');";
 //echo $query_log."<br>";
 $result = pg_query($conn, $query_log);
 
@@ -56,7 +125,7 @@ echo "<br>";
 
 
 
-$query="SELECT mail FROM users.t_mail_incarichi WHERE cod='".$uo."';";
+$query="SELECT mail FROM users.t_mail_squadre WHERE cod='".$uo."';";
 $result=pg_query($conn, $query);
 $mails=array();
 while($r = pg_fetch_assoc($result)) {
@@ -109,11 +178,11 @@ while (list ($key, $val) = each ($mails)) {
   $mail->AddAddress($val);
 }
 //Set the subject line
-$mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di Genova';
+$mail->Subject = 'Urgente - Nuovo messaggio dalla Protezione Civile del Comune di Genova';
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'La Protezione Civile di Genova ti ha inviato un nuovo messaggio ("'.$note.'") a proposito dell\'incarico assegnato. 
+$mail->Body =  'La Protezione Civile di Genova ti ha inviato un nuovo messaggio ("'.$note.'") a proposito dell\'incarico interno assegnato. 
 <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali alla <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id='.$id.'" > pagina
  </a> del nuovo Sistema di Gestione delle Emergenze  del Comune di Genova.
@@ -136,12 +205,12 @@ if (!$mail->send()) {
 	<?php
 	echo '<br>La comunicazione è stata correttamente inserita a sistema, ma si è riscontrato un problema nell\'invio della mail.';
 	echo '<br>Entro 10" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
-	echo '<a href="../dettagli_incarico.php?id="'.$id.'">link</a> per saltare l\'attesa.</h3>' ;
+	echo '<a href="../dettagli_incarico.php?id='.$id.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
-    header("refresh:10;url=../dettagli_incarico.php?id=".$id);
+    header("refresh:10;url=../dettagli_incarico_interno.php?id=".$id);
 } else {
     echo "Message sent!";
-	header("location: ../dettagli_incarico.php?id=".$id);
+	header("location: ../dettagli_incarico_interno.php?id=".$id);
 }
 //exit;
 //header("location: ../dettagli_incarico.php?id=".$id);

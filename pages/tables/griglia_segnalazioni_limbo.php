@@ -32,9 +32,8 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id, data_ora, id_segnalante, descrizione, id_criticita, criticita, 
-       rischio, id_evento, tipo_evento, id_civico, id_municipio, id_operatore, 
-       note, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter_completo." ;";
+	$query="SELECT id, data_ora, descrizione, criticita, 
+       rischio, note, id_municipio, id_operatore, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter_completo." ;";
 	//echo $query;
 	// vecchia query per evento attivo.
 	/*$query="SELECT id, data_ora, id_segnalante, descrizione, id_criticita, criticita, 

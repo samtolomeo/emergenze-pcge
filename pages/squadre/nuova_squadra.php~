@@ -56,6 +56,21 @@ $result=pg_query($conn, $query);
 
 echo "<br>";
 
+echo $_POST["permanente"];
+
+
+// check if checkbox for permanent team is selected
+if($_POST["permanente"]=='on') {
+	
+	$query= "INSERT INTO users.t_squadre_permanenti( nome, cod_afferenza";
+$query=$query.") VALUES ('".$nome."', '".$afferenza."' ";
+$query=$query.");";
+echo $query;
+//exit;
+$result=pg_query($conn, $query);
+	
+}
+
 
 $query= "INSERT INTO users.t_storico_squadre(id_squadra, log_aggiornamento";
 
@@ -69,7 +84,7 @@ echo $query;
 $result=pg_query($conn, $query);
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Creata squadra con id: ".$id_squadra."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Creata squadra con id: ".$id_squadra."');";
 $result = pg_query($conn, $query_log);
 
 

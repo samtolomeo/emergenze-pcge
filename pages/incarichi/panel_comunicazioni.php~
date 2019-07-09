@@ -34,7 +34,7 @@
 				}
 				
 					$page = basename($_SERVER['PHP_SELF']);
-					if ($page=='dettagli_segnalazione.php'){
+					if ($page=='dettagli_segnalazione.php' and $check_lav>=0){
 					?>
 						<br><hr>
 						<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione"><i class="fas fa-comment"></i> Invia comunicazione</button>

@@ -7,10 +7,14 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 // Filtro per tipologia di criticità
 $getfiltri=$_GET["f"];
+$filtro_evento_attivo=$_GET["a"];
+$filtro_municipio=$_GET["m"];
+
 //echo $getfiltri;
 
 require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-$filter=filtro($getfiltri);
+#$filter=filtro($getfiltri);
+$filter=filtro2($getfiltri, $filtro_municipio);
 
 
 
@@ -21,7 +25,7 @@ if(!$conn) {
 	$query="SELECT id, data_ora, id_segnalante, descrizione, id_criticita, criticita, 
        rischio, id_evento, tipo_evento, id_civico, id_municipio, id_operatore, 
        note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat 
-       FROM segnalazioni.v_segnalazioni_eventi_chiusi_lista ".$filter." ;";
+       FROM segnalazioni.v_segnalazioni_eventi_chiusi_lista ".$filter[0]." ;";
    //echo $query;
 	$result = pg_query($conn, $query);
 	//echo $query;

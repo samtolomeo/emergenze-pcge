@@ -5,12 +5,17 @@ $subtitle="Elenco segnalazioni pervenute (eventi attivi e/o in fase di chiusura)
 
 $getfiltri=$_GET["f"];
 $filtro_evento_attivo=$_GET["a"];
+$filtro_municipio=$_GET["m"];
+
+$filtro_evento_attivo=$_GET["a"];
 
 //echo $filtro_evento_attivo; 
 
 
 $uri=basename($_SERVER['REQUEST_URI']);
 //echo $uri;
+
+$pagina=basename($_SERVER['PHP_SELF']); 
 
 ?>
 <!DOCTYPE html>
@@ -42,10 +47,11 @@ require('./tables/filtri_segnalazioni.php');
     <div id="wrapper">
 
         <?php 
-            require('./navbar_up.php')
+            require('./navbar_up.php');
         ?>  
         <?php 
-            require('./navbar_left.php')
+            require('./navbar_left.php');
+			//echo $pagina;
         ?> 
             
 
@@ -58,23 +64,36 @@ require('./tables/filtri_segnalazioni.php');
 
             
             <br><br>
-            <div class="row">
+            
+			<div class="row">
 
 <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapsecriticita" role="button" aria-expanded="false" aria-controls="collapseExample">
             <i class="fas fa-filter"></i>  Filtra per criticità
           </a>
-         
+		  
+		  <a class="btn btn-primary" data-toggle="collapse" href="#collapsemunicipio" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fas fa-home"></i>  Filtra per municipio
+          </a>
+		  
+		  
+           <!--a class="btn btn-primary" href="./elenco_segnalazioni.php?a=1&m=<?php echo $filtro_municipio?>&f=<?php echo $getfiltri?>">
+            <i class="fas fa-play"></i> Vedi solo eventi attivi
+          </a-->
         </p>
-        <div class="collapse" id="collapseExample">
+        
+		
+		
+
+
+		<div class="collapse" id="collapsecriticita">
           <div class="card card-body">
-          
-          <form action="./tables/decodifica_filtro0.php" method="post">
-            <?php
-
-
-
-            $query='SELECT * FROM segnalazioni.tipo_criticita where valido=\'t\';';
+         		  
+          <form id="filtro_cr" action="./tables/decodifica_filtro0.php?a=<?php echo $filtro_evento_attivo?>&m=<?php echo $filtro_municipio?>" method="post">
+            <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>" />
+			
+			<?php
+            $query='SELECT * FROM segnalazioni.tipo_criticita where valido=\'t\' ORDER BY descrizione;';
             $result = pg_query($conn, $query);
 	         #echo $result;
 	         //exit;
@@ -83,7 +102,7 @@ require('./tables/filtri_segnalazioni.php');
             echo '<div class="row">';
 	         while($r = pg_fetch_assoc($result)) {
 					echo '<div class="form-check col-md-3">';
-	            echo '  <input class="form-check-input" type="checkbox" name="filter'.$r['id'].'" value=1" >';
+	            echo '  <input class="form-check-input" type="checkbox" id="filtro_cr" name="filter'.$r['id'].'"  value=1" >';
 	            echo '  <label class="form-check-label" for="inlineCheckbox1">'.$r['descrizione'].'</label>';
 	            echo "</div>";
 	            
@@ -91,31 +110,99 @@ require('./tables/filtri_segnalazioni.php');
             echo "</div>";
 
         ?>
-        <hr>
-			<button type="submit" class="btn btn-primary"> Nuovo filtro </button>
+        <!--hr-->
+		
+			<button id="checkBtn_filtri" type="submit" class="btn btn-primary"> 
+			<?php if ($getfiltri=='' or intval($getfiltri)==0) {?>
+				Filtra 
+			<?php } else {?>
+				Aggiorna filtro
+			<?php }?>
+			</button>
 			
 
         </form>
           </div>
         </div>
+		
+		<div class="collapse" id="collapsemunicipio">
+          <div class="card card-body">
+         		  
+          <form id="filtro_mun" action="./tables/decodifica_filtro1.php?a=<?php echo $filtro_evento_attivo?>&f=<?php echo $getfiltri?>"" method="post">
+            <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>" />
+			<?php
+            $query='SELECT * FROM geodb.municipi ORDER BY codice_mun;';
+            $result = pg_query($conn, $query);
+	         #echo $result;
+	         //exit;
+	         //$rows = array();
+            //echo '<div class="form-check form-check-inline">';
+            echo '<div class="row">';
+	         while($r = pg_fetch_assoc($result)) {
+					echo '<div class="form-check col-md-3">';
+	            echo '  <input class="form-check-input" type="checkbox" id="filtro_mun" name="filter'.$r['codice_mun'].'"  value=1" >';
+	            echo '  <label class="form-check-label" for="inlineCheckbox1">'.$r['codice_mun'].' - '.$r['nome_munic'].'</label>';
+	            echo "</div>";
+	            
+            }
+            echo "</div>";
+
+        ?>
+        <!--hr-->
+		
+			<button id="checkBtn_filtri" type="submit" class="btn btn-primary"> 
+			<?php if ($getfiltri=='' or intval($getfiltri)==0) {?>
+				Filtra 
+			<?php } else {?>
+				Aggiorna filtro
+			<?php }?>
+			</button>
+			
+
+        </form>
+          </div>
+        </div>
+		<hr>
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
+		
+		
         <hr>
 			<?php
-			if (strpos($getfiltri, '1') !== false) {
-			    echo '<i class="fas fa-filter"></i> I dati visualizzati sono filtrati per criticità, per modificare il filtro usa i dati qua sopra';
+			if (filtro2($getfiltri, $filtro_municipio)[1]>0 or filtro2($getfiltri, $filtro_municipio)[2]>0 or $filtro_evento_attivo!='') {
+			    echo '<i class="fas fa-filter"></i> I dati visualizzati sono filtrati';
+				if (filtro2($getfiltri, $filtro_municipio)[1]>0){
+					echo ' per criticità '.filtro2($getfiltri, $filtro_municipio)[3].',';
+				}
+				if (filtro2($getfiltri, $filtro_municipio)[2]>0){
+					echo ' per municipio '.filtro2($getfiltri, $filtro_municipio)[4].',';
+				}
+				
+				echo 'per modificare il filtro usa i dati qua sopra';
 			?>
 			<br><br>
-			<a class="btn btn-primary" href="elenco_segnalazioni.php">
+			<a class="btn btn-primary" href="<?php echo $pagina; ?>">
             <i class="fas fa-redo-alt"></i> Torna a visualizzare tutte le segnalazioni
           </a>
-          
-			<?php			
+          <hr>
+		  <?php			
 			} else {
-				echo ' <i class="fas fa-list-ul"></i> Dati completi (tutte le criticità)';
+				echo ' <i class="fas fa-list-ul"></i> Dati completi';
 			}
 			
 			?>
-
-		<hr>	
+		  
+		  
         <div id="toolbar">
             <select class="form-control">
                 <option value="">Esporta i dati visualizzati</option>
@@ -125,7 +212,7 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
       	
-        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_chiusi.php?f=<?php echo $getfiltri;?>&m=<?php echo $filtro_municipio;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 
         
         

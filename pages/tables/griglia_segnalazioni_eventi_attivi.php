@@ -23,9 +23,15 @@ if ($check_evento==1){
 // Filtro per tipologia di criticità
 $getfiltri=$_GET["f"];
 //echo $getfiltri;
+$filtro_municipio=$_GET["m"];
+
+
 
 require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-$filtro_c=filtro($getfiltri);
+//$filtro_c=filtro($getfiltri);
+$filtro_c=filtro2($getfiltri,$filtro_municipio);
+
+
 
 if ($filtro_c=='' and $filter!=''){
 	$filter_completo = " WHERE ".$filter;
@@ -39,8 +45,8 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id, data_ora, id_segnalante, descrizione, id_criticita, criticita, 
-       rischio, id_evento, tipo_evento, id_civico, id_municipio, id_operatore, 
+	$query="SELECT id, data_ora, descrizione, criticita, 
+       rischio, id_evento, tipo_evento, 
        note, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter_completo." ;";
 	
 	// vecchia query per evento attivo.

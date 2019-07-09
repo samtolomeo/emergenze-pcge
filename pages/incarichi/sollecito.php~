@@ -22,7 +22,6 @@ echo "Incarico:".$id. "<br>";
 echo "Unita_operativa:".$uo. "<br>";
 
 
-
 //echo "<h2>La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2> <br> ";
 
 
@@ -36,6 +35,9 @@ $mails=array();
 while($r = pg_fetch_assoc($result)) {
   array_push($mails,$r['mail']);
 }
+
+
+
 
 echo "<br>";
 //echo $query;
@@ -91,7 +93,7 @@ $mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Unità
  '.$uo_descrizione.' Non ha ancora risposto all\'assegnazione incarico.
   <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali alla
- <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id?'.$id.'">pagina </a>
+ <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id='.$id.'">pagina </a>
   del nuovo Sistema di Gestione delle Emergenze del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> 
  Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 

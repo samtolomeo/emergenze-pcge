@@ -88,13 +88,16 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				   $id_squadra_attiva=$r['id_squadra'];
 				   //$check_operatore=0;
 					$id_squadra=$r['id_squadra'];
+					$id_uo=$r['id_squadra'];
 					$id_profilo=$r['id_profilo'];
-					require('./check_operatore.php');	
+					//echo $id_squadra_attiva;
+					require('./check_operatore.php');
+					//echo $check_uo;
 					?>            
             	
-               <h4><br><b>Squadra</b>: <?php echo $r['descrizione_uo'];?>
+               <h4><br><b>Unità operativa</b>: <?php echo $r['descrizione_uo'];?>
                <?php
-               if ($check_squadra==1){
+               if ($check_uo==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
 				}
 				require('./check_responsabile.php');
@@ -251,11 +254,227 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						echo $r['descrizione_stato'];
-						if ($r["parziale"]=='t'){
-							echo '<br><br><i class="fas fa-battery-quarter"></i>  Presa in carico parziale';
+						echo '</h2>';
+						if ($r["rimosso"]=='t' and $stato_attuale==3){
+							echo '<br><br><i class="fas fa-times"></i> Provvedimento rimosso con 
+							successiva ordinanza sindacale alle ore ';
+							$query_ore="SELECT to_char(data_ora_stato, 'HH24:MI'::text) as ora,
+							to_char(data_ora_stato, 'DD/MM/YYYY'::text) as data 
+  							FROM segnalazioni.t_ora_rimozione_provvedimenti_cautelari where id_provvedimento=".$id.";";
+  							//echo $query_ore;
+							$result_ore=pg_query($conn, $query_ore);
+							while($r_ore = pg_fetch_assoc($result_ore)) {
+							  echo $r_ore['ora'].' del '.$r_ore['data'];
+							}
+							echo "</h2><hr>";
+						} else if ($stato_attuale==3) {
+							echo "</h2><hr>";
+							if ($r['id_segnalazione']!=''){
+								echo'<h4> Per rimuovere il provvedimento torna alla 
+								segnalazione e segui le istruzioni';
+							
+							// fine $query che verifica lo stato
+					$query= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_provvedimenti_cautelari =".$stato_attuale."  ORDER BY id_segnalazione;";
+					//echo $query
+					$result=pg_query($conn, $query);
+					while($r = pg_fetch_assoc($result)) {
+						//echo '<b>Unità operativa</b>: '.$r['descrizione_uo'];
+
+					?>
+									<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r["id_segnalazione"];?>"><i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r["id_segnalazione"];?></a>
+						</h4>
+						<?php
+					}
+							
+							} else {
+								echo'<h4> Per rimuovere il presente provvedimento cautelare è necessario
+								prima assegnare uno o più incarichi e poi, una volta completato/i è possibile 
+								rimuovere il PC</h4>';
+								
+								$query_i= "SELECT * FROM segnalazioni.join_incarico_provvedimenti_cautelari where id_provvedimento=".$id.";"; 
+								$result_i=pg_query($conn, $query_i);
+								echo '<lu>';
+								while($r_i = pg_fetch_assoc($result_i)) {
+									$query_ii= 'SELECT descrizione, descrizione_stato FROM segnalazioni.v_incarichi_last_update 
+									WHERE id = '.$r_i['id_incarico'].';';
+									$result_ii=pg_query($conn, $query_ii);
+									while($r_ii = pg_fetch_assoc($result_ii)) {
+										echo '<li>'.$r_ii['descrizione'] . ' (' . $r_ii['descrizione_stato'] .') - ';
+									}
+									echo '<a class="btn btn-info" href="dettagli_incarico.php?id='.$r_i['id_incarico'].'" > 
+									Dettagli incarico '.$r_i['id_incarico'].'</a></li><br>';
+								}
+								echo '</lu>';
+								?>
+								<button type="button" class="btn btn-info"  
+								data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> 
+								Assegna incarico </button>
+								- 
+								<button type="button" class="btn btn-danger"  
+								data-toggle="modal" data-target="#rimuovi_pc"><i class="fas fa-times"></i> 
+								Rimuovi provvedimento cautelare </button>
+						 			
+								
+								
+								<!-- Modal incarico-->
+						<div id="new_incarico" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Nuovo incarico</h4>
+							  </div>
+							  <div class="modal-body">
+							  
+
+								<form autocomplete="off" action="incarichi/nuovo_incarico.php?id_pc=<?php echo $id; ?>" method="POST">
+								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
+								
+								<?php
+								if($id_profilo==5 or $id_profilo==6) {
+									if($id_profilo==5){
+										$query = "select concat('com_',cod) as cod, descrizione from varie.t_incarichi_comune";
+										$query = $query ." where (cod like '%MU%' and descrizione not like '% ".integerToRoman($id_municipio)."') or (cod not like '%MU%' and descrizione ilike 'distretto ".$id_municipio."')";
+										$query = $query ." order by descrizione;";
+										//echo $query;
+									} else {
+										$query = "select concat('com_',cod) as cod, descrizione from varie.t_incarichi_comune";
+										$query = $query ." where (cod not like '%MU%' and descrizione not like '%".$id_municipio."%') or (cod like '%MU%' and descrizione like '% ".integerToRoman($id_municipio)."%')";
+										$query = $query ." order by descrizione;";
+									}
+								//$result = pg_query($conn, $query);
+
+								?>
+								<div class="form-group">
+									  <label for="id_civico">Seleziona l'Unità Operativa cui assegnare l'incarico:</label> <font color="red">*</font>
+										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
+										<option value=""> ...</option>
+										<?php
+										$resultr = pg_query($conn, $query);
+										while($rr = pg_fetch_assoc($resultr)) {
+										?>	
+										<option name="id_uo" value="<?php echo $rr['cod'];?>" ><?php echo $rr['descrizione'];?></option>
+										<?php } ?>
+									</select>         
+									 </div>
+								<?php
+								
+									} else {
+									
+									?>
+								<div class="form-group">
+								 <label for="tipo">Tipologia di incarico:</label> <font color="red">*</font>
+									<select class="form-control" name="tipo" id="tipo" onChange="getUO(this.value);"  required="">
+									   <option name="tipo" value="" >  </option>
+									<option name="tipo" value="direzioni" > Incarico a Direzioni (COC) </option>
+									<option name="tipo" value="municipi" > Incarico a municipi </option>
+									<option name="tipo" value="distretti" > Incarico a distretti di PM </option>
+									<option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option>
+								</select>
+								</div>
+									 
+												 <script>
+									function getUO(val) {
+										$.ajax({
+										type: "POST",
+										url: "get_uo.php",
+										data:'cod='+val,
+										success: function(data){
+											$("#uo-list").html(data);
+										}
+										});
+									}
+
+									</script>
+
+									 
+									 
+									<div class="form-group">
+									  <label for="id_civico">Seleziona l'Unità Operativa cui assegnare l'incarico:</label> <font color="red">*</font>
+										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
+										<option value=""> ...</option>
+									</select>         
+									 </div>       
+									<?php
+									}
+									
+									?>
+									<div class="form-group">
+											 <label for="descrizione"> Descrizione operativa</label> <font color="red">*</font>
+										<input type="text" name="descrizione" class="form-control" required="">
+									   <small>Specificare in cosa consiste l'incarico da un punto di vista operativo</small>
+									  </div>            
+										  
+
+
+
+								<button  id="conferma" type="submit" class="btn btn-primary">Invia incarico</button>
+									</form>
+
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+							  </div>
+							</div>
+
+						  </div>
+						</div>
+								
+								
+								
+								
+								<div id="rimuovi_pc" class="modal fade" role="dialog">
+						  <div class="modal-dialog modal-lg">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Conferma</h4>
+							  </div>
+							  <div class="modal-body">
+								Confermi di voler rimuovere il presente Provvedimento Cautelare? <br><br> Ricorda che per 
+								rimuovere un provvedimento cautelare è necessaria una nuova ordinanza sindacale.
+								<br><br>Se sei in possesso di ordinanza sindacale prima di tutto assegna uno 
+								o più incarichi per ripristinare la situazione. 
+								
+								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
+								<hr>
+								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $id; ?>" method="POST">
+									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
+									<br>Rimuovi il provvedimento cautelare</button>
+									
+									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+								</form>
+	
+							  </div>
+							
+							</div>
+
+						  </div>
+						</div>
+						
+						
+								<hr>
+								
+								<?php
+								//fine modal
+								
+								
+								
+								
+								
+								
+								
+							
+							}
+
 						}
-						echo "</h2><hr>";
-						if ($r["id_stato_provvedimenti_cautelari"]==1){
+						
+						
+						if ($stato_attuale==1){
 						?>
 				      <div style="text-align: center;">
 				      <?php 
@@ -270,7 +489,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								echo '<a class="btn btn-info" href="provvedimenti_cautelari/sollecito.php?id='.$id.'&u='.$r['id_squadra'].'"> <i class="fas fa-at"></i> Invia sollecito </a> ';
 							
 							}
-							if ($check_squadra==1 or $check_operatore==1){
+							
+							
+							
+							if ($check_uo==1 or $check_operatore==1){
 				      ?>
 				      <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#accetta"><i class="fas fa-thumbs-up"></i> Presa in carico</button>
 						<?php } ?>
@@ -297,11 +519,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<!--input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" /-->
 								
 									 <div class="form-group">
-						<label for="data_inizio" >Data prevista per eseguire il provvedimento cautelare (AAAA-MM-GG) </label>  <font color="red">*</font>                 
+						<label for="data_inizio">Data prevista per eseguire il provvedimento cautelare (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->
@@ -421,24 +643,27 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							
 							
 							
-						} else if ($r["id_stato_provvedimenti_cautelari"]==2) {
+						} else if ($stato_attuale==2) {
+							
+							
+							
 						?>
 							<h4><br><b>Ora prevista per eseguire il provvedimento</b>: <?php echo $r['time_preview']; ?></h4>
 							<?php if ($r['time_start']==''){
-								if ($check_squadra==1 or $check_operatore==1){
+								if ($check_uo==1 or $check_operatore==1){
 								?>
-								<a class="btn btn-success" href="./provvedimenti_cautelari/start.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La squadra è sul posto </a><br><br>
+								<a class="btn btn-success" title="Il personale è sul posto" href="./provvedimenti_cautelari/start.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> In esecuzione </a><br><br>
 							<?php 
 								}
 							} else { ?>
 								<h4><br><b>Ora inizio esecuzione del provvedimento</b>: <?php echo $r['time_start']; ?></h4> 
 							<?php } 
-							 	if ($check_squadra==1 or $check_operatore==1){
+							 	if ($check_uo==1 or $check_operatore==1){
 							?>
 							<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi"><i class="fas fa-stop"></i> Provvedimento completato</button>
 						<?php	
 							}
-						} else if ($r["id_stato_provvedimenti_cautelari"]==3) {
+						} else if ($stato_attuale==3) {
 						?>
 							<h4><br><b>Ora prevista per eseguire il provvedimento</b>: <?php echo $r['time_preview']; ?></h4>
 							<h4><br><b>Ora inizio esecuzione del provvedimento</b>: 
@@ -526,7 +751,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					?>
 					<div style="text-align: center;">
 					<?php 
-					if ($check_squadra==1 or $check_operatore==1 ){
+					if ($check_uo==1 or $check_operatore==1 ){
 					?>
 					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_da_UO"><i class="fas fa-comment"></i> Invia comunicazione a Centrale</button>
 					<?php }

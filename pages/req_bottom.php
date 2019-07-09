@@ -20,10 +20,15 @@
 	 <script src="../vendor/bootstrap-select/dist/js/bootstrap-select.js"></script>
 	 
 	 
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+	 
+	 
     <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 
 	<!-- Leaflet JavaScript -->
 	<script src="../vendor/leaflet/leaflet.js"></script>
+
+
 
 
     <!-- Metis Menu Plugin JavaScript -->
@@ -58,21 +63,21 @@
 //**************************************************************
 //Automatic refresh page in case of inactivity 
 
-  /*var time = new Date().getTime();
+  var time = new Date().getTime();
   //$(document.body).bind("mousemove keypress", function(e) {
   $(document.body).bind("click keypress wheel", function(e) {
-  		alert('Timer aggiornato');
+  	  //alert('Timer aggiornato');
       time = new Date().getTime();
   });
 
   function refresh() {
-      if(new Date().getTime() - time >= 60000) 
+      if(new Date().getTime() - time >= 180000) 
           window.location.reload(true);
       else 
           setTimeout(refresh, 10000);
   }
 
-  setTimeout(refresh, 10000);*/
+  setTimeout(refresh, 10000);
   
  
 //funge, ma sembra mandare in crisi il server... 
@@ -89,7 +94,57 @@ setInterval(function() {
     }
 }, 1000);*/
   
-  
+
+
+
+var onResize = function() {
+  // apply dynamic padding at the top of the body according to the fixed navbar height
+  $("body").css("padding-top", $(".navbar-fixed-top").height());
+};
+
+// attach the function to the window resize event
+$(window).resize(onResize);
+
+// call it also when the page is ready after load or reload
+$(function() {
+  onResize();
+});
+
+
+
+//////////////////////////////////////////////////////////////
+//sidebar scrollable
+var topNavBar = 50;
+var footer = 48;
+var height = $(window).height();
+$('.sidebar').css('height', (height - (topNavBar+footer)));
+
+$(window).resize(function(){
+    var height = $(window).height();
+    $('.sidebar').css('height', (height - (topNavBar+footer)));
+});
+//////////////////////////////////////////////////////////////
+
+
+
+// prevent multiple submit
+$("body").on("submit", "form", function() {
+    $(this).submit(function() {
+        return false;
+    });
+    return true;
+});
+
+<?php
+if ($privacy=='f'){
+	?>
+		$('#privacy_modal').modal('show'); 
+	<?php
+}
+?>
+
+
+
 </script>
 
 

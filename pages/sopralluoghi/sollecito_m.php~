@@ -18,7 +18,7 @@ $id=str_replace("'", "", $_GET['id']); //segnazione in lavorazione
 $uo=$_GET["u"];
 
 
-echo "Incarico:".$id. "<br>";
+echo "Presidio mobile:".$id. "<br>";
 echo "Unita_operativa:".$uo. "<br>";
 
 
@@ -83,15 +83,15 @@ while (list ($key, $val) = each ($mails)) {
   $mail->AddAddress($val);
 }
 //Set the subject line
-$mail->Subject = 'Urgente - Sollecito per Sopralluogo ricevuto dalla Protezione Civile del Comune di Genova';
+$mail->Subject = 'Urgente - Sollecito per Presidio mobile ricevuto dalla Protezione Civile del Comune di Genova';
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
 $mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Squadra
- '.$uo_descrizione.' Non ha ancora risposto all\'assegnazione del sopralluogo.
-  <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del sopralluogo accedendo 
+ '.$uo_descrizione.' Non ha ancora risposto all\'assegnazione del presidio mobile.
+  <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del presidio mobile accedendo 
  con le tue credenziali alla
- <a href="http://192.168.153.110/emergenze/pages/dettagli_sopralluogo.php?id='.$id.'">pagina </a>
+ <a href="http://192.168.153.110/emergenze/pages/dettagli_sopralluogo_mobile.php?id='.$id.'">pagina </a>
   del nuovo Sistema di Gestione delle Emergenze del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> 
  Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
@@ -115,10 +115,10 @@ if (!$mail->send()) {
 	echo '<br>Entro 10" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
 	echo '<a href="../dettagli_incarico.php?id='.$id.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
-   header("refresh:30;url=../dettagli_sopralluogo.php?id=".$id);
+   header("refresh:30;url=../dettagli_sopralluogo_mobile.php?id=".$id);
 } else {
     echo "Message sent!";
-	header("location: ../dettagli_sopralluogo.php?id=".$id);
+	header("location: ../dettagli_sopralluogo_mobile.php?id=".$id);
 }
 
 

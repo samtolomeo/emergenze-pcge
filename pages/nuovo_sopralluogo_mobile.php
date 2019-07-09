@@ -102,7 +102,7 @@ if ($profilo_sistema > 4){
 					<option  id="uo" name="uo" value="">Seleziona la squadra</option>
 					<?php
 					
-					$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
+					$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 					$result2 = pg_query($conn, $query2);
 					 
 					while($r2 = pg_fetch_assoc($result2)) { 

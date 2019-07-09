@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+                                                                                
+"features": [
+        
+        {"type": "Feature","properties": {"id":151, "rischio": "", "criticita": "Frana", "descrizione": "massi su strada"},"geometry":{"type":"Point","coordinates":[8.82728126832331,44.4277665044476]}},{"type": "Feature","properties": {"id":152, "rischio": "", "criticita": "Disagio per la salute", "descrizione": "fddfdf"},"geometry":{"type":"Point","coordinates":[8.99904949455735,44.401753810297]}}
+        
+        ]
+}

@@ -182,13 +182,17 @@ $mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'La Protezione Civile di Genova ti ha inviato un nuovo messaggio ("'.$note.'") a proposito dell\'incarico assegnato. 
+$body =  'La Protezione Civile di Genova ti ha inviato un nuovo messaggio ("'.$note.'") a proposito dell\'incarico assegnato. 
 <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali alla <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id='.$id.'" > pagina
  </a> del nuovo Sistema di Gestione delle Emergenze  del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
 
+  
+require('../informativa_privacy_mail.php');
+
+$mail-> Body=$body ;
 
 //$mail->Body =  'Corpo del messaggio';
 //$mail->msgHTML(file_get_contents('E\' arrivato un nuovo incarico da parte del Comune di Genova. Visualizza lo stato dell\'incarico al seguente link e aggiornalo quanto prima. <br> Ti chiediamo di non rispondere a questa mail'), __DIR__);

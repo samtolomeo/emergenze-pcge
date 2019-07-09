@@ -3,12 +3,28 @@
 session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+require('../check_evento.php');
+
+
 
 $table= $_GET["t"];
 $schema= $_GET["s"];
 
+$id= $_GET["id"];
+
+$query="select * from information_schema.columns WHERE table_schema='".$schema."' and table_name ilike'".$table."' and 
+ordinal_position= ( SELECT min(ordinal_position) 
+from information_schema.columns WHERE table_schema='".$schema."' and table_name ilike'".$table."'
+);";
+echo $query;
+$result = pg_query($conn, $query);
+#exit;
+while($r = pg_fetch_assoc($result)) {
+	$column_id=$r['column_name'];
+}
 
 
+//exit;
 
 
 //echo $schema;
@@ -29,11 +45,11 @@ foreach ($_POST as $param_name => $param_val) {
    	$i=$i+1;
    }
 }
-$query = $query." WHERE id=".$_POST["id"].";";
+$query = $query." WHERE ".$column_id."=".$id.";";
 
 echo $query;
 
-
+//exit;
 $result = pg_query($conn, $query);
 
 

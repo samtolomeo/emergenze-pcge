@@ -4,7 +4,7 @@ session_start();
 //$_SESSION['user']="MRZRRT84B01D969U";
 
 $id=$_GET["id"];
-$subtitle="Dettagli incarico n. ".$id;
+$subtitle=" Dettagli incarico n. ".$id;
 
 
 ?>
@@ -54,6 +54,27 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 
+$check_evento_aperto=1;
+$query_evento_aperto="SELECT e.valido FROM segnalazioni.join_incarico_provvedimenti_cautelari i 
+     JOIN segnalazioni.v_provvedimenti_cautelari pc1 ON i.id_provvedimento = pc1.id
+     JOIN eventi.t_eventi e ON e.id = pc1.id_evento
+WHERE i.id_incarico=".$id.";";
+
+//echo $query_evento_aperto;
+
+
+$result_e=pg_query($conn, $query_evento_aperto);
+while($r_e = pg_fetch_assoc($result_e)) {
+	if($r_e['valido']=='f') {
+		$check_evento_aperto=0;
+		$table='v_incarichi_eventi_chiusi';
+		//echo "false";
+	} else {
+		$table='v_incarichi';
+		//echo "true";
+	}
+}
+
 
 ?>
     
@@ -91,18 +112,26 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						//$id_squadra=$r['id_squadra'];
 						$id_uo=$r['id_uo'];
 						$id_profilo=$r['id_profilo'];
+						
+						$check_segnalazione=0;
+						if ($r['id_segnalazione']!=''){
+							$check_segnalazione=1;
+						}
 						require('./check_operatore.php');
 						//echo $id_profilo;
 					?>            
             
                <h4><br><b>Unità operativa</b>: <?php echo $r['descrizione_uo']; ?>
                <?php
+			   
+               $uo_desc=$r['descrizione_uo'];
                if ($check_uo==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
 				}
 				require('./check_responsabile.php');
 					               
                //require('./check_responsabile.php');
+			   $descrizione_incarico=$r['descrizione'];
                ?>
                </h4>
 			   
@@ -145,10 +174,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							echo '<br><br><i class="fas fa-battery-quarter"></i>  Presa in carico parziale';
 						}
 						echo "</h2><hr>";
+						$id_uo_mail=$r['id_uo'];
 						if ($r["id_stato_incarico"]==1){
 						?>
 				      <div style="text-align: center;">
+					  
 				      <?php 
+						
 				      	$check_mail=0; //check se ci sono mail a sistema
 				      	$query2="SELECT mail FROM users.t_mail_incarichi WHERE cod='".$r['id_uo']."';";
 							$result2=pg_query($conn, $query2);
@@ -156,7 +188,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							  $check_mail=1; //check se ci sono mail a sistema
 							}
 							if($check_mail==1 and $check_operatore==1) {
-								//echo $r['id_uo'];
+								
 								echo '<a class="btn btn-info" href="incarichi/sollecito.php?id='.$id.'&u='.$r['id_uo'].'"> <i class="fas fa-at"></i> Invia sollecito </a> ';
 							
 							}
@@ -189,9 +221,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									 <div class="form-group">
 						<label for="data_inizio" >Data prevista per eseguire l'incarico (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->
@@ -404,10 +436,19 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					<?php }
 					if ($check_operatore==1){
 					?>
-					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_a_UO"><i class="fas fa-comment"></i> Invia comunicazione a UO</button>
+					<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_a_UO"><i class="fas fa-comment"></i> Invia comunicazione a <?php echo $uo_desc; ?></button>
 					<?php }
 					?>
 					</div>
+
+					
+					<?php
+					if ($stato_attuale==2){
+					?>
+						<hr>
+						<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mail"><i class="fas fa-comment"></i> Invia mail a squadra</button>
+					<?php }
+					?>
 					
 					<!-- Modal comunicazione da UO-->
 						<div id="comunicazione_da_UO" class="modal fade" role="dialog">
@@ -427,7 +468,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
 									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
 										 <div class="form-group">
-									    <label for="note">Testo comunicazione <?php echo $id_evento;?></label>  <font color="red">*</font>
+									    <label for="note">Testo comunicazione</label>  <font color="red">*</font>
 									    <textarea required="" class="form-control" id="note"  name="note" rows="3"></textarea>
 									  </div>
 									
@@ -495,6 +536,71 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					
 					
 					
+					<!-- Modal mail-->
+						<div id="mail" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+						
+						    <!-- Modal content-->
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        <h4 class="modal-title">Invio mail a squadra</h4>
+						      </div>
+						      <div class="modal-body">
+							  <ul>
+							  <li>E' possibile inviare una mail a un indirizzo per volta.</li>
+							  <li>Le mail verranno inviate in automatico anche alle caselle mail di 
+							  <?php echo $uo_desc;?> registrate a sistema.</li>
+								</ul>
+						        <form autocomplete="off"  enctype="multipart/form-data"  action="incarichi/mail_squadra.php?id=<?php echo $id; ?>" method="POST">
+									<input type="hidden" name="uo" value="<?php echo $uo_desc;?>" />
+									<input type="hidden" name="id_uo" value="<?php echo $id_uo_mail;?>" />
+									<input type="hidden" name="lat" value="<?php echo $lat;?>" />
+									<input type="hidden" name="lon" value="<?php echo $lon;?>" />
+									<?php
+									
+									?>
+									<div class="form-group">
+									    <label for="address">Specifica un indirizzo e-mail</label>  <font color="red">*</font>
+									    <input type="email" required="" class="form-control" id="address"  name="address" rows="3"></input>
+									</div>
+									
+									<div class="form-group">
+									    <label for="address">Descrizione dell'incarico</label>  <font color="red">*</font>
+									    <input type="text" required="" readonly="" class="form-control" id="descrizione"  name="descrizione" 
+										value="<?php echo $descrizione_incarico; ?>"></input>
+									</div>
+									
+									<div class="form-group">
+									    <label for="note">Eventuali note aggiuntive comunicazione</label>  <font color="red">*</font>
+									    <textarea  class="form-control" id="note"  name="note" rows="3"></textarea>
+									  </div>
+									
+									<div class="form-group">
+									   <label for="note">Eventuale allegato</label>
+										<input type="file" class="form-control-file" name="userfile" id="userfile">
+									</div>
+									
+									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
+									<!--div class="form-group">
+									   <label for="note">Eventuale allegato</label>
+										<input type="file" class="form-control-file" name="userfile" id="userfile">
+									</div-->
+						
+						        <button  id="conferma" type="submit" class="btn btn-primary">Invia mail</button>
+						            </form>
+						
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+						      </div>
+						    </div>
+						
+						  </div>
+						</div>
+					
+					
+					
 					
 					
 					
@@ -502,6 +608,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					
 					<?php
 					}
+					if ($check_segnalazione==1){
 					?>
 					<h3><i class="fas fa-list-ul"></i> Segnalazioni collegate all'incarico </h3><br>
 
@@ -566,6 +673,18 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php
 						$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
 						$zoom=16;
+						}
+						} else {
+							// fine $query che verifica lo stato
+							$query= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_incarico =".$stato_attuale."  ORDER BY id_pc;";      
+							$result=pg_query($conn, $query);
+							while($r = pg_fetch_assoc($result)) {
+								?>
+								<a class="btn btn-info" href="dettagli_provvedimento_cautelare.php?id=<?php echo $r["id_pc"];?>"><i class="fas fa-undo"></i> Torna al PC <?php echo $r["id_pc"];?></a>
+								<?php
+							}
+							
+							$zoom=16;
 						}
 						?>
 						

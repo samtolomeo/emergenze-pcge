@@ -88,7 +88,7 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 
 //exit;
 
-$query= "INSERT INTO segnalazioni.t_comunicazioni_sopralluoghi_inviate(id_sopralluogo, testo";
+$query= "INSERT INTO segnalazioni.t_comunicazioni_sopralluoghi_mobili_inviate(id_sopralluogo, testo";
 if ($allegato!=''){
 	$query= $query . ", allegato";
 }
@@ -108,7 +108,7 @@ $result=pg_query($conn, $query);
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviata comunicazione a PC (sopralluogo ".$id.")');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviata comunicazione a PC (presidio mobile ".$id.")');";
 //echo $query_log."<br>";
 $result = pg_query($conn, $query_log);
 
@@ -184,8 +184,8 @@ $mail->Subject = 'Urgente - Nuovo messaggio dalla Protezione Civile del Comune d
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
 $mail->Body =  'La Protezione Civile di Genova ti ha inviato un nuovo messaggio ("'.$note.'") a proposito del sopralluogo assegnato. 
-<br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del sopralluogo accedendo 
- con le tue credenziali alla <a href="http://192.168.153.110/emergenze/pages/dettagli_sopralluogo.php?id='.$id.'" > pagina
+<br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del presidio mobile accedendo 
+ con le tue credenziali alla <a href="http://192.168.153.110/emergenze/pages/dettagli_sopralluogo_mobile.php?id='.$id.'" > pagina
  </a> del nuovo Sistema di Gestione delle Emergenze  del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
@@ -206,12 +206,12 @@ if (!$mail->send()) {
 	<?php
 	echo '<br>La comunicazione è stata correttamente inserita a sistema, ma si è riscontrato un problema nell\'invio della mail.';
 	echo '<br>Entro 10" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
-	echo '<a href="../dettagli_sopralluogo.php?id='.$id.'">link</a> per saltare l\'attesa.</h3>' ;
+	echo '<a href="../dettagli_sopralluogo_mobile.php?id='.$id.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
-    header("refresh:10;url=../dettagli_sopralluogo.php?id=".$id);
+    header("refresh:10;url=../dettagli_sopralluogo_mobile.php?id=".$id);
 } else {
     echo "Message sent!";
-	header("location: ../dettagli_sopralluogo.php?id=".$id);
+	header("location: ../dettagli_sopralluogo_mobile.php?id=".$id);
 }
 //exit;
 //header("location: ../dettagli_sopralluogo.php?id=".$id);

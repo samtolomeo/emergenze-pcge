@@ -1,8 +1,15 @@
 <?php
-	$id=$_GET['id'];
-	
-	$query="UPDATE users.t_squadre SET id_stato=3 WHERE id=".$id.";";
-	echo $query;
+
+session_start();
+
+//echo $_SESSION['user'];
+
+include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+
+$id=$_GET['id'];
+
+$query="UPDATE users.t_squadre SET id_stato=3 WHERE id=".$id.";";
+echo $query;
 //exit;
 $result=pg_query($conn, $query);
 

@@ -22,7 +22,6 @@ echo "Incarico:".$id. "<br>";
 echo "Unita_operativa:".$uo. "<br>";
 
 
-
 //echo "<h2>La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2> <br> ";
 
 
@@ -36,6 +35,9 @@ $mails=array();
 while($r = pg_fetch_assoc($result)) {
   array_push($mails,$r['mail']);
 }
+
+
+
 
 echo "<br>";
 //echo $query;
@@ -87,7 +89,7 @@ $mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Unità  Operativa
+$body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Unità  Operativa
  '.$uo_descrizione.' Non ha ancora risposto all\'assegnazione incarico.
   <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali alla
@@ -96,6 +98,11 @@ $mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Unità
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> 
  Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
+
+  
+require('../informativa_privacy_mail.php');
+
+$mail-> Body=$body ;
 
 
 //$mail->Body =  'Corpo del messaggio';

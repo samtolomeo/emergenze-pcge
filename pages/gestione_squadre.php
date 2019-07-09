@@ -28,6 +28,7 @@ if ($profilo_sistema <= 8){
 }
 
 
+
 ?>
     
 </head>
@@ -46,15 +47,15 @@ if ($profilo_sistema <= 8){
 
         <div id="page-wrapper">
              <div class="row">
-                <div class="col-lg-12">
+                <div class="col-md-12">
                     <h3>Creazione squadre <i class="fas fa-arrow-right"></i> <!--/h3-->
                 <!--/div-->
-                <!-- /.col-lg-12 -->
+                <!-- /.col-md-12 -->
             <!--/div-->
             <!-- /.row -->
 
             <!--div class="row"-->
-            <!--div class="col-lg-6"-->
+            <!--div class="col-md-6"-->
             <?php
 				if ($check_operatore == 0){
 					echo '<!--h4--><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a creare nuove squadre</h3><hr> ';
@@ -95,7 +96,7 @@ if ($profilo_sistema <= 8){
 				                      }
 				                    ?>
 				                  </select>
-				                                  <small id="eventohelp" class="form-text text-muted">Un solo evento attivo (per trasparenza lo mostriamo ma possiamo anche decidere di non farlo).</small>
+				                                  <small id="eventohelp" class="form-text text-muted">Un solo evento attivo.</small>
 				             
 				            <?php } else {
 				            	?>
@@ -125,20 +126,21 @@ if ($profilo_sistema <= 8){
 					            <div class="form-group">
 					              <label for="tipo_segn">Chi gestisce la squadra:</label> <font color="red">*</font>
 					                            <select class="form-control" name="afferenza" id="afferenza" required="" >
-					                            <option name="afferenza" value="" > Specifica quale Unità Operativa gestirà la squadra </option>
-					            <?php            
-					            $query2="SELECT * FROM varie.t_afferenza_squadre ORDER BY descrizione;";
-					            echo $query2;
-						        $result2 = pg_query($conn, $query2);
-					            //echo $query1;    
-					            while($r2 = pg_fetch_assoc($result2)) { 
-					            ?>    
-					                    <option name="afferenza" value="<?php echo $r2['cod'];?>" ><?php echo $r2['descrizione'];?></option>
-					             <?php } ?>
+					                            <!--option name="afferenza" value="" > Specifica quale Unità Operativa gestirà la squadra </option-->
+
+					                    <option name="afferenza" value="<?php echo $cod_profilo_squadra;?>" ><?php echo $descrizione_profilo_squadra;?></option>
+					             
 					
 					             </select>            
 					             </div>
-					            
+					            <div class="form-group">
+					                <input type="checkbox" class="form-check-input" name="permanente" id="permanente">
+    									<label class="form-check-label" for="permanente">Rendi squadra permanente <br>
+    									</label>
+    									<br>
+    									<small>Verrà creata in automatico una squadra con lo stesso nome anche per gli eventi futuri
+    									</small>           
+					             </div>
 					             
 					                      
 					                  
@@ -164,38 +166,42 @@ if ($profilo_sistema <= 8){
 				?>
 			</div>
             </div>
-            <hr>
+			<hr>
+			
 			<div class="row">
-                <div class="col-lg-12">
-                    <h3>Elenco squadre</h3>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <div class="row">
+			<div style="text-align: center;">
+			<h2>Elenco squadre <i> <?php echo $descrizione_profilo_squadra; ?> <?php //echo '('.$profilo_squadre.')';?></i></h2>
+			</div>
+			
+			</div>
+			<div class="row">
+                <div class="col-md-6">
+                    <div style="text-align: center;">
+                    <h3>
+                    <i class="fas fa-play"></i>
+                    Squadre attive o attivabili
+                    <i class="fas fa-play"></i>
+                    </h3>
+                    </div>
 
-				 <div id="toolbar">
-				            <select class="form-control">
-				                <option value="">Esporta i dati visualizzati</option>
-				                <option value="all">Esporta tutto (lento)</option>
-				                <option value="selected">Esporta solo selezionati</option>
-				            </select>
-				        </div>
-				        
-				        <table  id="t_squadre" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_squadre.php" data-height="900"  data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+
+			
+			  <table  id="t_squadre" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_squadre.php?p=<?php echo $profilo_squadre;?>&t=1" data-height="900"  data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 				        
 				        
 				<thead>
 				
 			 	<tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="id" data-sortable="false"  data-visible="true">ID</th>
+            <!--th data-field="id" data-sortable="false"  data-visible="true">ID</th-->
             <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
-            <th style="word-break:break-all; word-wrap:break-word; " data-field="evento" data-sortable="true"  data-visible="true">Evento</th>
-	         <th data-field="afferenza" data-sortable="true"  data-visible="true" >Afferenza</th>
+            <!--th style="word-break:break-all; word-wrap:break-word; " data-field="evento" data-sortable="true"  data-visible="true">Evento</th>
+	         <th data-field="afferenza" data-sortable="true"  data-visible="true" >Afferenza</th-->
 	    	
             <th data-field="stato" data-sortable="true" data-formatter="nameFormatter1" data-visible="true" >Stato</th>
             <!--th data-field="id" data-visible="true" data-formatter="nameFormatter0" >Aggiorna stato</th-->
-            <th data-field="num_componenti" data-sortable="true" data-formatter="nameFormatter2" data-visible="true" >Numero<br>componenti</th>
+            <th data-field="num_componenti" data-sortable="true" data-formatter="nameFormatter2" data-visible="true" >Num</th>
+            <th data-field="componenti" data-sortable="true" data-formatter="nameFormatter2" data-visible="true" >Componenti</th>
             <?php
 				if ($check_operatore == 1){
 				?>
@@ -222,7 +228,69 @@ if ($profilo_sistema <= 8){
 				    })
 				</script>
 				
-				<br><br>
+
+				
+
+			 </div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<div class="col-md-6">
+                   <div style="text-align: center;">
+                    <h3>
+                    <i class="fas fa-stop"></i>
+                    Squadre da attivare
+                    <i class="fas fa-stop"></i>
+                    </h3>
+                    </div>
+
+
+				<table  id="t_squadre2" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_squadre.php?p=<?php echo $profilo_squadre;?>&t=0" data-height="900"  data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+				        
+				        
+				<thead>
+				
+			 	<tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <!--th data-field="id" data-sortable="false"  data-visible="true">ID</th-->
+            <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
+            <!--th style="word-break:break-all; word-wrap:break-word; " data-field="evento" data-sortable="true"  data-visible="true">Evento</th>
+	         <th data-field="afferenza" data-sortable="true"  data-visible="true" >Afferenza</th-->
+	    	
+            <th data-field="stato" data-sortable="true" data-formatter="nameFormatter1" data-visible="true" >Stato</th>
+            <!--th data-field="id" data-visible="true" data-formatter="nameFormatter0" >Aggiorna stato</th-->
+            <th data-field="num_componenti" data-sortable="true" data-formatter="nameFormatter2" data-visible="true" >Num</th>
+            <th data-field="componenti" data-sortable="true" data-visible="true" >Componenti</th>
+            <?php
+				if ($check_operatore == 1){
+				?>
+				<th data-field="id" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >  </th>
+				<!--th data-field="cf" data-sortable="false" data-formatter="nameFormatter1" data-visible="true" >Edit<br>permessi</th-->            
+				<?php
+				}
+				?>
+				</tr>
+				</thead>
+				
+				</table>
+				
+				
+				<script>
+				    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
+				    var $table = $('#t_squadre2');
+				    $(function () {
+				        $('#toolbar2').find('select').change(function () {
+				            $table.bootstrapTable('destroy').bootstrapTable({
+				                exportDataType: $(this).val()
+				            });
+				        });
+				    })
+				</script>
+				
 				
 				<script>
 				
@@ -230,8 +298,8 @@ if ($profilo_sistema <= 8){
 				  function nameFormatter(value) {
 				
 				        return '<a href="./edit_squadra.php?id='+ value + '" class="btn btn-warning" \
-				        title="Modifica squadra" role="button"><i class="fa fa-users" aria-hidden="true"></i>\
-				         Dettagli e edit</a>';
+				        title="Modifica componenti squadra e definisci ulteriori info" role="button"><i class="fa fa-users" aria-hidden="true"></i>\
+				         </a>';
 				    }
 				
 				
@@ -252,24 +320,31 @@ if ($profilo_sistema <= 8){
 				
 				  function nameFormatter1(value, row, index) {
 						if (row.id_stato==1){
-							return value + ' <i class="fa fa-play" aria-hidden="true"></i>';
+							return ' <i class="fa fa-play" aria-hidden="true" title="'+value+'"></i>';
 						} else if (row.id_stato==2) {
-							if (<?php echo $check_operatore; ?> ==1) { 
-							return  value + ' - <i class="fa fa-pause" aria-hidden="true"></i> - \
+							if (<?php echo $check_operatore; ?> ==1){
+								if (row.num_componenti > 0) {
+									return  '<i class="fa fa-pause" aria-hidden="true" title="'+value+'"></i> - \
 							<a href="./squadre/riposo.php?id='+ row.id + '" class="btn btn-danger btn-sm" \
 				        title="Imposta come a riposo" role="button"><i class="fa fa-stop" aria-hidden="true"></i>\
 				         </a>';
+				         	} else {
+				         		return  '<i class="fa fa-pause" aria-hidden="true" title="'+value+'"></i>';
+				         	}
 				         } else {
-				         	return  value + ' - <i class="fa fa-pause" aria-hidden="true"></i>';
+				         	return  '<i class="fa fa-pause" aria-hidden="true" title="'+value+'"></i>';
 				         }
 						} else if (row.id_stato==3) {
 							if (<?php echo $check_operatore; ?> ==1) { 
-							return value + ' - <i class="fa fa-stop" aria-hidden="true"></i> - \
+							return '<i class="fa fa-stop" aria-hidden="true" title="'+value+'"></i> - \
 							<a href="./squadre/play.php?id='+ row.id + '" class="btn btn-success btn-sm" \
 				        title="Imposta come a disposizione" role="button"><i class="fa fa-play" aria-hidden="true"></i>\
+				         </a>\
+						 <a href="./squadre/svuota.php?id='+ row.id + '" class="btn btn-warning btn-sm" \
+				        title="Svuota squadra" role="button"><i class="fa fa-user-alt-slash" aria-hidden="true"></i>\
 				         </a>';
 				         } else {
-				         	return value + ' - <i class="fa fa-stop" aria-hidden="true"></i>';
+				         	return '<i class="fa fa-stop" aria-hidden="true" title="'+value+'"></i>';
 				         }
 						}
 				    }
@@ -285,7 +360,11 @@ if ($profilo_sistema <= 8){
 				    }
 				</script>
 
-
+			 </div> 
+ 
+ 
+ 
+ 
             </div>
             
             <!-- /.row -->

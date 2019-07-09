@@ -50,7 +50,7 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 		exec($crea_folder);
 	}
 
-	$uploaddir= $uploaddir1. "ii_".$id."/";
+	$uploaddir= $uploaddir1. "s_".$id."/";
 
 	if (file_exists($uploaddir)) {
 		echo "The file $uploaddir exists <br>";

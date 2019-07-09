@@ -23,13 +23,13 @@ if (substr($id_uo,0,3)=='com'){
 	$query_o="SELECT * FROM varie.t_incarichi_comune WHERE cod ='". $id_uo."';";
 	//echo $query_o;
 	$result_o=pg_query($conn, $query_o);
-		while($r_o = pg_fetch_assoc($result_o)) {
+	while($r_o = pg_fetch_assoc($result_o)) {
 			$id_uo_sistema=$r_o['profilo'];
 			//echo $id_uo_sistema;
 	}
 	//echo $profilo_sistema;
 } else {
-	$id_uo_sistema=7; //utenti esterni
+	$id_uo_sistema=8; //utenti esterni
 	$uo_array=explode('_',$id_uo);
 	$id_uo=$uo_array[1];
 	$query_o="SELECT * FROM users.uo_1_livello WHERE id1 ='". $id_uo."';";
@@ -47,7 +47,7 @@ if (substr($id_uo,0,3)=='com'){
 // per il comune bisogna togliere com_ e poi bisogna anche verificare gli incarichi esterni uo_1, etc.
 
  if( $profilo_sistema==$id_uo_sistema) {
-	if ($profilo_sistema==7){
+	if ($profilo_sistema==8){
 		if($desc_livello1==$livello1){
 			$check_uo=1;
 		}
@@ -78,6 +78,10 @@ if ($id_profilo<=3 and $id_profilo>0){
 		$check_operatore=1;
 	}
 } else if($id_profilo==6) {
+	if (substr($profilo_sistema,0,1) == $id_profilo and $profilo_cod_munic==$id_municipio){ 
+		$check_operatore=1;
+	} 
+} else if($id_profilo==7) {
 	if (substr($profilo_sistema,0,1) == $id_profilo and $profilo_cod_munic==$id_municipio){ 
 		$check_operatore=1;
 	} 

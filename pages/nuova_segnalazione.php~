@@ -24,7 +24,7 @@ require('./check_evento.php');
 
 $page=basename($_SERVER['PHP_SELF']);
 
-if ($profilo_sistema > 6){
+if ($profilo_sistema > 8){
 	header("location: ./divieto_accesso.php");
 }
 ?>
@@ -62,8 +62,16 @@ if ($profilo_sistema > 6){
 					echo 'In questo momento non è possibile inserire nuove segnalazioni in quanto non ci sono eventi attivi.';
 					echo '</font></h2><hr>';
 				}
+				if ($profilo_sistema==8){
+					$uo_ins= $descrizione_profilo .' - '.$livello1.'';
+				} else {
+					$uo_ins= $descrizione_profilo;
+				}
+				
         		?> 
-            
+            <!--Stai inserendo questa segnalazione con il profilo <?php echo $uo_ins;?>-->
+			<input type="hidden" id="uo_ins" name="uo_ins" value="<?php echo $uo_ins;?>">
+
             <div class="row">             
             <h4><i class="fa fa-address-card"></i> Generalità segnalante:</h4> 
 
@@ -336,11 +344,11 @@ if ($profilo_sistema > 6){
 
 
 
-<script type="text/javascript" >
+<!--script type="text/javascript" >
 $('#collapse1').on('shown.bs.collapse', function (e) {
     mymap.invalidateSize(true);
-})
-</script>
+});
+</script-->
 								
 								
 								       

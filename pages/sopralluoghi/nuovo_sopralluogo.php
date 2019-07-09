@@ -209,12 +209,15 @@ $mail->Subject = 'Urgente - Nuovo sopralluogo assegnato tramite il Sistema di Ge
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo sopralluogo alla squadra di tua appartenenza 
+$body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo sopralluogo alla squadra di tua appartenenza 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del sopralluogo accedendo 
  con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/pages/dettagli_sopralluogo.php?id='.$id_sopralluogo.'" > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
+  
+require('../informativa_privacy_mail.php');
 
+$mail-> Body=$body ;
 
 //$mail->Body =  'Corpo del messaggio';
 //$mail->msgHTML(file_get_contents('E\' arrivato un nuovo sopralluogo da parte del Comune di Genova. Visualizza lo stato del sopralluogo al seguente link e aggiornalo quanto prima. <br> Ti chiediamo di non rispondere a questa mail'), __DIR__);
