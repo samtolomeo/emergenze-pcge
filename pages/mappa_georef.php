@@ -204,7 +204,7 @@ mymap.addControl(new ourCustomControl());
 			
 			popup
 			.setLatLng(e.latlng)
-			.setContent("Le coordinate di questo punto sulla mappa sono state automaticamente inserite nel form sottostante")
+			.setContent("Le coordinate di questo punto sulla mappa sono state automaticamente inserite nel form soprastante")
 			.openOn(mymap);
 			
 			
@@ -215,7 +215,7 @@ mymap.addControl(new ourCustomControl());
 		var zoom = 16;
 		setTimeout(function() {
         mymap.closePopup();
-    	}, 10000);
+    	}, 5000);
 		// add a marker
 		if (marker) { // check
         mymap.removeLayer(marker); // remove

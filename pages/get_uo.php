@@ -16,7 +16,7 @@ if(!empty($classe)) {
 	} else if($classe=='direzioni'){
 		$query = "select concat('com_',cod) as cod, descrizione from varie.t_incarichi_comune where cod ilike 'coc%' order by descrizione;";	
 	} else if($classe=='esterni') {
-		$query = "select concat('uo_',id1) as cod, descrizione from users.uo_1_livello order by descrizione;";
+		$query = "select concat('uo_',id1) as cod, descrizione from users.uo_1_livello where invio_incarichi = 't' order by descrizione;";
     }
     echo $query;
     $result = pg_query($conn, $query);

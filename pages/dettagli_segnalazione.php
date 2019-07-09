@@ -7,6 +7,11 @@ $id=$_GET["id"];
 $subtitle="Dettagli segnalazione ricevuta n. ".$id;
 
 
+$check_spostamento=1; // se 1 posso spostare in caso contrario diventa 0
+						// diventa 0 se: 
+						// ci sono elementi a rischio / provvedimenti cautelari associati
+						// ci sono altre segnalazioni nelle vicinanze
+						// altre ev. da aggiungere
 
 ?>
 <!DOCTYPE html>
@@ -140,6 +145,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								}
 								} else if ($r['id_lavorazione'] !=''  and $r['in_lavorazione']=='f') {
 									$check_lav=-1;
+									$check_spostamento=0;
 									echo '<h4> <i class="fas fa-stop"></i> La segnalazione è chiusa </h4>';
 									?>
 									<h4><br><b>Note chiusura</b>: <?php echo $r['descrizione_chiusura']; ?></h4>
@@ -184,11 +190,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						<?php
 						
-						$check_spostamento=1; // se 1 posso spostare in caso contrario diventa 0
-						// diventa 0 se: 
-						// ci sono elementi a rischio / provvedimenti cautelari associati
-						// ci sono altre segnalazioni nelle vicinanze
-						// altre ev. da aggiungere
+						
 						
 						
 			
@@ -197,7 +199,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						$check_incarichi_aperti=0; // check se incarichi ancora aperti o rifiutati
 						$check_incarichi_rifiutati=0;
-						$queryi="SELECT * FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_incarico = 2;";
+						$queryi="SELECT id_uo FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_incarico = 2;";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
@@ -206,7 +208,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								$check_open_ii=1;
 							}
 						}
-						$queryi="SELECT * FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_incarico = 1 OR id_stato_incarico = 4);";
+						$queryi="SELECT id_stato_incarico FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_incarico = 1 OR id_stato_incarico = 4);";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
@@ -221,13 +223,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						$check_incarichi_interni_aperti=0; // check se incarichi interni ancora aperti o rifiutati
 						$check_incarichi_interni_rifiutati=0;
-						$queryi="SELECT * FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_incarico =2;";
+						$queryi="SELECT id FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_incarico =2;";
 						//echo $queryi;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
 							$check_incarichi_interni_aperti=1;
 						}
-						$queryi="SELECT * FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_incarico = 1 OR id_stato_incarico = 4) ;";
+						$queryi="SELECT id_stato_incarico FROM segnalazioni.v_incarichi_interni_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_incarico = 1 OR id_stato_incarico = 4) ;";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
@@ -247,19 +249,19 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						// 2 completato
 						$check_sopralluoghi=0; // check se incarichi interni ancora aperti
 						
-						$queryi="SELECT * FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 3;";
+						$queryi="SELECT id FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 3;";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
 							$check_sopralluoghi=2;
 						}
-						$queryi="SELECT * FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 2;";
+						$queryi="SELECT id FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 2;";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
 							$check_sopralluoghi=1;
 						}						
-												$queryi="SELECT * FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 1;";
+					    $queryi="SELECT id FROM segnalazioni.v_sopralluoghi_last_update WHERE id_lavorazione=".$id_lavorazione. " and id_stato_sopralluogo = 1;";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
@@ -273,29 +275,30 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						$check_provvedimenti=0; // check se incarichi interni ancora aperti
 						
-						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 3);";
+						$queryi="SELECT id FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 3);";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
-							$id_provvedimento=['id'];
+							$id_provvedimento=$ri['id'];
 							$check_provvedimenti=2;
 							$check_spostamento=0;
 						}
 						
-						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 2);";
+						$queryi="SELECT id FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 2);";
 						//echo $query;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
-							$id_provvedimento=['id'];
+							$id_provvedimento=$ri['id'];
 							$check_provvedimenti=1;
+							$check_chiusura=$check_chiusura-1;
 							$check_spostamento=0;
 						}
 						
-						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 1);";
-						//echo $query;
+						$queryi="SELECT id FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 1);";
+						//echo $queryi;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
-							$id_provvedimento=['id'];
+							$id_provvedimento=$ri['id'];
 							$check_provvedimenti=-1;
 							$check_chiusura=$check_chiusura-1;
 							$check_spostamento=0;
@@ -567,7 +570,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 											if($r_provvedimenti['note_ente']!=''){
 												echo " (Note chiusura:" .$r_provvedimenti['note_ente']. ")";
 											}
-											if($r_provvedimenti['rimosso']!='t'){
+											if($r_provvedimenti['rimosso']=='t'){
 												echo ' - <i class="fa fa-times" style="color:red"></i>
 												Provvedimento rimosso con successiva ordinanza sindacale';
 											}
@@ -740,7 +743,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									$query2="SELECT cf, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 									//echo $query2;
 									$result2 = pg_query($conn, $query2);
 									?>
@@ -798,7 +801,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									$query2="SELECT cf, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
@@ -1194,7 +1197,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									echo "<b>Indirizzo civico (più prossimo)</b>:" .$rc['desvia'].", ".$rc['testo'].", ".$rc['cap'];
 									//echo "<br><b>Municipio</b>:" .$rc['desmunicipio'];
 								}
-								$queryc= "SELECT * FROM geodb.municipi WHERE codice_mun='".$r['id_municipio']."';";
+								$queryc= "SELECT nome_munic FROM geodb.municipi WHERE codice_mun='".$r['id_municipio']."';";
 								//echo $queryc;
 								$resultc=pg_query($conn, $queryc);
 								while($rc = pg_fetch_assoc($resultc)) {

@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Mappa segnalazioni e sopralluoghi"
+$subtitle="Mappa segnalazioni a schermo intero"
 
 ?>
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ require('./check_evento.php');
 				  <iframe class="embed-responsive-item" src="./mappa_leaflet.php"></iframe>
 				</div-->
 
-						<div id="map" style="width: 100%; padding-top: 100%;">
+						<div id="map" style="width: 100%; height: 90vh;">
 						</div>
 						
 
@@ -76,7 +76,10 @@ include './mappa_leaflet_embedded.php';
 
 ?>
 
+<script type="text/javascript" >
 
+map.scrollWheelZoom.enable();
+</script>
     
 
 </body>

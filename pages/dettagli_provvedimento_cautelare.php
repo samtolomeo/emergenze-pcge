@@ -4,6 +4,7 @@ session_start();
 //$_SESSION['user']="MRZRRT84B01D969U";
 
 $id=$_GET["id"];
+$id_provvedimento=$id;
 $subtitle="Dettagli Provvedimento Cautelare n. ".$id;
 
 
@@ -75,7 +76,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
             <div class="col-md-6">
 				<?php
 				$query= "SELECT *, st_x(geom_inizio) as lon , st_y(geom_inizio) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
-				//echo $query
+				//echo $query;
 				$check_punto=0;
 				$result=pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
@@ -269,8 +270,17 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							echo "</h2><hr>";
 						} else if ($stato_attuale==3) {
 							echo "</h2><hr>";
-							if ($r['id_segnalazione']!=''){
-								echo'<h4> Per rimuovere il provvedimento torna alla 
+							$query_segn='SELECT in_lavorazione 
+							from segnalazioni.v_segnalazioni
+							WHERE id ='.$r['id_segnalazione'].' and in_lavorazione=\'f\';';
+							$check_lav_s=1;
+							$result_segn=pg_query($conn, $query_segn);
+							while($r_segn = pg_fetch_assoc($result_segn)) {
+								$check_lav_s=0;
+							}
+							 
+							if ($r['id_segnalazione']!='' AND $check_lav_s==1 ){
+								echo'<h5> Per rimuovere il provvedimento torna alla 
 								segnalazione e segui le istruzioni';
 							
 							// fine $query che verifica lo stato
@@ -282,14 +292,22 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 					?>
 									<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r["id_segnalazione"];?>"><i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r["id_segnalazione"];?></a>
-						</h4>
+						</h5>
 						<?php
 					}
 							
 							} else {
-								echo'<h4> Per rimuovere il presente provvedimento cautelare è necessario
-								prima assegnare uno o più incarichi e poi, una volta completato/i è possibile 
-								rimuovere il PC</h4>';
+								echo'<h5> Se la situazione fosse tornata normale, <b>in presenza di una nuova ordinanza sindacale</b>, 
+								è possibile rimuovere il provvedimento cautelare. <br><br>';
+								echo 'Prima di tutto è necessario  assegnare uno o più incarichi per ripristinare la situazione.';
+								if ($r[id_tipo_pc]==1) {
+									echo '(far rientrare i residenti)';
+								} else if ($r[id_tipo_pc]==2) {
+									echo '(riaprire il sottopasso)';
+								} else if($r[id_tipo_pc]==3) {
+									echo '(riaprire al transito la strada)';
+								} 
+								echo '<br><br>Una volta completati gli incarichi è possibile rimuovere il Provvedimento dal sistema</h5>';
 								
 								$query_i= "SELECT * FROM segnalazioni.join_incarico_provvedimenti_cautelari where id_provvedimento=".$id.";"; 
 								$result_i=pg_query($conn, $query_i);

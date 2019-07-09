@@ -6,7 +6,7 @@
 <h3>Attività sala emergenze</h3>
 </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <hr><h4>Coordinamento sala
+            <hr><h4>Coordinatore di sala
             <?php
 				if ($profilo_sistema <= 3){
 				?>	
@@ -248,7 +248,7 @@
             
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <hr>
-            <h4>Resp. Monitoraggio Meteo
+            <h4>Operatore Monitoraggio Meteo
             
             <?php
 				if ($profilo_sistema <= 3){
@@ -499,7 +499,7 @@
             
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <hr>
-            <h4>Resp. Presidi territoriali
+            <h4>Operatore Presidi Territoriali
             
             <?php
 				if ($profilo_sistema <= 3){

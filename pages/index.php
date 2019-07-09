@@ -270,18 +270,12 @@ function nameFormatterMappa1(value, row) {
                         <div class="panel-heading">
                             <i class="fa fa-map-marked-alt fa-fw"></i> Mappa segnalazioni e presidi in corso
                             <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Altro
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="elenco_segnalazioni.php">Elenco segnalazioni</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="mappa_segnalazioni.php">Ingrandisci mappa</a>
-                                        </li>
-                                    </ul>
+                            <div class="btn-group">
+                            <a class="btn btn-default btn-xs" href="mappa_segnalazioni.php">
+                            <i class="fas fa-expand-arrows-alt"></i> Ingrandisci mappa</a>
+                            <a class="btn btn-default btn-xs" href="elenco_segnalazioni.php">
+                            <i class="fas fa-list"></i> Elenco segnalazioni</a>   
+                                    
                                 </div>
                             </div>
                         </div>

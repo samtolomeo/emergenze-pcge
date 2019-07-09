@@ -349,6 +349,11 @@ $('#tipo_oggetto').attr('disabled',true);
         }
         $('#catName').attr('disabled', 'disabled');
     });  
+    
+    
+    
+    
+    
         /*$('[type="radio"][id="mappa"]').on('change', function () {
         if ($(this).is(':checked')) {
         	

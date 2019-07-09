@@ -81,9 +81,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					$id_squadra_attiva=$r['id_squadra'];
 					//$check_operatore=0;
 					$id_squadra=$r['id_squadra'];
-               $id_profilo=$r['id_profilo'];
-			   //echo $id_profilo;
-			   //echo "<br>";
+					$id_profilo=$r['id_profilo'];
+					//echo $id_profilo;
+					//echo "<br>";
 					require('./check_operatore.php');
 					?>            
             	
@@ -93,11 +93,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
                if ($check_squadra==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
 				}
-					require('./check_responsabile.php');
-					?>
+				require('./check_responsabile.php');
+				?>
                </h4>
-               <h4><br><b>Descrizione sopralluogo</b>: <?php echo $r['descrizione']; ?></h4>
-               <h4><br><b>Data e ora invio sopralluogo</b>: <?php echo $r['data_ora_invio']; ?></h4>
+               <h4><br><b>Descrizione presidio</b>: <?php echo $r['descrizione']; ?></h4>
+               <h4><br><b>Data e ora invio presidio</b>: <?php echo $r['data_ora_invio']; ?></h4>
                <?php //echo $id_squadra_attiva; ?>
                <hr>
             	
@@ -172,7 +172,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Previsioni esecuzione sopralluogo</h4>
+						        <h4 class="modal-title">Previsioni esecuzione presidio</h4>
 						      </div>
 						      <div class="modal-body">
 						      
@@ -184,11 +184,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<!--input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" /-->
 								
 									 <div class="form-group">
-						<label for="data_inizio" >Data prevista per eseguire l'sopralluogo (AAAA-MM-GG) </label>  <font color="red">*</font>                 
+						<label for="data_inizio" >Data prevista per eseguire il presidio (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->
@@ -252,7 +252,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						
-						        <button  id="conferma" type="submit" class="btn btn-primary">Prendi in carico sopralluogo</button>
+						        <button  id="conferma" type="submit" class="btn btn-primary">Prendi in carico presidio</button>
 						            </form>
 						
 						      </div>
@@ -273,7 +273,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Rifiuta sopralluogo</h4>
+						        <h4 class="modal-title">Rifiuta presidio</h4>
 						      </div>
 						      <div class="modal-body">
 						      
@@ -289,7 +289,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						
-						        <button  id="conferma" type="submit" class="btn btn-primary">Rifiuta sopralluogo</button>
+						        <button  id="conferma" type="submit" class="btn btn-primary">Rifiuta presidio</button>
 						            </form>
 						
 						      </div>
@@ -382,7 +382,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<div class="modal-content">
 							  <div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Cambio squadra sopralluogo</h4>
+								<h4 class="modal-title">Cambio squadra presidio</h4>
 							  </div>
 							  <div class="modal-body">
 							  
@@ -436,7 +436,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				      } 
 				      ?>
 						
-							<h4><br><b>Ora prevista per eseguire il sopralluogo</b>: <?php echo $r['time_preview']; ?></h4>
+							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
 							<?php if ($r['time_start']==''){
 								if ($check_squadra==1 or $check_operatore==1){
 							?>
@@ -444,7 +444,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<?php 
 								}
 							} else { ?>
-								<h4><br><b>Ora inizio esecuzione sopralluogo</b>: <?php echo $r['time_start']; ?></h4>
+								<h4><br><b>Ora inizio esecuzione presidio</b>: <?php echo $r['time_start']; ?></h4>
 							<?php } 
 								if ($check_squadra==1 or $check_operatore==1){
 							?>
@@ -455,8 +455,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							}
 						} else if ($r["id_stato_sopralluogo"]==3) {
 						?>
-							<h4><br><b>Ora prevista per eseguire il sopralluogo</b>: <?php echo $r['time_preview']; ?></h4>
-							<h4><br><b>Ora inizio esecuzione sopralluogo</b>: 
+							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
+							<h4><br><b>Ora inizio esecuzione presidio</b>: 
 							<?php 
 							if($r['time_start']!=''){
 								echo $r['time_start']; 
@@ -465,8 +465,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							}
 							?>
 							</h4>
-							<h4><br><b>Ora chiusura sopralluogo</b>: <?php echo $r['time_stop']; ?></h4><hr>
-							<h4><br><b>Note chiusura sopralluogo</b>: <?php echo $r['note_ente']; ?></h4><hr>
+							<h4><br><b>Ora chiusura presidio</b>: <?php echo $r['time_stop']; ?></h4><hr>
+							<h4><br><b>Note chiusura presidio</b>: <?php echo $r['note_ente']; ?></h4><hr>
 						
 						<?php	
 						} else if ($r["id_stato_sopralluogo"]==4) {
@@ -485,7 +485,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Chiudi sopralluogo</h4>
+						        <h4 class="modal-title">Chiudi presidio</h4>
 						      </div>
 						      <div class="modal-body">
 						      
@@ -501,7 +501,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						
-						        <button  id="conferma" type="submit" class="btn btn-primary">Chiudi sopralluogo</button>
+						        <button  id="conferma" type="submit" class="btn btn-primary">Chiudi presidio</button>
 						            </form>
 						
 						      </div>
@@ -544,7 +544,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Comunicazione a centrale responsabile sopralluogo</h4>
+						        <h4 class="modal-title">Comunicazione a centrale responsabile presidio</h4>
 						      </div>
 						      <div class="modal-body">
 						      
@@ -585,7 +585,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Comunicazione a squadra responsabile sopralluogo</h4>
+						        <h4 class="modal-title">Comunicazione a squadra responsabile presidio</h4>
 						      </div>
 						      <div class="modal-body">
 						      
@@ -630,7 +630,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					}
 					if ($check_segnalazione==1){
 					?>
-					<h3><i class="fas fa-list-ul"></i> Segnalazioni collegate al sopralluogo </h3><br>
+					<h3><i class="fas fa-list-ul"></i> Segnalazioni collegate al presidio </h3><br>
 
 					<?php
 					// fine $query che verifica lo stato
@@ -691,10 +691,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						} // chiudi if
+					}
 					
-					
-					$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
-					$zoom=16;
+						$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
+						$zoom=16;
 					
 					?>
 						
@@ -728,11 +728,12 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 require('./req_bottom.php');
+$id_segnalazione=$id;
 
 include './mappa_leaflet_embedded.php';
 
 
-}
+//}
 
 
 
@@ -742,103 +743,6 @@ require('./footer.php');
 ?>
 
 
-<script type="text/javascript">
-						
-		var lat=<?php echo $lat;?>;
-		var lon=<?php echo $lon;?>;
-		var mymap = L.map('map_dettaglio', {scrollWheelZoom:false}).setView([lat, lon], 16);
-	
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-			id: 'mapbox.streets'
-		}).addTo(mymap);
-	
-		L.marker([lat, lon]).addTo(mymap)
-    		.bindPopup('Segnalazione n. <?php echo $id;?>');
-    		//.openPopup();
-	
-	
-		
-		var segn_non_lav = [
-        
-        <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE lavorazione=0 and st_distance(st_transform('<?php echo $geom_s;?>'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=<?php echo $id_evento;?;";
-
-
-			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
-			
-
-    		$i=0;
-			$result_g = pg_query($conn, $query_g);
-	      while($r_g = pg_fetch_assoc($result_g)) {
-				if ($i==0){ 
-					echo '{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
-					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
-					echo $r_g["geo"].'}';
-				} else {
-					//echo ",". $r_g["geo"];
-					echo ',{"type": "Feature","properties": {"id":'.$r_g["id"].', "rischio": "';
-					echo $r_g["rischio"].'", "criticita": "'.$r_g["criticita"].'", "descrizione": "'.str_replace('"',' ',$r_g["descrizione"]).'"},"geometry":';
-					echo $r_g["geo"].'}';
-					
-				}
-				$i=$i+1;
-			}
-			?>
-			];
-			
-			
-			
-			
-			
-			
-			var stile_non_lavorazione = {
-		    radius: 8,
-		    fillColor: "#FFD700",
-		    color: "#000",
-		    weight: 1,
-		    opacity: 1,
-		    fillOpacity: 0.8
-		};
-		
-		var stile_lavorazione = {
-		    radius: 8,
-		    fillColor: "#228B22",
-		    color: "#000",
-		    weight: 1,
-		    opacity: 1,
-		    fillOpacity: 0.8
-		};
-		/*var layer_v_segnalazioni_0 = new L.geoJson(geojsonFeature, {
-		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, geojsonMarkerOptions);
-		    }
-		}).addTo(map);*/
-        
-        
-        //var markers0 = L.markerClusterGroup();
-        var markers1 = L.markerClusterGroup();   
-		  
-		  var layer_v_segnalazioni_0 = L.geoJson(segn_non_lav, {
-		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, stile_non_lavorazione);
-		    }
-		    ,
-			onEachFeature: function (feature, layer) {
-				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pause-circle"></i> Da prendere in carico </div>'+
-				'<h4><b>Tipo</b>: '+
-				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" target="_new" href="./dettagli_segnalazione.php?id='+
-				feature.properties.id +
-				'"> Dettagli segnalazione </a>' );
-			}
-		});
-		
-	   mymap.addLayer(layer_v_segnalazioni_0);
-</script>
 
 
 <script type="text/javascript" >

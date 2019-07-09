@@ -14,6 +14,14 @@ $subtitle="Mappa segnalazioni e sopralluoghi"
     <meta name="description" content="">
     <meta name="author" content="roberto" >
 
+<link rel="stylesheet" href="l_map/css/L.Control.Locate.min.css">
+   <link rel="stylesheetl_map/" href="l_map/css/qgis2web.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.css">
+   <link rel="stylesheet" href="l_map/css/MarkerCluster.Default.css">
+   <link rel="stylesheet" href="l_map/css/leaflet-measure.css">
+   <link rel="stylesheet" href="../vendor//leaflet-search/src/leaflet-search.css">
+
+
     <title>Gestione emergenze</title>
 <?php 
 require('./req.php');
@@ -46,7 +54,7 @@ require('./check_evento.php');
 				  <iframe class="embed-responsive-item" src="./mappa_leaflet.php"></iframe>
 				</div-->
 
-						<div id="map" style="width: 100%; padding-top: 100%;">
+						<div id="map" style="width: 100%; height: 90vh;">
 						</div>
 						
 
@@ -68,7 +76,10 @@ include './mappa_leaflet_embedded.php';
 
 ?>
 
+<script type="text/javascript" >
 
+map.scrollWheelZoom.enable();
+</script>
     
 
 </body>

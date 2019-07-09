@@ -240,19 +240,25 @@ require('./check_evento.php');
 								  </div>
 								</div>
 								
-								<div class="col-lg-6">
 								
 								<?php
 								      
 								     
 							}
-							
-	   					if($check_nverde==0) { echo "<ul><li>Il numero verde non è ancora stato attivato</li></ul>";}
+							?>
+							<div class="row">
+							<div class="col-lg-12">
+	   					<?php
+	   					if($check_nverde==0) {
+	   						 echo " - Il numero verde non è ancora stato attivato";
+	   					} else {
+								echo "</ul>";
+	   					}
 	   					
 	   					?>
 						</div>
-						
-	   					<div class="row">
+						</div>
+						<div class="row">
 	   					<hr>
 							<div style="text-align: center;">
 								<h4> Stato delle Allerte e Fasi Operative Comunali (F.O.C.) </h4><br>
@@ -607,7 +613,7 @@ require('./check_evento.php');
            
 				<div class="form-group">
 						<label for="data_inizio" >Data inizio attivazione (AAAA-MM-GG) </label>                 
-						<input type="text" class="form-control" name="data_inizio" id="js-date<?php echo $i; ?>" required>
+						<input type="text" class="form-control" name="data_inizio" id="js-date10" required>
 						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
 						</div-->
@@ -661,7 +667,7 @@ require('./check_evento.php');
 					
 					<div class="form-group">
 						<label for="data_fine" >Data fine attivazione (AAAA-MM-GG) </label>                 
-						<input type="text" class="form-control" name="data_fine" id="js-date2<?php echo $i; ?>" required>
+						<input type="text" class="form-control" name="data_fine" id="js-date11" required>
 						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
 						</div-->
@@ -1189,6 +1195,24 @@ $(document).ready(function() {
 
 }(jQuery));  
      
+     
+$(document).ready(function() {
+    
+    $('#js-date10').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });  
+    
+    $('#js-date11').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    }); 
+});     
+
  </script>   
 
 </body>
