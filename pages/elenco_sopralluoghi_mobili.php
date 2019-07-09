@@ -71,7 +71,7 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi_mobili.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi_mobili.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -79,17 +79,17 @@ require('./tables/filtri_segnalazioni.php');
 <thead>
 
  	<tr>
-            <th data-field="state" data-checkbox="true"></th>
-            <th data-field="descrizione_stato" data-sortable="true" data-visible="true" >Stato</th> 
+            <!--th data-field="state" data-checkbox="true"></th-->
+            <th data-field="id_stato_sopralluogo" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th> 
             <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
-				<th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th>
+				<th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Squadra</th>
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
-            <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
-            <th data-field="time_preview" data-sortable="true"  data-visible="true">Ora<br>prevista</th>
-            <th data-field="time_start" data-sortable="true"  data-visible="true">Ora<br>inizio</th>
+            <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
+            <th data-field="data_ora_invio" data-sortable="true"  data-visible="true">Data e ora<br>assegnazione</th>
+            <!--th data-field="time_start" data-sortable="true"  data-visible="true">Ora<br>inizio</th>
             <th data-field="time_stop" data-sortable="true"  data-visible="true">Ora<br>fine</th>
-            <th data-field="note" data-sortable="false" data-visible="true" >Note</th>
-            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>            
+            <th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
+            <th data-field="id" data-sortable="false" data-formatter="presidiFormatterEdit" data-visible="true" >Dettagli</th>            
 				<!--th data-field="id_segnalazione" data-sortable="false" data-formatter="nameFormatterEdit1" data-visible="true" >Segnalazione</th-->
     </tr>
 </thead>
@@ -97,63 +97,29 @@ require('./tables/filtri_segnalazioni.php');
 </table>
 
 
-<script>
-    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
-    var $table = $('#pres');
-    $(function () {
-        $('#toolbar').find('select').change(function () {
-            $table.bootstrapTable('destroy').bootstrapTable({
-                exportDataType: $(this).val()
-            });
-        });
-    })
-</script>
+
 
 <br><br>
 
 <script>
 
 
- function nameFormatter(value) {
-        if (value=='t'){
-        		return '<i class="fas fa-play" style="color:#5cb85c"></i>';
-        } else if (value=='f') {
-        	   return '<i class="fas fa-stop"></i>';
-        } else {
-        	   return '<i class="fas fa-pause" style="color:#ff0000"></i>';;
+ function presidiFormatter(value) {
+        if (value==2){
+        		return '<i class="fas fa-play" style="color:#5cb85c"></i> Preso in carico';
+        } else if (value==3) {
+        	   return '<i class="fas fa-stop"></i> Chiuso';
+        } else if (value==1){
+        	   return '<i class="fas fa-exclamation" style="color:#ff0000"></i>Da prendere in carico';
         }
 
     }
 
- function nameFormatterEdit(value) {
+ function presidiFormatterEdit(value) {
         
 		return '<a class="btn btn-warning" href=./dettagli_sopralluogo_mobile.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
  
     }
-
-
- function nameFormatterEdit1(value) {
-        if (value){
-			return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> <i class="fas fa-search"></i> </a>';
-		} else {
-			return '-';
-		}
-    }
-
-  function nameFormatterRischio(value) {
-        //return '<i class="fas fa-'+ value +'"></i>' ;
-        
-        if (value=='t'){
-        		return '<i class="fas fa-exclamation-triangle" style="color:#ff0000"></i>';
-        } else if (value=='f') {
-        	   return '<i class="fas fa-check" style="color:#5cb85c"></i>';
-        }
-        else {
-        		return '<i class="fas fa-question" style="color:#505050"></i>';
-        }
-    }
-
-
 </script>
 
 
@@ -174,11 +140,27 @@ require('./footer.php');
 require('./req_bottom.php');
 
 
-?>
 
+
+
+?>
+<script>
+
+    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
+    var $table = $('#pres');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('destroy').bootstrapTable({
+                exportDataType: $(this).val()
+            });
+        });
+    })
+</script>
 
     
 </body>
+
+
 
 
 

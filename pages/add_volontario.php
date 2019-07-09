@@ -22,9 +22,9 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
-if ($profilo_sistema > 3){
+/*if ($profilo_sistema > 3){
 	header("location: ./divieto_accesso.php");
-}
+}*/
 
 
 ?>
@@ -293,8 +293,8 @@ if ($profilo_sistema > 3){
 
 
              <div class="form-group">
-              <label for="provincia">Unità operativa I livello (demo):</label> <font color="red">*</font>
-                            <select class="selectpicker show-tick form-control" data-live-search="true" onChange="getUO_II(this.value);" required>
+              <label for="provincia">Unità operativa I livello:</label> <font color="red">*</font>
+                            <select name="UO_I" class="selectpicker show-tick form-control" data-live-search="true" onChange="getUO_II(this.value);" required="">
                             <option value="">Seleziona...</option>
             <?php            
             $query2="SELECT * From \"users\".\"uo_1_livello\";";
@@ -311,7 +311,7 @@ if ($profilo_sistema > 3){
              </div>
 
 
-            <div class="form-group">
+            <!--div class="form-group">
               <label for="comune">Unità operative II livello (demo):</label> 
                 <select class="form-control" name="UO_II" id="UO_II_list" class="demoInputBox" onChange="getUO_III(this.value);">
                 <option value="">Seleziona ..</option>
@@ -323,7 +323,7 @@ if ($profilo_sistema > 3){
                 <select class="form-control" name="UO_III" id="UO_III_list" class="demoInputBox">
                 <option value="">Seleziona ..</option>
             </select>         
-             </div> 
+             </div--> 
               
               
               

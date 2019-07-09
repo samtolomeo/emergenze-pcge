@@ -541,7 +541,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										<?php
 										$id_segnalazione=$r['id_segnalazione'];
 										include './segnalazioni/section_oggetto_rischio.php';
-										}
+										
 										?>
 										
 							
@@ -558,6 +558,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<br><br>
 						
 						<?php
+						}
 						$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
 						$zoom=16;
 						?>

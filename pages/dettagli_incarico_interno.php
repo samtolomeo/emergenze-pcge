@@ -182,9 +182,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									 <div class="form-group">
 						<label for="data_inizio" >Data prevista per eseguire l'incarico (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->
@@ -422,7 +422,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
 									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
 										 <div class="form-group">
-									    <label for="note">Testo comunicazione <?php echo $id_evento;?></label>  <font color="red">*</font>
+									    <label for="note">Testo comunicazione</label>  <font color="red">*</font>
 									    <textarea required="" class="form-control" id="note"  name="note" rows="3"></textarea>
 									  </div>
 									

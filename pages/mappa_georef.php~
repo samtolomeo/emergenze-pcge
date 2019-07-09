@@ -44,8 +44,21 @@
 
 
 
-//var map = L.map('map', {scrollWheelZoom:false}).setView([44.41054697, 8.9342933893], 14);
-var mymap = L.map('mapid', {scrollWheelZoom:false}).setView([44.411156, 8.932661], 13);
+
+
+<?php
+if ($zoom!=''){
+?>	
+	var mymap = L.map('mapid').setView([<?php echo $lat;?>, <?php echo $lon;?>], <?php echo $zoom;?>);
+<?php
+} else {
+?>
+	var mymap = L.map('mapid', {scrollWheelZoom:false}).setView([44.411156, 8.932661], 13);
+<?php	
+}
+?>
+
+
 
 	var mapbox= L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
@@ -151,9 +164,15 @@ var ourCustomControl = L.Control.extend({
     container.style.height = '30px';
  
     container.onclick = function(){
-      alert('Prima di tutto occorre selezionare il metodo con cui georeferenziare la segnalazione. \
-      \nQualora si scelga l\'opzione "tramite mappa" è possibile cliccare su un punto della mappa per catturarne automaticamente le coordinate\
-      \nNB Per effettuare una ricerca usare il tasto con la lente e digitare il topononimo che si intende cercare.')
+      alert('Prima di tutto occorre selezionare il metodo con cui georeferenziare \
+      la segnalazione. \
+      \nQualora si scelga l\'opzione "tramite mappa" è possibile cliccare su un \
+      punto della mappa per catturarne automaticamente le coordinate\
+      \n Una volta cliccato sulla mappa è possibile spostare la localizzazione \
+      della segnalazione cliccando nuovamente sulla mappa\
+      nel punto desiderato.\
+      \n\nNB Per effettuare una ricerca usare il tasto con la lente e digitare \
+      il topononimo che si intende cercare.')
       //document.getElementById("myDialog").showModal();
     }
     return container;
@@ -267,9 +286,10 @@ $('#tipo_oggetto').attr('disabled',true);
             $('#tipo_oggetto').attr('disabled',true);
             $('#tipo_oggetto').val('');
             $("#mapid").off("onclick");
+            mymap.closePopup();
             if (marker) { // check
-        mymap.removeLayer(marker); // remove
-    	}
+        			mymap.removeLayer(marker); // remove
+    			}
             	mymap.off('click', onMapClick);
             return true;
         }
@@ -289,9 +309,10 @@ $('#tipo_oggetto').attr('disabled',true);
             $('#via-list').attr('disabled', true);
             $('#via-list').selectpicker('refresh');
             $('#civico-list').attr('disabled', true);
+            mymap.closePopup();
             if (marker) { // check
-        mymap.removeLayer(marker); // remove
-    	}
+        			mymap.removeLayer(marker); // remove
+    			}
             mymap.off('click', onMapClick);
             return true;
         }

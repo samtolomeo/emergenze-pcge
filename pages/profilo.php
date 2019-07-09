@@ -57,8 +57,12 @@ require('./check_evento.php');
 						echo "<br><b>Municipio</b>: ". $profilo_nome_munic;
 					}
 					echo "<br><b>Squadra</b>: ". $nome_squadra_operatore;
-					echo "<br><b>Unità operativa</b>: ". $uo_inc;
-					echo "<br><b>Unità operativa municipale</b>: ". $periferico_inc;
+					if($profilo_sistema==8){
+						echo "<br><b>Unità operativa esterna</b>: ". $uo_inc;
+						echo "<br><a class=\"btn btn-primary btn-sm\" href=\"update_volontario.php?id='".$CF."'\" > <i class=\"fa fa-pencil-alt\"></i> Aggiorna dati anagrafici</a>";
+					} else {
+						echo "<br><b>Unità operativa interna</b>: ". $periferico_inc;
+					}
 				?> 
 				
 				

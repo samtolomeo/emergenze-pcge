@@ -28,7 +28,7 @@ if ($profilo_sistema > 4){
 
 ?>
 
-   <link rel="stylesheet" href="../vendor//leaflet-search/src/leaflet-search.css">
+   <link rel="stylesheet" href="../vendor/leaflet-search/src/leaflet-search.css">
    
 </head>
 
@@ -66,7 +66,7 @@ if ($profilo_sistema > 4){
             <div class="row"> 
 
             <h4><i class="fas fa-pencil-ruler"></i> Descrizione</h4> 
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-2">
             <label for="nome"> Evento</label> <font color="red">*</font>  
  				<?php 
            $len=count($eventi_attivi);	               
@@ -108,7 +108,7 @@ if ($profilo_sistema > 4){
 			$query2="SELECT * FROM segnalazioni.tipo_provvedimenti_cautelari WHERE id=1 ";
 			$result2 = pg_query($conn, $query2);
 			?>
-			<div class="form-group col-md-2">
+			<div class="form-group col-lg-3">
 			  <label for="tipo_pc">Tipo provvedimento:</label> <font color="red">*</font>
 				<select readonly="" class="form-control" name="tipo_pc" id="tipo_pc-list" class="demoInputBox" required="">
 				<?php    
@@ -122,32 +122,50 @@ if ($profilo_sistema > 4){
 			 </div> 
 			
 			
-             <div class="form-group col-md-2">
-             <label for="id_civico">Seleziona squadra:</label> <font color="red">*</font>
-					<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
-					<option  id="uo" name="uo" value="">Seleziona la squadra</option>
-					<?php
-					
-					$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
-					$result2 = pg_query($conn, $query2);
-					 
-					while($r2 = pg_fetch_assoc($result2)) { 
-						$valore=  $r2['cf']. ";".$r2['nome'];            
-					?>
-								
-							<option id="uo" name="uo" value="<?php echo $r2['id'];?>" ><?php echo $r2['nome'].' ('.$r2['id'].')';?></option>
-					 <?php } ?>
-				</select>
-				<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
-             </div>
              
              
+             
+			 
+			 
+			 <div class="form-group col-lg-3">
+			 <label for="tipo">Tipologia di UO:</label> <font color="red">*</font>
+				<select class="form-control" name="tipo" id="tipo" onChange="getUO2(this.value);"  required="">
+				   <option name="tipo" value="" >  </option>
+				<option name="tipo" value="direzioni" > Incarico a Direzioni (COC) </option>
+				<option name="tipo" value="municipi" > Incarico a municipi </option>
+				<option name="tipo" value="distretti" > Incarico a distretti di PM </option>
+				<!--option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option-->
+			</select>
+			</div>
+				 
+							 <script>
+				function getUO2(val) {
+					$.ajax({
+					type: "POST",
+					url: "get_uo.php",
+					data:'cod='+val,
+					success: function(data){
+						$("#uo-list-pc").html(data);
+					}
+					});
+				}
+
+				</script>
+
+				 
+				 
+				<div class="form-group col-lg-4">
+				  <label for="id_uo_pc">Seleziona l'Unità Operativa:</label> <font color="red">*</font>
+					<select class="form-control" name="uo" id="uo-list-pc" class="demoInputBox" required="">
+					<option value=""> ...</option>
+				</select>         
+				 </div>  
              
       
              
              
              
-            <div class="form-group col-md-5">
+            <div class="form-group col-lg-12">
                 <label for="descrizione"> Descrizione</label> <font color="red">*</font>
                 <input type="text" name="descrizione" class="form-control" required="">
              </div>
@@ -186,7 +204,7 @@ if ($profilo_sistema > 4){
 
 
 
-				<div class="col-md-6"> 
+				<div class="col-lg-6"> 
              <div class="form-group  ">
               <label for="via">Via:</label> <font color="red">*</font>
                             <select id="via-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required="">
@@ -204,8 +222,8 @@ if ($profilo_sistema > 4){
 
              </select>            
              </div>
-				</div> <!-- Chiudo col-md-6-->
-				<div class="col-md-6">
+				</div> <!-- Chiudo col-lg-6-->
+				<div class="col-lg-6">
 
             <div class="form-group">
               <label for="id_civico">Civico:</label> <font color="red">*</font>
@@ -215,8 +233,8 @@ if ($profilo_sistema > 4){
              </div>
 
 
-				</div> <!-- Chiudo col-md-6-->
-				<!--div class="col-md-6"> 
+				</div> <!-- Chiudo col-lg-6-->
+				<!--div class="col-lg-6"> 
 				
 	
 
@@ -232,7 +250,7 @@ if ($profilo_sistema > 4){
               </div>
 					
 				
-				</div--> <!-- Chiudo col-md-6-->
+				</div--> <!-- Chiudo col-lg-6-->
 				
 				</div> 
 				

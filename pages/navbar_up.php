@@ -8,12 +8,17 @@ require ('./note_ambiente.php');
 .dropdown-menu > li > a {
   white-space: normal;
 }
+
+.dropdown-menu{
+   max-height:600px;
+   overflow-y: scroll;
+}
 </style>
 
 
 
 <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -27,11 +32,38 @@ require ('./note_ambiente.php');
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
-                
-				
-				 <li class="nav-item active">
-					<a class="nav-link" href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+             
+			<?php
+				if(basename($_SERVER['PHP_SELF']) == 'index.php') {
+			?>
+				<li class="nav-item active">
+					<a class="nav-link" title="Elenco segnalazioni" href="#segn_sintesi"><i class="fas fa-list"></i></a>
 				</li>
+				<li class="nav-item active">
+					<a class="nav-link" title="Mappa segnalazioni" href="#mappa_segnalazioni"><i class="fas fa-map-marked-alt"></i></a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" title="Elenco presidi mobili" href="#presidi_mobili"><i class="fas fa-ambulance"></i></a>
+				</li>
+			<?php
+			} else {
+			?>	
+				<li class="nav-item active">
+					<a class="nav-link" title="Torna alla prima pagina" href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
+				</li>
+			<?php
+			}
+			if ($profilo_sistema == 8){
+			?>
+			
+			<li class="nav-item active">
+            <a href="reperibilita_aziende.php"> 
+            <i class="fas fa-user-clock">
+            </i> Reperibilita' </a>
+        </li>
+			<?php
+			}
+			?>	 
 				
 				
 				<?php
@@ -39,7 +71,7 @@ require ('./note_ambiente.php');
 				?>		
 
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle"  data-toggle="tooltip" data-placement="bottom" title="Visualizza dettagli allerte ed eventi"  href="#">
                         <i class="fas fa-circle fa-fw"></i> <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
@@ -80,6 +112,7 @@ require ('./note_ambiente.php');
                     		<i class="fas fa-chevron-circle-down fa-fw"></i> <i class="fas fa-caret-down"></i>
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i> 
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i>
+                    		<i class="fas fa-phone-square fa-1x" style="color:<?php echo $color_nverde; ?>"></i>
                     </a>
                      
                     <ul class="dropdown-menu dropdown-messages">
@@ -95,13 +128,13 @@ require ('./note_ambiente.php');
                                         <em><i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i></em>
                                     </span>
                                 </div>
-                                <div> Clicca per visualizzare tutte le allerte in corso, previste o passate. </div>
+                                <div> Clicca per visualizzare i dettagli sugli eventi in corso. </div>
                             </a>
                         </li>
 
                         <li class="divider"></li>
                         <li>
-                            <a href="dettagli_evento.php">
+                            <a href="#">
                                 <div>
                                     <?php if( $descrizione_foc!= '-') {?>
                                     <strong> Fase di <?php echo $descrizione_foc; ?> in corso</strong>
@@ -112,18 +145,36 @@ require ('./note_ambiente.php');
                                         <em><i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i></em>
                                     </span>
                                 </div>
-                                <div> Clicca per visualizzare tutte le Fasi Operative Comunali in corso, previste o passate.</div>
+                                <!--div> Clicca per visualizzare tutte le Fasi Operative Comunali in corso, previste o passate.</div-->
                             </a>
                         </li>
-
+                        
+								<li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <?php if( $contatore_nverde > 0) {?>
+                                    <strong> Numero verde attivo</strong>
+                                 <?php } else { ?>
+                                 	<strong> Numero verde non attivo</strong>
+                                 <?php }  ?> 
+                                    <span class="pull-right text-muted">
+                                        <em><i class="fas fa-phone-square  fa-1x" style="color:<?php echo $color_nverde; ?>"></i></em>
+                                    </span>
+                                </div>
+                                <!--div> Clicca per visualizzare le attivazioni numero verde in corso, previste o passate.</div-->
+                            </a>
+                        </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="dettagli_evento.php">
+                                <a href="#">
                                 <div>
+                                
                                 <?php 
                                 $len=count($eventi_attivi);	               
 		               				if($len==1) {   
 	               				   ?>
+	               				   
                                     <strong>Evento in corso</strong>
 												<?php } else if ($len==0) { ?>
                                  	<strong>Nessun evento in corso</strong>
@@ -137,16 +188,29 @@ require ('./note_ambiente.php');
                                     <span class="pull-right text-muted">
                                         <em><i class="fas fa-play"></i></em>
                                     </span>
-                                </div>
+                                </div> 
+                                </a>
                                 <?php 
                                 for ($i=0;$i<$len;$i++){
                                 ?>
-                                   - Tipo <?php echo $tipo_eventi_attivi[$i][1];?><br>
+                                <a href="#">
+                                - Tipo <?php echo $tipo_eventi_attivi[$i][1];?><br>
+                                </a>
+                                 <a href="dettagli_evento.php">
+                                   - Visualizza dettagli <br>
+                                 </a>
+                                  <a href="monitoraggio_meteo.php?id=<?php echo $tipo_eventi_attivi[$i][0];?>">
+                                   - Vai al monitoraggio meteo <br>
+                                 </a>
+                                 <a href="reportistica.php?id=<?php echo $tipo_eventi_attivi[$i][0];?>">
+                                   - Vai alla pagina dei report <br>
+                                 </a>
+                                 
                                 <?php
                                 }
                                 ?>
                                 
-                            </a>
+                            
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -249,7 +313,7 @@ require ('./note_ambiente.php');
 				
 
 				
-                <li id="notifiche_profilo" class="dropdown" >
+                <li id="notifiche_profilo" title="Incarichi in corso" class="dropdown" >
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
 					<?php if ($count_resp >0) { ?>
@@ -271,11 +335,17 @@ require ('./note_ambiente.php');
 					<a href="#">
                                 <div>
                                     <i class="fas fa-user-shield"></i> Incarichi
-                                    <span class="pull-right text-muted small"><?php echo $i_assegnati_resp;?> non presi in carico</span>
+                                    <span class="pull-right text-muted small"><?php echo $i_assegnati_resp;?></span>
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $i_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_incarico.php?id=".$id_i_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_i_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_incarico.php?id=".$id_i_assegnati_resp[$ii]."\">";
+									if ($stato_i_assegnati_resp[$ii]==2){
+										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
+									} else {
+										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+									}
+									echo " Descrizione: ".$descrizione_i_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             
@@ -286,11 +356,17 @@ require ('./note_ambiente.php');
 					<a href="#">
                                 <div>
                                     <i class="fas fa-user-tag"></i> Incarichi interni
-                                    <span class="pull-right text-muted small"><?php echo $ii_assegnati_resp;?> non presi in carico</span>
+                                    <span class="pull-right text-muted small"><?php echo $ii_assegnati_resp;?></span>
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $ii_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_incarico_interno.php?id=".$id_ii_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_ii_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_incarico_interno.php?id=".$id_ii_assegnati_resp[$ii]."\">";
+									if ($stato_ii_assegnati_resp[$ii]==2){
+										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
+									} else {
+										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+									}
+									echo " Descrizione: ".$descrizione_ii_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             
@@ -301,11 +377,23 @@ require ('./note_ambiente.php');
 					<a href="#">
                                 <div>
                                     <i class="fas fa-pencil-ruler"></i> Presidi fissi
-                                    <span class="pull-right text-muted small"><?php echo $s_assegnati_resp;?> non presi in carico</span>
+                                    <span class="pull-right text-muted small"><?php echo $s_assegnati_resp;?> </span>
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $s_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_sopralluogo.php?id=".$id_s_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_s_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_sopralluogo.php?id=".$id_s_assegnati_resp[$ii]."\">";
+									if ($stato_s_assegnati_resp[$ii]==2){
+										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
+										$query_cs='SELECT * FROM segnalazioni.t_sopralluoghi_richiesta_cambi 
+										WHERE id_sopralluogo ='.$id_s_assegnati_resp[$ii].' AND (eseguito = \'f\' OR eseguito is null);';
+										$result_cs = pg_query($conn, $query_cs);
+										while($r_cs = pg_fetch_assoc($result_cs)) {
+											 echo '(<i class="fas fa-exchange-alt" title="richiesta cambio squadra" style="color:#ff0000"></i>)';
+										}
+									} else {
+										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+									}
+									echo " Descrizione: ".$descrizione_s_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             
@@ -318,11 +406,24 @@ require ('./note_ambiente.php');
 					<a href="#">
                                 <div>
                                     <i class="fas fa-pencil-ruler"></i> Presidi mobili
-                                    <span class="pull-right text-muted small"><?php echo $sm_assegnati_resp;?> non presi in carico</span>
+                                    <span class="pull-right text-muted small"><?php echo $sm_assegnati_resp;?> </span>
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $sm_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_sopralluogo_mobile.php?id=".$id_sm_assegnati_resp[$ii]."\">Descrizione: ".$descrizione_sm_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_sopralluogo_mobile.php?id=".$id_sm_assegnati_resp[$ii]."\">";
+									if ($stato_sm_assegnati_resp[$ii]==2){
+										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
+										$query_cs='SELECT * FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi 
+										WHERE id_sopralluogo ='.$id_sm_assegnati_resp[$ii].' AND (eseguito = \'f\' OR eseguito is null);';
+										//echo $query_cs;
+										$result_cs = pg_query($conn, $query_cs);
+										while($r_cs = pg_fetch_assoc($result_cs)) {
+											 echo '(<i class="fas fa-exchange-alt" title="richiesta cambio squadra" style="color:#ff0000"></i>)';
+										}
+									} else {
+										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+									}
+									echo " Descrizione: ".$descrizione_sm_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             
@@ -335,11 +436,17 @@ require ('./note_ambiente.php');
 					<a href="#">
                                 <div>
                                     <i class="fas fa-exclamation-triangle"></i> Provv. cautelari
-                                    <span class="pull-right text-muted small"><?php echo $pc_assegnati_resp;?> non presi in carico</span>
+                                    <span class="pull-right text-muted small"><?php echo $pc_assegnati_resp;?> </span>
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $pc_assegnati_resp; $ii++) {
-									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_pc_assegnati_resp[$ii]."\">Tipo: ".$tipo_pc_assegnati_resp[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_pc_assegnati_resp[$ii]."\">";
+									if ($stato_pc_assegnati_resp[$ii]==2){
+										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
+									} else {
+										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+									}
+									echo " Tipo: ".$tipo_pc_assegnati_resp[$ii]."</a>" ;
 								}
 								?>
                             

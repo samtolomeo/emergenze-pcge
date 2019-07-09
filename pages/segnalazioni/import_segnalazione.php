@@ -9,7 +9,7 @@ require('../check_evento.php');
 //$id=$_GET["id"];
 $id=str_replace("'", "", $id);
 
-
+$uo_inserimento = $_POST["uo_ins"];
 
 $descrizione= str_replace("'", "''", $_POST["descrizione"]);
 $nome= str_replace("'", "''", $_POST["nome"]);
@@ -17,7 +17,6 @@ $nome= str_replace("'", "''", $_POST["nome"]);
 $altro= str_replace("'", "''", $_POST["altro"]);
 $note_segnalante= str_replace("'", "''", $_POST["note_segnalante"]);
 $note_geo= str_replace("'", "''", $_POST["note_geo"]);
-
 
 
 
@@ -176,11 +175,14 @@ echo "<br>";
             ?, ?, ?, ?, ?, ?, 
             ?);*/
 
-$query="INSERT INTO segnalazioni.t_segnalazioni(id, id_segnalante, descrizione, id_criticita, id_evento, geom, id_operatore, id_municipio";
+$query="INSERT INTO segnalazioni.t_segnalazioni(id, uo_ins, id_segnalante, descrizione, id_criticita, id_evento, geom, id_operatore, id_municipio";
 
 
 if ($_POST["rischio"]!=''){
 	$query=$query. ", rischio";
+}
+if ($_POST["nverde"]!=''){
+	$query=$query. ", nverde";
 }
 if ($_POST["id_civico"]!=''){
 	$query=$query. ", id_civico";
@@ -194,10 +196,13 @@ if ($note_geo!=''){
 $query=$query.") VALUES ("; 
 
 //valori obbligatori
-$query=$query." ".$id_segnalazione.", ".$id_segnalante.",'".$descrizione."',".$_POST["crit"].",".$_POST["evento"].",".$geom.",'".$operatore."',".$municipio." ";
+$query=$query." ".$id_segnalazione.", '".$uo_inserimento."', ".$id_segnalante.",'".$descrizione."',".$_POST["crit"].",".$_POST["evento"].",".$geom.",'".$operatore."',".$municipio."";
 
 if ($_POST["rischio"]!=''){
 	$query=$query. ",'". $_POST["rischio"]."'";
+}
+if ($_POST["nverde"]!=''){
+	$query=$query. ",'". $_POST["nverde"]."'";
 }
 if ($_POST["id_civico"]!=''){
 	$query=$query. ", ".$_POST["id_civico"];

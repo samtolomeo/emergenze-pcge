@@ -47,9 +47,9 @@ if($check_or==1) {
 	echo "<h4> <i class=\"fas fa-exclamation-triangle\"></i> Oggetto a rischio </h4>";
 	echo "<b>Tipo oggetto a rischio</b>:".$descrizione_oggetto_rischio;
 	echo "<br><b>Id oggetto a rischio </b>:".$id_oggetto_rischio;
-} else if ($check_or==0 and $check_lav>=0) {
-	echo "<h4> Nessun oggetto a rischio segnalato.</h4>";
-	
+} else if ($check_or==0 ) {
+	echo "<h4> <i class=\"fas fa-exclamation-triangle\"></i> Nessun oggetto a rischio segnalato.</h4>";
+	if ($check_lav>=0 and $check_operatore == 1){
 	
 	if (basename($_SERVER['PHP_SELF'])=='dettagli_segnalazione.php') {
 	?>
@@ -75,10 +75,11 @@ if($check_or==1) {
 
     </select>            
     </div>
-	 <button  type="submit" class="btn btn-primary">Aggiungi elemento a rischio</button>
+	 <button  type="submit" class="btn btn-primary"> <i class="fas fa-plus-square"></i> Aggiungi elemento a rischio</button>
      </form>
 	
 	<?php
+	} // check_lav
 	}
 }
 // eventualmente da tirare fuori altri dettagli
@@ -95,6 +96,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 	//echo "<br><b>Indirizzo</b>: ".$via. ", " .$numciv;
 	?>
 	<br> <br> <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#anagrafe_civico"><i class="fas fa-address-book"></i> Visualizza anagrafe civico </button>
+	<br> <br> 
 	<!-- Modal incarico-->
 						<div id="anagrafe_civico" class="modal fade" role="dialog">
 						  <div class="modal-dialog modal-lg">
@@ -163,14 +165,68 @@ if ($descrizione_oggetto_rischio=='Civici'){
 				if ($check_lav==1){
 					
 					$check_pc=0;
-					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
+					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' and tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
 					//echo $query_pc;
 					$result_pc=pg_query($conn, $query_pc);
 					while($r_pc = pg_fetch_assoc($result_pc)) {
 						$check_pc=1;
 						echo "Provvedimento cautelare già in corso o effettuato";
-						
+						//echo $r_pc['id_stato_provvedimenti_cautelari'];
+						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1){
+							echo '
+							<button type="button" class="btn btn-info"  data-toggle="modal" 
+							data-target="#new_incarico"><i class="fas fa-plus"></i>
+							 Assegna incarico per rimuovere Provvedimento Cautelare</button>
+							 
+						   - 
+								 
+							<button type="button" class="btn btn-danger"  data-toggle="modal" 
+							data-target="#rimuovi_pc_civico">
+							<i class="fas fa-times"></i> Rimuovi PC</button>';
+							
+							
+							?>
+							
+							<div id="rimuovi_pc_civico" class="modal fade" role="dialog">
+						  <div class="modal-dialog modal-lg">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Conferma</h4>
+							  </div>
+							  <div class="modal-body">
+								Confermi di voler rimuovere il presente Provvedimento Cautelare? <br><br> Ricorda che per 
+								rimuovere un provvedimento cautelare è necessaria una nuova ordinanza sindacale.
+								<br><br>Se sei in possesso di ordinanza sindacale prima di tutto assegna uno 
+								o più incarichi per ripristinare la situazione. 
+								
+								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
+								<hr>
+								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $r_pc['id']; ?>" method="POST">
+									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
+									<br>Rimuovi il provvedimento cautelare</button>
+									
+									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+								</form>
+	
+							  </div>
+							
+							</div>
+
+						  </div>
+						</div>
+							
+							
+							
+							
+							<?php
+							
+							
+						}
 					}
+					
 					if($check_operatore==1 and $r['in_lavorazione']!='f') {
 					if($check_pc==0) {
 				?>
@@ -257,13 +313,60 @@ if ($descrizione_oggetto_rischio=='Civici'){
 				if ($check_lav==1){
 					
 					$check_pc=0;
-					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
+					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' AND tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
 					//echo $query_pc;
 					$result_pc=pg_query($conn, $query_pc);
 					while($r_pc = pg_fetch_assoc($result_pc)) {
 						$check_pc=1;
 						echo "<br> <h4>Provvedimento cautelare già in corso o effettuato</h4>";
-						
+						//echo $r_pc['id_stato_provvedimenti_cautelari'];
+						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1){
+							echo '
+							<button type="button" class="btn btn-info"  data-toggle="modal" 
+							data-target="#new_incarico"><i class="fas fa-plus"></i>
+							 Assegna incarico per rimuovere Provvedimento Cautelare</button>
+							 
+						   - 
+								 
+							<button type="button" class="btn btn-danger"  data-toggle="modal" 
+							data-target="#rimuovi_pc_edificio">
+							<i class="fas fa-times"></i> Rimuovi PC</button>';
+							
+							
+							?>
+							<!-- Modal rimuovi pc civico-->
+							<div id="rimuovi_pc_edificio" class="modal fade" role="dialog">
+						  <div class="modal-dialog modal-lg">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Conferma</h4>
+							  </div>
+							  <div class="modal-body">
+								Confermi di voler rimuovere il presente Provvedimento Cautelare? <br><br> Ricorda che per 
+								rimuovere un provvedimento cautelare è necessaria una nuova ordinanza sindacale.
+								<br><br>Se sei in possesso di ordinanza sindacale prima di tutto assegna uno 
+								o più incarichi per ripristinare la situazione. 
+								<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
+								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
+								<hr>
+								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $r_pc['id']; ?>" method="POST">
+									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
+									<br>Rimuovi il provvedimento cautelare</button>
+									
+									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+								</form>
+	
+							  </div>
+							
+							</div>
+
+						  </div>
+						</div>
+					<?php
+						}
 					}
 					if($check_pc==0) {
 				?>
@@ -282,13 +385,61 @@ if ($descrizione_oggetto_rischio=='Civici'){
 				if ($check_lav==1){
 					
 					$check_pc=0;
-					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
+					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' AND tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
 					//echo $query_pc;
 					$result_pc=pg_query($conn, $query_pc);
 					while($r_pc = pg_fetch_assoc($result_pc)) {
 						$check_pc=1;
 						echo "Provvedimento cautelare già in corso o effettuato";
-						
+						//echo $r_pc['id_stato_provvedimenti_cautelari'];
+						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1){
+							echo '
+							<button type="button" class="btn btn-info"  data-toggle="modal" 
+							data-target="#new_incarico"><i class="fas fa-plus"></i>
+							 Assegna incarico per rimuovere Provvedimento Cautelare</button>
+							 
+						   - 
+								 
+							<button type="button" class="btn btn-danger"  data-toggle="modal" 
+							data-target="#rimuovi_pc_sottopasso">
+							<i class="fas fa-times"></i> Rimuovi PC</button>';
+							
+							
+							?>
+							<!-- Modal rimuovi pc civico-->
+							<div id="rimuovi_pc_sottopasso" class="modal fade" role="dialog">
+						  <div class="modal-dialog modal-lg">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Conferma</h4>
+							  </div>
+							  <div class="modal-body">
+								Confermi di voler rimuovere il presente Provvedimento Cautelare? 
+								<br><br> Ricorda che per 
+								rimuovere un provvedimento cautelare è necessaria una nuova ordinanza sindacale.
+								<br><br>Se sei in possesso di ordinanza sindacale prima di tutto assegna uno 
+								o più incarichi per ripristinare la situazione. 
+								<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
+								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
+								<hr>
+								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $r_pc['id']; ?>" method="POST">
+									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
+									<br>Rimuovi il provvedimento cautelare</button>
+									
+									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+								</form>
+	
+							  </div>
+							
+							</div>
+
+						  </div>
+						</div>
+					<?php
+						}
 					}
 					if($check_pc==0) {
 				?>
@@ -333,24 +484,40 @@ if ($descrizione_oggetto_rischio=='Civici'){
 			<input type="hidden" name="id_oggetto_rischio" id="hiddenField" value="<?php echo $id_oggetto_rischio; ?>" />
 			<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 	
-			<?php
-			$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
-			$result2 = pg_query($conn, $query2);
-			?>
 			<div class="form-group">
-			  <label for="id_civico">Seleziona squadra:</label> <font color="red">*</font>
-				<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
-				<option  id="uo" name="uo" value="">Seleziona la squadra</option>
-				<?php    
-				while($r2 = pg_fetch_assoc($result2)) { 
-					$valore=  $r2['cf']. ";".$r2['nome'];            
-				?>
-							
-						<option id="uo" name="uo" value="<?php echo $r2['id'];?>" ><?php echo $r2['nome'].' ('.$r2['id'].')';?></option>
-				 <?php } ?>
+			 <label for="tipo">Tipologia di incarico:</label> <font color="red">*</font>
+				<select class="form-control" name="tipo" id="tipo" onChange="getUO2(this.value);"  required="">
+				   <option name="tipo" value="" >  </option>
+				<option name="tipo" value="direzioni" > Incarico a Direzioni (COC) </option>
+				<option name="tipo" value="municipi" > Incarico a municipi </option>
+				<option name="tipo" value="distretti" > Incarico a distretti di PM </option>
+				<!--option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option-->
 			</select>
-			<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
-			 </div>       
+			</div>
+				 
+							 <script>
+				function getUO2(val) {
+					$.ajax({
+					type: "POST",
+					url: "get_uo.php",
+					data:'cod='+val,
+					success: function(data){
+						$("#uo-list-pc").html(data);
+					}
+					});
+				}
+
+				</script>
+
+				 
+				 
+				<div class="form-group">
+				  <label for="id_uo_pc">Seleziona l'Unità Operativa cui assegnare l'incarico:</label> <font color="red">*</font>
+					<select class="form-control" name="uo" id="uo-list-pc" class="demoInputBox" required="">
+					<option value=""> ...</option>
+				</select>         
+				 </div>     
+				
 			
 			
 			

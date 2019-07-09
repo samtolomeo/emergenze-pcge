@@ -7,7 +7,19 @@
 			  <div class="panel panel-success">
 			    <div class="panel-heading">
 			      <h4 class="panel-title">
-			        <a data-toggle="collapse" href="#list_comunicazioni"><i class="fa fa-comments"></i> Comunicazioni sulla segnalazione </a>
+			        <a data-toggle="collapse" href="#list_comunicazioni"><i class="fa fa-comments"></i>
+					<?php
+					if ($check_segnalazione==1){
+					?>
+						Visualizza tutte le comunicazioni sulla segnalazione 
+					<?php
+					} else {
+					?>
+						Visualizza tutte le comunicazioni sull'incarico
+					<?php
+					} 
+					?>
+					</a>
 			      </h4>
 			    </div>
 			    <div id="list_comunicazioni" class="panel-collapse collapse">
@@ -15,7 +27,12 @@
 				<?php
 				// cerco l'id_lavorazione
 				$query_comunicazioni="SELECT *";
-				$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni WHERE id_lavorazione=".$id_lavorazione. ";";
+				if ($check_segnalazione==1){
+					$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni WHERE id_lavorazione=".$id_lavorazione. ";";
+				} else {
+					$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni_incarichi WHERE id=".$id. ";";
+				} 
+				
 				//echo $query_comunicazioni;
 				$result_comunicazioni=pg_query($conn, $query_comunicazioni);
 				$i=0;
@@ -48,6 +65,12 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
 
 
 <!-- Modal comunicazione da UO-->

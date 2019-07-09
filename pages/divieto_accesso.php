@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Utente non accreditato"
+$subtitle="Utente non accreditato";
 
 ?>
 <!DOCTYPE html>
@@ -50,9 +50,23 @@ require('./check_evento.php');
             <br><br>
             <div class="row">
 				<i class="fas fa-minus-circle fa-9x"></i>
-				<br><br><hr><br>
-				<h4 >E' possibile contattare l'amministratore di sistema per ottenere i permessi (<a href="mailto:salaemergenzepc@comune.genova.it?subject=Permessi%20utente%20PC%20">Sala Emergenze PC Genova</a>).</h4>
-            </div>
+				<br><br><hr>
+				<h2>Nuovi utenti</h2>
+				<h4>Per ottenere i permessi:<ul>
+				</h4>
+				<h4><li><i class="fas fa-user"></i> Dipendenti del Comune di Genova: 
+				contattare l'amministratore di sistema per ottenere i permessi 
+				(<a href="mailto:adminemergenzepc@comune.genova.it?subject=Permessi%20utente%20PC%20">amministratore</a>).
+				</li>
+				</h4>
+				<h4><li><i class="far fa-user"></i> Esterni:
+					1) registrarsi <a href='add_volontario.php'> qui </a> e poi comunicare tramite il proprio responsabile i propri dati 
+					(Nome, Cognome, CF) all'amministratore di sistema
+					(<a href="mailto:adminemergenzepc@comune.genova.it?subject=Permessi%20utente%20PC%20">amministratore</a>).
+				</li>
+				</h4>
+				</ul>
+			</div>
             <!-- /.row -->
     </div>
     <!-- /#wrapper -->

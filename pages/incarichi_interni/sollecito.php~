@@ -23,14 +23,14 @@ echo "Unita_operativa:".$uo. "<br>";
 
 
 
-//echo "<h2>La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2> <br> ";
+//echo "<h2>La gestione degli incarichi interni e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2> <br> ";
 
 
 
 echo "<br>";
 //echo $query_log;
 
-$query="SELECT mail FROM users.t_mail_incarichi WHERE cod='".$uo."';";
+$query="SELECT mail FROM users.t_mail_squadre WHERE cod='".$uo."';";
 $result=pg_query($conn, $query);
 $mails=array();
 while($r = pg_fetch_assoc($result)) {
@@ -83,15 +83,15 @@ while (list ($key, $val) = each ($mails)) {
   $mail->AddAddress($val);
 }
 //Set the subject line
-$mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di Genova';
+$mail->Subject = 'Urgente - Sollecito per incarico ricevuto dalla Protezione Civile del Comune di Genova';
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Unità  Operativa
- '.$uo_descrizione.' Non ha ancora risposto all\'assegnazione incarico.
+$mail->Body =  'Hai ricevuto questo messaggio come sollecito perchè la tua Squadra
+ '.$uo_descrizione.' Non ha ancora risposto all\'assegnazione incarico interno.
   <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali alla
- <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id?'.$id.'">pagina </a>
+ <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico_interno.php?id='.$id.'">pagina </a>
   del nuovo Sistema di Gestione delle Emergenze del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> 
  Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
@@ -115,10 +115,10 @@ if (!$mail->send()) {
 	echo '<br>Entro 10" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
 	echo '<a href="../dettagli_incarico.php?id='.$id.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
-   header("refresh:30;url=../dettagli_incarico.php?id=".$id);
+   header("refresh:30;url=../dettagli_incarico_interno.php?id=".$id);
 } else {
     echo "Message sent!";
-	header("location: ../dettagli_incarico.php?id=".$id);
+	header("location: ../dettagli_incarico_interno.php?id=".$id);
 }
 
 

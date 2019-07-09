@@ -3,6 +3,8 @@
 session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+require('../check_evento.php');
+
 
 $id_segnalazione_lav=$_POST["id_lavorazione"];
 
@@ -69,7 +71,7 @@ echo "<br>";
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Aggiunto oggetto a rischio a segnalazione ".$id."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Eliminato oggetto a rischio da segnalazione ".$id."');";
 $result = pg_query($conn, $query_log);
 echo "<br>";
 echo $query_log;

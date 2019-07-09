@@ -183,9 +183,17 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						<?php
-
-						$check_chiusura=0;  // se 0 posso chiudere se minore di 0 NO
 						
+						$check_spostamento=1; // se 1 posso spostare in caso contrario diventa 0
+						// diventa 0 se: 
+						// ci sono elementi a rischio / provvedimenti cautelari associati
+						// ci sono altre segnalazioni nelle vicinanze
+						// altre ev. da aggiungere
+						
+						
+			
+						$check_chiusura=0;  // se 0 posso chiudere se minore di 0 NO
+						$check_open_ii=0; // se 0 l'utente non può aprire incarichi interni (escluso il resp della segnalazione) se 1 anche se non resp della segnalazione va bene 
 						
 						$check_incarichi_aperti=0; // check se incarichi ancora aperti o rifiutati
 						$check_incarichi_rifiutati=0;
@@ -194,6 +202,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
 							$check_incarichi_aperti=1; // aperti
+							if ($ri['id_uo']==$periferico_inc OR $ri['id_uo']==$uo_inc ){
+								$check_open_ii=1;
+							}
 						}
 						$queryi="SELECT * FROM segnalazioni.v_incarichi_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_incarico = 1 OR id_stato_incarico = 4);";
 						//echo $query;
@@ -203,6 +214,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							if ($ri['id_stato_incarico']==1){
 								$check_chiusura=$check_chiusura-1;
 							}
+							
 						}
 						
 						
@@ -267,6 +279,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						while($ri = pg_fetch_assoc($resulti)) {
 							$id_provvedimento=['id'];
 							$check_provvedimenti=2;
+							$check_spostamento=0;
 						}
 						
 						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 2);";
@@ -275,6 +288,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						while($ri = pg_fetch_assoc($resulti)) {
 							$id_provvedimento=['id'];
 							$check_provvedimenti=1;
+							$check_spostamento=0;
 						}
 						
 						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 1);";
@@ -284,6 +298,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							$id_provvedimento=['id'];
 							$check_provvedimenti=-1;
 							$check_chiusura=$check_chiusura-1;
+							$check_spostamento=0;
 						}
 						
 						?>
@@ -414,8 +429,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 											echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico_interno.php?id=".$r_incarichi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 										}
 										
-							
-									if($check_operatore==1 and $r['in_lavorazione']!='f') {
+									//echo $check_open_ii;
+									if(($check_operatore==1 or $check_open_ii==1)and $r['in_lavorazione']!='f' ) {
 										?>
 									
 									 <hr><p>
@@ -552,6 +567,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 											if($r_provvedimenti['note_ente']!=''){
 												echo " (Note chiusura:" .$r_provvedimenti['note_ente']. ")";
 											}
+											if($r_provvedimenti['rimosso']!='t'){
+												echo ' - <i class="fa fa-times" style="color:red"></i>
+												Provvedimento rimosso con successiva ordinanza sindacale';
+											}
 											echo " - " .$r_provvedimenti['descrizione_uo'];
 											echo " - <a class=\"btn btn-info\" href=\"dettagli_provvedimento_cautelare.php?id=".$r_provvedimenti['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 										}
@@ -649,7 +668,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								 <label for="tipo">Tipologia di incarico:</label> <font color="red">*</font>
 									<select class="form-control" name="tipo" id="tipo" onChange="getUO(this.value);"  required="">
 									   <option name="tipo" value="" >  </option>
-									<option name="tipo" value="comune" > Incarico a uffici periferici del comune </option>
+									<option name="tipo" value="direzioni" > Incarico a Direzioni (COC) </option>
+									<option name="tipo" value="municipi" > Incarico a municipi </option>
+									<option name="tipo" value="distretti" > Incarico a distretti di PM </option>
 									<option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option>
 								</select>
 								</div>
@@ -719,7 +740,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 ORDER BY nome ";
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									//echo $query2;
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
@@ -776,7 +798,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 ORDER BY nome ";
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
@@ -845,9 +867,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 							<div class="form-group">
-								<label for="nome"> Pensi sia necessario inviarla a Manutenzioni/ LLPP?</label> <br>
-								<label class="radio-inline"><input type="radio" name="invio" value="man">Manutenzioni</label>
-								<label class="radio-inline"><input type="radio" name="invio" value="llpp">LLPP</label>
+								<label for="nome"> Pensi sia necessario inviarla automaticamente al sistema delle Manutenzioni?</label> <br>
+								<label class="radio-inline"><input type="radio" name="invio" value="man">Sì</label>
 								<label class="radio-inline"><input type="radio" name="invio" value="">No</label>
 							</div>
 
@@ -1108,13 +1129,15 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<br><b>Identificativo evento</b>: <?php echo $r['id_evento']; ?>
 						<br><b>Descrizione</b>: <?php echo $r['descrizione']; ?>
 						<br><b>Data e ora inserimento</b>: <?php echo $r['data_ora']; ?>
-						<br><b>Matricola operatore inserimento segnalazione</b>: <?php echo $r['id_operatore']; ?>
+						<!--br><b>Matricola operatore inserimento segnalazione</b>: <?php echo $r['id_operatore']; ?>-->
+						<br><b>Tipologia operatore inserimento segnalazione</b>: <?php echo $r['uo_ins']; ?>
 						<br>
 						<?php 
 						$query_altre="SELECT * FROM segnalazioni.".$table." where id_lavorazione=".$id_lavorazione." and id <>".$r['id']."";
 						//echo $query_altre;
 						$result_altre=pg_query($conn, $query_altre);
 						while($r_altre = pg_fetch_assoc($result_altre)) {
+							$check_spostamento=0;
 							echo '<br><br><a class="btn btn-info" href="dettagli_segnalazione.php?id='.$r_altre["id"].'">Vai alla segnalazione congiunta (id='.$r_altre["id"].')</a>';
 						}
 						?>
@@ -1186,10 +1209,49 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$zoom=16;
 						?>
 						<hr>
-						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
+						<h4> <i class="fas fa-map-marked-alt"></i> Mappa 
+						<?php
+						//cerco se ci sono elementi a rischio:
+						$query_er='SELECT id_segnalazione FROM segnalazioni.join_oggetto_rischio 
+						WHERE id_segnalazione ='.$id.';';
+						$result_er=pg_query($conn, $query_er);
+						while($r_er = pg_fetch_assoc($result_er)) {
+							//$check_spostamento=0;
+							// questo per ora non è vero..
+						}
+						
+						
+						if ($check_spostamento==1 and $check_operatore==1) {
+								$zoom_plus=$zoom+1;
+								echo ' - <a href="sposta_segnalazione.php?id='.$id.'&lat='.$lat.'&lon='.$lon.'&z='.$zoom_plus.'" class="btn btn-info">
+								<i class="fas fa-map-marker-alt"></i> Sposta segnalazione</a>';
+							}
+						?>
+						</h4>
 						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
 						<div id="map" style="width: 100%; padding-top: 100%;">
 						</div>
+						
+						<?php
+						$querys="select  to_char(data_ora_spostamento, 'HH24:MI'::text) AS ora, 
+						to_char(data_ora_spostamento, 'DD/MM/YYYY'::text) AS data 
+						from segnalazioni.t_spostamento_segnalazioni 
+						WHERE id_segnalazione=".$id.";"; 
+						
+						$conts=0;
+						$results=pg_query($conn, $querys);
+						while($rs = pg_fetch_assoc($results)) {
+							if($conts==0) {
+								echo "<h3><i class=\"fas fa-arrows-alt\"></i> Spostamento segnalazioni</h3>";
+								echo "<ul>";
+							}
+							$conts=$conts+1;
+							echo "<li>Segnalazione spostata alle ore ".$rs["ora"]." del ".$rs["data"]." </li>";
+						}
+						if($conts>0) {
+							echo "</ul>";
+						}
+						?>
 						
 						
 						
@@ -1209,7 +1271,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						   
 							include './segnalazioni/section_oggetto_rischio.php';
 
-							include './mappa_leaflet_embedded.php';							
+							include './mappa_leaflet_embedded.php';
+							
+							
+							
+							
 							// cerco l'oggetto a rischio
 							/*$check_or=0;
 							$query_or="SELECT * FROM segnalazioni.join_oggetto_rischio WHERE id_segnalazione=".$id." AND attivo='t';";

@@ -243,7 +243,7 @@ while($r_g = pg_fetch_assoc($result_g)) {
 //check e segnalazione errore
 
 $check_civico_edificio=0;
-$query_ce="SELECT * FROM segnalazioni.v_provvedimenti_cautelari WHERE tipo_oggetto='geodb.edifici' AND id_oggetto=".$id_edificio.";";
+$query_ce="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso='f' AND tipo_oggetto='geodb.edifici' AND id_oggetto=".$id_edificio.";";
 $result_ce = pg_query($conn, $query_ce);
 while($r_ce = pg_fetch_assoc($result_ce)) {
 	$check_civico_edificio=1;
@@ -253,7 +253,7 @@ while($r_ce = pg_fetch_assoc($result_ce)) {
 //echo $query_ce."<br>";
 
 
-$query_ce="SELECT * FROM segnalazioni.v_provvedimenti_cautelari WHERE tipo_oggetto='geodb.civici' AND id_oggetto=".$id_oggetto_rischio.";";
+$query_ce="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso='f' AND tipo_oggetto='geodb.civici' AND id_oggetto=".$id_oggetto_rischio.";";
 $result_ce = pg_query($conn, $query_ce);
 while($r_ce = pg_fetch_assoc($result_ce)) {
 	$check_civico_edificio=1;
@@ -266,7 +266,7 @@ while($r_ce = pg_fetch_assoc($result_ce)) {
 
 
 //check sottopassi
-$query_ce="SELECT * FROM segnalazioni.v_provvedimenti_cautelari WHERE tipo_oggetto='geodb.sottopassi' AND id_oggetto=".$id_oggetto_rischio.";";
+$query_ce="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso='f' AND tipo_oggetto='geodb.sottopassi' AND id_oggetto=".$id_oggetto_rischio.";";
 $result_ce = pg_query($conn, $query_ce);
 while($r_ce = pg_fetch_assoc($result_ce)) {
 	$check_civico_edificio=1;
@@ -285,10 +285,10 @@ while($r_ce = pg_fetch_assoc($result_ce)) {
 
 
 
-$query= "INSERT INTO segnalazioni.t_provvedimenti_cautelari ( id, descrizione, id_profilo, id_squadra, id_tipo, id_evento";
+$query= "INSERT INTO segnalazioni.t_provvedimenti_cautelari ( id, descrizione, id_profilo, id_uo, id_tipo, id_evento";
 
 //values
-$query=$query.") VALUES (".$id_provvedimento.", '".$descrizione."', '".$profilo_ok."', ". $uo. ", ". $tipo_pc. ", ". $id_evento. "";
+$query=$query.") VALUES (".$id_provvedimento.", '".$descrizione."', '".$profilo_ok."', '". $uo. "', ". $tipo_pc. ", ". $id_evento. "";
 
 $query=$query.");";
 
@@ -442,12 +442,16 @@ $mail->Subject = 'Urgente - Nuovo provvedimento cautelare assegnato tramite il S
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo provvedimento cautelare alla squadra di tua appartenenza 
+$body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo provvedimento cautelare alla squadra di tua appartenenza 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli del provvedimento cautelare accedendo 
  con le tue credenziali alla <a href="http://192.168.153.110/emergenze/pages/dettagli_provvedimento_cautelare.php?id='.$id_provvedimento.'" >pagina</a> del Sistem a di Gestione delle Emergenze del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
 
+  
+require('../informativa_privacy_mail.php');
+
+$mail-> Body=$body ;
 
 //$mail->Body =  'Corpo del messaggio';
 //$mail->msgHTML(file_get_contents('E\' arrivato un nuovo sopralluogo da parte del Comune di Genova. Visualizza lo stato del sopralluogo al seguente link e aggiornalo quanto prima. <br> Ti chiediamo di non rispondere a questa mail'), __DIR__);

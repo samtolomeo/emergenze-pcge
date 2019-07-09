@@ -1,9 +1,7 @@
 <?php 
 
 
-if ($profilo_sistema > 1){
-	header("location: ./divieto_accesso.php");
-}
+
 
 $subtitle="Funzionalità amministratore - Editing tabelle decodifiche";
 
@@ -17,7 +15,6 @@ $tabella= $_GET["t"];
 
 
 //echo $filtro_evento_attivo; 
-
 
 $uri=basename($_SERVER['REQUEST_URI']);
 //echo $uri;
@@ -41,6 +38,10 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
+
+if ($profilo_sistema > 1){
+	header("location: ./divieto_accesso.php");
+}
 
 require('./tables/filtri_segnalazioni.php');
 ?>
@@ -82,21 +83,21 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
             <h4><i class="fas fa-edit"></i> Editing tabella 
             <i><?php echo $schema;?>.<?php echo $tabella;?></i> - 
             <a href="#c_t" class="btn btn-primary"><i class="fas fa-table"></i> Cambia tabella da editare</a>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_tipo_modal"><i class="fa fa-plus"></i> Aggiungi tipologia</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_tipo_modal"><i class="fa fa-plus"></i> Aggiungi record a tabella</button>
             
             </h4> 
 
 	
-        <div id="toolbar">
+        <!--div id="toolbar">
             <select class="form-control">
                 <option value="">Esporta i dati visualizzati</option>
                 <option value="all">Esporta tutto (lento)</option>
                 <option value="selected">Esporta solo selezionati</option>
             </select>
-        </div>
+        </div-->
         
 
-        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_amm.php?s=<?php echo $schema;?>&t=<?php echo $tabella;?>" data-height="auto" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_amm.php?s=<?php echo $schema;?>&t=<?php echo $tabella;?>" data-height="auto" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -121,13 +122,18 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 	}
 
 
-	$query="select * from information_schema.columns WHERE table_schema='".$schema."' and table_name ilike'".$tabella."' and ordinal_position=1;";
+	$query="select * from information_schema.columns WHERE table_schema='".$schema."' and table_name ilike'".$tabella."' and
+	ordinal_position= (select min(ordinal_position) 
+	from information_schema.columns WHERE table_schema='".$schema."' and table_name ilike'".$tabella."'
+	);";
 	//echo $query;
 	$result = pg_query($conn, $query);
 	#exit;
 	while($r = pg_fetch_assoc($result)) {
+		$column_id=$r['column_name'];
 	?>
 		<th data-field="<?php echo $r['column_name'];?>" data-sortable="true" data-formatter="nameFormatterEdit" data-visible="true" >Edit</th>
+
 	<?php		
 	}
 	?>	
@@ -141,14 +147,16 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 
 
 <?php
-	$query0="SELECT * From ".$schema.".".$tabella." order by id;";
+	$query0="SELECT * From ".$schema.".".$tabella." order by ".$column_id.";";
 	//echo $query;
 	$result0 = pg_query($conn, $query0);
 	#exit;
 	while($r0 = pg_fetch_assoc($result0)) {
 	?>
 <!-- Modal -->
-<div id="modal_<?php echo $r0['id'];?>" class="modal fade" role="dialog">
+
+<div id="modal_<?php echo $r0[$column_id];?>" class="modal fade" role="dialog">
+
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -160,7 +168,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
       <div class="modal-body">
       
 		<div class="row">
-        <form action="amministratore/update_tabella.php?s=<?php echo $schema;?>&t=<?php echo $tabella;?>&id='<?php echo $r0['id']?>'" method="POST">
+        <form action="amministratore/update_tabella.php?s=<?php echo $schema;?>&t=<?php echo $tabella;?>&id='<?php echo $r0[$column_id]?>'" method="POST">
 
 
 			<?php 
@@ -169,15 +177,15 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 			$result = pg_query($conn, $query);
 			#exit;
 			while($r = pg_fetch_assoc($result)) {
-				if ($r['data_type']!='boolean' and $r['column_name']!='id'){
+				if ($r['data_type']!='boolean' and $r['column_name']!=$column_id){
 			?>
 				<div class="form-group col-lg-12">
                 <label for="<?php echo $r['column_name']?>"> <?php echo $r['column_name']?></label> *
                 <input type="text" value='<?php echo $r0[$r['column_name']]?>' name="<?php echo $r['column_name']?>" class="form-control" required>
 				</div>
-				<?php } else if ($r['column_name'] =='id') { ?>
+				<?php } else if ($r['column_name'] == $column_id) { ?>
 				<div class="form-group col-lg-12">
-                <label for="<?php echo $r['column_name']?>"> <?php echo $r['column_name']?></label> *
+                <label for="<?php echo $r['column_name']?>"> <?php echo $column_id ?></label> (chiave primaria) *
                 <input type="text" value='<?php echo $r0[$r['column_name']]?>' name="<?php echo $r['column_name']?>" readonly class="form-control" required>
 				</div>
 				
@@ -230,7 +238,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Edit record </h4>
+        <h4 class="modal-title">Aggiunta record </h4>
       </div>
       <div class="modal-body">
       
@@ -252,7 +260,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 				</div>
 				<?php } else if ($r['column_name'] =='id') { ?>
 				<!--div class="form-group col-lg-12">
-                <label for="<?php echo $r['column_name']?>"> <?php echo $r['column_name']?></label> *
+                <label for="<?php echo $r['column_name']?>"> <?php echo $r[$column_id]?></label> *
                 <input type="text" value='<?php echo $r0[$r['column_name']]?>' name="<?php echo $r['column_name']?>" readonly class="form-control" required>
 				</div-->
 				
@@ -278,7 +286,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 
 			  
               <div class="form-group col-lg-12">
-            <button type="submit" class="btn btn-primary">Aggiorna</button>
+            <button type="submit" class="btn btn-primary">Aggiungi record</button>
 			</div>
             </form>
 		</div>
@@ -292,22 +300,6 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 </div>   
 
 
-
-
-
-
-
-<script>
-    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
-    var $table = $('#pc');
-    $(function () {
-        $('#toolbar').find('select').change(function () {
-            $table.bootstrapTable('destroy').bootstrapTable({
-                exportDataType: $(this).val()
-            });
-        });
-    })
-</script>
 
 <br><br>
 
@@ -379,7 +371,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 					<option  id="table" name="table" value="">Seleziona la tabella</option>
 					<?php
 					
-					$query2="select * from information_schema.tables where table_name ilike 'tipo%' order by table_schema,table_name ";
+					$query2="select * from information_schema.tables where table_name ilike 'tipo%' OR table_name ilike 'uo_1_livello' order by table_schema,table_name ";
 					$result2 = pg_query($conn, $query2);
 					 
 					while($r2 = pg_fetch_assoc($result2)) { 
@@ -389,7 +381,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 							<option id="table" name="table" value="<?php echo $r2['table_schema'];?>.<?php echo $r2['table_name'];?>" ><?php echo $r2['table_schema'];?>.<?php echo $r2['table_name'];?></option>
 					 <?php } ?>
 				</select>
-				<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
+				<small> L'elenco delle tabelle da editare e definito dall'applicativo. In caso di problemi contatta il fornitore</a>. </small>
              </div>
              
              

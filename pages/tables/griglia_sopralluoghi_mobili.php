@@ -8,16 +8,20 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 $getfiltri=$_GET["f"];
 //echo $getfiltri;
 
-require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-$filter=filtro($getfiltri);
-
+if ($getfiltri == 'prima_pagina'){
+	$filter = ' WHERE id_stato_sopralluogo=2 ';
+} else {
+	require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
+	$filter=filtro($getfiltri);
+}
 
 
 if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT * From segnalazioni.v_sopralluoghi_mobili_last_update ".$filter." ;";
+	$query="SELECT id, descrizione, descrizione_uo, data_ora_invio,
+	id_stato_sopralluogo From segnalazioni.v_sopralluoghi_mobili_last_update ".$filter." ORDER BY id_stato_sopralluogo;";
     
    //echo $query;
 	$result = pg_query($conn, $query);

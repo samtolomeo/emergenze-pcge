@@ -186,9 +186,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									 <div class="form-group">
 						<label for="data_inizio" >Data prevista per eseguire il presidio (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->

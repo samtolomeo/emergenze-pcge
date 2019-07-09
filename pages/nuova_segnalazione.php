@@ -24,7 +24,7 @@ require('./check_evento.php');
 
 $page=basename($_SERVER['PHP_SELF']);
 
-if ($profilo_sistema > 6){
+if ($profilo_sistema > 8){
 	header("location: ./divieto_accesso.php");
 }
 ?>
@@ -62,8 +62,16 @@ if ($profilo_sistema > 6){
 					echo 'In questo momento non è possibile inserire nuove segnalazioni in quanto non ci sono eventi attivi.';
 					echo '</font></h2><hr>';
 				}
+				if ($profilo_sistema==8){
+					$uo_ins= $descrizione_profilo .' - '.$livello1.'';
+				} else {
+					$uo_ins= $descrizione_profilo;
+				}
+				
         		?> 
-            
+            <!--Stai inserendo questa segnalazione con il profilo <?php echo $uo_ins;?>-->
+			<input type="hidden" id="uo_ins" name="uo_ins" value="<?php echo $uo_ins;?>">
+
             <div class="row">             
             <h4><i class="fa fa-address-card"></i> Generalità segnalante:</h4> 
 
@@ -114,6 +122,23 @@ if ($profilo_sistema > 6){
               </div>
             
             </div>
+			
+			<?php
+			if ($profilo_ok==3){
+			?>
+			<div class="row">       
+				<div class="form-group col-md-6">
+					<label for="nverde"> Operatore numero verde?</label> <font color="red">*</font><br>
+					<label class="radio-inline"><input type="radio" name="nverde" value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="nverde"value="f" checked>Non specificato</label>
+				</div>
+			<?php } ?>
+
+				
+
+				
+				
+				</div> 
             <hr>
 				<div class="row">             
             <h4><i class="fa fa-play"></i> Evento:</h4>
@@ -394,7 +419,18 @@ require('./mappa_georef.php');
 
 		
 
+<script type="text/javascript" >
 
+// con questa parte scritta in JQuery si evita che 
+// l'uso del tasto enter abbia effetto sul submit del form
+
+$(document).on("keydown", ":input:not(textarea)", function(event) {
+    if (event.key == "Enter") {
+        event.preventDefault();
+    }
+});
+
+</script>
 
 
 

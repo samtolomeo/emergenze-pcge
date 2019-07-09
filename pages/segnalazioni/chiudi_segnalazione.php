@@ -3,6 +3,7 @@
 session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+require('../check_evento.php');
 
 $id_segnalazione_lav=$_GET["id_lav"];
 $id=$_GET["id"];

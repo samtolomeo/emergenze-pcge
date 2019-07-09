@@ -20,6 +20,7 @@ $segn=str_replace("'", "", $_GET['s']); //segnazione in lavorazione
 
 
 
+$id_pc=str_replace("'", "", $_GET['id_pc']); //segnazione in lavorazione
 
 
 
@@ -84,17 +85,34 @@ $query=$query.");";
 $result=pg_query($conn, $query);
 
 echo "<br>";
-$query= "INSERT INTO segnalazioni.join_segnalazioni_incarichi(id_incarico, id_segnalazione_in_lavorazione";
 
-//values
-$query=$query.") VALUES (".$id_incarico.", ".$id." ";
+if ($id!=''){
+	$query= "INSERT INTO segnalazioni.join_segnalazioni_incarichi(id_incarico, id_segnalazione_in_lavorazione";
+	
+	//values
+	$query=$query.") VALUES (".$id_incarico.", ".$id." ";
+	
+	$query=$query.");";
+	
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+} else if($id_pc!='') {
+	$query= "INSERT INTO segnalazioni.join_incarico_provvedimenti_cautelari(id_incarico, id_provvedimento";
+	
+	//values
+	$query=$query.") VALUES (".$id_incarico.", ".$id_pc." ";
+	
+	$query=$query.");";
+	
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
 
-$query=$query.");";
-
-//echo $query."<br>";
-//exit;
-$result=pg_query($conn, $query);
-
+} else {
+	echo "Problema join";
+	exit;
+}
 
 $query= "INSERT INTO segnalazioni.stato_incarichi(id_incarico, id_stato_incarico";
 
@@ -108,18 +126,18 @@ $query=$query.");";
 $result=pg_query($conn, $query);
 
 
-
-$query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(	id_segnalazione_in_lavorazione, log_aggiornamento";
-
-//values
-$query=$query.") VALUES (".$id.", ' Assegnato nuovo incarico alla seguente unit√† operativa: ".$uo_descrizione." - <a class=\"btn btn-info\" href=\"dettagli_incarico.php?id=".$id_incarico."\"> Visualizza dettagli </a>'";
-
-$query=$query.");";
-
-//echo $query;
-//exit;
-$result=pg_query($conn, $query);
-
+if ($id!=''){
+	$query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(	id_segnalazione_in_lavorazione, log_aggiornamento";
+	
+	//values
+	$query=$query.") VALUES (".$id.", ' Assegnato nuovo incarico alla seguente unit√† operativa: ".$uo_descrizione." - <a class=\"btn btn-info\" href=\"dettagli_incarico.php?id=".$id_incarico."\"> Visualizza dettagli </a>'";
+	
+	$query=$query.");";
+	
+	//echo $query;
+	//exit;
+	$result=pg_query($conn, $query);
+}
 
 $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato incarico ".$id_incarico."');";
 $result = pg_query($conn, $query_log);
@@ -189,11 +207,17 @@ $mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio in quanto Ë stato assegnato un nuovo incarico alla seguente Unit‡† operativa 
+$body =  'Hai ricevuto questo messaggio in quanto Ë stato assegnato un nuovo incarico alla seguente Unit‡† operativa 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id='.$id_incarico.'" " > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail Ë registrato a sistema. 
  Per modificare queste impostazioni Ë possibile inviare una mail a salaemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
+
+
+  
+require('../informativa_privacy_mail.php');
+
+$mail-> Body=$body ;
 
 
 //$mail->Body =  'Corpo del messaggio';
@@ -212,12 +236,26 @@ if (!$mail->send()) {
 	<?php
 	echo '<br>L\'incarico &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
 	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
-	echo '<a href="../dettagli_segnalazione.php?id='.$segn.'">link</a> per saltare l\'attesa.</h3>' ;
+	
+		if ($id!=''){
+    	echo '<a href="../dettagli_segnalazione.php?id='.$segn.'">link</a> per saltare l\'attesa.</h3>' ;
+    } else {
+    	echo '<a href="../dettagli_provvedimento_cautelare.php?id='.$id_pc.'">link</a> per saltare l\'attesa.</h3>' ;
+    }
+	
 	//sleep(30);
-    header("refresh:15;url=../dettagli_segnalazione.php?id=".$segn);
+	if ($id!=''){
+    	header("refresh:15;url=../dettagli_segnalazione.php?id=".$segn);
+    } else {
+    	header("refresh:15;url=../dettagli_provvedimento_cautelare.php?id=".$id_pc);
+    }
 } else {
     echo "Message sent!";
-	header("location: ../dettagli_segnalazione.php?id=".$segn);
+	if ($id!=''){
+    	header("refresh:15;url=../dettagli_segnalazione.php?id=".$segn);
+    } else {
+    	header("refresh:15;url=../dettagli_provvedimento_cautelare.php?id=".$id_pc);
+    }
 }
 
 

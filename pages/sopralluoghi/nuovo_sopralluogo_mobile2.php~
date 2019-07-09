@@ -61,7 +61,7 @@ while($r_uo = pg_fetch_assoc($result_uo)) {
 
 
 $query_percorso= "SELECT st_transform (geom,4326) as geom FROM geodb.v_presidi_mobili WHERE percorso='".$_POST["percorso"]."';";
-echo $query_percorso;
+//echo $query_percorso;
 echo "<br>";
 // se ci fossero problemi con il valore 'geom' controlla l record corrispondente nella tabella geodb.m_tables, 
 // che gestisce il trasferimento dati da Oracle a postgis
@@ -76,7 +76,7 @@ while($rc = pg_fetch_assoc($result_percorso)) {
 $query="UPDATE users.t_squadre SET id_stato=1 WHERE id=".$uo.";";
 //echo $query;
 //exit;
-//$result=pg_query($conn, $query);
+$result=pg_query($conn, $query);
 
 
 
@@ -87,10 +87,10 @@ $query=$query.") VALUES (".$id_sopralluogo.", '".$percorso." ".$descrizione."', 
 
 $query=$query.");";
 
-echo $query;
+//echo $query;
 //exit;
 $result=pg_query($conn, $query);
-exit;
+//exit;
 
 
 echo "<br>";

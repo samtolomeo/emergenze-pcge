@@ -8,18 +8,21 @@ $id=$_GET["id"];
 
 
 
-$query= "SELECT * FROM users.t_squadre where id=".$id.";";
+$query= "SELECT nome, id_evento FROM users.t_squadre where id=".$id.";";
 
 
 $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
 	$nome_sq=$r['nome'];
+	if ($r["id_evento"]==''){
+		$permanente="(Squadra permanente)";	
+	} else {
+		$permanente="(<i class=\"fas fa-hourglass-half\"></i> Si tratta 
+		di una squadra creata per l'evento ".$r["id_evento"].", 
+		al termine dell'evento verrà rimossa)";
+	}
 }
-//echo $query_uo."<br>";
 
-//echo "Descrizione uo:".$uo_descrizione. "<br>";
-
-//echo $uo."<br>";
 
 $subtitle="Dettagli squadra"
 
@@ -61,21 +64,58 @@ require('./check_evento.php');
 
 
         <div id="page-wrapper">
-             <div class="row">
-                <!--div class="col-lg-12">
-                    <h1 class="page-header">Edit squadra <?php echo $nome_sq;?></h1>
-                </div-->
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
 
             <div class="row">
-            <h2><b>Nome squadra</b>: <?php echo $nome_sq;?> </h2>
+            <h2><b>Nome squadra</b>: <?php echo $nome_sq;?> 
+            <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#nome_squadra">
+            <i class="fas fa-edit"></i> Cambia nome </button>
+            </h2>
+            <?php echo $permanente; ?>
+            
+            
+
+<div id="nome_squadra" class="modal fade" role="dialog">
+					  <div class="modal-dialog">
+					
+					    <!-- Modal content-->
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal">&times;</button>
+					        <h4 class="modal-title">Cambia nome squadra</h4>
+					      </div>
+					      <div class="modal-body">
+					      
+					
+					        <form autocomplete="off" action="squadre/edit_nome.php?id=<?php echo $id; ?>" method="POST">
+							
+							
+					             <div class="form-group">
+										 <label for="descrizione"> Nome squadra </label> <font color="red">*</font>
+					                <input type="text" name="nome" class="form-control" required="" value="<?php echo $nome_sq?>">
+							      </div>  
+					
+					
+					        <button  id="conferma" type="submit" class="btn btn-primary">Cambio nome</button>
+					            </form>
+					
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+					      </div>
+					    </div>
+					
+					  </div>
+					</div>
+					            
+            
+            
+            
+            
             <hr>
 				<h2>Componenti squadra:</h2><br>
 				<?php
 				$check_capo=0; // non ci sono ma diventa 1 se ce ne sono già
-				$query="SELECT * FROM users.v_componenti_squadre WHERE id=".$id.";";
+				$query="SELECT * FROM users.v_componenti_squadre WHERE id=".$id." and data_end is null;";
 				//echo $query;
 				$result = pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
@@ -188,43 +228,66 @@ require('./check_evento.php');
             <!-- /.row -->
             <div class="row">
             <div class="col-md-6">
-            <h4>Cerca utenti esterni </h4> 
-            <?php            
-            	$query2="SELECT * FROM users.v_utenti_esterni v 
-            	WHERE NOT EXISTS
-					(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf) 
-					ORDER BY cognome";
-	         	$result2 = pg_query($conn, $query2);
-            	//echo $query2;
-            ?>
+            <h4>Cerca utenti esterni - <?php echo $descrizione_profilo_squadra; ?> </h4>
+			<?php    
+			if ($profilo_ok >3 and $profilo_ok < 8) {
+				echo "<i class=\"fas fa-user-slash fa-2x\"></i><br>L'utente con profilo ".$descrizione_profilo_squadra." non è abilitato all'utilizzo di utenti esterni";
+			} else {
+				//echo "cod_profilo:_squadra=".$cod_profilo_squadra."<br>";
+				//echo (int)substr($cod_profilo_squadra,-1,1);
+				//echo "<br>";
+				if ($cod_profilo_squadra == "com_PC") {
+					// vedo solo il Gruppo Genova
+					$query2="SELECT * FROM users.v_utenti_esterni v 
+					WHERE NOT EXISTS
+						(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf) 
+						AND id1=1
+						ORDER BY cognome";
+				} else if (substr($cod_profilo_squadra,0,2)=='uo' OR (int)substr($cod_profilo_squadra,-1,1)>1){
+					
+					$query2="SELECT * FROM users.v_utenti_esterni v 
+					WHERE NOT EXISTS
+						(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf)
+						and id1=".(int)substr($cod_profilo_squadra,-1)."
+						ORDER BY cognome";
+				}
+					$result2 = pg_query($conn, $query2);
+					//echo $query2;
+				?>
 						
-							<form action="./squadre/add_squadra.php?s=<?php echo $id;?>" method="POST">
+				<form action="./squadre/add_squadra.php?s=<?php echo $id;?>" method="POST">
+					
+				 <div class="form-group  ">
+				  <label for="cf">Utente esterno:</label> <font color="red">*</font>
+								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
+								<option  id="cf" name="cf" value="">Seleziona l'utente esterno</option>
+				<?php    
+				while($r2 = pg_fetch_assoc($result2)) { 
+					$valore=  $r2['cf']. ";".$r2['nome'];            
+				?>
 							
-			             <div class="form-group  ">
-			              <label for="cf">Utente esterno:</label> <font color="red">*</font>
-			                            <select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
-			                            <option  id="cf" name="cf" value="">Seleziona l'utente esterno</option>
-			            <?php    
-			            while($r2 = pg_fetch_assoc($result2)) { 
-			                $valore=  $r2['cf']. ";".$r2['nome'];            
-			            ?>
-			                        
-			                    <option id="cf" name="cf" value="<?php echo $r2['cf'];?>" ><?php echo $r2['cognome'].' '.$r2['nome'].' ('.$r2['livello1'].')';?></option>
-			             <?php } ?>
-			
-			             </select>            
-			             </div>
-			
-							<button  type="submit" class="btn btn-primary">Aggiungi a squadra</button>
+						<option id="cf" name="cf" value="<?php echo $r2['cf'];?>" ><?php echo $r2['cognome'].' '.$r2['nome'].' ('.$r2['livello1'].')';?></option>
+				 <?php } ?>
 
-							</form>
+				 </select>            
+				 </div>
+
+					<button  type="submit" class="btn btn-primary"><i class="fas fa-plus"></i>
+					Aggiungi utente esterno selezionato a squadra</button>
+
+				</form>
+			<?php } ?>
               </div>
 				<div class="col-md-6">
 					<h4>Cerca dipendenti comunali </h4> 
-            <?php            
-            	$query2="SELECT * FROM varie.v_dipendenti v 
+					
+            <?php 
+			if ($profilo_ok >=8) {
+				echo "<i class=\"fas fa-user-slash fa-2x\"></i><br>L'utente con profilo ".$descrizione_profilo_squadra." non è abilitato all'utilizzo dei dipendenti comunali";
+			} else {
+            	$query2="SELECT matricola, cognome, nome, settore,ufficio FROM varie.v_dipendenti v 
             	WHERE NOT EXISTS
-					(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.matricola) 
+					(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.matricola and data_end is null) 
 					ORDER BY cognome";
 	         	$result2 = pg_query($conn, $query2);
             	//echo $query2;
@@ -237,7 +300,7 @@ require('./check_evento.php');
 			                            <option  id="cf" name="cf" value="">Seleziona il dipendente</option>
 			            <?php    
 			            while($r2 = pg_fetch_assoc($result2)) { 
-			                $valore=  $r2['cf']. ";".$r2['nome'];            
+			                //$valore=  $r2['cf']. ";".$r2['nome'];            
 			            ?>
 			                        
 			                    <option id="cf" name="cf" value="<?php echo $r2['matricola'];?>" ><?php echo $r2['cognome'].' '.$r2['nome'].' ('.$r2['settore'].' - '.$r2['ufficio'].' )';?></option>
@@ -246,9 +309,11 @@ require('./check_evento.php');
 			             </select>            
 			             </div>
 			
-							<button  type="submit" class="btn btn-primary">Aggiungi a squadra</button>
+							<button  type="submit" class="btn btn-primary"><i class="fas fa-plus"></i>
+							Aggiungi dipendente selezionato a squadra</button>
 
-							</form>		
+							</form>
+				<?php } ?>							
 				</div>
             
             </div>
@@ -256,7 +321,7 @@ require('./check_evento.php');
 			<hr>
 			<h2>Aggiungi mail</h2>
 			<div class="row">
-				<h4>Aggiungi nuova mail</h4>
+				<h4>Aggiungi nuova mail a squadra</h4>
 			<form action="incarichi_interni/import_mail.php?s=<?php echo $id;?>" method="POST">
             <div class="col-md-12"> 
                 <div class="form-group">
@@ -267,7 +332,8 @@ require('./check_evento.php');
             </div>
 
 			<div class="col-md-12"> 
-				<button  type="submit" class="btn btn-primary">Aggiungi mail</button>
+				<button  type="submit" class="btn btn-primary">
+				<i class="fas fa-at"></i>Aggiungi mail</button>
 			</div>
 			</form>
 

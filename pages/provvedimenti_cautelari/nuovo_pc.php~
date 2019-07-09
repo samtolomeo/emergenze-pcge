@@ -285,10 +285,10 @@ while($r_ce = pg_fetch_assoc($result_ce)) {
 
 
 
-$query= "INSERT INTO segnalazioni.t_provvedimenti_cautelari ( id, descrizione, id_profilo, id_squadra, id_tipo, id_evento";
+$query= "INSERT INTO segnalazioni.t_provvedimenti_cautelari ( id, descrizione, id_profilo, id_uo, id_tipo, id_evento";
 
 //values
-$query=$query.") VALUES (".$id_provvedimento.", '".$descrizione."', '".$profilo_sistema."', ". $uo. ", ". $tipo_pc. ", ". $id_evento. "";
+$query=$query.") VALUES (".$id_provvedimento.", '".$descrizione."', '".$profilo_ok."', '". $uo. "', ". $tipo_pc. ", ". $id_evento. "";
 
 $query=$query.");";
 

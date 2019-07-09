@@ -12,6 +12,11 @@ $nome= str_replace("'", "''", $_POST["nome"]);
 $afferenza=$_POST["afferenza"];
 $evento=$_POST["evento"];
 
+if($_POST["permanente"]=='on') {
+	$evento_ok= NULL;
+} else {
+	$evento_ok=$evento;
+} 
 
 $query_max= "SELECT max(id) FROM users.t_squadre;";
 $result_max = pg_query($conn, $query_max);
@@ -55,6 +60,21 @@ $result=pg_query($conn, $query);
 
 
 echo "<br>";
+
+echo $_POST["permanente"];
+
+
+// check if checkbox for permanent team is selected
+if($_POST["permanente"]=='on') {
+	
+	$query= "INSERT INTO users.t_squadre_permanenti( nome, cod_afferenza";
+$query=$query.") VALUES ('".$nome."', '".$afferenza."' ";
+$query=$query.");";
+echo $query;
+//exit;
+$result=pg_query($conn, $query);
+	
+}
 
 
 $query= "INSERT INTO users.t_storico_squadre(id_squadra, log_aggiornamento";

@@ -15,12 +15,14 @@
 session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+$cf=strtoupper($_POST['CF']);
+
 
 // controllo CF
 $query_cf= "SELECT cf FROM users.utenti_esterni;";
 $result_cf = pg_query($conn, $query_cf);
 while($r_cf = pg_fetch_assoc($result_cf)) {
-    if("'".$r_cf['cf']."'"== "'".$_POST['CF']."'") {
+    if("'".$r_cf['cf']."'"== "'".$cf."'") {
         echo "Codice Fiscale già esistente. <br><br>";
         echo "<a href=\"add_volontario.php\"> Torna indietro </a>";
         exit;
@@ -45,7 +47,15 @@ $query = "INSERT INTO users. utenti_esterni(cf,
 if ($_POST['indirizzo']!=null){
     $query=$query.",indirizzo";
 }
-
+if ($_POST['UO_I']!=null){
+    $query=$query.",id1";
+}
+if ($_POST['UO_II']!=null){
+    $query=$query.",id2";
+}
+if ($_POST['UO_III']!=null){
+    $query=$query.",id3";
+}
 if ($_POST['CAP']!=null){
     $query=$query.",cap";
 }
@@ -61,10 +71,19 @@ if ($_POST['numero_gg']!=null){
     $query=$query.",numero_gg";
 }
 
-$query=$query.") VALUES ('".$_POST['CF']."' ,'".$_POST['cognome']."' ,'".$_POST['nome']."' ,'".$_POST['naz']."' ,'".$_POST['yyyy']."-".$_POST['mm']."-".$_POST['dd']."' ,'".$_POST['comune']."', '".$_POST['telefono1']."','".$_POST['mail']."'";
+$query=$query.") VALUES ('".$cf."' ,'".$_POST['cognome']."' ,'".$_POST['nome']."' ,'".$_POST['naz']."' ,'".$_POST['yyyy']."-".$_POST['mm']."-".$_POST['dd']."' ,'".$_POST['comune']."', '".$_POST['telefono1']."','".$_POST['mail']."'";
 
 if ($_POST['indirizzo']!=null){
     $query=$query.",'".$_POST['indirizzo']."'";
+}
+if ($_POST['UO_I']!=null){
+    $query=$query.",".$_POST['UO_I']."";
+}
+if ($_POST['UO_II']!=null){
+    $query=$query.",".substr($_POST['UO_II'],-1)."";
+}
+if ($_POST['UO_III']!=null){
+    $query=$query.",".substr($_POST['UO_III'],-1)."";
 }
 
 if ($_POST['CAP']!=null){
@@ -85,7 +104,7 @@ $query=$query.");";
 
 
 echo $query;
-#exit;
+//exit;
 
 $result = pg_query($conn, $query);
 
