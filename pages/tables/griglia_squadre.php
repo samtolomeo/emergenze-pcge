@@ -20,7 +20,7 @@ if(!$conn) {
 	$query="SELECT id,nome,stato,id_stato,num_componenti,componenti From \"users\".\"v_squadre\" where profilo='".$profilo."'::text ".$filter." ORDER BY  \"id_stato\", \"nome\" ;";
    //echo $query;
 	$result = pg_query($conn, $query);
-	#echo $query;
+	//echo $query;
 	#exit;
 	$rows = array();
 	while($r = pg_fetch_assoc($result)) {

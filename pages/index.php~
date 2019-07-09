@@ -120,8 +120,60 @@ require('./check_evento.php');
                                 <div class="col-lg-12">
                                     <div >
                                     
+<table  id="segnalazioni_limbo" class="table table-condensed" style="word-break:break-all; word-wrap:break-word;" data-toggle="table" data-url="./tables/griglia_segnalazioni_limbo.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+			
 
-<table  id="segnalazioni"  style="vertical-align: middle;" data-toggle="table" data-url="./tables/griglia_segnalazioni_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+        
+        
+<thead>
+
+ 	<tr>
+            <!--th data-field="state" data-checkbox="true"></th-->
+            <!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th-->
+			<th data-field="id" data-sortable="false" data-formatter="nameFormatterEditL" data-visible="true" ></th>
+            <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
+            <th style="word-break:break-all; word-wrap:break-word;" data-field="criticita" data-sortable="true"   data-visible="true">Tipo criticità</th>
+            <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
+            <!--th style="word-break:break-all; word-wrap:break-word;" data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo evento</th-->
+            <th style="word-break:break-all; word-wrap:break-word;" data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
+            <th style="word-break:break-all; word-wrap:break-word;" data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
+            <!--th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
+                        
+
+    </tr>
+</thead>
+<script>
+
+
+ 
+    
+ function nameFormatterEditL(value) {
+        
+		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+ 
+    }
+
+  function nameFormatterRischio(value) {
+        //return '<i class="fas fa-'+ value +'"></i>' ;
+        
+        if (value=='t'){
+        		return '<i class="fas fa-exclamation-triangle" style="color:#ff0000"></i>';
+        } else if (value=='f') {
+        	   return '<i class="fas fa-check" style="color:#5cb85c"></i>';
+        }
+        else {
+        		return '<i class="fas fa-question" style="color:#505050"></i>';
+        }
+    }
+
+
+</script>
+
+</table>
+
+<hr>
+
+<table  id="segnalazioni" class="table table-condensed" style="vertical-align: middle;" data-toggle="table" data-url="./tables/griglia_segnalazioni_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 			
 
         
@@ -155,14 +207,14 @@ require('./check_evento.php');
         } else if (value=='f') {
         	   return '<i class="fas title="chiusa" fa-stop"></i>';
         } else {
-        	   return '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';;
+        	   return '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
         }
 
     }
 
  function nameFormatterIncarichi(value) {
         if (value=='t'){
-        		return '<div style="text-align: center;"><i class="fas fa-circle" title="incarichi in corso" style="color:#fff426"></i></div>';
+        		return '<div style="text-align: center;"><i class="fas fa-circle" title="incarichi in corso" style="color:#f2d921"></i></div>';
         } else if (value=='f') {
         	   return '<div style="text-align: center;"><i class="fas fa-circle" title="nessun incarico in corso" style="color:#ff0000"></i></div>';
         }
@@ -218,18 +270,12 @@ function nameFormatterMappa1(value, row) {
                         <div class="panel-heading">
                             <i class="fa fa-map-marked-alt fa-fw"></i> Mappa segnalazioni e presidi in corso
                             <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Altro
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="elenco_segnalazioni.php">Elenco segnalazioni</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="mappa_segnalazioni.php">Ingrandisci mappa</a>
-                                        </li>
-                                    </ul>
+                            <div class="btn-group">
+                            <a class="btn btn-default btn-xs" href="mappa_segnalazioni.php">
+                            <i class="fas fa-expand-arrows-alt"></i> Ingrandisci mappa</a>
+                            <a class="btn btn-default btn-xs" href="elenco_segnalazioni.php">
+                            <i class="fas fa-list"></i>Elenco segnalazioni</a>   
+                                    
                                 </div>
                             </div>
                         </div>
@@ -242,7 +288,7 @@ function nameFormatterMappa1(value, row) {
 		<div id="presidi_mobili" >			
 		<div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fas fa-ambulance"></i> Elenco presidi mobili
+                            <i class="fas fa-ambulance"></i> Elenco presidi mobili in corso
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -251,7 +297,7 @@ function nameFormatterMappa1(value, row) {
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li class="divider"></li>
-                                        <li><a href="elenco_ssopralluohi mobili.php">Vai all'elenco dei presidi mobili</a>
+                                        <li><a href="elenco_ssopralluohi mobili.php">Vai all'elenco di tutti i presidi mobili</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -263,7 +309,7 @@ function nameFormatterMappa1(value, row) {
                                 <div class="col-lg-12">
                                     <div class="table-responsive">			
 					
-							<table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi_mobili.php?f=<?php echo $getfiltri;?>"  data-show-export="true" data-search="false" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+							<table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi_mobili.php?f=prima_pagina"  data-show-export="true" data-search="false" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 
 					<thead>
 						<tr>
@@ -312,104 +358,7 @@ function nameFormatterMappa1(value, row) {
                     <!-- /.panel -->					
 					</div>
 					
-					
-					
-					
-                    <div id="segn_limbo_table" >                    
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-exclamation fa-fw" style="color:red"></i> Sintesi segnalazioni ancora da elaborare
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li class="divider"></li>
-                                        <li><a href="elenco_segnalazioni.php">Vai all'elenco completo delle segnalazioni</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="table-responsive">
-                                    
 
-<table  id="segnalazioni_limbo" class="table-hover" style="word-break:break-all; word-wrap:break-word;" data-toggle="table" data-url="./tables/griglia_segnalazioni_limbo.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
-			
-
-        
-        
-<thead>
-
- 	<tr>
-            <!--th data-field="state" data-checkbox="true"></th-->
-            <!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th--> 
-            <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="criticita" data-sortable="true"   data-visible="true">Tipo criticità</th>
-            <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
-            <!--th style="word-break:break-all; word-wrap:break-word;" data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo evento</th-->
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
-            <th style="word-break:break-all; word-wrap:break-word;" data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
-            <!--th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
-            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEditL" data-visible="true" >Dettagli</th>            
-
-    </tr>
-</thead>
-<script>
-
-
- 
-    
- function nameFormatterEditL(value) {
-        
-		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
- 
-    }
-
-  function nameFormatterRischio(value) {
-        //return '<i class="fas fa-'+ value +'"></i>' ;
-        
-        if (value=='t'){
-        		return '<i class="fas fa-exclamation-triangle" style="color:#ff0000"></i>';
-        } else if (value=='f') {
-        	   return '<i class="fas fa-check" style="color:#5cb85c"></i>';
-        }
-        else {
-        		return '<i class="fas fa-question" style="color:#505050"></i>';
-        }
-    }
-
-
-</script>
-
-</table>
-                                    
-                                    
-                                    </div>
-                                    <!-- /.table-responsive -->
-                                </div>
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>    
-                    
-                    
-                    
-                 
-                    
-                    
-                    
-                    
-                    
                 </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-4">

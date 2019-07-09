@@ -33,6 +33,10 @@ while($r_or = pg_fetch_assoc($result_or)) {
 	$id_oggetto_rischio=$r_or['id_oggetto'];
 }
 
+
+						
+
+
 //echo $query_or;
 // cerco i dettagli dell'oggetto a rischio
 $query_or2="SELECT * from segnalazioni.tipo_oggetti_rischio where id= ".$id_tipo_oggetto_rischio.";";
@@ -47,6 +51,12 @@ if($check_or==1) {
 	echo "<h4> <i class=\"fas fa-exclamation-triangle\"></i> Oggetto a rischio </h4>";
 	echo "<b>Tipo oggetto a rischio</b>:".$descrizione_oggetto_rischio;
 	echo "<br><b>Id oggetto a rischio </b>:".$id_oggetto_rischio;
+	
+	if ($check_spostamento==1 and $check_operatore==1 and $check_or==1) {
+	echo '<br><br><a href="segnalazioni/remove_e_r.php?id='.$id.'"&lav='.$id_lavorazione.' class="btn btn-danger">
+	<i class="fas fa-times"></i> Rimuovi oggetto a rischio</a>';
+}
+	
 } else if ($check_or==0 ) {
 	echo "<h4> <i class=\"fas fa-exclamation-triangle\"></i> Nessun oggetto a rischio segnalato.</h4>";
 	if ($check_lav>=0 and $check_operatore == 1){
@@ -82,6 +92,28 @@ if($check_or==1) {
 	} // check_lav
 	}
 }
+
+
+//oggetti a rischio passati
+echo "<br><lu>";
+$query_or="SELECT * FROM segnalazioni.join_oggetto_rischio WHERE  id_segnalazione=".$id." AND attivo='f';";
+//echo $query_or;
+$result_or=pg_query($conn, $query_or);
+while($r_or = pg_fetch_assoc($result_or)) {
+	echo "<li><b>Oggetto a rischio definito in passato e poi rimosso dal sistema</b>:";
+	$query_tipo= "SELECT descrizione FROM segnalazioni.tipo_oggetti_rischio 
+	WHERE id=".$r_or['id_tipo_oggetto'].";";
+	$result_tipo=pg_query($conn, $query_tipo);
+	while($r_tipo = pg_fetch_assoc($result_tipo)) {
+		echo $r_tipo['descrizione'];
+	}
+	echo "(id=".$r_or['id_oggetto'].")</li>";
+}
+echo "</lu>";
+
+
+
+
 // eventualmente da tirare fuori altri dettagli
 if ($descrizione_oggetto_rischio=='Civici'){
 
@@ -162,7 +194,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 						</div>
 
 <?php
-				if ($check_lav==1){
+				if ($check_lav>=0 and $check_operatore == 1){
 					
 					$check_pc=0;
 					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' and tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
@@ -310,7 +342,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 						  </div>
 						</div>
 				<?php		
-				if ($check_lav==1){
+				if ($check_lav>=0 and $check_operatore == 1){
 					
 					$check_pc=0;
 					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' AND tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
@@ -382,7 +414,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 } else if ($descrizione_oggetto_rischio=='Sottopassi'){
 	
 				
-				if ($check_lav==1){
+				if ($check_lav>=0 and $check_operatore == 1){
 					
 					$check_pc=0;
 					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' AND tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
@@ -636,3 +668,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 
   </div>
 </div>
+
+<?php
+
+?>

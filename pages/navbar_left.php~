@@ -24,9 +24,6 @@
 							<li class="nav-item active">
 								<a class="nav-link" href="#segn_sintesi"><i class="fas fa-list"></i> Lista segnalazioni</a>
 							</li>
-							<li class="nav-item active">
-								<a class="nav-link" href="#mappa_segnalazioni"><i class="fas fa-map-marked-alt"></i> Mappa segnalazioni</a>
-							</li>
 						<?php
 						} else {
 						?>
@@ -49,7 +46,11 @@
                                 </li>
                                  <li>
                                     <a href="dettagli_evento_c.php"><i class="fas fa-info-circle"></i> Dettagli eventi in fase di chiusura</a>
-                                </li>
+                                </li> 
+                                <li>
+                                   <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i>Assegna turni sala emergenze</a>
+
+                                </li> 
                                 <li>
                                     <a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
@@ -71,9 +72,6 @@
                             <ul class="nav nav-second-level">
                             		<li>
                                     <a href="nuova_segnalazione.php">Nuova segnalazione</a>
-                                </li>
-                                <li>
-                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa delle segnalazioni</a>
                                 </li>
                                 <li>
                                     <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 

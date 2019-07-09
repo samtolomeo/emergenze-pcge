@@ -248,7 +248,7 @@
             
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <hr>
-            <h4>Resp. Monitoraggio Meteo
+            <h4>Operatore Monitoraggio Meteo
             
             <?php
 				if ($profilo_sistema <= 3){
@@ -499,7 +499,7 @@
             
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <hr>
-            <h4>Resp. Presidi territoriali
+            <h4>Operatore Presidi Territoriali
             
             <?php
 				if ($profilo_sistema <= 3){
@@ -960,7 +960,33 @@
 			if ($check_reperibile==0){
 				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
 			}
+
+			echo "---.---.---<br>";
+			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
+			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "where data_start > now();";
+			//$query = $query. " and id1=".$r0["id1"]."";
+			$query = $query. " order by cognome;";
 			
+			//echo $query;
+			
+			$check_reperibile=0;
+			$result = pg_query($conn, $query);
+			//echo "<ul>";
+			while($r = pg_fetch_assoc($result)) { 
+				$check_reperibile=1;
+				//echo "<li>";
+				echo "- ";
+				echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				
+				
+				//echo "</li>";
+			}
+			
+			/*if ($check_reperibile==0){
+				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
+			}*/
 			//echo "</ul>";
             
          ?>             

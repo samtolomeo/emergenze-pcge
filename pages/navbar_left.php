@@ -76,9 +76,7 @@
                             		<li>
                                     <a href="nuova_segnalazione.php">Nuova segnalazione</a>
                                 </li>
-                                <li>
-                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa delle segnalazioni</a>
-                                </li>
+                               
                                 <li>
                                     <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
                                     <br><small> (<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small>
@@ -107,9 +105,7 @@
                                 <li>
                                     <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili</a>
                                 </li>
-                                <li>
-                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa presidi</a>
-                                </li>
+                                
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -128,9 +124,7 @@
 								<li>
                                     <a href="elenco_pc.php">Elenco provvedimenti cautelari</a>
                                 </li>
-                                <!--li>
-                                    <a href="mappa_segnalazioni.php">Mappa sopralluoghi</a>
-                                </li-->
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

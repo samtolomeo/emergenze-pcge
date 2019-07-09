@@ -185,7 +185,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php
 						
 						$check_spostamento=1; // se 1 posso spostare in caso contrario diventa 0
-						// diventa 0 se:m 
+						// diventa 0 se: 
 						// ci sono elementi a rischio / provvedimenti cautelari associati
 						// ci sono altre segnalazioni nelle vicinanze
 						// altre ev. da aggiungere
@@ -292,12 +292,15 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						}
 						
 						$queryi="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE id_lavorazione=".$id_lavorazione. " and (id_stato_provvedimenti_cautelari = 1);";
-						//echo $query;
+						echo $queryi;
 						$resulti=pg_query($conn, $queryi);
 						while($ri = pg_fetch_assoc($resulti)) {
 							$id_provvedimento=['id'];
 							$check_provvedimenti=-1;
-							$check_chiusura=$check_chiusura-1;
+							echo $ri['id_stato_provvedimenti_cautelari'];
+							if($ri['id_stato_provvedimenti_cautelari'] < 4){
+								$check_chiusura=$check_chiusura-1;
+							}
 							$check_spostamento=0;
 						}
 						
@@ -567,6 +570,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 											if($r_provvedimenti['note_ente']!=''){
 												echo " (Note chiusura:" .$r_provvedimenti['note_ente']. ")";
 											}
+											if($r_provvedimenti['rimosso']=='t'){
+												echo ' - <i class="fa fa-times" style="color:red"></i>
+												Provvedimento rimosso con successiva ordinanza sindacale';
+											}
 											echo " - " .$r_provvedimenti['descrizione_uo'];
 											echo " - <a class=\"btn btn-info\" href=\"dettagli_provvedimento_cautelare.php?id=".$r_provvedimenti['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 										}
@@ -736,7 +743,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 ORDER BY nome ";
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									//echo $query2;
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
@@ -793,7 +801,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 ORDER BY nome ";
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
@@ -862,9 +870,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 							<div class="form-group">
-								<label for="nome"> Pensi sia necessario inviarla a Manutenzioni/ LLPP?</label> <br>
-								<label class="radio-inline"><input type="radio" name="invio" value="man">Manutenzioni</label>
-								<label class="radio-inline"><input type="radio" name="invio" value="llpp">LLPP</label>
+								<label for="nome"> Pensi sia necessario inviarla automaticamente al sistema delle Manutenzioni?</label> <br>
+								<label class="radio-inline"><input type="radio" name="invio" value="man">Sì</label>
 								<label class="radio-inline"><input type="radio" name="invio" value="">No</label>
 							</div>
 
@@ -1207,6 +1214,16 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<hr>
 						<h4> <i class="fas fa-map-marked-alt"></i> Mappa 
 						<?php
+						//cerco se ci sono elementi a rischio:
+						$query_er='SELECT id_segnalazione FROM segnalazioni.join_oggetto_rischio 
+						WHERE id_segnalazione ='.$id.';';
+						$result_er=pg_query($conn, $query_er);
+						while($r_er = pg_fetch_assoc($result_er)) {
+							//$check_spostamento=0;
+							// questo per ora non è vero..
+						}
+						
+						
 						if ($check_spostamento==1 and $check_operatore==1) {
 								$zoom_plus=$zoom+1;
 								echo ' - <a href="sposta_segnalazione.php?id='.$id.'&lat='.$lat.'&lon='.$lon.'&z='.$zoom_plus.'" class="btn btn-info">

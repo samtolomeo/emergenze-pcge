@@ -214,7 +214,7 @@ require ('./note_ambiente.php');
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="dettagli_evento_c.php">
+                            <a href="#">
                                 <div>
                                 <?php 
                                 $len_c=count($eventi_attivi_c);	               
@@ -237,7 +237,18 @@ require ('./note_ambiente.php');
                                 <?php 
                                 for ($i=0;$i<$len_c;$i++){
                                 ?>
-                                   - Tipo <?php echo $tipo_eventi_c[$i][1];?><br>
+								<a href="#">
+                                - Tipo <?php echo $tipo_eventi_c[$i][1];?><br>
+                                </a>
+                                 <a href="dettagli_evento.php">
+                                   - Visualizza dettagli <br>
+                                 </a>
+                                  <a href="monitoraggio_meteo.php?id=<?php echo $tipo_eventi_c[$i][0];?>">
+                                   - Vai al monitoraggio meteo <br>
+                                 </a>
+                                 <a href="reportistica.php?id=<?php echo $tipo_eventi_c[$i][0];?>">
+                                   - Vai alla pagina dei report <br>
+                                 </a>
                                 <?php
                                 }
                                 ?>

@@ -20,6 +20,7 @@ while($r_or = pg_fetch_assoc($result_or)) {
 
 $query_or="SELECT * FROM segnalazioni.t_geometrie_provvedimenti_cautelari WHERE id_provvedimento=".$id_provvedimento.";";
 //echo $query_or;
+//echo "<br>";
 $result_or=pg_query($conn, $query_or);
 while($r_or = pg_fetch_assoc($result_or)) {
 	$check_or=1;
@@ -29,6 +30,8 @@ while($r_or = pg_fetch_assoc($result_or)) {
 		$id_tipo_oggetto_rischio=1;
 	} else if ($r_or['tipo_oggetto']=='geodb.sottopassi'){		
 		$id_tipo_oggetto_rischio=10;
+	} else if ($r_or['tipo_oggetto']=='geodb.v_vie_unite'){		
+		$id_tipo_oggetto_rischio=0;
 	}
 	$id_oggetto_rischio=$r_or['id_oggetto'];
 }
@@ -194,7 +197,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 						</div>
 
 <?php
-				if ($check_lav==1){
+				if ($check_lav>=0 and $check_operatore == 1){
 					
 					$check_pc=0;
 					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' and tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
@@ -204,7 +207,13 @@ if ($descrizione_oggetto_rischio=='Civici'){
 						$check_pc=1;
 						echo "Provvedimento cautelare già in corso o effettuato";
 						//echo $r_pc['id_stato_provvedimenti_cautelari'];
-						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1){
+						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1 && basename($_SERVER['PHP_SELF']) == 'dettagli_segnalazione.php'){
+							echo'<h5> Se la situazione fosse tornata normale, <b>in presenza di una nuova ordinanza sindacale</b>, 
+								è possibile rimuovere il provvedimento cautelare. <br><br>';
+								echo 'Prima di tutto è necessario  assegnare uno o più incarichi per ripristinare la situazione.';
+								echo '(far rientrare i residenti)';
+								echo '<br><br>Una volta completati gli incarichi è possibile rimuovere il Provvedimento dal sistema</h5>';
+								
 							echo '
 							<button type="button" class="btn btn-info"  data-toggle="modal" 
 							data-target="#new_incarico"><i class="fas fa-plus"></i>
@@ -342,7 +351,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 						  </div>
 						</div>
 				<?php		
-				if ($check_lav==1){
+				if ($check_lav>=0 and $check_operatore == 1){
 					
 					$check_pc=0;
 					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' AND tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
@@ -352,7 +361,13 @@ if ($descrizione_oggetto_rischio=='Civici'){
 						$check_pc=1;
 						echo "<br> <h4>Provvedimento cautelare già in corso o effettuato</h4>";
 						//echo $r_pc['id_stato_provvedimenti_cautelari'];
-						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1){
+						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1 && basename($_SERVER['PHP_SELF']) == 'dettagli_segnalazione.php'){
+							echo'<h5> Se la situazione fosse tornata normale, <b>in presenza di una nuova ordinanza sindacale</b>, 
+								è possibile rimuovere il provvedimento cautelare. <br><br>';
+								echo 'Prima di tutto è necessario  assegnare uno o più incarichi per ripristinare la situazione.';
+								echo '(far rientrare i residenti)';
+								echo '<br><br>Una volta completati gli incarichi è possibile rimuovere il Provvedimento dal sistema</h5>';
+							
 							echo '
 							<button type="button" class="btn btn-info"  data-toggle="modal" 
 							data-target="#new_incarico"><i class="fas fa-plus"></i>
@@ -414,7 +429,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 } else if ($descrizione_oggetto_rischio=='Sottopassi'){
 	
 				
-				if ($check_lav==1){
+				if ($check_lav>=0 and $check_operatore == 1){
 					
 					$check_pc=0;
 					$query_pc="SELECT * FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE rimosso ='f' AND tipo_oggetto='".$nome_tabella_oggetto_rischio."' and id_oggetto=".$id_oggetto_rischio.";";
@@ -424,7 +439,12 @@ if ($descrizione_oggetto_rischio=='Civici'){
 						$check_pc=1;
 						echo "Provvedimento cautelare già in corso o effettuato";
 						//echo $r_pc['id_stato_provvedimenti_cautelari'];
-						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1){
+						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1 && basename($_SERVER['PHP_SELF']) == 'dettagli_segnalazione.php'){
+							echo'<h5> Se la situazione fosse tornata normale, <b>in presenza di una nuova ordinanza sindacale</b>, 
+								è possibile rimuovere il provvedimento cautelare. <br><br>';
+								echo 'Prima di tutto è necessario  assegnare uno o più incarichi per ripristinare la situazione.';
+								echo '(riaprire il sottopasso)';
+								echo '<br><br>Una volta completati gli incarichi è possibile rimuovere il Provvedimento dal sistema</h5>';
 							echo '
 							<button type="button" class="btn btn-info"  data-toggle="modal" 
 							data-target="#new_incarico"><i class="fas fa-plus"></i>

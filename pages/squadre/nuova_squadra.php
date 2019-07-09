@@ -44,12 +44,15 @@ echo "Evento:".$evento. "<br>";
 
 
 
-
-$query= "INSERT INTO users.t_squadre( id, nome, id_evento, id_stato, cod_afferenza";
-
-//values
-$query=$query.") VALUES (".$id_squadra.", '".$nome."', ".$evento.", 2 , '".$afferenza."' ";
-
+if($_POST["permanente"]=='on') {
+	$query= "INSERT INTO users.t_squadre( id, nome, id_stato, cod_afferenza";
+	//values
+	$query=$query.") VALUES (".$id_squadra.", '".$nome."', 2 , '".$afferenza."' ";
+} else {
+	$query= "INSERT INTO users.t_squadre( id, nome, id_evento, id_stato, cod_afferenza";
+	//values
+	$query=$query.") VALUES (".$id_squadra.", '".$nome."', ".$evento.", 2 , '".$afferenza."' ";
+}
 $query=$query.");";
 
 

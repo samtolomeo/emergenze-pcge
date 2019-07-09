@@ -23,7 +23,7 @@ echo "Id_lav".$id_segnalazione_lav."<br>";
 
 
 $query_oggetto="UPDATE segnalazioni.join_oggetto_rischio SET
-attivo='f' WHERE id_segnalazione=".$id.";";
+attivo='f', aggiornamento=now() WHERE id_segnalazione=".$id." and attivo='t';";
 $result_oggetto = pg_query($conn, $query_oggetto);
 echo $query_oggetto;
 echo "<br>";	
