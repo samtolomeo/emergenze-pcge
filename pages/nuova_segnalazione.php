@@ -132,13 +132,14 @@ if ($profilo_sistema > 8){
 					<label class="radio-inline"><input type="radio" name="nverde" value="t">Sì</label>
 					<label class="radio-inline"><input type="radio" name="nverde"value="f" checked>Non specificato</label>
 				</div>
+				</div> 
 			<?php } ?>
 
 				
 
 				
 				
-				</div> 
+				
             <hr>
 				<div class="row">             
             <h4><i class="fa fa-play"></i> Evento:</h4>

@@ -17,6 +17,14 @@ session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 $cf=strtoupper($_POST['CF']);
 
+$nome= str_replace("'", "''", $_POST["nome"]);
+
+$cognome= str_replace("'", "''", $_POST["cognome"]);
+
+$indirizzo= str_replace("'", "''", $_POST["indirizzo"]);
+
+
+
 
 // controllo CF
 $query_cf= "SELECT cf FROM users.utenti_esterni;";
@@ -71,10 +79,10 @@ if ($_POST['numero_gg']!=null){
     $query=$query.",numero_gg";
 }
 
-$query=$query.") VALUES ('".$cf."' ,'".$_POST['cognome']."' ,'".$_POST['nome']."' ,'".$_POST['naz']."' ,'".$_POST['yyyy']."-".$_POST['mm']."-".$_POST['dd']."' ,'".$_POST['comune']."', '".$_POST['telefono1']."','".$_POST['mail']."'";
+$query=$query.") VALUES ('".$cf."' ,'".$cognome."' ,'".$nome."' ,'".$_POST['naz']."' ,'".$_POST['yyyy']."-".$_POST['mm']."-".$_POST['dd']."' ,'".$_POST['comune']."', '".$_POST['telefono1']."','".$_POST['mail']."'";
 
-if ($_POST['indirizzo']!=null){
-    $query=$query.",'".$_POST['indirizzo']."'";
+if ($indirizzo!=null){
+    $query=$query.",'".$indirizzo."'";
 }
 if ($_POST['UO_I']!=null){
     $query=$query.",".$_POST['UO_I']."";
