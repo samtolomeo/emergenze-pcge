@@ -240,14 +240,14 @@ require('./check_evento.php');
 					// vedo solo il Gruppo Genova
 					$query2="SELECT * FROM users.v_utenti_esterni v 
 					WHERE NOT EXISTS
-						(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf) 
+						(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf and data_end is null) 
 						AND id1=1
 						ORDER BY cognome";
 				} else if (substr($cod_profilo_squadra,0,2)=='uo' OR (int)substr($cod_profilo_squadra,-1,1)>1){
 					
 					$query2="SELECT * FROM users.v_utenti_esterni v 
 					WHERE NOT EXISTS
-						(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf)
+						(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf and data_end is null)
 						and id1=".(int)substr($cod_profilo_squadra,-1)."
 						ORDER BY cognome";
 				}
@@ -259,7 +259,7 @@ require('./check_evento.php');
 					
 				 <div class="form-group  ">
 				  <label for="cf">Utente esterno:</label> <font color="red">*</font>
-								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
+								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-dropup-auto="false" data-live-search="true" required="">
 								<option  id="cf" name="cf" value="">Seleziona l'utente esterno</option>
 				<?php    
 				while($r2 = pg_fetch_assoc($result2)) { 
@@ -296,7 +296,7 @@ require('./check_evento.php');
 							
 			             <div class="form-group  ">
 			              <label for="cf">Dipendente:</label> <font color="red">*</font>
-			                            <select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
+			                            <select name="cf" id="cf" class="selectpicker show-tick form-control" data-dropup-auto="false" data-live-search="true" required="">
 			                            <option  id="cf" name="cf" value="">Seleziona il dipendente</option>
 			            <?php    
 			            while($r2 = pg_fetch_assoc($result2)) { 

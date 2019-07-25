@@ -328,10 +328,11 @@ foreach ($headers as $name => $content)
    }
 	
 	//profili per le squadre
-	if ($profilo_sistema < 8){
+	if ($profilo_sistema < 8 and $profilo_ok!=''){
 		$profilo_squadre=$profilo_ok;
 	} else {
-		$profilo_squadre=$uo_inc;
+		//$profilo_squadre=$uo_inc;
+		$profilo_squadre=$periferico_inc;
 	}
 	$query2="SELECT * FROM varie.v_incarichi_mail WHERE profilo = '".$profilo_squadre."'::text ORDER BY descrizione;";
 	//echo $query2;

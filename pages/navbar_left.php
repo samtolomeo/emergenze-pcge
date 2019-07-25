@@ -61,7 +61,7 @@
 								<a href="rete_idro.php"><i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
 								</li>
 								<li>
-                                    <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>s
+                                    <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>
                                 </li>
 								
                             </ul>
@@ -188,7 +188,7 @@
                                     <a href="elenco_richieste.php"> 
                                     <i class="fas fa-list-ul">
                                     </i> Elenco richieste num verde
-                                     <br> <small>Evento in corso</small></a>
+                                     <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
                                 </li>
 
                                 <li>

@@ -743,12 +743,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT cf, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									
 									//echo $query2;
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
-									  <label for="id_civico">Seleziona squadra:</label> <font color="red">*</font>
+									  <label for="id_civico">Seleziona squadra <?php //echo $profilo_squadre;?>:</label> <font color="red">*</font>
 										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
 										<option  id="uo" name="uo" value="">Seleziona la squadra</option>
 										<?php    

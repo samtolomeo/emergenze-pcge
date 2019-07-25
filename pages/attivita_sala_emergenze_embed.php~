@@ -6,7 +6,7 @@
 <h3>Attività sala emergenze</h3>
 </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <hr><h4>Coordinamento sala
+            <hr><h4>Coordinatore di sala
             <?php
 				if ($profilo_sistema <= 3){
 				?>	
@@ -995,5 +995,249 @@
             </div>
             
             
-            <!-- /.row -->            
             <hr>
+
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+             <hr>
+            <h4>Operatore Gestione Volontari
+
+<?php
+				if ($profilo_sistema <= 3){
+				?>	
+				<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#new_oV">
+				<i class="fas fa-plus"></i> Aggiungi </button>
+				</h4>
+				
+				<!-- Modal reperibilità-->
+				<div id="new_oV" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+				
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        <h4 class="modal-title">Inserire operatore Gestione Volontari P.C.</h4>
+				      </div>
+				      <div class="modal-body">
+      
+
+        <form autocomplete="off" action="report/nuovo_oV.php" method="POST">
+		
+		<?php
+					
+			$query2="SELECT cf, cognome, nome, livello1 FROM users.v_utenti_esterni v WHERE id1=1
+			ORDER BY cognome";
+			//echo $query2;
+			$result2 = pg_query($conn, $query2);
+			$arr2 = pg_fetch_all($result2);
+			//echo $query2;
+			//$result2 = pg_query($conn, $query2);
+		?>
+		
+			 <div class="form-group  ">
+				  <label for="cf">Seleziona operatore tra i volontari (Gruppo Genova):</label> <font color="red">*</font>
+								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
+								<option value="">Seleziona volontario </option>
+				<?php
+				foreach ($arr2 as $result2){
+					echo '<option value="'.$result2["cf"].'">'.$result2["cognome"].' '.$result2["nome"].'('.$result2["livello1"].')</option>';
+				}
+				?>
+				 </select>            
+				 </div>
+			
+            
+   
+           
+				<div class="form-group">
+						<label for="data_inizio" >Data inizio (AAAA-MM-GG) </label>                 
+						<input type="text" class="form-control" name="data_inizio" id="js-date12" required>
+						<!--div class="input-group-addon" id="js-date" >
+							<span class="glyphicon glyphicon-th"></span>
+						</div-->
+					</div> 
+					
+					<div class="form-group"-->
+
+                <label for="ora_inizio"> Ora inizio:</label> <font color="red">*</font>
+
+              <div class="form-row">
+   
+   
+    				<div class="form-group col-md-6">
+                  <select class="form-control"  name="hh_start" required>
+                  <option name="hh_start" value="" > Ora </option>
+                    <?php 
+                      $start_date = 0;
+                      $end_date   = 24;
+                      for( $j=$start_date; $j<=$end_date; $j++ ) {
+                      	if($j<10) {
+                        	echo '<option value="0'.$j.'">0'.$j.'</option>';
+                        } else {
+                        	echo '<option value="'.$j.'">'.$j.'</option>';
+                        }
+                      }
+                    ?>
+                  </select>
+                  </div>	
+                  
+      				<div class="form-group col-md-6">
+                  <select class="form-control"  name="mm_start" required>
+                  <option name="mm_start" value="00" > 00 </option>
+                    <?php 
+                      $start_date = 0;
+                      $end_date   = 59;
+                      $incremento = 15; 
+                      for( $j=$start_date; $j<=$end_date; $j+=$incremento) {
+                      	if($j<10) {
+                        	echo '<option value="0'.$j.'">0'.$j.'</option>';
+                        } else {
+                        	echo '<option value="'.$j.'">'.$j.'</option>';
+                        }
+                      }
+                    ?>
+                  </select>
+                  </div>                
+                  
+                </div>  
+                </div>
+					
+					
+					<div class="form-group">
+						<label for="data_fine" >Data fine (AAAA-MM-GG) </label>                 
+						<input type="text" class="form-control" name="data_fine" id="js-date13" required>
+						<!--div class="input-group-addon">
+							<span class="glyphicon glyphicon-th"></span>
+						</div-->
+					</div> 
+					
+					<div class="form-group"-->
+
+                <label for="ora_inizio"> Ora fine:</label> <font color="red">*</font>
+
+              <div class="form-row">
+   
+   
+    				<div class="form-group col-md-6">
+                  <select class="form-control"  name="hh_end" required>
+                  <option name="hh_end" value="" > Ora </option>
+                    <?php 
+                      $start_date = 0;
+                      $end_date   = 24;
+                      for( $j=$start_date; $j<=$end_date; $j++ ) {
+                      	if($j<10) {
+                        	echo '<option value="0'.$j.'">0'.$j.'</option>';
+                        } else {
+                        	echo '<option value="'.$j.'">'.$j.'</option>';
+                        }
+                      }
+                    ?>
+                  </select>
+                  </div>	
+                  
+      				<div class="form-group col-md-6">
+                  <select class="form-control"  name="mm_end" required>
+                  <option name="mm_end" value="00" > 00 </option>
+                    <?php 
+                      $start_date = 59;
+                      $end_date   = 59;
+                      $incremento = 15;
+                      for( $j=$start_date; $j<=$end_date; $j+=$incremento ) {
+                      	if($j<10) {
+                        	echo '<option value="0'.$j.'">0'.$j.'</option>';
+                        } else {
+                        	echo '<option value="'.$j.'">'.$j.'</option>';
+                        }
+                      }
+                    ?>
+                  </select>
+                  </div>                
+                  
+                </div>  
+                </div>
+		           
+                  
+
+
+
+        <button  id="conferma" type="submit" class="btn btn-primary">Inserisci operatore gestione volontari</button>
+            </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+				
+				
+				
+				<?php
+				}  else {
+					echo "</h4>";
+				}//else if($profilo_sistema <3) {
+				
+				
+				
+				
+				
+			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
+			$query = $query. "JOIN varie.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "where data_start < now() and data_end > now() ";
+			//$query = $query. " and id1=".$r0["id1"]."";
+			$query = $query. " order by cognome;";
+			
+			//echo $query;
+			
+			$check_reperibile=0;
+			$result = pg_query($conn, $query);
+			//echo "<ul>";
+			while($r = pg_fetch_assoc($result)) { 
+				$check_reperibile=1;
+				//echo "<li>";
+				echo "- ";
+				echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				
+				
+				//echo "</li>";
+			}
+			
+			if ($check_reperibile==0){
+				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
+			}
+
+			echo "---.---.---<br>";
+			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
+			$query = $query. "JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "where data_start > now();";
+			//$query = $query. " and id1=".$r0["id1"]."";
+			$query = $query. " order by cognome;";
+			
+			//echo $query;
+			
+			$check_reperibile=0;
+			$result = pg_query($conn, $query);
+			//echo "<ul>";
+			while($r = pg_fetch_assoc($result)) { 
+				$check_reperibile=1;
+				//echo "<li>";
+				echo "- ";
+				echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				
+				
+				//echo "</li>";
+			}
+			
+			/*if ($check_reperibile==0){
+				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
+			}*/
+			//echo "</ul>";
+            
+         ?>             
+            
+            <hr>
+            </div>

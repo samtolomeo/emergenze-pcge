@@ -537,6 +537,21 @@ $(document).ready(function() {
         todayHighlight: true
     });  
     
+    
+    $('#js-date12').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });
+    $('#js-date13').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });
+    
+    
     $('#js-date100').datepicker({
         format: "yyyy-mm-dd",
         clearBtn: true,

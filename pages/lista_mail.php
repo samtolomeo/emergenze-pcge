@@ -56,7 +56,7 @@ if ($profilo_sistema <= 4.){
             
             <?php
 				if ($check_operatore == 0){
-					echo '<h4><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a modificare le mail di contatto.</h4><hr> ';
+					echo '<h4><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a modificare le mail di contatto. Per segnalare la modifica di alcuni dati si prega di inviare comunicazioni all\'<a href="mailto:adminemergenzepc@comune.genova.it">amministratore di sistema</a></h4><hr> ';
 				}
 				?>
             <br>
@@ -71,7 +71,7 @@ if ($profilo_sistema <= 4.){
             </select>
         </div>
         
-        <table  id="t_mail" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_mail.php" data-height="900"  data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="t_mail" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_mail.php" data-height="900"  data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="false" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
         
         
 <thead>

@@ -24,6 +24,9 @@
 							<li class="nav-item active">
 								<a class="nav-link" href="#segn_sintesi"><i class="fas fa-list"></i> Lista segnalazioni</a>
 							</li>
+							<li class="nav-item active">
+								<a class="nav-link" href="#mappa_segnalazioni"><i class="fas fa-map-marked-alt"></i> Mappa segnalazioni</a>
+							</li>
 						<?php
 						} else {
 						?>
@@ -73,6 +76,7 @@
                             		<li>
                                     <a href="nuova_segnalazione.php">Nuova segnalazione</a>
                                 </li>
+                               
                                 <li>
                                     <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
                                     <br><small> (<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small>
@@ -101,9 +105,7 @@
                                 <li>
                                     <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili</a>
                                 </li>
-                                <li>
-                                    <a href="mappa_segnalazioni.php#12/44.441266/8.912661">Mappa presidi</a>
-                                </li>
+                                
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -122,9 +124,7 @@
 								<li>
                                     <a href="elenco_pc.php">Elenco provvedimenti cautelari</a>
                                 </li>
-                                <!--li>
-                                    <a href="mappa_segnalazioni.php">Mappa sopralluoghi</a>
-                                </li-->
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -188,7 +188,7 @@
                                     <a href="elenco_richieste.php"> 
                                     <i class="fas fa-list-ul">
                                     </i> Elenco richieste num verde
-                                     <br> <small>Evento in corso</small></a>
+                                     <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
                                 </li>
 
                                 <li>
