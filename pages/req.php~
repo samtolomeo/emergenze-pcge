@@ -45,6 +45,8 @@ function integerToRoman($integer)
 <!-- REFRESH automatico pagine -->
      <!--meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'" content="IE=edge"-->
 
+<meta http-equiv="Cache-control" content="public">
+
 <link rel="icon" href="favicon.ico" type="image/x-icon"/>
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 
@@ -77,8 +79,23 @@ function integerToRoman($integer)
     
     <style type="text/css">
     #wrapper { 
-    		style="padding-top:50px;
+    	/*padding-top:50px;*/
+		padding-top: $('.navbar').height()
     }
+	
+	
+	h3.anchor {
+    display: block;
+    position: relative;
+    /*top: $('.navbar').height();*/
+    top: 60px;
+    /*visibility: hidden;*/
+}
+	
+	.sidebar{
+		overflow-y: scroll;
+		position: fixed;
+	}
     </style>
     
     

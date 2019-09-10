@@ -19,7 +19,8 @@ while($r = pg_fetch_assoc($result)) {
 	} else {
 		$permanente="(<i class=\"fas fa-hourglass-half\"></i> Si tratta 
 		di una squadra creata per l'evento ".$r["id_evento"].", 
-		al termine dell'evento verrà rimossa)";
+		al termine dell'evento verrà rimossa)
+		<a class='btn btn-sm btn-info' href=squadre/rendi_permanente.php?id=".$id." ><i class=\"fas fa-hourglass\"></i> Rendi permanente</a>";
 	}
 }
 

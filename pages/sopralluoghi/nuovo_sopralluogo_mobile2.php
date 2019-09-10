@@ -82,9 +82,15 @@ $result=pg_query($conn, $query);
 
 $query= "INSERT INTO segnalazioni.t_sopralluoghi_mobili ( id, descrizione, id_profilo, id_evento, geom";
 
-//values
-$query=$query.") VALUES (".$id_sopralluogo.", '".$percorso." ".$descrizione."', '".$profilo_ok."',  ". $id_evento. ", ". $geom." ";
+if ($descrizione!=''){
+$query=$query.",note_ente";
+}
 
+//values
+$query=$query.") VALUES (".$id_sopralluogo.", '".$percorso."', '".$profilo_ok."',  ". $id_evento. ", ". $geom." ";
+if ($descrizione!=''){
+$query=$query.",'".$descrizione."'";
+}
 $query=$query.");";
 
 //echo $query;

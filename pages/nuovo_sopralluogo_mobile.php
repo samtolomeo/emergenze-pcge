@@ -127,7 +127,10 @@ if ($profilo_sistema > 4){
 					<option  id="percorso" name="percorso" value="">Seleziona il presidio mobile</option>
 					<?php
 					
-					$query2="SELECT * FROM geodb.v_presidi_mobili ";
+					$query2="SELECT p.percorso  FROM geodb.v_presidi_mobili p
+							WHERE trim(p.percorso) NOT IN 
+							(select  trim(descrizione)from segnalazioni.t_sopralluoghi_mobili WHERE time_stop is null)
+							order by substring(p.percorso,1,1), substring(p.percorso,2,2)::int;";
 					$result2 = pg_query($conn, $query2);
 					 
 					while($r2 = pg_fetch_assoc($result2)) { 

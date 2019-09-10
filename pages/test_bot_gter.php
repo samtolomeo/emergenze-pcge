@@ -17,7 +17,18 @@ function sendMessage($chatID, $messaggio, $token) {
 }
 
 
-$token = "842531800:AAFgJzJAYvWdXGgRNpVr0sUOEKpBMj2WPPA";
-$chatid = "708309739";
-sendMessage($chatid, "Hello World da PHP siamo troppo fighi", $token);
+require('./token_telegram.php');
+$channelp = "";
+sendMessage($chatid, "Hello World da PHP siamo troppo fighi su BOT a Roberto privatamente", $token);
+
+echo "<br>";
+sendMessage($chatidl, "Ciao Lorenzo Welcome!", $token);
+
+sendMessage($chatid_GTER, "Ciao GTER!", $token);
+
+sendMessage($channel, "Hello World da PHP siamo troppo fighi su canale privato", $token);
+
+echo "<br>";
+
+sendMessage($channelp, "Hello World da PHP siamo troppo fighi su canale pubblico", $token);
 ?>

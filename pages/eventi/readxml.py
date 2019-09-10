@@ -11,6 +11,18 @@ import psycopg2
 from conn import *
 
 import datetime
+import telepot
+
+
+
+import config
+# Il token è contenuto nel file config.py e non è aggiornato su GitHub per evitare utilizzi impropri
+TOKEN=config.TOKEN
+
+bot = telepot.Bot(TOKEN)
+#per ora solo un test su Roberto
+chat_id= config.chat_id
+
 
 sito_allerta="http://www.allertaliguria.gov.it"
 abs_path_bollettini="/opt/rh/httpd24/root/var/www/html"
@@ -38,8 +50,17 @@ def scarica_bollettino(tipo,nome,ora):
         #print query
         curr.execute(query)
         print "Download completed..."
+        if tipo == 'PC':
+            messaggio = "{}/docs/{}".format(sito_allerta,nome)
+            # ciclo for sulle chat_id
+            bot.sendMessage(chat_id, "Nuovo bollettino Protezione civile!")
+            bot.sendMessage(chat_id, messaggio)
     else:
         print "File already download"
+        #if tipo == 'PC':
+        #    messaggio = "{}/docs/{}".format(sito_allerta,nome)
+        #    bot.sendMessage(chat_id, "Bollettino Protezione civile già scaricato!")
+        #    bot.sendMessage(chat_id, messaggio)
         
 
 

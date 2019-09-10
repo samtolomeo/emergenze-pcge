@@ -177,7 +177,7 @@ if ($profilo_sistema <= 8){
 			<div class="row">
                 <div class="col-md-6">
                     <div style="text-align: center;">
-                    <h3>
+                    <h3 style="padding-top: 120px; margin-top: -120px;"  id="play">
                     <i class="fas fa-play"></i>
                     Squadre attive o attivabili
                     <i class="fas fa-play"></i>
@@ -192,7 +192,7 @@ if ($profilo_sistema <= 8){
 				<thead>
 				
 			 	<tr>
-            <th data-field="state" data-checkbox="true"></th>
+            <!--th data-field="state" data-checkbox="true"></th-->
             <!--th data-field="id" data-sortable="false"  data-visible="true">ID</th-->
             <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
             <!--th style="word-break:break-all; word-wrap:break-word; " data-field="evento" data-sortable="true"  data-visible="true">Evento</th>
@@ -241,7 +241,7 @@ if ($profilo_sistema <= 8){
  
 <div class="col-md-6">
                    <div style="text-align: center;">
-                    <h3>
+                    <h3 style="padding-top: 120px; margin-top: -120px;"   id="pause">
                     <i class="fas fa-stop"></i>
                     Squadre da attivare
                     <i class="fas fa-stop"></i>
@@ -249,13 +249,13 @@ if ($profilo_sistema <= 8){
                     </div>
 
 
-				<table  id="t_squadre2" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_squadre.php?p=<?php echo $profilo_squadre;?>&t=0" data-height="900"  data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+				<table  id="t_squadre2" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_squadre.php?p=<?php echo $profilo_squadre;?>&t=0" data-height="900"  data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 				        
 				        
 				<thead>
 				
 			 	<tr>
-            <th data-field="state" data-checkbox="true"></th>
+            <!--th data-field="state" data-checkbox="true"></th-->
             <!--th data-field="id" data-sortable="false"  data-visible="true">ID</th-->
             <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
             <!--th style="word-break:break-all; word-wrap:break-word; " data-field="evento" data-sortable="true"  data-visible="true">Evento</th>
@@ -268,7 +268,8 @@ if ($profilo_sistema <= 8){
             <?php
 				if ($check_operatore == 1){
 				?>
-				<th data-field="id" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >  </th>
+				<th data-field="id" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Edit</th>
+				<th data-field="id" data-sortable="false" data-formatter="hideFormatter" data-visible="true" ></th>
 				<!--th data-field="cf" data-sortable="false" data-formatter="nameFormatter1" data-visible="true" >Edit<br>permessi</th-->            
 				<?php
 				}
@@ -292,16 +293,172 @@ if ($profilo_sistema <= 8){
 				</script>
 				
 				
+				
+
+			 </div> 
+ 
+ 
+ 
+ 
+ 
+            </div>
+            <hr>
+            <div class="row">
+                
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<div class="col-md-6">
+                   <div style="text-align: center;">
+                    <h3 style="padding-top: 120px; margin-top: -120px;" id="hidden">
+                    <i class="fas fa-eye-slash"></i>
+                    Squadre nascoste
+                    <i class="fas fa-eye-slash"></i>
+                    </h3>
+                    </div>
+
+
+				<table  id="t_squadre2" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_squadre.php?p=<?php echo $profilo_squadre;?>&t=2" data-height="900"  data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+				        
+				        
+				<thead>
+				
+			 	<tr>
+            <!--th data-field="state" data-checkbox="true"></th-->
+            <!--th data-field="id" data-sortable="false"  data-visible="true">ID</th-->
+            <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
+            <!--th style="word-break:break-all; word-wrap:break-word; " data-field="evento" data-sortable="true"  data-visible="true">Evento</th>
+	         <th data-field="afferenza" data-sortable="true"  data-visible="true" >Afferenza</th-->
+	    	
+            <th data-field="stato" data-sortable="true" data-formatter="nameFormatter1" data-visible="true" >Stato</th>
+            <!--th data-field="id" data-visible="true" data-formatter="nameFormatter0" >Aggiorna stato</th-->
+            <th data-field="num_componenti" data-sortable="true" data-formatter="nameFormatter2" data-visible="true" >Num</th>
+            <th data-field="componenti" data-sortable="true" data-visible="true" >Componenti</th>
+            <?php
+				if ($check_operatore == 1){
+				?>
+				<!--th data-field="id" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Edit</th-->
+				<th data-field="id" data-sortable="false" data-formatter="nohideFormatter" data-visible="true" ></th>
+				<!--th data-field="cf" data-sortable="false" data-formatter="nameFormatter1" data-visible="true" >Edit<br>permessi</th-->            
+				<?php
+				}
+				?>
+				</tr>
+				</thead>
+				
+				</table>
+				
+				
 				<script>
+				    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
+				    var $table = $('#t_squadre2');
+				    $(function () {
+				        $('#toolbar2').find('select').change(function () {
+				            $table.bootstrapTable('destroy').bootstrapTable({
+				                exportDataType: $(this).val()
+				            });
+				        });
+				    })
+				</script>
 				
 				
-				  function nameFormatter(value) {
 				
-				        return '<a href="./edit_squadra.php?id='+ value + '" class="btn btn-warning" \
+
+			 </div> 
+			 
+			 
+			 <!--div class="col-md-6">
+                    <div style="text-align: center;">
+                    <h3>
+                    <i class="fas fa-play"></i>
+                    To do..
+                    <i class="fas fa-play"></i>
+                    </h3>
+                    </div>
+
+
+			
+			  <table  id="t_squadre" class="table-hover" style="word-break:break-all; word-wrap:break-word; " data-toggle="table" data-url="./tables/griglia_squadre.php?p=<?php echo $profilo_squadre;?>&t=1" data-height="900"  data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+				        
+				        
+				<thead>
+				
+			 	<tr>
+
+            <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
+        
+            <th data-field="stato" data-sortable="true" data-formatter="nameFormatter1" data-visible="true" >Stato</th>
+
+            <th data-field="num_componenti" data-sortable="true" data-formatter="nameFormatter2" data-visible="true" >Num</th>
+            <th data-field="componenti" data-sortable="true" data-formatter="nameFormatter2" data-visible="true" >Componenti</th>
+            <?php
+				if ($check_operatore == 1){
+				?>
+				<th data-field="id" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >  </th>
+
+				<?php
+				}
+				?>
+				</tr>
+				</thead>
+				
+				</table>
+				
+				
+				<script>
+				    // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
+				    var $table = $('#t_squadre');
+				    $(function () {
+				        $('#toolbar').find('select').change(function () {
+				            $table.bootstrapTable('destroy').bootstrapTable({
+				                exportDataType: $(this).val()
+				            });
+				        });
+				    })
+				</script>
+				
+
+				
+
+			 </div-->
+ 
+ 
+ 
+ 
+ 
+            </div>
+            
+            <!-- /.row -->
+ 
+ 
+<script>
+				
+				
+				  function nameFormatter(value,row, index) {
+				
+				        return '<a href="./edit_squadra.php?id='+ value + '" class="btn btn-warning btn-sm" \
 				        title="Modifica componenti squadra e definisci ulteriori info" role="button"><i class="fa fa-users" aria-hidden="true"></i>\
-				         </a>';
+				         </a> ';
 				    }
+				function hideFormatter(value,row, index) {
+					if (row.num_componenti==0){
+						return '<a href="./squadre/nascondi_squadra.php?id='+ value + '" class="btn btn-warning btn-sm" \
+						title="Nascondi squadra" role="button"><i class="fas fa-eye-slash"></i>\
+						</a>';
+					}
+				}
 				
+				function nohideFormatter(value,row, index) {
+					if (row.num_componenti==0){
+						return '<a href="./squadre/vis_squadra.php?id='+ value + '" class="btn btn-warning btn-sm" \
+						title="Visualizza squadra" role="button"><i class="fas fa-eye"></i>\
+						</a>';
+					}
+				}
 				
 				
 				function nameFormatter0(value, row, index) {
@@ -353,21 +510,14 @@ if ($profilo_sistema <= 8){
 				
 				function nameFormatter2(value) {
 						if (value<1){
-							return ' <i class="fas fa-exclamation-circle fa-2x"  style="color:red" aria-hidden="true"></i> ' +value  ;
+							return ' <i class="fas fa-exclamation-circle fa-2x"  style="color:red" aria-hidden="true"></i> ' +value ;
 						} else {
 							return  value;
 						}
 				    }
-				</script>
-
-			 </div> 
+				</script> 
  
  
- 
- 
-            </div>
-            
-            <!-- /.row -->
     </div>
     <!-- /#wrapper -->
 

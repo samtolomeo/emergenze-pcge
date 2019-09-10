@@ -12,6 +12,13 @@ $nome= str_replace("'", "''", $_POST["nome"]);
 $afferenza=$_POST["afferenza"];
 $evento=$_POST["evento"];
 
+echo "permanente=".$_POST["permanente"]."<br>";
+
+if($_POST["permanente"]=='on') {
+	$evento_ok= NULL;
+} else {
+	$evento_ok=$evento;
+} 
 
 $query_max= "SELECT max(id) FROM users.t_squadre;";
 $result_max = pg_query($conn, $query_max);
@@ -29,9 +36,9 @@ echo "<br>";
 
 echo "Nome squadra:".$nome. "<br>";
 echo "Afferenza:".$afferenza. "<br>";
-echo "Evento:".$evento. "<br>";
+echo "Evento:".$evento_ok. "<br>";
 
-
+exit;
 
 
 
@@ -39,12 +46,15 @@ echo "Evento:".$evento. "<br>";
 
 
 
-
-$query= "INSERT INTO users.t_squadre( id, nome, id_evento, id_stato, cod_afferenza";
-
-//values
-$query=$query.") VALUES (".$id_squadra.", '".$nome."', ".$evento.", 2 , '".$afferenza."' ";
-
+if($_POST["permanente"]=='on') {
+	$query= "INSERT INTO users.t_squadre( id, nome, id_stato, cod_afferenza";
+	//values
+	$query=$query.") VALUES (".$id_squadra.", '".$nome."', 2 , '".$afferenza."' ";
+} else {
+	$query= "INSERT INTO users.t_squadre( id, nome, id_evento, id_stato, cod_afferenza";
+	//values
+	$query=$query.") VALUES (".$id_squadra.", '".$nome."', ".$evento_ok.", 2 , '".$afferenza."' ";
+}
 $query=$query.");";
 
 

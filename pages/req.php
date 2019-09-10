@@ -82,8 +82,7 @@ function integerToRoman($integer)
     	/*padding-top:50px;*/
 		padding-top: $('.navbar').height()
     }
-	
-	
+
 	
 	.sidebar{
 		overflow-y: scroll;
