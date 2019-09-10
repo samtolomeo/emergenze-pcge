@@ -6,6 +6,7 @@ session_start();
 $id=$_GET["id"];
 $subtitle="Dettagli segnalazione ricevuta n. ".$id;
 
+$check_segnalazione=1; // specifica che si tratta di una segnalazione (e.g per il panel_comunicazioni.php) 
 
 $check_spostamento=1; // se 1 posso spostare in caso contrario diventa 0
 						// diventa 0 se: 

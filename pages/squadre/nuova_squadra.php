@@ -12,6 +12,8 @@ $nome= str_replace("'", "''", $_POST["nome"]);
 $afferenza=$_POST["afferenza"];
 $evento=$_POST["evento"];
 
+echo "permanente=".$_POST["permanente"]."<br>";
+
 if($_POST["permanente"]=='on') {
 	$evento_ok= NULL;
 } else {
@@ -34,9 +36,9 @@ echo "<br>";
 
 echo "Nome squadra:".$nome. "<br>";
 echo "Afferenza:".$afferenza. "<br>";
-echo "Evento:".$evento. "<br>";
+echo "Evento:".$evento_ok. "<br>";
 
-
+exit;
 
 
 
@@ -51,7 +53,7 @@ if($_POST["permanente"]=='on') {
 } else {
 	$query= "INSERT INTO users.t_squadre( id, nome, id_evento, id_stato, cod_afferenza";
 	//values
-	$query=$query.") VALUES (".$id_squadra.", '".$nome."', ".$evento.", 2 , '".$afferenza."' ";
+	$query=$query.") VALUES (".$id_squadra.", '".$nome."', ".$evento_ok.", 2 , '".$afferenza."' ";
 }
 $query=$query.");";
 
@@ -64,11 +66,10 @@ $result=pg_query($conn, $query);
 
 echo "<br>";
 
-echo $_POST["permanente"];
 
 
 // check if checkbox for permanent team is selected
-if($_POST["permanente"]=='on') {
+/*if($_POST["permanente"]=='on') {
 	
 	$query= "INSERT INTO users.t_squadre_permanenti( nome, cod_afferenza";
 $query=$query.") VALUES ('".$nome."', '".$afferenza."' ";
@@ -77,7 +78,7 @@ echo $query;
 //exit;
 $result=pg_query($conn, $query);
 	
-}
+}*/
 
 
 $query= "INSERT INTO users.t_storico_squadre(id_squadra, log_aggiornamento";

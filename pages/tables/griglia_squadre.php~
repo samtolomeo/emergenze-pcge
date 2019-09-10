@@ -7,20 +7,23 @@ $tipo=$_GET['t'];
 
 if ($tipo==1){
 	//squadre attive
-	$filter= ' and num_componenti > 0 and id_stato < 3 ';
+	$filter= ' and da_nascondere=\'f\' and num_componenti > 0 and id_stato < 3 ';
 } else if($tipo==0){
 	//squadre non attive
-	$filter= ' and (num_componenti = 0 or id_stato = 3) ';
+	$filter= ' and da_nascondere=\'f\' and (num_componenti = 0 or id_stato = 3) ';
+} else if($tipo==2){
+	//squadre non attive
+	$filter= ' and da_nascondere=\'t\'';
 }
 
 if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id,nome,stato,id_stato,num_componenti,componenti From \"users\".\"v_squadre\" where profilo='".$profilo."'::text ".$filter." ORDER BY  \"id_stato\", \"nome\" ;";
+	$query="SELECT id,nome,stato,id_stato,num_componenti,componenti, da_nascondere From \"users\".\"v_squadre\" where profilo='".$profilo."'::text ".$filter." ORDER BY  num_componenti desc, \"id_stato\", \"nome\" ;";
    //echo $query;
 	$result = pg_query($conn, $query);
-	echo $query;
+	//echo $query;
 	#exit;
 	$rows = array();
 	while($r = pg_fetch_assoc($result)) {

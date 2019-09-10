@@ -22,7 +22,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
-if ($profilo_sistema > 6){
+if ($profilo_sistema > 4){
 	header("location: ./divieto_accesso.php");
 }
 
@@ -102,7 +102,7 @@ if ($profilo_sistema > 6){
 					<option  id="uo" name="uo" value="">Seleziona la squadra</option>
 					<?php
 					
-					$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
+					$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 					$result2 = pg_query($conn, $query2);
 					 
 					while($r2 = pg_fetch_assoc($result2)) { 
@@ -127,7 +127,9 @@ if ($profilo_sistema > 6){
 					<option  id="percorso" name="percorso" value="">Seleziona il presidio mobile</option>
 					<?php
 					
-					$query2="SELECT * FROM geodb.v_presidi_mobili ";
+					$query2="SELECT p.percorso  FROM geodb.v_presidi_mobili p
+							WHERE trim(p.percorso) NOT IN 
+							(select  trim(descrizione)from segnalazioni.t_sopralluoghi_mobili WHERE time_stop is null);";
 					$result2 = pg_query($conn, $query2);
 					 
 					while($r2 = pg_fetch_assoc($result2)) { 
