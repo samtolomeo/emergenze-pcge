@@ -67,7 +67,9 @@ require ('./note_ambiente.php');
 				
 				
 				<?php
-					if($check_evento==0) {
+				
+				$len_c=count($eventi_attivi_c);
+					if($check_evento==0 and $len_c ==0) {
 				?>		
 
                 <li class="dropdown">
@@ -110,6 +112,15 @@ require ('./note_ambiente.php');
 
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     		<i class="fas fa-chevron-circle-down fa-fw"></i> <i class="fas fa-caret-down"></i>
+							
+							<?php
+							//echo $len_c;
+								if ($len_c > 0){
+							?>
+								<i class="fas fa-hourglass-end" style="color:red"></i>
+							<?php		
+								}
+							?>
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i> 
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i>
                     		<i class="fas fa-phone-square fa-1x" style="color:<?php echo $color_nverde; ?>"></i>
@@ -173,17 +184,17 @@ require ('./note_ambiente.php');
                                 <?php 
                                 $len=count($eventi_attivi);	               
 		               				if($len==1) {   
-	               				   ?>
-	               				   
+	               				?>
                                     <strong>Evento in corso</strong>
-												<?php } else if ($len==0) { ?>
+								<?php } else if ($len==0) { ?>
                                  	<strong>Nessun evento in corso</strong>
-                                 <?php } else {
+                                <?php } else {
                                  	?>
-                                 	<strong>Eventi in corso</strong>
-                                 	<?php
+                                 	<strong>Eventi in corso (<?php echo $len;?>)</strong>
+                                <?php
+								
                                  	}
-                                 	?>
+                                ?>
                                  	
                                     <span class="pull-right text-muted">
                                         <em><i class="fas fa-play"></i></em>
@@ -194,7 +205,7 @@ require ('./note_ambiente.php');
                                 for ($i=0;$i<$len;$i++){
                                 ?>
                                 <a href="#">
-                                - Tipo <?php echo $tipo_eventi_attivi[$i][1];?><br>
+                                <b><i>Tipo</i>: <?php echo $tipo_eventi_attivi[$i][1];?></b><br>
                                 </a>
                                  <a href="dettagli_evento.php">
                                    - Visualizza dettagli <br>
@@ -217,7 +228,7 @@ require ('./note_ambiente.php');
                             <a href="#">
                                 <div>
                                 <?php 
-                                $len_c=count($eventi_attivi_c);	               
+                                	               
 		               				if($len_c==1) {   
 	               				   ?>
                                     <strong>Evento in chiusura</strong>
@@ -225,7 +236,7 @@ require ('./note_ambiente.php');
                                  	<strong>Nessun evento in fase di chiusura</strong>
                                  <?php } else {
                                  	?>
-                                 	<strong>Eventi in chiusura</strong>
+                                 	<strong>Eventi in chiusura (<?php echo $len_c;?>)</strong>
                                  	<?php
                                  	}
                                  	?>
@@ -238,7 +249,7 @@ require ('./note_ambiente.php');
                                 for ($i=0;$i<$len_c;$i++){
                                 ?>
 								<a href="#">
-                                - Tipo <?php echo $tipo_eventi_c[$i][1];?><br>
+                                <b><i>Tipo</i>: <?php echo $tipo_eventi_c[$i][1];?></b><br>
                                 </a>
                                  <a href="dettagli_evento.php">
                                    - Visualizza dettagli <br>
@@ -309,10 +320,32 @@ require ('./note_ambiente.php');
 						<i class="fa fa-exclamation fa-fw" style="color:red"></i> <i class="fas fa-caret-down"></i>
                     </a>	
                     <ul class="dropdown-menu dropdown-alerts">
+                    
+                    <li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-user-shield"></i> Segnalazioni da elaborare
+                                    <span class="pull-right text-muted small"><?php echo $segn_limbo;?></span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $segn_limbo; $ii++) {
+									echo "<br><a href=\"dettagli_segnalazione.php?id=".$id_segn_limbo[$ii]."\">";
+									echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
+									echo " Vai alla segnalazione ". $id_segn_limbo[$ii] ." " ;
+									echo "</a>";
+								}
+								?>
+                            
+							</a>
+                        </li>
+                    <li class="divider"></li>
+                    
+                    
+                    
 					<li>
 						<a href="index.php#segn_limbo_table">
 							<div>
-								Nuove segnalazioni da elaborare!
+								Visualizza elenco segnalazioni da elaborare!
 							</div>
 						</a>
 					</li>
@@ -354,9 +387,29 @@ require ('./note_ambiente.php');
 									if ($stato_i_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
-									echo " Descrizione: ".$descrizione_i_assegnati_resp[$ii]."</a>" ;
+									echo " Descrizione: ".$descrizione_i_assegnati_resp[$ii]."" ;
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_incarichi c
+									join segnalazioni.v_incarichi_last_update s ON s.id = c.id
+									where id_destinatario='".$profilo_ok."' and c.id =  ".$id_i_assegnati_resp[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>";
 								}
 								?>
                             
@@ -375,9 +428,29 @@ require ('./note_ambiente.php');
 									if ($stato_ii_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
-									echo " Descrizione: ".$descrizione_ii_assegnati_resp[$ii]."</a>" ;
+									echo " Descrizione: ".$descrizione_ii_assegnati_resp[$ii]."" ;
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_incarichi_interni c
+									join segnalazioni.v_incarichi_interni_last_update s ON s.id = c.id
+									where id_destinatario='".$profilo_ok."' and c.id =  ".$id_ii_assegnati_resp[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>";
 								}
 								?>
                             
@@ -402,9 +475,29 @@ require ('./note_ambiente.php');
 											 echo '(<i class="fas fa-exchange-alt" title="richiesta cambio squadra" style="color:#ff0000"></i>)';
 										}
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
-									echo " Descrizione: ".$descrizione_s_assegnati_resp[$ii]."</a>" ;
+									echo " Descrizione: ".$descrizione_s_assegnati_resp[$ii]."" ;
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_sopralluoghi c
+									join segnalazioni.v_sopralluoghi_last_update s ON s.id = c.id
+									where id_destinatario='".$profilo_ok."' and c.id =  ".$id_s_assegnati_resp[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>";
 								}
 								?>
                             
@@ -424,7 +517,7 @@ require ('./note_ambiente.php');
 									echo "<br><a href=\"dettagli_sopralluogo_mobile.php?id=".$id_sm_assegnati_resp[$ii]."\">";
 									if ($stato_sm_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
-										$query_cs='SELECT * FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi 
+										$query_cs='SELECT id FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi 
 										WHERE id_sopralluogo ='.$id_sm_assegnati_resp[$ii].' AND (eseguito = \'f\' OR eseguito is null);';
 										//echo $query_cs;
 										$result_cs = pg_query($conn, $query_cs);
@@ -432,9 +525,29 @@ require ('./note_ambiente.php');
 											 echo '(<i class="fas fa-exchange-alt" title="richiesta cambio squadra" style="color:#ff0000"></i>)';
 										}
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
-									echo " Descrizione: ".$descrizione_sm_assegnati_resp[$ii]."</a>" ;
+									echo " Descrizione: ".$descrizione_sm_assegnati_resp[$ii]." " ;
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_sopralluoghi_mobili c
+									join segnalazioni.v_sopralluoghi_mobili_last_update s ON s.id = c.id
+									where id_destinatario='".$profilo_ok."' and c.id =  ".$id_sm_assegnati_resp[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>";
 								}
 								?>
                             
@@ -455,14 +568,42 @@ require ('./note_ambiente.php');
 									if ($stato_pc_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
-									echo " Tipo: ".$tipo_pc_assegnati_resp[$ii]."</a>" ;
+									echo " Tipo: ".$tipo_pc_assegnati_resp[$ii];
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_provvedimenti_cautelari c
+									join segnalazioni.v_provvedimenti_cautelari_last_update s ON s.id = c.id
+									where id_destinatario='".$profilo_ok."' and c.id =  ".$id_pc_assegnati_resp[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>" ;
 								}
 								?>
                             
 							</a>
                         </li>
+						<li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="update_notifiche.php?id=<?php echo $operatore; ?>">
+                                <strong>Segna i messaggi come letti</strong>
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        
 						<li class="divider"></li>
                         <li>
                             <a class="text-center" href="index.php#panel-notifiche">
@@ -472,6 +613,7 @@ require ('./note_ambiente.php');
                         </li>
                     </ul>
                 </li>
+                
 				
 				<li id="notifiche_squadra" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -490,6 +632,7 @@ require ('./note_ambiente.php');
 						</a>
 					</li>
 
+					<?php $id_squadra_operatore2='sq_'.$id_squadra_operatore; ?>
                         <li class="divider"></li>
 					<li>
 					<a href="#">
@@ -499,7 +642,27 @@ require ('./note_ambiente.php');
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $ii_assegnati_squadra; $ii++) {
-									echo "<br><a href=\"dettagli_incarico_interno.php?id=".$id_ii_assegnati_squadra[$ii]."\">Vai ai dettagli</a>" ;
+									echo "<br><a href=\"dettagli_incarico_interno.php?id=".$id_ii_assegnati_squadra[$ii]."\">Vai ai dettagli";
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_incarichi_interni c
+									join segnalazioni.v_incarichi_interni_last_update s ON s.id = c.id
+									where id_destinatario='".$id_squadra_operatore2."' and c.id =  ".$id_ii_assegnati_squadra[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>";
 								}
 								?>
                             
@@ -514,7 +677,27 @@ require ('./note_ambiente.php');
 								</div>                              
                                 <?php
 								for ($ii = 0; $ii < $s_assegnati_squadra; $ii++) {
-									echo "<br><a href=\"dettagli_sopralluogo.php?id=".$id_ii_assegnati_squadra[$ii]."\">Tipo: ".$descrizione_ii_assegnati_squadra[$ii]."</a>" ;
+									echo "<br><a href=\"dettagli_sopralluogo.php?id=".$id_s_assegnati_squadra[$ii]."\">Visualizza dettagli" ;
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_sopralluoghi c
+									join segnalazioni.v_sopralluoghi_last_update s ON s.id = c.id
+									where id_destinatario='".$id_squadra_operatore2."' and c.id =  ".$id_s_assegnati_squadra[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>";
 								}
 								?>
                             
@@ -524,12 +707,32 @@ require ('./note_ambiente.php');
                     <li>
 					<a href="#">
                                 <div>
-                                    <i class="fas fa-exclamation-triangle"></i> Provv. cautelari
-                                    <span class="pull-right text-muted small"><?php echo $pc_assegnati_squadra;?></span>
+                                    <i class="fas fa-exclamation-triangle"></i> Presidi mobili
+                                    <span class="pull-right text-muted small"><?php echo $sm_assegnati_squadra;?></span>
 								</div>                              
                                 <?php
-								for ($ii = 0; $ii < $pc_assegnati_squadra; $ii++) {
-									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_pc_assegnati_squadra[$ii]."\">Tipo: ".$tipo_pc_assegnati_squadra[$ii]."</a>" ;
+								for ($ii = 0; $ii < $sm_assegnati_squadra; $ii++) {
+									echo "<br><a href=\"dettagli_provvedimento_cautelare.php?id=".$id_sm_assegnati_squadra[$ii]."\">Visualizza dettagli" ;
+									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_sopralluoghi_mobili c
+									join segnalazioni.v_sopralluoghi_mobili_last_update s ON s.id = c.id
+									where id_destinatario='".$id_squadra_operatore2."' and c.id =  ".$id_sm_assegnati_squadra[$ii]."
+									and to_timestamp(c.data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text) > 
+									case 
+									when (select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."') is null
+									then '2001-01-01'
+									else 
+									(select data_ora from users.utenti_message_update where matricola_cf = '".$operatore."')
+									end;";
+									//echo $query_m;
+									$mess_not_readed=0;
+									$result_m = pg_query($conn, $query_m);
+									while($r_m = pg_fetch_assoc($result_m)) {
+										$mess_not_readed=$mess_not_readed+1;
+									}
+									if ($mess_not_readed > 0) {
+										echo '<br><i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i> Ci potrebbero essere nuovi messaggi da leggere';
+									}
+									echo "</a>";
 								}
 								?>
                             
@@ -542,9 +745,16 @@ require ('./note_ambiente.php');
 				
                 <!-- /.dropdown -->
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
-                    </a>
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<?php if ($check_esterno_update==1){ ;?>
+                        <i class="fas fa-user fa-fw faa-ring animated" style="color:#ff0000"></i> <i class="fas fa-caret-down"></i>
+				<?php } else { ?>
+						<i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
+				<?php } ?>
+					
+					
+					</a>
+					
                     <ul class="dropdown-menu dropdown-user">
 						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (Clicca per visualizzare i dettagli)</a>
                         </li>

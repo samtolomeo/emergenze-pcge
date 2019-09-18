@@ -116,7 +116,7 @@ if($contatore_eventi>0) {
 
 
 if($contatore_eventi>0) {
-	$query="SELECT * FROM eventi.t_attivazione_nverde WHERE data_ora_inizio < now() AND data_ora_fine > now();";
+	$query="SELECT id_evento FROM eventi.t_attivazione_nverde WHERE data_ora_inizio < now() AND data_ora_fine > now();";
 	$contatore_nverde=0;
 	$descrizione_nverde='Numero verde non attivo';
 	$color_nverde='#333333';
@@ -195,24 +195,33 @@ foreach ($headers as $name => $content)
 }
 
 
+$check_esterno=0;
+
+$check_esterno_update=0;
 
 
 //utenti esterni
-	$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."';";
-	$result = pg_query($conn, $query);
-	while($r = pg_fetch_assoc($result)) {
-		$nome = $r['nome'];
-		$cognome = $r['cognome'];
-		$codfisc = $r['cf'];
-		$matricola_cf=$codfisc;
-		$operatore=$matricola_cf;
-		$uo_inc='uo_'.$r['id1'];
-		$livello1=$r['livello1'];
-		$id_livello1=$r['id1'];
-		$livello2=$r['livello2'];
-		$livello3=$r['livello3'];
-	}
+$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."';";
+$result = pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	$nome = $r['nome'];
+	$cognome = $r['cognome'];
+	$codfisc = $r['cf'];
+	$matricola_cf=$codfisc;
+	$operatore=$matricola_cf;
+	$uo_inc='uo_'.$r['id1'];
+	$livello1=$r['livello1'];
+	$id_livello1=$r['id1'];
+	$livello2=$r['livello2'];
+	$livello3=$r['livello3'];
+	$check_esterno=1;
+}
 
+$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."' and (indirizzo is null or comune_residenza is null or mail is null or data_nascita is null or telefono1 is null);";
+$result = pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	$check_esterno_update=1;
+}
 
 
 
@@ -347,11 +356,18 @@ foreach ($headers as $name => $content)
 	
 	
 	// segnalazioni da elaborare (il resto dei conteggi serve solo alla dashboard)
-	$query= "SELECT count(id) FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null;";
+
+	if($profilo_cod_munic !=''){
+		$f_mun= ' and id_municipio = '.$profilo_cod_munic.' ';
+	}
+	$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+	$id_segn_limbo=array();
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
-		$segn_limbo = $r['count'];	
+		$id_segn_limbo[] = $r['id'];
 	}
+
+	$segn_limbo=count($id_segn_limbo);
 
 	// Conteggi incarichi
 	$query= "SELECT  id, descrizione, id_stato_incarico FROM segnalazioni.v_incarichi_last_update where id_stato_incarico<=2 and (id_profilo='".$profilo_ok."' OR id_uo='".$uo_inc."'  OR id_uo='".$periferico_inc."' ) GROUP BY id,descrizione, id_stato_incarico;";
@@ -436,12 +452,13 @@ foreach ($headers as $name => $content)
 	
 	
 	// Conteggi incarichi
-	$query= "SELECT  * FROM users.v_squadre_notifica WHERE id=".$id_squadra_operatore.";";
-	
+	$query= "SELECT id_incarico_interno, id_sopralluogo, id_sm FROM users.v_squadre_notifica WHERE id=".$id_squadra_operatore.";";
+	//echo $query;
 	$result = pg_query($conn, $query);
 	$id_ii_assegnati_squadra=array();
 	$id_s_assegnati_squadra=array();
-	$id_pc_assegnati_squadra=array();
+	$id_sm_assegnati_squadra=array();
+	//$id_pc_assegnati_squadra=array();
 	$descrizione_i_assegnati_squadra=array();
 	while($r = pg_fetch_assoc($result)) {
 		if($r['id_incarico_interno'] > 0 ) {
@@ -450,13 +467,14 @@ foreach ($headers as $name => $content)
 		if($r['id_sopralluogo'] > 0 ) {
 			$id_s_assegnati_squadra[] = $r['id_sopralluogo'];
 		}
-		if($r['id_pc'] > 0 ) {
-			$id_pc_assegnati_squadra[] = $r['id_pc'];
+		if($r['id_sm'] > 0 ) {
+			$id_sm_assegnati_squadra[] = $r['id_sm'];
 		}
 	}
 	$ii_assegnati_squadra = count($id_ii_assegnati_squadra);
 	$s_assegnati_squadra = count($id_s_assegnati_squadra);
-	$pc_assegnati_squadra = count($id_pc_assegnati_squadra);  
+	$sm_assegnati_squadra = count($id_sm_assegnati_squadra);
+	//$pc_assegnati_squadra = count($id_pc_assegnati_squadra);  
 	// Conteggi incarichi
 	/*$query= "SELECT  id, tipo_provvedimento FROM segnalazioni.v_incarichi_last_update where id_stato_incarichi<=2 and id_squadra=".$id_squadra_operatore.";";
 	
@@ -509,5 +527,31 @@ foreach ($headers as $name => $content)
 	$pc_assegnati_squadra = count($id_pc_assegnati_squadra);*/
 	
 	
-	$count_squadra = $ii_assegnati_squadra + $s_assegnati_squadra + $pc_assegnati_squadra;
+	$count_squadra = $ii_assegnati_squadra + $s_assegnati_squadra + $sm_assegnati_squadra; //+ $pc_assegnati_squadra;
+	
+	
+	
+	
+	
+	//messaggi
+	/*
+	$query= "select c.id_lavorazione, 
+max(c.data_ora_stato) as data_ora_stato
+FROM segnalazioni.v_comunicazioni_aperte c
+LEFT JOIN segnalazioni.t_segnalazioni_in_lavorazione s ON s.id = c.id_lavorazione 
+where c.id_destinatario='".$profilo_ok."' and 
+(s.in_lavorazione = 't' or s.in_lavorazione is null or c.id_lavorazione is null)
+group by c.id_lavorazione
+order by to_timestamp(max(c.data_ora_stato),'DD/MM/YY HH24:MI:SS') desc;";
+	$result = pg_query($conn, $query);
+	$id_lavorazione_m=array();
+	$data_ora_m=array();
+	while($r = pg_fetch_assoc($result)) {
+		$id_lavorazione_m[] = $r['id_lavorazione'];
+		$data_ora_m[] = $r['data_ora_stato'];
+	}
+	$n_id_lavorazione_m = count($id_lavorazione_m);
+	*/
+	
+	
 ?>       

@@ -59,9 +59,12 @@ require('./check_evento.php');
 					echo "<br><b>Squadra</b>: ". $nome_squadra_operatore;
 					if($profilo_sistema==8){
 						echo "<br><b>Unità operativa esterna</b>: ". $uo_inc;
-						echo "<br><a class=\"btn btn-primary btn-sm\" href=\"update_volontario.php?id='".$CF."'\" > <i class=\"fa fa-pencil-alt\"></i> Aggiorna dati anagrafici</a>";
 					} else {
 						echo "<br><b>Unità operativa interna</b>: ". $periferico_inc;
+					}
+					echo "<br><hr>";
+					if ($check_esterno ==1){
+						echo "<br><a class=\"btn btn-primary btn-sm\" href=\"update_volontario.php?id='".$CF."'\" > <i class=\"fa fa-pencil-alt\"></i> Aggiorna dati anagrafici</a>";
 					}
 				?> 
 				
@@ -73,7 +76,7 @@ require('./check_evento.php');
             
             <br><br>
             <div class="row">
-
+				
             </div>
             <!-- /.row -->
     </div>

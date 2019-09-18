@@ -7,3 +7,6 @@
 [submodule "vendor/sisyphus"]
 	path = vendor/sisyphus
 	url = https://github.com/simsalabim/sisyphus.git
+[submodule "vendor/font-awesome-animation"]
+	path = vendor/font-awesome-animation
+	url = https://github.com/l-lin/font-awesome-animation.git

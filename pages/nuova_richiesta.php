@@ -51,7 +51,7 @@ if ($profilo_sistema > 8){
                     <h1 class="page-header">Titolo pagina</h1>
                 </div-->
                 <!-- /.col-lg-12 -->
-			<form action="segnalazioni/import_richiesta.php" method="POST">
+			<form name="form1" action="segnalazioni/import_richiesta.php" method="POST">
         
 
 
@@ -164,7 +164,262 @@ if ($profilo_sistema > 8){
             </div>
             
              </div>
+             
              <hr>
+             			<div class="row">       
+				<div class="form-group col-md-6">
+					<label for="nverde"> Operatore numero verde?</label> <font color="red">*</font><br>
+					<label class="radio-inline"><input type="radio" name="nverde" value="t" checked>Sì</label>
+					<label class="radio-inline"><input type="radio" name="nverde"value="f">No</label>
+				</div>
+				</div> 
+				<hr>
+             	<div class="form-group">
+					<label for="nome"> Specifica se si tratta di una richiesta generica (es. sono aperte le Scuole?) 
+					o di una nuova segnalazione da inserire a sistema</label> <font color="red">*</font><br>
+					<label class="radio-inline"><input type="radio" name="ric" id="rich" required="">Richiesta</label>
+					<label class="radio-inline"><input type="radio" name="ric" id="segn">Segnalazione</label>
+				</div>
+            
+             
+             
+            <div class="panel-group">
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" href="#segnalazione">Segnalazione</a>
+				      </h4>
+				    </div>
+				    <div id="segnalazione" class="panel-collapse collapse">
+				<div class="panel-body">
+            
+            <div class="row"> 
+
+            <h4><i class="fa fa-tasks"></i> Oggetto della segnalazione:</h4> 
+            
+             <div class="form-group col-md-6">
+              <label for="naz">Tipo criticità:</label> <font color="red">*</font>
+                            <select class="form-control" name="crit" id="crit" required="">
+                            <option name="crit" value="" > ... </option>
+            <?php            
+            $query2="SELECT * FROM segnalazioni.tipo_criticita WHERE valido='t' ORDER BY descrizione;";
+            echo $query2;
+	        $result2 = pg_query($conn, $query2);
+            //echo $query1;    
+            while($r2 = pg_fetch_assoc($result2)) { 
+            ?>    
+                    <option name="crit" value="<?php echo $r2['id'];?>" ><?php echo $r2['descrizione'];?></option>
+             <?php } ?>
+
+             </select>            
+             </div>
+             
+             
+             
+      
+             
+             
+             
+            <div class="form-group col-md-6">
+                <label for="descrizione"> Descrizione</label> <font color="red">*</font>
+                <input type="text" name="descrizione" id="descrizione" class="form-control" required="">
+             </div>
+
+				</div> 
+            <div class="row">       
+
+				<div class="form-group col-md-6">
+					<label for="nome"> Ci sono persone in pericolo?</label> <font color="red">*</font><br>
+					<label class="radio-inline"><input type="radio" name="rischio" value="" checked>Non specificato</label>
+					<label class="radio-inline"><input type="radio" name="rischio" value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="rischio"value="f">Nessuna persona a rischio</label>
+				</div>
+
+
+				
+
+				
+				
+				</div> 
+ 				<hr>
+            <div class="row">
+            <h4><i class="fa fa-map-marker-alt"></i> Geolocalizzazione:</h4> 
+
+
+				<div class="form-group">
+					<label for="nome"> Seleziona l'opzione che intendi usare per georeferenziare la segnalazione</label> <font color="red">*</font><br>
+					<label class="radio-inline"><input type="radio" name="georef" id="civico" required="">Tramite civico</label>
+					<label class="radio-inline"><input type="radio" name="georef" id="mappa">Tramite mappa</label>
+					<label class="radio-inline"><input type="radio" name="georef" id="coord">Con coordinate note</label>
+				</div>
+
+
+				</div> 
+            <div class="row">
+            
+            
+            <script>
+            function getCivico(val) {
+	            $.ajax({
+	            type: "POST",
+	            url: "get_civico.php",
+	            data:'cod='+val,
+	            success: function(data){
+		            $("#civico-list").html(data);
+	            }
+	            });
+            }
+
+            </script>
+
+
+
+				<div class="col-md-6"> 
+             <div class="form-group  ">
+              <label for="via">Via:</label> <font color="red">*</font>
+                            <select disabled="" id="via-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required="">
+                            <option value="">Seleziona la via</option>
+            <?php            
+            $query2="SELECT * From \"geodb\".\"m_vie_unite\";";
+	        $result2 = pg_query($conn, $query2);
+            //echo $query1;    
+            while($r2 = pg_fetch_assoc($result2)) { 
+                $valore=  $r2['codvia']. ";".$r2['desvia'];            
+            ?>
+                        
+                    <option name="codvia" value="<?php echo $r2['codvia'];?>" ><?php echo $r2['desvia'];?></option>
+             <?php } ?>
+
+             </select>            
+             </div>
+
+
+            <div class="form-group">
+              <label for="id_civico">Civico:</label> <font color="red">*</font>
+                <select disabled="" class="form-control" name="id_civico" id="civico-list" class="demoInputBox" required="">
+                <option value="">Seleziona il civico</option>
+            </select>         
+             </div>
+
+				<div class="form-group">
+					<label for="civrischio"> Il civico è in pericolo?</label><br>
+					<label class="radio-inline"><input type="radio" name="civrischio" value="" checked>Non specificato</label>
+					<label class="radio-inline"><input type="radio" name="civrischio" value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="civrischio"value="f">No</label>
+				</div>
+
+
+				</div> <!-- Chiudo col-md-6-->
+				<div class="col-md-6"> 
+				
+	
+
+				
+					<div class="form-group">
+                <label for="lat"> Latitudine </label> <font color="red">*</font>
+                <input disabled="" type="text" name="lat" id="lat" class="form-control" required="">
+              </div>
+					
+					<div class="form-group">
+                <label for="lon"> Longitudine </label> <font color="red">*</font>
+                <input disabled="" type="text" name="lon" id="lon" class="form-control" required="">
+              </div>
+					
+				
+				
+				
+				<div class="form-group">
+					<label for="oggrischio"> C'è uno specifico oggetto in pericolo?</label> <br>
+					<label class="radio-inline"><input type="radio" name="oggrischio" id=oggrischiot value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="oggrischio" id=oggrischiof value="f">No</label>
+				</div>
+				
+				<div class="form-group">
+              <label for="tipo_oggetto">Oggetto:</label> 
+                            <select class="form-control" name="tipo_oggetto" id="tipo_oggetto" required="">
+                            <option name="tipo_oggetto" value="" > Specifica oggetto </option>
+            <?php            
+            $query2="SELECT * FROM segnalazioni.tipo_oggetti_rischio WHERE valido='t' and elenco_elementi_segnalazione='t' ORDER BY descrizione;";
+            echo $query2;
+	         $result2 = pg_query($conn, $query2);
+            //echo $query1;    
+            while($r2 = pg_fetch_assoc($result2)) { 
+            ?>    
+                    <option name="tipo_oggetto" value="<?php echo $r2['id'];?>" ><?php echo $r2['descrizione'];?></option>
+             <?php } ?>
+
+             </select>            
+             </div>
+				
+				</div> <!-- Chiudo col-md-6-->
+				
+				</div> 
+            <div class="row">    
+
+				<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#collapse1">Mappa</a>
+      </h4>
+    </div>
+    <div id="collapse1" class="panel-collapse collapse">
+			<div id="mapid" style="width: 100%; height: 600px;"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--script type="text/javascript" >
+$('#collapse1').on('shown.bs.collapse', function (e) {
+    mymap.invalidateSize(true);
+});
+</script-->
+								
+								
+								       
+				
+            </div> 
+            <div class="row">
+
+					<hr>
+               <h4><i class="fa fa-plus"></i> Altro:</h4>      
+                    
+                     
+              <div class="form-group">
+                <label for="note_geo"> Altre note utili alla localizzazione </label>
+                <input type="text" name="note_geo" id="note_geo" class="form-control" >
+                <small id="addrHelp" class="form-text text-muted"> Qua è possibile specificare altre annotazioni, </small> 
+              </div>
+
+                             
+
+
+
+            <button  type="submit" class="btn btn-primary">Invia segnalazione</button>
+                         
+            
+            </div>
+            <!-- FINE PANEL -->
+            </div>
+  </div>
+</div>
+    
+             
+             
+<hr>
+
+<div class="panel-group">
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" href="#richiesta">Richiesta</a>
+				      </h4>
+				    </div>
+				    <div id="richiesta" class="panel-collapse collapse">
+    				<div class="panel-body">
+             
             <div class="row"> 
 
             <h4><i class="fa fa-tasks"></i> Richiesta:</h4> 
@@ -193,8 +448,8 @@ if ($profilo_sistema > 8){
              
              
             <div class="form-group col-md-12">
-                <label for="descrizione"> Descrizione richiesta</label> <font color="red">*</font>
-                <textarea class="form-control" rows="5" name="descrizione" id="descrizione"></textarea>
+                <label for="descrizione_richiesta"> Descrizione richiesta</label> <font color="red">*</font>
+                <textarea class="form-control" rows="5" name="descrizione_richiesta" id="descrizione_richiesta"></textarea>
              </div>
 
 				</div> 
@@ -204,10 +459,19 @@ if ($profilo_sistema > 8){
 
 
             <button  type="submit" class="btn btn-primary">Registra richiesta</button>
-            </div>
-            <!-- /.row -->
-            
 
+            <!-- /.row -->
+                        
+             </div>
+                        <!-- FINE PANEL -->
+            </div>
+  </div>
+</div>
+
+
+
+
+</div>
             </form>                
                 
                 

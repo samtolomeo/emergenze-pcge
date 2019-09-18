@@ -61,7 +61,7 @@
 								<a href="rete_idro.php"><i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
 								</li>
 								<li>
-                                    <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>s
+                                    <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>
                                 </li>
 								
                             </ul>
@@ -70,6 +70,36 @@
                         <li>
                             <a href="gestione_squadre.php"><i class="fa fa-users"></i>  Gestione squadre</a>
                         </li>
+
+								<li>
+                            <a href="#"><i class="fas fa-phone"></i> Richieste n. verde <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+								 		
+                            	<li>
+                                    <a href="nuova_richiesta.php">
+                                    <i class="fas fa-plus"></i>
+                                    Registra segnalazione /richiesta</a>
+                                </li>
+                                
+                                <li>
+                                    <a href="elenco_richieste.php"> 
+                                    <i class="fas fa-list-ul">
+                                    </i> Elenco richieste num verde
+                                     <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
+                                </li>
+
+                                <li>
+                                    <a href="elenco_richieste_storico.php">
+                                    <i class="fas fa-list"></i>
+                                    Elenco richieste num verde
+                                    <br> <small>Eventi passati</small></a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                        
+                        
                          <li>
                             <a href="#"><i class="fas fa-map-marked-alt"></i> Segnalazioni <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -174,32 +204,7 @@
                         
                         
                         
-                        <li>
-                            <a href="#"><i class="fas fa-phone"></i> Richieste n. verde <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-								 		
-                            	<li>
-                                    <a href="nuova_richiesta.php">
-                                    <i class="fas fa-plus"></i>
-                                    Registra richiesta</a>
-                                </li>
-                                
-                                <li>
-                                    <a href="elenco_richieste.php"> 
-                                    <i class="fas fa-list-ul">
-                                    </i> Elenco richieste num verde
-                                     <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
-                                </li>
-
-                                <li>
-                                    <a href="elenco_richieste_storico.php">
-                                    <i class="fas fa-list"></i>
-                                    Elenco richieste num verde
-                                    <br> <small>Eventi passati</small></a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                        
 						
                         <!--li>
                             <a href="reportistica.php"> <i class="fas fa-chart-pie"></i> Riepilogo e report</a>
@@ -208,6 +213,7 @@
                             <a target="_guida_in_linea" href="https://manuale-sistema-di-gestione-emergenze-comune-di-genova.readthedocs.io/it/latest/"> 
                             <i class="fas fa-question"></i> Guida in linea</a>
                         </li>
+                        <?php if ($profilo_sistema==1){ ?>
                         <li>
                             <a href="#"><i class="fa fa-user-shield"></i> Funzionalità amministratore sistema<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -220,6 +226,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                       <?php } ?>
                         
                     </ul>
                     

@@ -1,5 +1,17 @@
 <?php
 
+$query_comunicazioni="SELECT *";
+$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni 
+WHERE id_lavorazione=".$id_lavorazione. ";";
+//echo $query_comunicazioni;
+$result_comunicazioni=pg_query($conn, $query_comunicazioni);
+$check_messaggi_notifica=0;
+while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
+	$check_messaggi_notifica=$check_messaggi_notifica+1;
+}
+
+
+
 ?>
 
 
@@ -12,10 +24,28 @@
 					if ($check_segnalazione==1){
 					?>
 						Visualizza tutte le comunicazioni sulla segnalazione 
+						
+					<?php if ($check_messaggi_notifica > 0 ){ 
+			        echo "( "; 
+			        ?>
+			        <i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i>
+			        <?php 
+			        echo " ".$check_messaggi_notifica. ")"; 
+			         } ?>						
+						
 					<?php
 					} else {
 					?>
 						Visualizza tutte le comunicazioni sull'incarico
+					
+					<?php if ($check_messaggi_notifica > 0 ){ 
+			        echo "( "; 
+			        ?>
+			        <i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i>
+			        <?php 
+			        echo " ".$check_messaggi_notifica. ")"; 
+			         } ?>
+					
 					<?php
 					} 
 					?>
@@ -28,9 +58,11 @@
 				// cerco l'id_lavorazione
 				$query_comunicazioni="SELECT *";
 				if ($check_segnalazione==1){
-					$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni WHERE id_lavorazione=".$id_lavorazione. ";";
+					$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni WHERE id_lavorazione=".$id_lavorazione. " 
+					order by to_timestamp(data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text);";
 				} else {
-					$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni_incarichi WHERE id=".$id. ";";
+					$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni_incarichi WHERE id=".$id. " 
+					order by to_timestamp(data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text);";
 				} 
 				
 				//echo $query_comunicazioni;

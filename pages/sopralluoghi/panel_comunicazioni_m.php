@@ -1,5 +1,13 @@
 <?php
-
+$query_comunicazioni="SELECT *";
+$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni_sopralluoghi_mobili 
+WHERE id=".$id. ";";
+//echo $query_comunicazioni;
+$result_comunicazioni=pg_query($conn, $query_comunicazioni);
+$check_messaggi_notifica=0;
+while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
+	$check_messaggi_notifica=$check_messaggi_notifica+1;
+}
 ?>
 
 
@@ -7,7 +15,16 @@
 			  <div class="panel panel-success">
 			    <div class="panel-heading">
 			      <h4 class="panel-title">
-			        <a data-toggle="collapse" href="#list_comunicazioni"><i class="fa fa-comments"></i> Comunicazioni presidio </a>
+			        <a data-toggle="collapse" href="#list_comunicazioni">
+			        <i class="fa fa-comments"></i> Comunicazioni presidio</a>
+			        <?php if ($check_messaggi_notifica > 0 ){ 
+			        echo "( "; 
+			        ?>
+			        <i class="fas fa-envelope faa-ring animated" style="color:#ff0000"></i>
+			        <?php 
+			        echo " ".$check_messaggi_notifica. ")"; 
+			         } ?>
+			        
 			      </h4>
 			    </div>
 			    <div id="list_comunicazioni" class="panel-collapse collapse">

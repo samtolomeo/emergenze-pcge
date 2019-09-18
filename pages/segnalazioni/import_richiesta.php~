@@ -11,7 +11,7 @@ $id=str_replace("'", "", $id);
 
 $uo_inserimento = $_POST["uo_ins"];
 
-$descrizione= str_replace("'", "''", $_POST["descrizione"]);
+$descrizione= str_replace("'", "''", $_POST["descrizione_richiesta"]);
 $nome= str_replace("'", "''", $_POST["nome"]);
 //$cognome= str_replace("'", "''", $_POST["cognome"]);
 $altro= str_replace("'", "''", $_POST["altro"]);
@@ -117,6 +117,6 @@ echo $query_log;
 
 //exit;
 //header("location: ../dettagli_segnalazione.php?id=".$id_segnalazione);
-
+header("location: ../elenco_richieste.php");
 
 ?>
