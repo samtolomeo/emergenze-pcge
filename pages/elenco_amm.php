@@ -371,7 +371,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 					<option  id="table" name="table" value="">Seleziona la tabella</option>
 					<?php
 					
-					$query2="select * from information_schema.tables where table_name ilike 'tipo%' OR table_name ilike 'uo_1_livello' order by table_schema,table_name ";
+					$query2="select * from information_schema.tables where table_name ilike 'tipo%' OR table_name ilike 'uo_1_livello' OR table_name ilike 'uo_2_livello' OR table_name ilike 'uo_3_livello' order by table_schema,table_name ";
 					$result2 = pg_query($conn, $query2);
 					 
 					while($r2 = pg_fetch_assoc($result2)) { 

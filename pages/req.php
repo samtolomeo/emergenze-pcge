@@ -76,6 +76,8 @@ function integerToRoman($integer)
 
     <!-- Custom Fonts -->
     <link href="../vendor/fontawesome-free-5.2.0-web/css/all.css" rel="stylesheet" type="text/css">
+	
+	<link href="../vendor/font-awesome-animation/dist/font-awesome-animation.css" rel="stylesheet" type="text/css">
     
     <style type="text/css">
     #wrapper { 

@@ -803,7 +803,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT cf, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									$query2= "SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									//$query2="SELECT cf, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">

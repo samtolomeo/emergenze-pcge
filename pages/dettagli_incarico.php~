@@ -4,7 +4,7 @@ session_start();
 //$_SESSION['user']="MRZRRT84B01D969U";
 
 $id=$_GET["id"];
-$subtitle=$privacy ." Dettagli incarico n. ".$id;
+$subtitle=" Dettagli incarico n. ".$id;
 
 
 ?>
@@ -54,6 +54,27 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 
+$check_evento_aperto=1;
+$query_evento_aperto="SELECT e.valido FROM segnalazioni.join_incarico_provvedimenti_cautelari i 
+     JOIN segnalazioni.v_provvedimenti_cautelari pc1 ON i.id_provvedimento = pc1.id
+     JOIN eventi.t_eventi e ON e.id = pc1.id_evento
+WHERE i.id_incarico=".$id.";";
+
+//echo $query_evento_aperto;
+
+
+$result_e=pg_query($conn, $query_evento_aperto);
+while($r_e = pg_fetch_assoc($result_e)) {
+	if($r_e['valido']=='f') {
+		$check_evento_aperto=0;
+		$table='v_incarichi_eventi_chiusi';
+		//echo "false";
+	} else {
+		$table='v_incarichi';
+		//echo "true";
+	}
+}
+
 
 ?>
     
@@ -91,6 +112,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						//$id_squadra=$r['id_squadra'];
 						$id_uo=$r['id_uo'];
 						$id_profilo=$r['id_profilo'];
+						
+						$check_segnalazione=0;
+						if ($r['id_segnalazione']!=''){
+							$check_segnalazione=1;
+						}
 						require('./check_operatore.php');
 						//echo $id_profilo;
 					?>            
@@ -195,9 +221,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									 <div class="form-group">
 						<label for="data_inizio" >Data prevista per eseguire l'incarico (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->
@@ -582,6 +608,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					
 					<?php
 					}
+					if ($check_segnalazione==1){
 					?>
 					<h3><i class="fas fa-list-ul"></i> Segnalazioni collegate all'incarico </h3><br>
 
@@ -646,6 +673,18 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php
 						$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
 						$zoom=16;
+						}
+						} else {
+							// fine $query che verifica lo stato
+							$query= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_incarico =".$stato_attuale."  ORDER BY id_pc;";      
+							$result=pg_query($conn, $query);
+							while($r = pg_fetch_assoc($result)) {
+								?>
+								<a class="btn btn-info" href="dettagli_provvedimento_cautelare.php?id=<?php echo $r["id_pc"];?>"><i class="fas fa-undo"></i> Torna al PC <?php echo $r["id_pc"];?></a>
+								<?php
+							}
+							
+							$zoom=16;
 						}
 						?>
 						

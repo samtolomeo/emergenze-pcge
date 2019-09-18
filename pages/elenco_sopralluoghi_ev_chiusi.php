@@ -1,7 +1,6 @@
 <?php 
 
-
-$subtitle="Elenco utenti";
+$subtitle="Elenco presidi fissi (eventi chiusi)";
 
 
 $getfiltri=$_GET["f"];
@@ -33,11 +32,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
-if ($profilo_ok==3){
-	$subtitle="Elenco utenti (completo)";
-} else {
-	$subtitle="Elenco utenti (tua UnitÃ  Operativa)";
-}
+require('./tables/filtri_segnalazioni.php');
 ?>
     
 </head>
@@ -60,37 +55,12 @@ if ($profilo_ok==3){
                     <h1 class="page-header">Elenco segnalazioni</h1>
                 </div>
             </div-->
-			<br>
-			<?php
-            if ($profilo_ok==3){
-				$filter = ' ';
-			} else if($profilo==8){
-				$filter= ' WHERE id_profilo=\''.$profilo.'\' and nome_munic = \''.$livello.'\' ';
-			} else {
-				$filter= ' WHERE id_profilo=\''.$profilo.'\' ';
-			}
-						
-			$query="SELECT count(matricola_cf) From \"users\".\"v_utenti_sistema\" ".$filter." ;";
 
-			//echo $query;
-			$result = pg_query($conn, $query);
-
-			while($r = pg_fetch_assoc($result)) {
-				if ($profilo_ok==3){
-					echo '<i class="fas fa-users  faa-ring animated"></i>'. $r['count']. ' utenti registrati a sistema';
-				} else {
-					echo '<i class="fas fa-users faa-ring animated"></i>'. $r['count']. ' utenti della tua unità operativa abilitati';
-				}
-				
-			}	
-						
-			?>			
-            <br>
+            
+            <br><br>
             <div class="row">
 
-		<?php //echo $profilo_ok;?>
-		<br>
-		<?php //echo $livello1;?>
+
 	
         <div id="toolbar">
             <select class="form-control">
@@ -101,7 +71,7 @@ if ($profilo_ok==3){
         </div>
         
 
-        <table  id="users" class="table-hover" data-toggle="table" data-url="./tables/griglia_utenti_sistema.php?p=<?php echo $profilo_ok;?>&l=<?php echo $livello1;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="false" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi_eventi_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -109,14 +79,18 @@ if ($profilo_ok==3){
 <thead>
 
  	<tr>
-            <th data-field="state" data-checkbox="true"></th-->
-            <th data-field="matricola_cf" data-sortable="true" data-visible="true" >CF o<br>matricola</th> 
+            <th data-field="state" data-checkbox="true"></th>
+            <th data-field="descrizione_stato" data-sortable="true" data-visible="true" >Stato</th> 
             <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
-			<th data-field="cognome" data-sortable="true"  data-visible="true">Cognome</th>
-            <th data-field="nome" data-sortable="true"   data-visible="true">Nome</th>
-            <th data-field="profilo" data-sortable="true"  data-visible="true">Tipo<br>profilo</th>
-			<th data-field="valido" data-sortable="true" data-formatter="nameFormatter" data-visible="true">Stato</th>
-            <th data-field="matricola_cf" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>            
+				<!--th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th-->
+            <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
+            <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
+            <th data-field="time_preview" data-sortable="true"  data-visible="true">Ora<br>prevista</th>
+            <th data-field="time_start" data-sortable="true"  data-visible="true">Ora<br>inizio</th>
+            <th data-field="time_stop" data-sortable="true"  data-visible="true">Ora<br>fine</th>
+            <!--th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
+            <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>            
+				<th data-field="id_segnalazione" data-sortable="false" data-formatter="nameFormatterEdit1" data-visible="true" >Segnalazione</th>
     </tr>
 </thead>
 
@@ -125,7 +99,7 @@ if ($profilo_ok==3){
 
 <script>
     // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
-    var $table = $('#users');
+    var $table = $('#pres');
     $(function () {
         $('#toolbar').find('select').change(function () {
             $table.bootstrapTable('destroy').bootstrapTable({
@@ -152,12 +126,11 @@ if ($profilo_ok==3){
     }
 
  function nameFormatterEdit(value) {
-    if (value.length==16){
-		return '<a class="btn btn-warning" href="./update_volontario.php?id=\''+value+'\'"> <i class="fas fa-edit"></i> </a>';
-	} else {
-		return '<a class="btn btn-warning" href="./permessi.php?id=\''+value+'\'"> <i class="fas fa-edit"></i> </a>';
+        
+		return '<a class="btn btn-warning" href=./dettagli_sopralluogo.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+ 
     }
- }
+
 
  function nameFormatterEdit1(value) {
         if (value){

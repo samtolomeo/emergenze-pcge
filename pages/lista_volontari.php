@@ -89,6 +89,7 @@ if ($profilo_sistema > 6){
 	         <th data-field="comune" data-sortable="true"  data-visible="true" >Comune</th>
 	    		<th data-field="provincia" data-sortable="true"  data-visible="true" >PR</th>
              <th data-field="id_profilo" data-sortable="true"  data-visible="true" >Tipo<br>Profilo</th>
+             <th data-field="valido" data-sortable="true" data-formatter="nameFormatter_val"  data-visible="true" ><i class="fa fa-user-check" title="operativo" aria-hidden="true"></i></th>             
             <?php
 				if ($check_operatore == 1){
 				?>
@@ -159,6 +160,18 @@ function nameFormatter0(value) {
 		return '';
 	}
 }
+
+function nameFormatter_val(value) {
+
+	if (value=='t'){
+        return '<i class="fa fa-user-check" aria-hidden="true"></i>';
+	} else if (value=='f') {
+		  return '<i class="fa fa-user-cross" aria-hidden="true"></i>';
+	} else {
+		return '';
+	}
+}
+
 
 
   function nameFormatter1(value) {

@@ -116,7 +116,7 @@ if($contatore_eventi>0) {
 
 
 if($contatore_eventi>0) {
-	$query="SELECT * FROM eventi.t_attivazione_nverde WHERE data_ora_inizio < now() AND data_ora_fine > now();";
+	$query="SELECT id_evento FROM eventi.t_attivazione_nverde WHERE data_ora_inizio < now() AND data_ora_fine > now();";
 	$contatore_nverde=0;
 	$descrizione_nverde='Numero verde non attivo';
 	$color_nverde='#333333';
@@ -127,13 +127,12 @@ if($contatore_eventi>0) {
 }
 
 if($contatore_nverde==0) {
-	$contatore_nverde="-";
 	$preview_nverde="Numero verde non attivato";
-} else if ($contatore_allerte==1){
-	$preview_allerte="Numero verde attivato";
+} else if ($contatore_nverde==1){
+	$preview_nverde="Numero verde attivato";
 	$color_nverde='#009542';
 } else{
-	$preview_allerte="Numero verde attivato";
+	$preview_nverde="Numero verde attivato";
 	$color_nverde='#009542';
 }
 
@@ -329,10 +328,11 @@ foreach ($headers as $name => $content)
    }
 	
 	//profili per le squadre
-	if ($profilo_sistema < 8){
+	if ($profilo_sistema < 8 and $profilo_ok!=''){
 		$profilo_squadre=$profilo_ok;
 	} else {
-		$profilo_squadre=$uo_inc;
+		//$profilo_squadre=$uo_inc;
+		$profilo_squadre=$periferico_inc;
 	}
 	$query2="SELECT * FROM varie.v_incarichi_mail WHERE profilo = '".$profilo_squadre."'::text ORDER BY descrizione;";
 	//echo $query2;
@@ -347,7 +347,12 @@ foreach ($headers as $name => $content)
 	
 	
 	// segnalazioni da elaborare (il resto dei conteggi serve solo alla dashboard)
-	$query= "SELECT count(id) FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null;";
+
+	if($profilo_cod_munic !=''){
+		$f_mun= ' and id_municipio = '.$profilo_cod_munic.' ';
+	}
+	$query= "SELECT count(id) FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+	
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
 		$segn_limbo = $r['count'];	
@@ -436,12 +441,13 @@ foreach ($headers as $name => $content)
 	
 	
 	// Conteggi incarichi
-	$query= "SELECT  * FROM users.v_squadre_notifica WHERE id=".$id_squadra_operatore.";";
-	
+	$query= "SELECT id_incarico_interno, id_sopralluogo, id_sm FROM users.v_squadre_notifica WHERE id=".$id_squadra_operatore.";";
+	//echo $query;
 	$result = pg_query($conn, $query);
 	$id_ii_assegnati_squadra=array();
 	$id_s_assegnati_squadra=array();
-	$id_pc_assegnati_squadra=array();
+	$id_sm_assegnati_squadra=array();
+	//$id_pc_assegnati_squadra=array();
 	$descrizione_i_assegnati_squadra=array();
 	while($r = pg_fetch_assoc($result)) {
 		if($r['id_incarico_interno'] > 0 ) {
@@ -450,13 +456,14 @@ foreach ($headers as $name => $content)
 		if($r['id_sopralluogo'] > 0 ) {
 			$id_s_assegnati_squadra[] = $r['id_sopralluogo'];
 		}
-		if($r['id_pc'] > 0 ) {
-			$id_pc_assegnati_squadra[] = $r['id_pc'];
+		if($r['id_sm'] > 0 ) {
+			$id_sm_assegnati_squadra[] = $r['id_sm'];
 		}
 	}
 	$ii_assegnati_squadra = count($id_ii_assegnati_squadra);
 	$s_assegnati_squadra = count($id_s_assegnati_squadra);
-	$pc_assegnati_squadra = count($id_pc_assegnati_squadra);  
+	$sm_assegnati_squadra = count($id_sm_assegnati_squadra);
+	//$pc_assegnati_squadra = count($id_pc_assegnati_squadra);  
 	// Conteggi incarichi
 	/*$query= "SELECT  id, tipo_provvedimento FROM segnalazioni.v_incarichi_last_update where id_stato_incarichi<=2 and id_squadra=".$id_squadra_operatore.";";
 	
@@ -509,5 +516,31 @@ foreach ($headers as $name => $content)
 	$pc_assegnati_squadra = count($id_pc_assegnati_squadra);*/
 	
 	
-	$count_squadra = $ii_assegnati_squadra + $s_assegnati_squadra + $pc_assegnati_squadra;
+	$count_squadra = $ii_assegnati_squadra + $s_assegnati_squadra + $sm_assegnati_squadra; //+ $pc_assegnati_squadra;
+	
+	
+	
+	
+	
+	//messaggi
+	/*
+	$query= "select c.id_lavorazione, 
+max(c.data_ora_stato) as data_ora_stato
+FROM segnalazioni.v_comunicazioni_aperte c
+LEFT JOIN segnalazioni.t_segnalazioni_in_lavorazione s ON s.id = c.id_lavorazione 
+where c.id_destinatario='".$profilo_ok."' and 
+(s.in_lavorazione = 't' or s.in_lavorazione is null or c.id_lavorazione is null)
+group by c.id_lavorazione
+order by to_timestamp(max(c.data_ora_stato),'DD/MM/YY HH24:MI:SS') desc;";
+	$result = pg_query($conn, $query);
+	$id_lavorazione_m=array();
+	$data_ora_m=array();
+	while($r = pg_fetch_assoc($result)) {
+		$id_lavorazione_m[] = $r['id_lavorazione'];
+		$data_ora_m[] = $r['data_ora_stato'];
+	}
+	$n_id_lavorazione_m = count($id_lavorazione_m);
+	*/
+	
+	
 ?>       

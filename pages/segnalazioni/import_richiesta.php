@@ -7,11 +7,14 @@ require('../check_evento.php');
 
 
 //$id=$_GET["id"];
+
+$nextPage = ($_POST['ric']=='richiesta') ? 'import_richiesta.php' : 'import_segnalazione.php';
+
 $id=str_replace("'", "", $id);
 
 $uo_inserimento = $_POST["uo_ins"];
 
-$descrizione= str_replace("'", "''", $_POST["descrizione"]);
+$descrizione= str_replace("'", "''", $_POST["descrizione_richiesta"]);
 $nome= str_replace("'", "''", $_POST["nome"]);
 //$cognome= str_replace("'", "''", $_POST["cognome"]);
 $altro= str_replace("'", "''", $_POST["altro"]);

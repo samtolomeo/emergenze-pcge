@@ -350,7 +350,45 @@ $('#tipo_oggetto').attr('disabled',true);
         $('#catName').attr('disabled', 'disabled');
     });  
     
-    
+
+
+$('[type="radio"][id="rich"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            $("#richiesta").collapse('show');
+            $("#segnalazione").collapse('hide'); 
+            $('#crit').attr('disabled', true);
+            $('#descrizione').attr('disabled', true);
+            $('input[type=radio][name=georef][id="civico"]').prop('checked', false);
+            $('input[type=radio][name=georef][id="mappa"]').prop('checked', false);
+            $('input[type=radio][name=georef][id="coord"]').prop('checked', false);
+            $('input[type=radio][name=georef]').attr('disabled', true);
+            $('#via-list').attr('disabled', true);
+            $('#via-list').selectpicker('refresh');
+            $('#civico-list').attr('disabled', true);
+            $('#lat').attr('disabled', true);
+            $('#lon').attr('disabled', true);
+            $("#collapse1").collapse('hide');
+            $('form[name="form1"]').attr('action', 'segnalazioni/import_richiesta.php');
+
+            $('#descrizione_richiesta').removeAttr('disabled');
+            return true;
+        }
+        $('#catName').attr('disabled', 'disabled');
+    });
+
+$('[type="radio"][id="segn"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            $("#richiesta").collapse('hide');
+            $("#segnalazione").collapse('show');
+            $('#crit').removeAttr('disabled');
+            $('#descrizione').removeAttr('disabled');
+            $('input[type=radio][name=georef]').removeAttr('disabled');
+            $('#descrizione_richiesta').attr('disabled', true);
+            $('form[name="form1"]').attr('action', 'segnalazioni/import_segnalazione.php');
+            return true;
+        }
+        $('#catName').attr('disabled', 'disabled');
+    });    
     
     
     

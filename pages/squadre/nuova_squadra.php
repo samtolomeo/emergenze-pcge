@@ -38,7 +38,7 @@ echo "Nome squadra:".$nome. "<br>";
 echo "Afferenza:".$afferenza. "<br>";
 echo "Evento:".$evento_ok. "<br>";
 
-exit;
+//exit;
 
 
 

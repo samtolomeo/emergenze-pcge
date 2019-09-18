@@ -4,7 +4,7 @@ session_start();
 //$_SESSION['user']="MRZRRT84B01D969U";
 
 $id=$_GET["id"];
-$subtitle="Dettagli incarico n. ".$id;
+$subtitle="Dettagli incarico interno n. ".$id;
 
 
 ?>
@@ -78,11 +78,14 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				<?php
 					$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
 					//echo $query
-           
+           		$check_segnalazione=0;
 					$result=pg_query($conn, $query);
 					while($r = pg_fetch_assoc($result)) {
 						$id_squadra=$r['id_squadra'];
 						//$id_uo=$r['id_uo'];
+						if ($r['id_segnalazione']!=''){
+							$check_segnalazione=1;
+						}
                	$id_profilo=$r['id_profilo'];
 						require('./check_operatore.php');
 						//require('./check_responsabile.php');
