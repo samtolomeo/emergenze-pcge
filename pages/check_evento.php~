@@ -195,24 +195,33 @@ foreach ($headers as $name => $content)
 }
 
 
+$check_esterno=0;
+
+$check_esterno_update=0;
 
 
 //utenti esterni
-	$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."';";
-	$result = pg_query($conn, $query);
-	while($r = pg_fetch_assoc($result)) {
-		$nome = $r['nome'];
-		$cognome = $r['cognome'];
-		$codfisc = $r['cf'];
-		$matricola_cf=$codfisc;
-		$operatore=$matricola_cf;
-		$uo_inc='uo_'.$r['id1'];
-		$livello1=$r['livello1'];
-		$id_livello1=$r['id1'];
-		$livello2=$r['livello2'];
-		$livello3=$r['livello3'];
-	}
+$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."';";
+$result = pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	$nome = $r['nome'];
+	$cognome = $r['cognome'];
+	$codfisc = $r['cf'];
+	$matricola_cf=$codfisc;
+	$operatore=$matricola_cf;
+	$uo_inc='uo_'.$r['id1'];
+	$livello1=$r['livello1'];
+	$id_livello1=$r['id1'];
+	$livello2=$r['livello2'];
+	$livello3=$r['livello3'];
+	$check_esterno=1;
+}
 
+$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."' and (indirizzo is null or comune_residenza is null or mail is null or data_nascita is null or telefono1 is null);";
+$result = pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	$check_esterno_update=1;
+}
 
 
 
@@ -351,12 +360,14 @@ foreach ($headers as $name => $content)
 	if($profilo_cod_munic !=''){
 		$f_mun= ' and id_municipio = '.$profilo_cod_munic.' ';
 	}
-	$query= "SELECT count(id) FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
-	
+	$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+	$id_segn_limbo=array();
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
-		$segn_limbo = $r['count'];	
+		$id_segn_limbo[] = $r['id'];
 	}
+
+	$segn_limbo=count($id_segn_limbo);
 
 	// Conteggi incarichi
 	$query= "SELECT  id, descrizione, id_stato_incarico FROM segnalazioni.v_incarichi_last_update where id_stato_incarico<=2 and (id_profilo='".$profilo_ok."' OR id_uo='".$uo_inc."'  OR id_uo='".$periferico_inc."' ) GROUP BY id,descrizione, id_stato_incarico;";
