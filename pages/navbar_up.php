@@ -756,7 +756,8 @@ require ('./note_ambiente.php');
 					</a>
 					
                     <ul class="dropdown-menu dropdown-user">
-						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (Clicca per visualizzare i dettagli)</a>
+						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> 
+						(Clicca per visualizzare i dettagli e gestire le notifiche telegram <i class="fab fa-telegram" style="color:#0088CC" ></i>)</a>
                         </li>
                         <!--li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> User Profile</a>
                         </li-->

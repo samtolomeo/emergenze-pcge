@@ -23,7 +23,9 @@ sleep 20
 # dentro /etc/init.d
 # sudo ln -s $CONF/avvio_bot.sh
 # chmod +x /etc/init.d/avvio_bot.sh
-# update-rc.d avvio_bot.sh defaults
+# DEBIAN update-rc.d avvio_bot.sh defaults
+# RPM chkconfig avvio_bot.sh on
+
 
 python3 $CONF/forever.py $CONF/pc_bot_multithread_demo.py
 

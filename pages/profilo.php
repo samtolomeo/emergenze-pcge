@@ -21,6 +21,8 @@ require('./req.php');
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
+
+require('./token_telegram.php')
 ?>
     
 </head>
@@ -69,8 +71,10 @@ require('./check_evento.php');
 					
 					?>
 					<hr>
-					<h2> <i class="fab fa-telegram"></i> Notifiche telegram (servizio sperimentale) 
-					<i class="fab fa-telegram"></i></h2>
+					<h2> <i class="fab fa-telegram"  style="color:#0088CC" ></i> Notifiche telegram (servizio sperimentale) 
+					<i class="fab fa-telegram"  style="color:#0088CC"></i></h2>
+					<h4>Il servizio funziona tramite il bot telegram chiamato <b>@<?php echo $bot_name; ?></b>. 
+					Per info sui bot telegram <a href="https://telegram.org/faq/it#bot" target"=_new">clicca qua</a>. </h4>
 					<?php
 					$query = "SELECT telegram_id, telegram_attivo from users.v_utenti_sistema 
 					where matricola_cf='".$operatore."';";
@@ -81,7 +85,7 @@ require('./check_evento.php');
 					}
 					
 					?>
-					
+					<hr>
 					<form class="form-inline" action="./update_chatid.php?cf=<?php echo $operatore;?>" method="POST">
 						<div class="form-group">
 							<label for="chatid">Id telegram</label>
@@ -89,7 +93,14 @@ require('./check_evento.php');
 						</div>
 						<button  type="submit" class="btn btn-primary btn-sm">Edit</button>
 					</form>
-					
+					Per recuperare l'id telegram:
+					<ul>
+					<li> Se necessario, scaricare e installare l'applicazione telegram </li>
+					<li> Aggiungere il bot chiamato <b>@<?php echo $bot_name; ?></b>. 
+					E' sufficiente cercarlo come fosse un proprio contatto, selezionarlo e cliccare su avvia.</li>
+					<li> Sul bot usare il comando <b>/telegram_id</b> che fornisce il proprio id personale</li>
+					</ul>
+					<hr>
 					<?php
 					//echo $telegram_attivo;
 					if($telegram_id!='') {
