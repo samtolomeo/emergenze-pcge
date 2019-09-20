@@ -3,10 +3,14 @@ bower_componentspages/conn.php
 pages/conn.php
 pages/eventi/conn.py
 pages/eventi/conn.pyc
-page/eventi/config.py
-page/eventi/config.pyc
+pages/eventi/config.py
+pages/eventi/config.pyc
 pages/incarichi/credenziali_mail.php
 pages/incarichi_interni/credenziali_mail.php
 pages/sopralluoghi/credenziali_mail.php
 pages/provvedimenti_cautelari/credenziali_mail.php
-pages/token_telegram
+pages/token_telegram.php
+*.pyc
+pages/eventi/*.pyc
+pages/eventi/*.log
+
