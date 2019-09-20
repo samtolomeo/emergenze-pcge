@@ -7,8 +7,6 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 
 
-
-
 $query_max= "SELECT max(id) FROM eventi.t_eventi;";
 $result_max = pg_query($conn, $query_max);
 while($r_max = pg_fetch_assoc($result_max)) {
@@ -72,6 +70,25 @@ $result = pg_query($conn, $query_log);
 //$idfascicolo=str_replace('B','',$idfascicolo);
 echo "<br>";
 echo $query_log;
+
+require('../token_telegram.php');
+
+require('../send_message_telegram.php');
+
+
+$query_telegram="SELECT telegram_id from users.utenti_sistema where telegram_id !='' and telegram_attivo='t';";
+echo $query_telegram;
+echo "<br>";
+$messaggio="E ' stato creato un nuovo evento, consultare il programma ".$link." ";
+echo $messaggio;
+echo "<br>";
+$result_telegram = pg_query($conn, $query_telegram);
+while($r_telegram = pg_fetch_assoc($result_telegram)) {
+	//echo $r_telegram['telegram_id'];
+	//$chat_id = $r_telegram['telegram_id'];
+	sendMessage($r_telegram['telegram_id'], $messaggio , $token);
+}
+
 
 //exit;
 header("location: ../dettagli_evento.php?id=".$cf);

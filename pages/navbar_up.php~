@@ -387,7 +387,7 @@ require ('./note_ambiente.php');
 									if ($stato_i_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
 									echo " Descrizione: ".$descrizione_i_assegnati_resp[$ii]."" ;
 									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_incarichi c
@@ -428,7 +428,7 @@ require ('./note_ambiente.php');
 									if ($stato_ii_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
 									echo " Descrizione: ".$descrizione_ii_assegnati_resp[$ii]."" ;
 									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_incarichi_interni c
@@ -525,7 +525,7 @@ require ('./note_ambiente.php');
 											 echo '(<i class="fas fa-exchange-alt" title="richiesta cambio squadra" style="color:#ff0000"></i>)';
 										}
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
 									echo " Descrizione: ".$descrizione_sm_assegnati_resp[$ii]." " ;
 									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_sopralluoghi_mobili c
@@ -568,7 +568,7 @@ require ('./note_ambiente.php');
 									if ($stato_pc_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
 									} else {
-										echo '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+										echo '<i class="fas fa-exclamation" title="da elaborare" style="color:#ff0000"></i>';
 									}
 									echo " Tipo: ".$tipo_pc_assegnati_resp[$ii];
 									$query_m="SELECT c.data_ora_stato FROM segnalazioni.v_comunicazioni_provvedimenti_cautelari c
@@ -745,9 +745,16 @@ require ('./note_ambiente.php');
 				
                 <!-- /.dropdown -->
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
-                    </a>
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<?php if ($check_esterno_update==1){ ;?>
+                        <i class="fas fa-user fa-fw faa-ring animated" style="color:#ff0000"></i> <i class="fas fa-caret-down"></i>
+				<?php } else { ?>
+						<i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
+				<?php } ?>
+					
+					
+					</a>
+					
                     <ul class="dropdown-menu dropdown-user">
 						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (Clicca per visualizzare i dettagli)</a>
                         </li>

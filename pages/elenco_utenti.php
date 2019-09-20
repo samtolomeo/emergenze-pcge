@@ -77,9 +77,9 @@ if ($profilo_ok==3){
 
 			while($r = pg_fetch_assoc($result)) {
 				if ($profilo_ok==3){
-					echo '<i class="fas fa-users  faa-ring animated"></i>'. $r['count']. ' utenti registrati a sistema';
+					echo '<i class="fas fa-users  faa-ring animated"></i> '. $r['count']. ' utenti registrati a sistema';
 				} else {
-					echo '<i class="fas fa-users faa-ring animated"></i>'. $r['count']. ' utenti della tua unità operativa abilitati';
+					echo '<i class="fas fa-users faa-ring animated"></i> '. $r['count']. ' utenti della tua unità operativa abilitati';
 				}
 				
 			}	

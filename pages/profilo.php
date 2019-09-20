@@ -66,8 +66,48 @@ require('./check_evento.php');
 					if ($check_esterno ==1){
 						echo "<br><a class=\"btn btn-primary btn-sm\" href=\"update_volontario.php?id='".$CF."'\" > <i class=\"fa fa-pencil-alt\"></i> Aggiorna dati anagrafici</a>";
 					}
-				?> 
-				
+					
+					?>
+					<hr>
+					<h2> <i class="fab fa-telegram"></i> Notifiche telegram (servizio sperimentale) 
+					<i class="fab fa-telegram"></i></h2>
+					<?php
+					$query = "SELECT telegram_id, telegram_attivo from users.v_utenti_sistema 
+					where matricola_cf='".$operatore."';";
+					$result = pg_query($conn, $query);
+					while($r = pg_fetch_assoc($result)) {
+						$telegram_id=$r['telegram_id'];
+						$telegram_attivo=$r['telegram_attivo'];
+					}
+					
+					?>
+					
+					<form class="form-inline" action="./update_chatid.php?cf=<?php echo $operatore;?>" method="POST">
+						<div class="form-group">
+							<label for="chatid">Id telegram</label>
+							<input type="chatid" class="form-control-plaintext" name="chatid" value="<?php echo $telegram_id; ?>" >
+						</div>
+						<button  type="submit" class="btn btn-primary btn-sm">Edit</button>
+					</form>
+					
+					<?php
+					//echo $telegram_attivo;
+					if($telegram_id!='') {
+					if($telegram_attivo=='f') {
+					?>
+						<i class="fas fa-times faa-ring animated" style="color:#ff0000"></i> Notifiche disattivate
+						<a class="btn btn-success btn-sm" href="attiva_notifiche.php?cf=<?php echo $operatore; ?>" >
+						<i class=\"fa fa-check\"></i> Attiva notifiche</a>
+					<?php
+					} else {
+					?>
+						<i class="fas fa-check faa-ring animated" style="color:#007c37"></i> Notifiche attivate
+						<a class="btn btn-danger btn-sm" href="disattiva_notifiche.php?cf=<?php echo $operatore; ?>" >
+						<i class=\"fa fa-times\"></i> Disattiva notifiche</a>
+					<?php
+					} 
+					}
+					?>
 				
                 <!-- /.col-lg-12 -->
             </div>
@@ -76,7 +116,8 @@ require('./check_evento.php');
             
             <br><br>
             <div class="row">
-				
+
+
             </div>
             <!-- /.row -->
     </div>
