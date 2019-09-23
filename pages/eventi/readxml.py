@@ -21,7 +21,7 @@ TOKEN=config.TOKEN
 
 bot = telepot.Bot(TOKEN)
 #per ora solo un test su Roberto
-chat_id= config.chat_id
+#chat_id= config.chat_id
 
 
 sito_allerta="http://www.allertaliguria.gov.it"
@@ -54,8 +54,9 @@ def scarica_bollettino(tipo,nome,ora):
         if tipo == 'PC':
             messaggio = "{}/docs/{}".format(sito_allerta,nome)
             # ciclo for sulle chat_id
-            query_chat_id= "SELECT telegram_id from users.v_utenti_sistema where telegram_id !='' and telegram_attivo='t' and id_profilo <=3 ;"
-            lista_chat_id = cur.fetchall() 
+            query_chat_id= "SELECT telegram_id from users.v_utenti_sistema where telegram_id !='' and telegram_attivo='t' and (id_profilo='1' or id_profilo ='2' or id_profilo ='3');"
+            curr.execute(query_chat_id)
+            lista_chat_id = curr.fetchall() 
             #print("Print each row and it's columns values")
             for row in lista_chat_id:
                 chat_id=row[0]
