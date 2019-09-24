@@ -210,6 +210,7 @@ while($r = pg_fetch_assoc($result)) {
 	$matricola_cf=$codfisc;
 	$operatore=$matricola_cf;
 	$uo_inc='uo_'.$r['id1'];
+	$id_uo1=$r['id1'];
 	$livello1=$r['livello1'];
 	$id_livello1=$r['id1'];
 	$livello2=$r['livello2'];
@@ -553,5 +554,13 @@ order by to_timestamp(max(c.data_ora_stato),'DD/MM/YY HH24:MI:SS') desc;";
 	$n_id_lavorazione_m = count($id_lavorazione_m);
 	*/
 	
+	//controllo reperibilità
+	$check_reperibilita=0;
+	$query = "SELECT reperibilita FROM users.uo_1_livello where id1 = ".$id_uo1." and reperibilita='t';";
+	//echo $query;
+	$result = pg_query($conn, $query);
+	while($r = pg_fetch_assoc($result)) {
+		$check_reperibilita=1;
+	}
 	
 ?>       

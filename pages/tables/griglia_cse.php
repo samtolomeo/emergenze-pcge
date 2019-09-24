@@ -6,9 +6,11 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT cf, nome, cognome, comune, provincia, 
-	id_profilo, stato_profilo, concat(livello1, ' -', livello2) as livello1, valido 
-	FROM users.v_utenti_esterni ORDER BY cognome ;";
+	$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
+	$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+	//$query = $query. "where data_start > now() ";
+	//$query = $query. " and id1=".$r0["id1"]."";
+	$query = $query. " order by data_start, cognome;";
     
     //echo $query;
 	$result = pg_query($conn, $query);

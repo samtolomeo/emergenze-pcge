@@ -4,7 +4,7 @@ session_start();
 //$_SESSION['user']="MRZRRT84B01D969U";
 
 $id=$_GET["id"];
-$subtitle="Dettagli incarico n. ".$id;
+$subtitle="Dettagli incarico interno n. ".$id;
 
 
 ?>
@@ -319,9 +319,139 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							} else { ?>
 								<h4><br><b>Ora inizio esecuzione incarico</b>: <?php echo $r['time_start']; ?></h4> 
 							<?php 
-							} 
+							}
+							
+														
+							$check_richiesta_cambio=1;
+							$query3="SELECT * FROM segnalazioni.t_incarichi_interni_richiesta_cambi 
+							WHERE id_incarico=".$id." AND eseguito='f';";
+							//echo $query3 . "<br>";
+							$result3=pg_query($conn, $query3);
+							while($r3 = pg_fetch_assoc($result3)) {
+							  $check_richiesta_cambio=1; //check se ci sono richieste cambi
+							}
+							$query3="SELECT * FROM segnalazioni.t_incarichi_interni_richiesta_cambi 
+							WHERE id_incarico=".$id." AND eseguito is null;";
+							//echo $query3 . "<br>";
+							$result3=pg_query($conn, $query3);
+							while($r3 = pg_fetch_assoc($result3)) {
+							  $check_richiesta_cambio=-1; //check se ci sono richieste cambi
+							 
+							}
+							if($check_richiesta_cambio==0) {
+								if ($check_squadra==1 or $check_operatore==1){
+						?>
+						
+						
+						   <a type="button" class="btn btn-warning"  href="./incarichi_interni/chiedi_cambio.php?id=<?php echo $id;?>&l=<?php echo $id_lavorazione;?>"><i class="fas fa-exchange-alt"></i> Richiesta di cambio squadra</a>
+				      	<?php
+				      }
+				      } else if($check_richiesta_cambio==-1){
+				      	?>
+							<h4> Richiesta cambio in corso ( 
+							<?php
+							$querys="SELECT * FROM segnalazioni.join_incarichi_interni_squadra 
+							WHERE id_incarico=".$id." and valido is null; ";
+							//echo $querys;
+							$results=pg_query($conn, $querys);
+							while($rs = pg_fetch_assoc($results)) {
+								$old_id = $rs['id_squadra'];
+							}
+							$results=pg_query($conn, $querys);
+							while($rs = pg_fetch_assoc($results)) {
+								echo $rs['nome']. " in uscita";
+							}
+							
+							
+							?>
+							)</h4>
+							<?php
 							if ($check_squadra==1 or $check_operatore==1){
 							?>
+							<a type="button" class="btn btn-warning"  href="./incarichi_interni/cambio2.php?id=<?php echo $id;?>&os=<?php echo $old_id;?>">
+							<i class="fas fa-exchange-alt"></i> Conferma che il cambio squadra<br>è stato portato a termine</a>
+
+						<?php
+						}
+						 
+				      } else {
+				      	?>
+				      	<div style="text-align: center;">
+				      	<h3> <i class="fa fa-exclamation fa-fw" style="color:red"></i>
+				      	Richiesto cambio squadra
+				      	<i class="fa fa-exclamation fa-fw" style="color:red"></i>
+				      	</h3>
+				      	<?php 
+							if ($check_operatore==1){
+							?>
+				      	<button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#cambio"><i class="fas fa-exchange-alt"></i> Cambio squadra</button>
+							<?php
+							}
+							?>
+							</div>
+						<!-- Modal incarico interno-->
+						<div id="cambio" class="modal fade" role="dialog">
+						  <div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Cambio squadra presidio</h4>
+							  </div>
+							  <div class="modal-body">
+							  
+
+								<form autocomplete="off" action="incarichi_interni/cambio.php?id=<?php echo $id; ?>&l=<?php echo $id_lavorazione; ?>" method="POST">
+								<input type="hidden" name="uo_old" value="<?php echo $r['descrizione_uo'];?>" />
+								<input type="hidden" name="id_squadra_old" value="<?php echo $r['id_squadra'];?>" />
+
+									<?php
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									$result2 = pg_query($conn, $query2);
+									?>
+									<div class="form-group">
+									  <label for="id_civico">Seleziona squadra:</label> <font color="red">*</font>
+										<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
+										<option  id="uo" name="uo" value="">Seleziona la squadra</option>
+										<?php    
+										while($r2 = pg_fetch_assoc($result2)) { 
+											$valore=  $r2['cf']. ";".$r2['nome'];            
+										?>
+													
+												<option id="uo" name="uo" value="<?php echo $r2['id'];?>" ><?php echo $r2['nome'].' ('.$r2['id'].')';?></option>
+										 <?php } ?>
+									</select>
+									<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
+									 </div>       
+									
+										  
+
+
+
+								<button  id="conferma" type="submit" class="btn btn-primary">Cambia squadra</button>
+									</form>
+
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+							  </div>
+							</div>
+
+						  </div>
+						</div>
+						
+						
+						
+						
+						
+						
+						
+						<?php 
+				      } 
+							if ($check_squadra==1 or $check_operatore==1){
+							?>
+							<br><br>
 							<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi"><i class="fas fa-stop"></i> Chiudi</button>
 						<?php	
 							}

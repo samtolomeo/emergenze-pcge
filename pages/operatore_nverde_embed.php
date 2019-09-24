@@ -184,7 +184,8 @@
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_nverde r ";
 			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
-			$query = $query. "where data_start < now() and data_end > now();";
+			$query = $query. "where data_start < now() ";
+			//$query = $query. "and data_end > now() ";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
 			

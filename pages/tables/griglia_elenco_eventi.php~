@@ -6,9 +6,13 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT cf, nome, cognome, comune, provincia, 
-	id_profilo, stato_profilo, concat(livello1, ' -', livello2) as livello1, valido 
-	FROM users.v_utenti_esterni ORDER BY cognome ;";
+	$query="SELECT e.id, e.descrizione, 
+	to_char(e.data_ora_inizio_evento, 'YYYY/MM/DD HH24:MI'::text) AS data_ora_inizio_evento, 
+	to_char(e.data_ora_fine_evento, 'YYYY/MM/DD HH24:MI'::text) AS data_ora_fine_evento, 
+	e.valido, n.nota 
+	From eventi.v_eventi e 
+	LEFT JOIN t_note_eventi n ON n.id_evento = e.id 
+	ORDER by data_ora_inizio_evento desc;";
     
     //echo $query;
 	$result = pg_query($conn, $query);

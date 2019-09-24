@@ -73,7 +73,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
             <div class="row">
             <div class="col-md-6">
 				<?php
-				$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
+				$query= "SELECT *, st_x(st_centroid(st_transform(geom,4326))) as lon , st_y(st_centroid(st_transform(geom,4326))) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
 				//echo $query
         
 				$result=pg_query($conn, $query);
@@ -186,9 +186,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									 <div class="form-group">
 						<label for="data_inizio" >Data prevista per eseguire il presidio mobile(AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->
@@ -311,6 +311,21 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						} else if ($r["id_stato_sopralluogo"]==2) {
 							
 							
+							
+						
+							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
+							<?php if ($r['time_start']==''){
+								if ($check_squadra==1 or $check_operatore==1){
+							?>
+								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La squadra è sul posto </a><br><br>
+							<?php 
+								}
+							} else { ?>
+								<h4><br><b>Ora inizio esecuzione presidio</b>: <?php echo $r['time_start']; ?></h4>
+							<?php } 
+							
+							
+							
 							$check_richiesta_cambio=0;
 							$query3="SELECT * FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi WHERE id_sopralluogo=".$id." AND eseguito='f';";
 							//echo $query3 . "<br>";
@@ -392,7 +407,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_squadra_old" value="<?php echo $r['id_squadra'];?>" />
 
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
@@ -434,18 +449,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						<?php 
 				      } 
-				      ?>
-						
-							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
-							<?php if ($r['time_start']==''){
-								if ($check_squadra==1 or $check_operatore==1){
-							?>
-								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La squadra è sul posto </a><br><br>
-							<?php 
-								}
-							} else { ?>
-								<h4><br><b>Ora inizio esecuzione presidio</b>: <?php echo $r['time_start']; ?></h4>
-							<?php } 
+
+							
+							
+							
 								if ($check_squadra==1 or $check_operatore==1){
 							?>
 							

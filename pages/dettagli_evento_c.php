@@ -49,8 +49,9 @@ require('./check_evento.php');
 					$len=count($eventi_attivi_c);	               
 	               for ($i=0;$i<$len;$i++){
 	               	echo '<div class="row">';
-	               	echo '<div class="col-lg-4"><h2><i class="fa fa-chevron-circle-down"></i> Evento in chiusura <small>(id='.$eventi_attivi_c[$i].')</small> </h2></div>';
-	   					echo '<div class="col-lg-6"><div style="text-align: center;"><h2 id=timer'.$i.' > </h2></div></div>';
+	               	echo '<div class="col-lg-5"><h2><i class="fa fa-chevron-circle-down"></i> Evento in chiusura <small>(id='.$eventi_attivi_c[$i].')</small> ';
+	               	echo ' - <a href="reportistica.php?id='.$eventi_attivi_c[$i].'" class="btn btn-info">Report </a></h2></div>';
+	   					echo '<div class="col-lg-5"><div style="text-align: center;"><h2 id=timer'.$i.' > </h2></div></div>';
 	   					$check_segnalazioni=0;
 	   					$query="SELECT id FROM segnalazioni.v_segnalazioni where id_evento=".$eventi_attivi_c[$i]." and (in_lavorazione='t' OR in_lavorazione is null) ";
 	   					$result = pg_query($conn, $query);
