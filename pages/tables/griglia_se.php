@@ -32,7 +32,7 @@ if(!$conn) {
 	
 	
 	
-	$query = $query. " order by data_start, cognome;";
+	$query = $query. " order by data_start desc, cognome;";
     
     //echo $query;
 	$result = pg_query($conn, $query);
