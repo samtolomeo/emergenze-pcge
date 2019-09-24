@@ -54,11 +54,14 @@
                                     <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi / reportistica </a>
                                 </li> 
                                 <li>
-                                   <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i>Assegna turni sala emergenze</a>
-
+                                   <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i> Assegna turni sala emergenze</a>
                                 </li> 
                                 <li>
-                                    <a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
+                                   <a href="storico_sala_emergenze.php"><i class="fas fa-history"></i> Storico turni sala emergenze</a> 
+
+                                </li> 			
+<li>					                                  
+  <a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
 								<li>
 								<a href="rete_idro.php"><i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
@@ -71,7 +74,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="gestione_squadre.php"><i class="fa fa-users"></i>  Gestione squadre</a>
+                            <a href="gestione_squadre.php"><i class="fa fa-users"></i> Gestione squadre</a>
                         </li>
  								<?php if ($profilo_ok==3){ ?>
 								<li>
