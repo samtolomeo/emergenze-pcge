@@ -311,6 +311,21 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						} else if ($r["id_stato_sopralluogo"]==2) {
 							
 							
+							
+						?>
+							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
+							<?php if ($r['time_start']==''){
+								if ($check_squadra==1 or $check_operatore==1){
+							?>
+								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La squadra è sul posto </a><br><br>
+							<?php 
+								}
+							} else { ?>
+								<h4><br><b>Ora inizio esecuzione presidio</b>: <?php echo $r['time_start']; ?></h4>
+							<?php } 
+							
+							
+							
 							$check_richiesta_cambio=0;
 							$query3="SELECT * FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi WHERE id_sopralluogo=".$id." AND eseguito='f';";
 							//echo $query3 . "<br>";
@@ -434,18 +449,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						<?php 
 				      } 
-				      ?>
-						
-							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
-							<?php if ($r['time_start']==''){
-								if ($check_squadra==1 or $check_operatore==1){
-							?>
-								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La squadra è sul posto </a><br><br>
-							<?php 
-								}
-							} else { ?>
-								<h4><br><b>Ora inizio esecuzione presidio</b>: <?php echo $r['time_start']; ?></h4>
-							<?php } 
+
+							
+							
+							
 								if ($check_squadra==1 or $check_operatore==1){
 							?>
 							
@@ -453,6 +460,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						<?php	
 							}
+							
+							
+							
 						} else if ($r["id_stato_sopralluogo"]==3) {
 						?>
 							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>

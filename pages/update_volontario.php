@@ -121,12 +121,12 @@ require('./check_evento.php');
                 <input type="text" pattern=".{16,16}" maxlenght="16" value='<?php echo $r['cf']?>' name="cf" class="form-control" required>
               </div>           
               <div class="form-group">
-                <label for="data_nascita">Data di nascita</label> *
-                <input type="text" name="data_nascita" value='<?php echo $r['data_nascita']?>' class="form-control" required>
+                <label for="data_nascita">Data di nascita</label>
+                <input type="text" name="data_nascita" value='<?php echo $r['data_nascita']?>' class="form-control">
               </div>            
               <div class="form-group">
-                <label for="nazione_nascita">Nazione di nascita</label> *
-                <input type="text" name="nazione_nascita" value='<?php echo $r['nazione_nascita']?>' class="form-control" required>
+                <label for="nazione_nascita">Nazione di nascita</label>
+                <input type="text" name="nazione_nascita" value='<?php echo $r['nazione_nascita']?>' class="form-control">
               </div>    
               
             <button type="submit" class="btn btn-primary">Aggiorna</button>
@@ -180,8 +180,8 @@ require('./check_evento.php');
         <form action="update_v/indirizzo.php?id='<?php echo $r['cf']?>'" method="POST">
 
               <div class="form-group">
-                <label for="indirizzo"> Indirizzo</label> *
-                <input type="indirizzo" value='<?php echo $r['indirizzo']?>' name="indirizzo" class="form-control" required>
+                <label for="indirizzo"> Indirizzo</label>
+                <input type="indirizzo" value='<?php echo $r['indirizzo']?>' name="indirizzo" class="form-control" >
               </div>
               <div class="form-group">
                 <label for="cap"> cap</label>
@@ -246,8 +246,8 @@ require('./check_evento.php');
 
 
              <div class="form-group">
-              <label for="provincia">Provincia:</label> <font color="red">*</font>
-                            <select disabled="" name="provincia" id="provincia-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required>
+              <label for="provincia">Provincia:</label> <font color="red"></font>
+                            <select disabled="" name="provincia" id="provincia-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" >
                             <option value="">Seleziona la provincia</option>
             <?php            
             $query2="SELECT * From \"varie\".\"province\";";
@@ -265,8 +265,8 @@ require('./check_evento.php');
 
 
             <div class="form-group">
-              <label for="comune">Comune:</label> <font color="red">*</font>
-                <select disabled="" class="form-control" name="comune" id="comune-list" class="demoInputBox" required>
+              <label for="comune">Comune:</label> <font color="red"></font>
+                <select disabled="" class="form-control" name="comune" id="comune-list" class="demoInputBox" >
                 <option value="">Seleziona il comune</option>
             </select>         
              </div>           
@@ -338,12 +338,12 @@ require('./check_evento.php');
         <form action="update_v/contatti.php?id='<?php echo $r['cf']?>'" method="POST">
 
               <div class="form-group">
-                <label for="telefono1"> Telefono principale</label> *
-                <input type="text" value='<?php echo $r['telefono1']?>' name="telefono1" class="form-control" required>
+                <label for="telefono1"> Telefono principale</label>
+                <input type="text" value='<?php echo $r['telefono1']?>' name="telefono1" class="form-control" >
               </div>
               <div class="form-group">
-                <label for="mail"> Mail</label> *
-                <input type="email" value='<?php echo $r['mail']?>' name="mail" class="form-control" required>
+                <label for="mail"> Mail</label>
+                <input type="email" value='<?php echo $r['mail']?>' name="mail" class="form-control" >
               </div>
               <div class="form-group">
                 <label for="telefono2"> Telefono secondario</label>
@@ -400,7 +400,7 @@ require('./check_evento.php');
 			?>
             <br><br>
             
-            <!--b>UO II livello</b>: <?php echo $r['livello2'] ?>
+            <b>UO II livello</b>: <?php echo $r['livello2'] ?>
 			<?php
 			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
 			?>
@@ -413,7 +413,7 @@ require('./check_evento.php');
             <br><br>
             
             
-            <b>UO III livello </b>: <?php echo $r['livello3'] ?>
+            <!--b>UO III livello </b>: <?php echo $r['livello3'] ?>
             <?php
 			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
 			?>
@@ -493,7 +493,7 @@ require('./check_evento.php');
 <form action="update_v/II_livello.php?id='<?php echo $r['cf']?>'" method="POST">
 
               <div class="form-group">
-              <label for="II_livello">Unità operativa II livello (demo):</label> <font color="red">*</font>
+              <label for="II_livello">Unità operativa II livello (demo):</label> <font color="red"></font>
                             <select class="selectpicker show-tick form-control" data-live-search="true" name="id2" id="id2" required>
                             <option value="">Seleziona...</option>
             <?php            

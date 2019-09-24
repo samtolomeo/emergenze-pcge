@@ -49,6 +49,9 @@
                                 </li>
                                  <li>
                                     <a href="dettagli_evento_c.php"><i class="fas fa-info-circle"></i> Dettagli eventi in fase di chiusura</a>
+                                </li>
+                                 <li>
+                                    <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi </a>
                                 </li> 
                                 <li>
                                    <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i>Assegna turni sala emergenze</a>
@@ -70,9 +73,9 @@
                         <li>
                             <a href="gestione_squadre.php"><i class="fa fa-users"></i>  Gestione squadre</a>
                         </li>
-
+ 								<?php if ($profilo_ok==3){ ?>
 								<li>
-                            <a href="#"><i class="fas fa-phone"></i> Richieste n. verde <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fas fa-phone"></i> Richieste / segnalazioni n. verde <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
 								 		
                             	<li>
@@ -97,7 +100,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-
+								<?php } ?>
                         
                         
                          <li>

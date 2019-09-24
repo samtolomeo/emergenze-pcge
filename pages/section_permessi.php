@@ -40,11 +40,21 @@
 <div class="row">
 			<?php
 			if ($profilo_sistema==1){
+				//echo strlen($id);
 			?>
             <form action="permessi/permessi_insert.php" method="POST">
             <!-- Devo passare al php che gestisce l'aggiornamento permessi anche la matricola con un campo nascosto-->
-            <input type="hidden" name="matr" id="hiddenField" value="<?php echo $id ?>" />
-            
+			<?php
+			if (strlen($id)==18){
+			?>
+				<input type="hidden" name="cf" id="hiddenField" value="<?php echo $id ?>" />
+            <?php
+			} else {
+			?>
+				<input type="hidden" name="matr" id="hiddenField" value="<?php echo $id ?>" />
+			<?php
+			}
+			?>
             <div class="form-group col-lg-12">
             <label for="profilo"> Scegli il profilo </label> <font color="red">*</font><br>
             <?php

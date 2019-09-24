@@ -49,6 +49,9 @@
                                 </li>
                                  <li>
                                     <a href="dettagli_evento_c.php"><i class="fas fa-info-circle"></i> Dettagli eventi in fase di chiusura</a>
+                                </li>
+                                 <li>
+                                    <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi / reportistica </a>
                                 </li> 
                                 <li>
                                    <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i>Assegna turni sala emergenze</a>

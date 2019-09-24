@@ -53,7 +53,7 @@ require ('./note_ambiente.php');
 				</li>
 			<?php
 			}
-			if ($profilo_sistema == 8){
+			if ($profilo_sistema == 8 and $check_reperibilita==1){
 			?>
 			
 			<li class="nav-item active">
@@ -115,7 +115,7 @@ require ('./note_ambiente.php');
 							
 							<?php
 							//echo $len_c;
-								if ($len_c > 0){
+								if ($len_c > 0 and $profilo_ok <=3){
 							?>
 								<i class="fas fa-hourglass-end" style="color:red"></i>
 							<?php		
@@ -312,7 +312,7 @@ require ('./note_ambiente.php');
 				  font-weight:bold;
 				}
 				</style>
-				<?php if($segn_limbo>0){?>
+				<?php if($segn_limbo>0 and $profilo_ok < 7){?>
 					
 					<li id="limbo" class="dropdown">
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
