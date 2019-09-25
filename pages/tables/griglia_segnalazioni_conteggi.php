@@ -19,7 +19,7 @@ if(!$conn) {
 } else {
 	//$idcivico=$_GET["id"];
 	$query="SELECT s.criticita, count(s.id), r.risolte
-FROM segnalazioni.v_segnalazioni s
+FROM segnalazioni.v_segnalazioni_all s
 LEFT JOIN segnalazioni.v_count_risolte r ON r.criticita=s.criticita 
 WHERE s.id_evento=".$id."
 GROUP BY s.criticita, r.risolte;";
