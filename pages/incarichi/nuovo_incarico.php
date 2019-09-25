@@ -234,7 +234,7 @@ $mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di
 //convert HTML into a basic plain-text alternative body
 $body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo incarico alla seguente Unità  operativa 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
- con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id='.$id_incarico.'" " > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
+ con le tue credenziali al nuovo <a href="https://emergenze.comune.genova.it/emergenze/pages/dettagli_incarico.php?id='.$id_incarico.'" " > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
 
