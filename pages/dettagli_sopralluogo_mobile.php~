@@ -105,6 +105,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php 
 						$lon=$r['lon'];
 						$lat=$r['lat'];
+						$id_civico=$r['id_civico'];
+						$geom=$r['geom'];
+						$id_municipio=$r['id_municipio'];
 						$zoom=16;
             		$id_lavorazione=$r['id_lavorazione'];
             		if ( $id_lavorazione>0){ 
@@ -312,7 +315,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							
 							
 							
-						
+						?>
 							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
 							<?php if ($r['time_start']==''){
 								if ($check_squadra==1 or $check_operatore==1){
@@ -460,6 +463,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						<?php	
 							}
+							
+							
+							
 						} else if ($r["id_stato_sopralluogo"]==3) {
 						?>
 							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>

@@ -105,6 +105,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php 
 						$lon=$r['lon'];
 						$lat=$r['lat'];
+						$id_civico=$r['id_civico'];
+						$geom=$r['geom'];
+						$id_municipio=$r['id_municipio'];
 						$zoom=16;
             		$id_lavorazione=$r['id_lavorazione'];
             		if ( $id_lavorazione>0){ 
@@ -392,7 +395,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_squadra_old" value="<?php echo $r['id_squadra'];?>" />
 
 									<?php
-									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
+									$query2="SELECT * FROM users.v_squadre WHERE id_stato=2  AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome ";
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">

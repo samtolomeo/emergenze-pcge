@@ -110,6 +110,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php 
 						$lon=$r['lon'];
 						$lat=$r['lat'];
+						$id_civico=$r['id_civico'];
+						$geom=$r['geom'];
+						$id_municipio=$r['id_municipio'];
             		$id_lavorazione=$r['id_lavorazione'];
 					$id_evento=$r['id_evento'];
 						echo "<h2>";
@@ -376,11 +379,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						 
 				      } else {
 				      	?>
-				      	<div style="text-align: center;">
+				      	<!--div style="text-align: center;">
 				      	<h3> <i class="fa fa-exclamation fa-fw" style="color:red"></i>
 				      	Richiesto cambio squadra
 				      	<i class="fa fa-exclamation fa-fw" style="color:red"></i>
-				      	</h3>
+				      	</h3-->
 				      	<?php 
 							if ($check_operatore==1){
 							?>
@@ -388,7 +391,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<?php
 							}
 							?>
-							</div>
+							<!--/div-->
 						<!-- Modal incarico interno-->
 						<div id="cambio" class="modal fade" role="dialog">
 						  <div class="modal-dialog">

@@ -18,8 +18,9 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id, criticita, 
-       num, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat, incarichi FROM segnalazioni.v_segnalazioni_lista_pp ".$filter." ;";
+	$query="SELECT id, criticita, id_evento,
+       num, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat, incarichi 
+       FROM segnalazioni.v_segnalazioni_lista_pp ".$filter." ;";
     
    //echo $query;
 	//echo "<br>";

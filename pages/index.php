@@ -120,7 +120,11 @@ require('./check_evento.php');
                                 <div class="col-lg-12">
                                     <div >
                                     
-<table  id="segnalazioni_limbo" class="table table-condensed" style="word-break:break-all; word-wrap:break-word;" data-toggle="table" data-url="./tables/griglia_segnalazioni_limbo.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+<table  id="segnalazioni_limbo" class="table table-condensed" 
+style="word-break:break-all; word-wrap:break-word;" 
+data-toggle="table" data-url="./tables/griglia_segnalazioni_limbo.php" 
+data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true" 
+data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 			
 
         
@@ -130,7 +134,8 @@ require('./check_evento.php');
  	<tr>
             <!--th data-field="state" data-checkbox="true"></th-->
             <!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" ></th-->
-			<th data-field="id" data-sortable="false" data-formatter="nameFormatterEditL" data-visible="true" ></th>
+				<th data-field="id" data-sortable="false" data-formatter="nameFormatterEditL" data-visible="true" ></th>
+				<th data-field="id_evento" data-sortable="true" data-visible="true" >Evento</th>
             <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
             <th style="word-break:break-all; word-wrap:break-word;" data-field="criticita" data-sortable="true"   data-visible="true">Tipo criticità</th>
             <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
@@ -184,6 +189,7 @@ require('./check_evento.php');
             <!--th data-field="state" data-checkbox="true"></th-->
             <th data-field="id" style="vertical-align:center" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" ></th>
             <!--th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" ></th-->
+            <th data-field="id_evento" data-sortable="true" data-visible="true" >Evento</th>
             <th data-field="in_lavorazione" data-sortable="true" data-halign="center" data-valign="center" data-formatter="nameFormatter" data-visible="true" >Stato</th> 
             <!--th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th-->
             <th data-field="criticita" data-sortable="true"   data-visible="true">Tipo<br>criticità</th>
