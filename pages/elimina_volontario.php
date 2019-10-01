@@ -7,12 +7,15 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 $cf=$_GET["id"];
 
 
+$query="INSERT INTO users.utenti_esterni_eliminiati SELECT * FROM users.utenti_esterni where cf =".$cf.";";
+echo $query;
+//exit;
+$result = pg_query($conn, $query);
 
 
 $query="DELETE FROM users.utenti_esterni WHERE cf=$cf;";
 echo $query;
 //exit;
-
 $result = pg_query($conn, $query);
 
 

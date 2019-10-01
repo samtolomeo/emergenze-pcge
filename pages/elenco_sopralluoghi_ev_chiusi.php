@@ -80,11 +80,11 @@ require('./tables/filtri_segnalazioni.php');
 
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="descrizione_stato" data-sortable="true" data-visible="true" >Stato</th> 
+            <th data-field="id_stato_sopralluogo" data-sortable="false" data-formatter="presidiFormatter" data-visible="true" >Stato</th> 
             <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
 				<!--th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th-->
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
-            <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
+            <th data-field="id_evento" data-sortable="true"  data-visible="true">Evento</th>
             <th data-field="time_preview" data-sortable="true"  data-visible="true">Ora<br>prevista</th>
             <th data-field="time_start" data-sortable="true"  data-visible="true">Ora<br>inizio</th>
             <th data-field="time_stop" data-sortable="true"  data-visible="true">Ora<br>fine</th>
@@ -113,6 +113,18 @@ require('./tables/filtri_segnalazioni.php');
 
 <script>
 
+
+ function presidiFormatter(value) {
+        if (value==2){
+        		return '<i class="fas fa-play" title="Preso in carico" style="color:#5cb85c"></i>';
+        } else if (value==3) {
+        	   return '<i class="fas fa-stop" title="Chiuso"></i>';
+        } else if (value==1){
+        	   return '<i class="fas fa-exclamation" title="Da prendere in carico" style="color:#ff0000"></i>';
+        }
+
+    }
+	
 
  function nameFormatter(value) {
         if (value=='t'){
