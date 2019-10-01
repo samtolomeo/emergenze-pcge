@@ -4,6 +4,7 @@ session_start();
 //$_SESSION['user']="MRZRRT84B01D969U";
 
 $id=$_GET["id"];
+$id_provvedimento=$id;
 $subtitle="Dettagli Provvedimento Cautelare n. ".$id;
 
 
@@ -75,7 +76,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
             <div class="col-md-6">
 				<?php
 				$query= "SELECT *, st_x(geom_inizio) as lon , st_y(geom_inizio) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
-				//echo $query
+				//echo $query;
 				$check_punto=0;
 				$result=pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
@@ -222,6 +223,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php 
 						$lon=$r['lon'];
 						$lat=$r['lat'];
+						$id_civico=$r['id_civico'];
+						$geom=$r['geom'];
+						$id_municipio=$r['id_municipio'];
 						$zoom=16;
             		$id_lavorazione=$r['id_lavorazione'];
             		if ( $id_lavorazione>0){ 
@@ -254,7 +258,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						echo $r['descrizione_stato'];
-						if ($r["rimosso"]=='t'){
+						echo '</h2>';
+						if ($r["rimosso"]=='t' and $stato_attuale==3){
 							echo '<br><br><i class="fas fa-times"></i> Provvedimento rimosso con 
 							successiva ordinanza sindacale alle ore ';
 							$query_ore="SELECT to_char(data_ora_stato, 'HH24:MI'::text) as ora,
@@ -266,10 +271,19 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							  echo $r_ore['ora'].' del '.$r_ore['data'];
 							}
 							echo "</h2><hr>";
-						} else {
+						} else if ($stato_attuale==3) {
 							echo "</h2><hr>";
-							if ($r['id_segnalazione']!=''){
-								echo'<h4> Per rimuovere il provvedimento torna alla 
+							$query_segn='SELECT in_lavorazione 
+							from segnalazioni.v_segnalazioni
+							WHERE id ='.$r['id_segnalazione'].' and in_lavorazione=\'f\';';
+							$check_lav_s=1;
+							$result_segn=pg_query($conn, $query_segn);
+							while($r_segn = pg_fetch_assoc($result_segn)) {
+								$check_lav_s=0;
+							}
+							 
+							if ($r['id_segnalazione']!='' AND $check_lav_s==1 ){
+								echo'<h5> Per rimuovere il provvedimento torna alla 
 								segnalazione e segui le istruzioni';
 							
 							// fine $query che verifica lo stato
@@ -281,19 +295,45 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 					?>
 									<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r["id_segnalazione"];?>"><i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r["id_segnalazione"];?></a>
-						</h4>
+						</h5>
 						<?php
 					}
 							
 							} else {
-								echo'<h4> Per rimuovere il presente provvedimento cautelare è necessario
-								prima assegnare uno o più incarichi e poi, una volta completato/i è possubile 
-								rimuovere il PC</h4>';
+								echo'<h5> Se la situazione fosse tornata normale, <b>in presenza di una nuova ordinanza sindacale</b>, 
+								è possibile rimuovere il provvedimento cautelare. <br><br>';
+								echo 'Prima di tutto è necessario  assegnare uno o più incarichi per ripristinare la situazione.';
+								if ($r[id_tipo_pc]==1) {
+									echo '(far rientrare i residenti)';
+								} else if ($r[id_tipo_pc]==2) {
+									echo '(riaprire il sottopasso)';
+								} else if($r[id_tipo_pc]==3) {
+									echo '(riaprire al transito la strada)';
+								} 
+								echo '<br><br>Una volta completati gli incarichi è possibile rimuovere il Provvedimento dal sistema</h5>';
 								
+								$query_i= "SELECT * FROM segnalazioni.join_incarico_provvedimenti_cautelari where id_provvedimento=".$id.";"; 
+								$result_i=pg_query($conn, $query_i);
+								echo '<lu>';
+								while($r_i = pg_fetch_assoc($result_i)) {
+									$query_ii= 'SELECT descrizione, descrizione_stato FROM segnalazioni.v_incarichi_last_update 
+									WHERE id = '.$r_i['id_incarico'].';';
+									$result_ii=pg_query($conn, $query_ii);
+									while($r_ii = pg_fetch_assoc($result_ii)) {
+										echo '<li>'.$r_ii['descrizione'] . ' (' . $r_ii['descrizione_stato'] .') - ';
+									}
+									echo '<a class="btn btn-info" href="dettagli_incarico.php?id='.$r_i['id_incarico'].'" > 
+									Dettagli incarico '.$r_i['id_incarico'].'</a></li><br>';
+								}
+								echo '</lu>';
 								?>
 								<button type="button" class="btn btn-info"  
 								data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> 
 								Assegna incarico </button>
+								- 
+								<button type="button" class="btn btn-danger"  
+								data-toggle="modal" data-target="#rimuovi_pc"><i class="fas fa-times"></i> 
+								Rimuovi provvedimento cautelare </button>
 						 			
 								
 								
@@ -403,9 +443,50 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						  </div>
 						</div>
 								
+								
+								
+								
+								<div id="rimuovi_pc" class="modal fade" role="dialog">
+						  <div class="modal-dialog modal-lg">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Conferma</h4>
+							  </div>
+							  <div class="modal-body">
+								Confermi di voler rimuovere il presente Provvedimento Cautelare? <br><br> Ricorda che per 
+								rimuovere un provvedimento cautelare è necessaria una nuova ordinanza sindacale.
+								<br><br>Se sei in possesso di ordinanza sindacale prima di tutto assegna uno 
+								o più incarichi per ripristinare la situazione. 
+								
+								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
 								<hr>
+								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $id; ?>" method="POST">
+									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
+									<br>Rimuovi il provvedimento cautelare</button>
+									
+									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+								</form>
+	
+							  </div>
+							
+							</div>
+
+						  </div>
+						</div>
+						
+						
+								<hr>
+								
 								<?php
 								//fine modal
+								
+								
+								
+								
+								
 								
 								
 							
@@ -413,7 +494,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 						}
 						
-						if ($r["id_stato_provvedimenti_cautelari"]==1){
+						
+						if ($stato_attuale==1){
 						?>
 				      <div style="text-align: center;">
 				      <?php 
@@ -428,6 +510,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								echo '<a class="btn btn-info" href="provvedimenti_cautelari/sollecito.php?id='.$id.'&u='.$r['id_squadra'].'"> <i class="fas fa-at"></i> Invia sollecito </a> ';
 							
 							}
+							
+							
+							
 							if ($check_uo==1 or $check_operatore==1){
 				      ?>
 				      <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#accetta"><i class="fas fa-thumbs-up"></i> Presa in carico</button>
@@ -455,11 +540,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<!--input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" /-->
 								
 									 <div class="form-group">
-						<label for="data_inizio" >Data prevista per eseguire il provvedimento cautelare (AAAA-MM-GG) </label>  <font color="red">*</font>                 
+						<label for="data_inizio">Data prevista per eseguire il provvedimento cautelare (AAAA-MM-GG) </label>  <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_inizio" id="js-date" required>
-						<div class="input-group-addon">
+						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						</div-->
 					</div> 
 					
 					<div class="form-group"-->
@@ -579,7 +664,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							
 							
 							
-						} else if ($r["id_stato_provvedimenti_cautelari"]==2) {
+						} else if ($stato_attuale==2) {
+							
+							
+							
 						?>
 							<h4><br><b>Ora prevista per eseguire il provvedimento</b>: <?php echo $r['time_preview']; ?></h4>
 							<?php if ($r['time_start']==''){
@@ -596,7 +684,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi"><i class="fas fa-stop"></i> Provvedimento completato</button>
 						<?php	
 							}
-						} else if ($r["id_stato_provvedimenti_cautelari"]==3) {
+						} else if ($stato_attuale==3) {
 						?>
 							<h4><br><b>Ora prevista per eseguire il provvedimento</b>: <?php echo $r['time_preview']; ?></h4>
 							<h4><br><b>Ora inizio esecuzione del provvedimento</b>: 

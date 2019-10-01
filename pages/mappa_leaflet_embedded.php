@@ -525,7 +525,7 @@
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pause-circle"></i> Da prendere in carico </div>'+
 				'<h4><b>Tipo</b>: '+
 				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id='+
+				'<a class="btn btn-primary active" role="button" target="_parent" href="./dettagli_segnalazione.php?id='+
 				feature.properties.id +
 				'"> Dettagli segnalazione </a>' );
 			}
@@ -543,7 +543,7 @@
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-play-circle"></i> In lavorazione </div>'+
 				'<h4><b>Tipo</b>: '+
 				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id='+
+				'<a class="btn btn-primary active" role="button" target="_parent" href="./dettagli_segnalazione.php?id='+
 				feature.properties.id +
 				'"> Dettagli segnalazione </a>' );
 			}
@@ -558,7 +558,7 @@
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-stop-circle"></i> Chiuse </div>'+
 				'<h4><b>Tipo</b>: '+
 				feature.properties.criticita+'</h4>'+
-				'<a class="btn btn-primary active" role="button" href="./dettagli_segnalazione.php?id='+
+				'<a class="btn btn-primary active" role="button"  target="_parent" href="./dettagli_segnalazione.php?id='+
 				feature.properties.id +
 				'"> Dettagli segnalazione </a>' );
 			}
@@ -577,7 +577,7 @@
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" href="./dettagli_sopralluogo.php?id='+
+				'<a class="btn btn-info active" role="button" target="_parent" href="./dettagli_sopralluogo.php?id='+
 				feature.properties.id +
 				'"> Dettagli presidio </a>' );
 			}
@@ -591,7 +591,7 @@
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" href="./dettagli_sopralluogo.php?id='+
+				'<a class="btn btn-info active" role="button" target="_parent" href="./dettagli_sopralluogo.php?id='+
 				feature.properties.id +
 				'"> Dettagli presidio </a>' );
 			}
@@ -612,7 +612,7 @@
 				feature.properties.descrizione_stato+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" href="./dettagli_provvedimento_cautelare.php?id='+
+				'<a class="btn btn-info active" role="button" target="_parent" href="./dettagli_provvedimento_cautelare.php?id='+
 				feature.properties.id +
 				'"> Dettagli PC </a>' );
 			}
@@ -628,7 +628,7 @@
 				feature.properties.descrizione_stato+'</h4>'+
 				'<h4><b>Descrizione</b>: '+
 				feature.properties.descrizione+'</h4>'+
-				'<a class="btn btn-info active" role="button" href="./dettagli_provvedimento_cautelare.php?id='+
+				'<a class="btn btn-info active" role="button" target="_parent" href="./dettagli_provvedimento_cautelare.php?id='+
 				feature.properties.id +
 				'"> Dettagli PC </a>' );
 			}

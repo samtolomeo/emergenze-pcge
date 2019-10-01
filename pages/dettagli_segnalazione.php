@@ -99,6 +99,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						$lon=$r['lon'];
 						$lat=$r['lat'];
+						$id_civico=$r['id_civico'];
+						$geom=$r['geom'];
+						$id_municipio=$r['id_municipio'];
+						
 					?>            
             
                <h4><br><b>Tipo criticità</b>: <?php echo $r['criticita']; ?></h4>
@@ -1185,32 +1189,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						</div> 
 						<div class="col-md-6">
 						<h4> <i class="fas fa-map-marker-alt"></i> Indirizzo </h4>
-						<?php if($r['id_civico'] !='') {
-								$queryc= "SELECT * FROM geodb.civici WHERE id=".$r['id_civico'].";";
-								$resultc=pg_query($conn, $queryc);
-								while($rc = pg_fetch_assoc($resultc)) {
-									echo "<b>Indirizzo civico</b>:" .$rc['desvia'].", ".$rc['testo'].", ".$rc['cap'];
-									echo "<br><b>Municipio</b>:" .$rc['desmunicipio'];
-								}
-						} else {
-								$queryc= "SELECT desvia, testo, cap, st_distance(st_transform(geom,4326),'".$r['geom']."') as distance  FROM geodb.civici ORDER BY distance LIMIT 1;";
-								//echo $queryc;
-								$resultc=pg_query($conn, $queryc);
-								while($rc = pg_fetch_assoc($resultc)) {
-									echo "<b>Indirizzo civico (più prossimo)</b>:" .$rc['desvia'].", ".$rc['testo'].", ".$rc['cap'];
-									//echo "<br><b>Municipio</b>:" .$rc['desmunicipio'];
-								}
-								$queryc= "SELECT nome_munic FROM geodb.municipi WHERE codice_mun='".$r['id_municipio']."';";
-								//echo $queryc;
-								$resultc=pg_query($conn, $queryc);
-								while($rc = pg_fetch_assoc($resultc)) {
-									echo "<br><b>Municipio</b>:" .$rc['nome_munic'];
-									//echo "<br><b>Municipio</b>:" .$rc['desmunicipio'];
-								}
-								
 						
-						}
-						
+						<?php
+						require('./indirizzo_embedded.php');
 						//echo $lon;
 						$zoom=16;
 						?>

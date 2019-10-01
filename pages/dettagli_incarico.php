@@ -145,7 +145,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$lon=$r['lon'];
 						$lat=$r['lat'];
             		$id_lavorazione=$r['id_lavorazione'];
-					$id_evento=$r['id_evento'];
+            		$id_civico=$r['id_civico'];
+						$geom=$r['geom'];
+						$id_municipio=$r['id_municipio'];
+						$id_evento=$r['id_evento'];
 						echo "<h2>";
 						//1;"Inviato ma non ancora preso in carico"
 						//2;"Preso in carico"
@@ -693,6 +696,14 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<br>
 						</div> 
 						<div class="col-md-6">
+						<h4> <i class="fas fa-map-marker-alt"></i> Indirizzo </h4>
+						
+						<?php
+						require('./indirizzo_embedded.php');
+						//echo $lon;
+						$zoom=16;
+						?>
+						<hr>
 						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
 						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
 						

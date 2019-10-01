@@ -104,13 +104,18 @@
         
 		var realvista = L.tileLayer.wms("https://mappe.comune.genova.it/realvista/reflector/open/service", {
                 layers: 'rv1',
-                format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a> | <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'
+                format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a>.'
               });
 
         var basemap2 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
             maxZoom: 28
         });
+        
+        var base_genova = L.tileLayer.wms("https://mappe.comune.genova.it/geoserver/ows?", {
+                layers: 'BASE_CARTOGRAFICA',maxZoom: 22,
+                format: 'image/jpeg',attribution: '<a href="https://geoportale.comune.genova.it/" target="_blank">Comune di Genova &copy; CC-BY Tiles</a>.'
+              });
 
         map.addLayer(basemap2);
         
@@ -313,7 +318,7 @@
 			var pc_punti = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom_inizio) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom is null ;";
+        $query_g="SELECT id, ST_AsGeoJson(geom_inizio) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom is null AND rimosso='f' ;";
 			//echo $query_g;
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -346,7 +351,7 @@
 			var pc_linee = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom_inizio is null ;";
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, descrizione_uo, descrizione_stato, tipo_provvedimento, descrizione FROM segnalazioni.v_provvedimenti_cautelari_last_update WHERE geom_inizio is null AND rimosso='f';";
 			//echo $query_g;
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -601,7 +606,7 @@
 		    ,
 			onEachFeature: function (feature, layer) {
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pencil-ruler"></i>' +feature.properties.tipo_provvedimento+ '</div>'+
-				'<h4><b>Squadra</b>: '+
+				'<h4><b>Unità operativa</b>: '+
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Stato</b>: '+
 				feature.properties.descrizione_stato+'</h4>'+
@@ -617,7 +622,7 @@
 		    style:stile_pc_linea,
 			onEachFeature: function (feature, layer) {
 				layer.bindPopup('<div align="right" style="color:grey"><i class="fas fa-pencil-ruler"></i>' +feature.properties.tipo_provvedimento+ '</div>'+
-				'<h4><b>Squadra</b>: '+
+				'<h4><b>Unità operativa</b>: '+
 				feature.properties.descrizione_uo+'</h4>'+
 				'<h4><b>Stato</b>: '+
 				feature.properties.descrizione_stato+'</h4>'+
@@ -866,8 +871,9 @@ var civico = [
         
         
         var baseLayers = {
-        		'Humanitarian OpensStreetMap': basemap2, 
-        		'Realvista e-geos': realvista
+        		'OpenStreetMap': basemap2, 
+        		'Realvista e-geos': realvista,
+        		'Sfondo comunale': base_genova
         	};
         
         var overlayLayers = {'<img src="icon/segn_no_lavorazione.png" width="20" height="24" alt=""> Segnalazioni da elaborare': layer_v_segnalazioni_0,
