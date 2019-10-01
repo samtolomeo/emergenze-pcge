@@ -136,10 +136,16 @@
                                     <a href="nuovo_sopralluogo_mobile.php">Nuovo presidio mobile</a>
                                 </li>
                                 <li>
-                                    <a href="elenco_sopralluoghi.php">Elenco presidi fissi</a>
+                                    <a href="elenco_sopralluoghi.php">Elenco presidi fissi attivi</a>
                                 </li>
                                 <li>
-                                    <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili</a>
+                                    <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili attivi</a>
+                                </li>
+								<li>
+                                    <a href="elenco_sopralluoghi_ev_chiusi.php">Elenco presidi fissi schiusi</a>
+                                </li>
+                                <li>
+                                    <a href="elenco_sopralluoghi_mobili_ev_chiusi.php">Elenco presidi mobili chiusi</a>
                                 </li>
                                 
                             </ul>

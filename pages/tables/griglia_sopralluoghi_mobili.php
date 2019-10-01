@@ -20,8 +20,9 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id, descrizione, descrizione_uo, data_ora_invio,
-	id_stato_sopralluogo From segnalazioni.v_sopralluoghi_mobili_last_update ".$filter." ORDER BY id_stato_sopralluogo;";
+	$query="SELECT p.id, p.descrizione, p.descrizione_uo, p.data_ora_invio,
+	p.id_stato_sopralluogo, s.componenti From segnalazioni.v_sopralluoghi_mobili_last_update p 
+	left join users.v_squadre s ON s.id=p.id_squadra where id_stato_sopralluogo < 3 ".$filter.";";
     
    //echo $query;
 	$result = pg_query($conn, $query);

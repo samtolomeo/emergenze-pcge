@@ -1045,6 +1045,7 @@ if ($id != '') {
 		<?php
 					
 			$query2="SELECT cf, cognome, nome, livello1 FROM users.v_utenti_esterni v WHERE id1=1
+			UNION SELECT matricola as cf, cognome, nome, settore || ' - '|| ufficio as livello1 FROM varie.v_dipendenti
 			ORDER BY cognome";
 			//echo $query2;
 			$result2 = pg_query($conn, $query2);

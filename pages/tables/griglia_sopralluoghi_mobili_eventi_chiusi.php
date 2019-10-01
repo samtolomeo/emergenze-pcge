@@ -20,8 +20,10 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id, descrizione, descrizione_uo, data_ora_invio,
-	id_stato_sopralluogo From segnalazioni.v_sopralluoghi_mobili_eventi_chiusi_last_update ".$filter." ORDER BY id_stato_sopralluogo;";
+	$query="SELECT id, id_evento, descrizione, descrizione_uo, data_ora_invio,
+	id_stato_sopralluogo From segnalazioni.v_sopralluoghi_mobili_eventi_chiusi_last_update ".$filter." 
+	UNION SELECT id, id_evento, descrizione, descrizione_uo, data_ora_invio,
+	id_stato_sopralluogo From segnalazioni.v_sopralluoghi_mobili_last_update where id_stato_sopralluogo=3 ".$filter." ORDER BY id_evento desc;";
     
    //echo $query;
 	$result = pg_query($conn, $query);

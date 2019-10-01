@@ -82,13 +82,14 @@ require('./tables/filtri_segnalazioni.php');
             <!--th data-field="state" data-checkbox="true"></th-->
             <th data-field="id_stato_sopralluogo" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th> 
             <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
-				<th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Squadra</th>
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
             <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
             <th data-field="data_ora_invio" data-sortable="true"  data-visible="true">Data e ora<br>assegnazione</th>
             <!--th data-field="time_start" data-sortable="true"  data-visible="true">Ora<br>inizio</th>
             <th data-field="time_stop" data-sortable="true"  data-visible="true">Ora<br>fine</th>
             <th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
+			<th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Squadra</th>
+			<th data-field="componenti" data-sortable="true"  data-visible="true">Componenti</th>
             <th data-field="id" data-sortable="false" data-formatter="presidiFormatterEdit" data-visible="true" >Dettagli</th>            
 				<!--th data-field="id_segnalazione" data-sortable="false" data-formatter="nameFormatterEdit1" data-visible="true" >Segnalazione</th-->
     </tr>
@@ -106,11 +107,11 @@ require('./tables/filtri_segnalazioni.php');
 
  function presidiFormatter(value) {
         if (value==2){
-        		return '<i class="fas fa-play" style="color:#5cb85c"></i> Preso in carico';
+        		return '<i class="fas fa-play" title="Preso in carico" style="color:#5cb85c"></i>';
         } else if (value==3) {
-        	   return '<i class="fas fa-stop"></i> Chiuso';
+        	   return '<i class="fas fa-stop" title="Chiuso"></i>';
         } else if (value==1){
-        	   return '<i class="fas fa-exclamation" style="color:#ff0000"></i>Da prendere in carico';
+        	   return '<i class="fas fa-exclamation" title="Da prendere in carico" style="color:#ff0000"></i>';
         }
 
     }
