@@ -718,7 +718,7 @@ if ($id != '') {
 			}
 			
 			if ($check_reperibile==0){
-				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
+				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono Responsabili Presidi Territoriali <br>';
 			}
 			
 			
@@ -977,7 +977,7 @@ if ($id != '') {
 			}
 			
 			if ($check_reperibile==0){
-				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
+				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono tecnici di Protezione Civile <br>';
 			}
 
 			echo "---.---.---<br>";
@@ -1231,7 +1231,7 @@ if ($id != '') {
 			}
 			
 			if ($check_reperibile==0){
-				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
+				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Volontariato <br>';
 			}
 
 			echo "---.---.---<br>";

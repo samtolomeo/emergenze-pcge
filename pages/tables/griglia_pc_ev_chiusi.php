@@ -17,9 +17,9 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id_evento, data_ora_invio, id_stato_provvedimenti_cautelari, descrizione_stato, 
+	$query="SELECT id_evento,  data_ora_invio, id_stato_provvedimenti_cautelari, descrizione_stato, 
 	tipo_provvedimento, oggetto, descrizione, note_ente, id, id_segnalazione, rimosso 
-	From segnalazioni.v_provvedimenti_cautelari_last_update ".$filter." ;";
+	From segnalazioni.v_provvedimenti_cautelari_eventi_chiusi_last_update ".$filter." ORDER BY id_evento desc;";
     
    //echo $query;
 	$result = pg_query($conn, $query);

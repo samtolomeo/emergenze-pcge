@@ -164,7 +164,10 @@
                                     <a href="nuovo_pc_strada.php">Chiusura strada</a>
                                 </li>
 								<li>
-                                    <a href="elenco_pc.php">Elenco provvedimenti cautelari</a>
+                                    <a href="elenco_pc.php">Elenco provvedimenti cautelari (eventi aperti)</a>
+                                </li>
+								<li>
+                                    <a href="elenco_pc_ev_chiusi.php">Elenco provvedimenti cautelari (eventi chiusi)</a>
                                 </li>
 
                             </ul>
