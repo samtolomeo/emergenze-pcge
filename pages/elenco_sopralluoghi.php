@@ -119,7 +119,7 @@ function presidiFormatter(value) {
         if (value==2){
         		return '<i class="fas fa-play" title="Preso in carico" style="color:#5cb85c"></i>';
         } else if (value==3) {
-        	   return '<i class="fas fa-stop" title="Chiuso"></i>';
+        	   return '<i class="fas fa-check" title="Chiuso" style="color:#5cb85c"></i>';
         } else if (value==1){
         	   return '<i class="fas fa-exclamation" title="Da prendere in carico" style="color:#ff0000"></i>';
         }

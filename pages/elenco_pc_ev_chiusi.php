@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Elenco provvedimenti cautelari (eventi attivi o in chiusura)";
+$subtitle="Elenco provvedimenti cautelari (eventi chiusi)";
 
 
 $getfiltri=$_GET["f"];
@@ -71,7 +71,7 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_pc.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_pc_ev_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
