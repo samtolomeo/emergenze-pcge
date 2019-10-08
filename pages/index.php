@@ -1,6 +1,7 @@
 <?php 
 
-$subtitle="Dashboard (pagina iniziale)";
+$subtitle="Dashboard o pagina iniziale";
+
 
 
 

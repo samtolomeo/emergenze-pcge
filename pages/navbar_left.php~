@@ -51,14 +51,17 @@
                                     <a href="dettagli_evento_c.php"><i class="fas fa-info-circle"></i> Dettagli eventi in fase di chiusura</a>
                                 </li>
                                  <li>
-                                    <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi </a>
+                                    <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi / reportistica </a>
                                 </li> 
                                 <li>
-                                   <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i>Assegna turni sala emergenze</a>
+                                   <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i> Assegna turni sala emergenze</a>
+                                </li> 
+                                <li>
+                                   <a href="storico_sala_emergenze.php"><i class="fas fa-history"></i> Storico turni sala emergenze</a> 
 
-                                </li> 
-                                <li>
-                                    <a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
+                                </li> 			
+<li>					                                  
+  <a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
 								<li>
 								<a href="rete_idro.php"><i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
@@ -71,7 +74,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="gestione_squadre.php"><i class="fa fa-users"></i>  Gestione squadre</a>
+                            <a href="gestione_squadre.php"><i class="fa fa-users"></i> Gestione squadre</a>
                         </li>
  								<?php if ($profilo_ok==3){ ?>
 								<li>
@@ -133,10 +136,16 @@
                                     <a href="nuovo_sopralluogo_mobile.php">Nuovo presidio mobile</a>
                                 </li>
                                 <li>
-                                    <a href="elenco_sopralluoghi.php">Elenco presidi fissi</a>
+                                    <a href="elenco_sopralluoghi.php">Elenco presidi fissi attivi</a>
                                 </li>
                                 <li>
-                                    <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili</a>
+                                    <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili attivi</a>
+                                </li>
+								<li>
+                                    <a href="elenco_sopralluoghi_ev_chiusi.php">Elenco presidi fissi schiusi</a>
+                                </li>
+                                <li>
+                                    <a href="elenco_sopralluoghi_mobili_ev_chiusi.php">Elenco presidi mobili chiusi</a>
                                 </li>
                                 
                             </ul>
@@ -155,7 +164,10 @@
                                     <a href="nuovo_pc_strada.php">Chiusura strada</a>
                                 </li>
 								<li>
-                                    <a href="elenco_pc.php">Elenco provvedimenti cautelari</a>
+                                    <a href="elenco_pc.php">Elenco provvedimenti cautelari (eventi aperti)</a>
+                                </li>
+								<li>
+                                    <a href="elenco_pc_ev_chiusi.php">Elenco provvedimenti cautelari (eventi chiusi)</a>
                                 </li>
 
                             </ul>

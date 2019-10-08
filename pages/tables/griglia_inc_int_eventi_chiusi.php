@@ -17,10 +17,10 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id_stato_incarico, descrizione, id_evento, time_start, 
-	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_sopralluoghi_eventi_chiusi_last_update ".$filter." 
-	UNION SELECT id_stato_incarico, descrizione, id_evento, time_start, 
-	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_sopralluoghi_last_update 
+	$query="SELECT id_stato_incarico, descrizione_stato, descrizione, id_evento, time_start, 
+	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_incarichi_interni_eventi_chiusi_last_update ".$filter." 
+	UNION SELECT id_stato_incarico, descrizione, descrizione_stato, id_evento, time_start, 
+	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_incarichi_interni_last_update 
 	where id_stato_incarico in (3,4) ".$filter." ORDER BY id_evento desc;";
     
    //echo $query;

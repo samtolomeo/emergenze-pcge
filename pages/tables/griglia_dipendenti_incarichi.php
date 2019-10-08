@@ -2,28 +2,13 @@
 session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
-//require('../check_evento.php');
-
-// Filtro per tipologia di criticità
-$getfiltri=$_GET["f"];
-//echo $getfiltri;
-
-require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-$filter=filtro($getfiltri);
-
-
-
 if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id_stato_incarico, descrizione, id_evento, time_start, 
-	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_sopralluoghi_eventi_chiusi_last_update ".$filter." 
-	UNION SELECT id_stato_incarico, descrizione, id_evento, time_start, 
-	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_sopralluoghi_last_update 
-	where id_stato_incarico in (3,4) ".$filter." ORDER BY id_evento desc;";
+	$query="SELECT matricola, concat(cognome, ' ', nome, ' (',settore,' - ', ufficio) as nome FROM varie.v_dipendenti v ORDER BY cognome;";
     
-   //echo $query;
+    //echo $query;
 	$result = pg_query($conn, $query);
 	#echo $query;
 	#exit;

@@ -123,6 +123,26 @@
                                     <br><small> (<i class="fas fa-stop"></i>eventi chiusi)</small>
                                     </a>
                                 </li>
+								<li>
+                                    <a href="elenco_inc.php">Elenco incarichi 
+                                    <small> (<i class="fas fa-play"></i> in corso)</small>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="elenco_inc_ev_chiusi.php">Elenco incarichi 
+                                    <small> (<i class="fas fa-stop"></i> chiusi)</small>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="elenco_inc_int.php">Elenco incarichi interni
+                                    <small> (<i class="fas fa-play"></i> in corso)</small>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="elenco_inc_int_ev_chiusi.php">Elenco incarichi interni 
+                                    <small> (<i class="fas fa-stop"></i> chiusi)</small>
+                                    </a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
