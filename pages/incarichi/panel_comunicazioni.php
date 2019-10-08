@@ -1,13 +1,34 @@
 <?php
 
-$query_comunicazioni="SELECT *";
+/*$query_comunicazioni="SELECT *";
 $query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni 
 WHERE id_lavorazione=".$id_lavorazione. ";";
+*/
+$query_comunicazioni="SELECT *";
+if ($check_segnalazione==1){
+	$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni WHERE id_lavorazione=".$id_lavorazione. " 
+	order by to_timestamp(data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text);";
+} else {
+	$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni_incarichi WHERE id=".$id. " 
+	order by to_timestamp(data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text);";
+} 
+
 //echo $query_comunicazioni;
 $result_comunicazioni=pg_query($conn, $query_comunicazioni);
 $check_messaggi_notifica=0;
+$testo="";
 while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 	$check_messaggi_notifica=$check_messaggi_notifica+1;
+	if ($check_messaggi_notifica>0){
+		$testo= $testo. "<hr>";
+	}
+	$i=$i+1;
+	$testo= $testo. "<i class=\"fa fa-comment\"></i> ". $r_comunicazioni['data_ora_stato'];
+	$testo= $testo. " - Da " .$r_comunicazioni['mittente']. " a ". $r_comunicazioni['destinatario'];
+	$testo= $testo. " : " .$r_comunicazioni['testo'];
+	if ($r_comunicazioni['allegato']!=''){
+		$testo= $testo. '<a href="../../'.$r_comunicazioni['allegato'].'"> Allegato </a>';
+	}
 }
 
 
@@ -56,7 +77,7 @@ while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 			      <div class="panel-body"-->
 				<?php
 				// cerco l'id_lavorazione
-				$query_comunicazioni="SELECT *";
+				/*$query_comunicazioni="SELECT *";
 				if ($check_segnalazione==1){
 					$query_comunicazioni= $query_comunicazioni." FROM segnalazioni.v_comunicazioni WHERE id_lavorazione=".$id_lavorazione. " 
 					order by to_timestamp(data_ora_stato, 'DD/MM/YYYY HH24:MI:SS'::text);";
@@ -66,7 +87,7 @@ while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 				} 
 				
 				//echo $query_comunicazioni;
-				$result_comunicazioni=pg_query($conn, $query_comunicazioni);
+				//$result_comunicazioni=pg_query($conn, $query_comunicazioni);
 				$i=0;
 				while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 					if ($i>0){
@@ -80,8 +101,8 @@ while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 						echo '<a href="../../'.$r_comunicazioni['allegato'].'"> Allegato </a>';
 					}
 					//echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico.php?id=".$r_comunicazioni['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
-				}
-				
+				}*/
+				echo $testo;
 					$page = basename($_SERVER['PHP_SELF']);
 					if ($page=='dettagli_segnalazione.php' and $check_lav>=0){
 					?>

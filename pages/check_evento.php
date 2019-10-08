@@ -1,5 +1,5 @@
 <?php
-//require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
+require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 $check_evento=0;
 $contatore_eventi==0;
@@ -23,6 +23,7 @@ while($r1 = pg_fetch_assoc($result1)) {
 	$result2 = pg_query($conn, $query2);
 	while($r2 = pg_fetch_assoc($result2)) {
 		$tipo_eventi_attivi[]=array($r1["id"],$r2["descrizione"]);
+		//echo $r1["id"];
 	}
 	$query2="SELECT  nota From eventi.t_note_eventi WHERE id_evento=".$r1["id"]." ;";
 	//echo $query2;
@@ -279,7 +280,8 @@ while($r = pg_fetch_assoc($result)) {
 	//notifiche
 	if ($profilo_sistema == 0 and
 	basename($_SERVER['PHP_SELF'])!='divieto_accesso.php' and
-	basename($_SERVER['PHP_SELF'])!='add_volontario.php') {
+	basename($_SERVER['PHP_SELF'])!='add_volontario.php' and
+	basename($_SERVER['PHP_SELF'])!='check_evento.php') {
 		header("location: ./divieto_accesso.php");
 	} else {
 		if ($privacy =='f')

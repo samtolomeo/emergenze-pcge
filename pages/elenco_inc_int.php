@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Elenco incarichi in corso (eventi attivi o in chiusura)";
+$subtitle="Elenco incarichi interni in corso";
 
 
 $getfiltri=$_GET["f"];
@@ -71,7 +71,7 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_inc_int.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -80,7 +80,7 @@ require('./tables/filtri_segnalazioni.php');
 
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="id_stato_sopralluogo" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th>
+            <th data-field="id_stato_incarico" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th>
             <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
 			<!--th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th-->
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>

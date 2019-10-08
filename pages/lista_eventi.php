@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Lista eventi e reportistica"
+$subtitle="Lista eventi e reportistica";
 
 ?>
 <!DOCTYPE html>
@@ -34,9 +34,7 @@ if ($profilo_sistema > 6){
 }
 
 ?>
-    
 
-}
 </head>
 
 <body>

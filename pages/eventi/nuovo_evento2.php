@@ -65,7 +65,15 @@ $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('use
 $result = pg_query($conn, $query_log);
 
 
+$query= "SELECT notifiche, descrizione FROM eventi.tipo_evento where id= ".$_POST['tipo_evento'].";";
+$result = pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	$notifiche=$r['notifiche'];
+	$descrizione_tipo=$r['descrizione'];
+}
 
+echo $notifiche;
+//exit;
 //$idfascicolo=str_replace('A','',$idfascicolo);
 //$idfascicolo=str_replace('B','',$idfascicolo);
 echo "<br>";
@@ -76,10 +84,24 @@ require('../token_telegram.php');
 require('../send_message_telegram.php');
 
 
-$query_telegram="SELECT telegram_id from users.utenti_sistema where telegram_id !='' and telegram_attivo='t';";
+if ($notifiche =='t'){
+	$query_telegram="SELECT telegram_id from users.utenti_sistema where telegram_id !='' and telegram_attivo='t';";
+} else {
+	$query_telegram="SELECT telegram_id from users.utenti_sistema where id_profilo <= 3 and telegram_id !='' and telegram_attivo='t';";
+}
 echo $query_telegram;
 echo "<br>";
-$messaggio="E ' stato creato un nuovo evento, consultare il programma ".$link." ";
+
+// https://apps.timwhitlock.info/emoji/tables/unicode
+// \xE2\x9A\xA0 warning
+// \xE2\x80\xBC punti esclamativi
+
+$messaggio="\xE2\x9A\xA0 \xF0\x9F\x86\x95 E' stato creato un nuovo evento di tipo ".$descrizione_tipo.", consultare il programma ".$link." ";
+if ($notifiche =='f'){
+	$messaggio= $messaggio ." (\xE2\x84\xB9 ricevi questo messaggio in quanto operatore di Protezione Civile \xE2\x84\xB9)";
+}
+$messaggio= $messaggio ."\xE2\x9A\xA0 ";
+
 echo $messaggio;
 echo "<br>";
 $result_telegram = pg_query($conn, $query_telegram);
@@ -90,117 +112,120 @@ while($r_telegram = pg_fetch_assoc($result_telegram)) {
 }
 
 
-
-
-$query="SELECT mail FROM users.t_mail_incarichi;";
-$result=pg_query($conn, $query);
-$mails=array();
-while($r = pg_fetch_assoc($result)) {
-  array_push($mails,$r['mail']);
-}
-
-echo "<br>";
-//echo $query;
-//echo "<br>";
-echo "<br>".count($mails). " mail registrate a sistema</h3>";
-
 //Import the PHPMailer class into the global namespace
 use PHPMailer\PHPMailer\PHPMailer;
 
-require '../../vendor/PHPMailer/src/Exception.php';
-require '../../vendor/PHPMailer/src/PHPMailer.php';
-require '../../vendor/PHPMailer/src/SMTP.php';
+if ($notifiche =='t') {
+	$query="SELECT mail FROM users.t_mail_incarichi;";
+	$result=pg_query($conn, $query);
+	$mails=array();
+	while($r = pg_fetch_assoc($result)) {
+	  array_push($mails,$r['mail']);
+	}
 
+	echo "<br>";
+	//echo $query;
+	//echo "<br>";
+	echo "<br>".count($mails). " mail registrate a sistema</h3>";
 
-//echo "<br>OK 1<br>";
-//SMTP needs accurate times, and the PHP time zone MUST be set
-//This should be done in your php.ini, but this is how to do it if you don't have access to that
-date_default_timezone_set('Etc/UTC');
-//require '../../vendor/autoload.php';
-//Create a new PHPMailer instance
-$mail = new PHPMailer;
-
-//echo "<br>OK 1<br>";
-//Tell PHPMailer to use SMTP
-$mail->isSMTP();
-//Enable SMTP debugging
-// 0 = off (for production use)
-// 1 = client messages
-// 2 = client and server messages
-$mail->SMTPDebug = 0;
-//Set the hostname of the mail server
-
-// host and port on the file credenziali_mail.php
-require '../incarichi/credenziali_mail.php';
-
-
-//Set who the message is to be sent from
-$mail->setFrom('salaemergenzepc@comune.genova.it', 'Sala Emergenze PC Genova');
-//Set an alternative reply-to address
-$mail->addReplyTo('no-reply@comune.genova.it', 'No Reply');
-//Set who the message is to be sent to
-
-//$mails=array('vobbo@libero.it','roberto.marzocchi@gter.it');
-while (list ($key, $val) = each ($mails)) {
-  $mail->AddAddress($val);
-}
-//Set the subject line
-$mail->Subject = 'Nuovo evento creato dalla Protezione Civile del Comune di Genova su Sistema Emergenze '. $note_ambiente_mail;
-//$mail->Subject = 'PHPMailer SMTP without auth test';
-//Read an HTML message body from an external file, convert referenced images to embedded,
-//convert HTML into a basic plain-text alternative body
-$body =  'La tua unit&agrave operativa ha ricevuto questo messaggio automaticamente in quanto &egrave stato creato un nuovo evento da parte 
-della Protezione Civile. <br>
- Ti preghiamo di non rispondere a questa mail, ma di avvisare chi di dovere perch&egrave il sistema venga mantenuto sotto controllo.  <br>
- Per accedere al nuovo <a href="https;//emergenze.comune.genova.it/pages/index.php" > Sistema di Gestione delle Emergenze </a> del Comune di Genova &egrave necessaria
- la matricola personale (personale comunale) o le credenziale SPID. Occorre inoltre essere abilitati all\'accesso da parte della Protezione Civile.
- <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail &egrave registrato a sistema. 
- Per modificare queste impostazioni o richiedere l\'accesso al sistema &egrave possibile contattare gli amministratori 
- inviando una mail a adminemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
-
-
-  
-require('../informativa_privacy_mail.php');
-
-$mail-> Body=$body ;
-
-
-//$mail->Body =  'Corpo del messaggio';
-//$mail->msgHTML(file_get_contents('E\' arrivato un nuovo incarico da parte del Comune di Genova. Visualizza lo stato dell\'incarico al seguente link e aggiornalo quanto prima. <br> Ti chiediamo di non rispondere a questa mail'), __DIR__);
-//Replace the plain text body with one created manually
-$mail->AltBody = 'This is a plain-text message body';
-//Attach an image file
-//$mail->addAttachment('images/phpmailer_mini.png');
-//send the message, check for errors
-//echo "<br>OK 2<br>";
-if (!$mail->send()) {
-    //echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
-    echo "<h3>Problema nell'invio della mail";
-
-	echo '<br>L\'incarico &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
 	
-	if ($id!=''){
-    	echo '<a href="../dettagli_evento.php">link</a> per saltare l\'attesa.</h3>' ;
-    } else {
-    	echo '<a href="../dettagli_evento.php">link</a> per saltare l\'attesa.</h3>' ;
-    }
-	
-	//sleep(30);
-	if ($id!=''){
-    	header("refresh:1;url=../dettagli_evento.php");
-    } else {
-    	header("refresh:1;url=../dettagli_evento.php");
-    }
+
+	require '../../vendor/PHPMailer/src/Exception.php';
+	require '../../vendor/PHPMailer/src/PHPMailer.php';
+	require '../../vendor/PHPMailer/src/SMTP.php';
+
+
+	//echo "<br>OK 1<br>";
+	//SMTP needs accurate times, and the PHP time zone MUST be set
+	//This should be done in your php.ini, but this is how to do it if you don't have access to that
+	date_default_timezone_set('Etc/UTC');
+	//require '../../vendor/autoload.php';
+	//Create a new PHPMailer instance
+	$mail = new PHPMailer;
+
+	//echo "<br>OK 1<br>";
+	//Tell PHPMailer to use SMTP
+	$mail->isSMTP();
+	//Enable SMTP debugging
+	// 0 = off (for production use)
+	// 1 = client messages
+	// 2 = client and server messages
+	$mail->SMTPDebug = 0;
+	//Set the hostname of the mail server
+
+	// host and port on the file credenziali_mail.php
+	require '../incarichi/credenziali_mail.php';
+
+
+	//Set who the message is to be sent from
+	$mail->setFrom('salaemergenzepc@comune.genova.it', 'Sala Emergenze PC Genova');
+	//Set an alternative reply-to address
+	$mail->addReplyTo('no-reply@comune.genova.it', 'No Reply');
+	//Set who the message is to be sent to
+
+	//$mails=array('vobbo@libero.it','roberto.marzocchi@gter.it');
+	while (list ($key, $val) = each ($mails)) {
+	  $mail->AddAddress($val);
+	}
+	//Set the subject line
+	$mail->Subject = 'Nuovo evento creato dalla Protezione Civile del Comune di Genova su Sistema Emergenze '. $note_ambiente_mail;
+	//$mail->Subject = 'PHPMailer SMTP without auth test';
+	//Read an HTML message body from an external file, convert referenced images to embedded,
+	//convert HTML into a basic plain-text alternative body
+	$body =  'La tua unit&agrave operativa ha ricevuto questo messaggio automaticamente in quanto &egrave stato creato un nuovo evento da parte 
+	della Protezione Civile. <br>
+	 Ti preghiamo di non rispondere a questa mail, ma di avvisare chi di dovere perch&egrave il sistema venga mantenuto sotto controllo.  <br>
+	 Per accedere al nuovo <a href="https;//emergenze.comune.genova.it/pages/index.php" > Sistema di Gestione delle Emergenze </a> del Comune di Genova &egrave necessaria
+	 la matricola personale (personale comunale) o le credenziale SPID. Occorre inoltre essere abilitati all\'accesso da parte della Protezione Civile.
+	 <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail &egrave registrato a sistema. 
+	 Per modificare queste impostazioni o richiedere l\'accesso al sistema &egrave possibile contattare gli amministratori 
+	 inviando una mail a adminemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
+
+
+	  
+	require('../informativa_privacy_mail.php');
+
+	$mail-> Body=$body ;
+
+
+	//$mail->Body =  'Corpo del messaggio';
+	//$mail->msgHTML(file_get_contents('E\' arrivato un nuovo incarico da parte del Comune di Genova. Visualizza lo stato dell\'incarico al seguente link e aggiornalo quanto prima. <br> Ti chiediamo di non rispondere a questa mail'), __DIR__);
+	//Replace the plain text body with one created manually
+	$mail->AltBody = 'This is a plain-text message body';
+	//Attach an image file
+	//$mail->addAttachment('images/phpmailer_mini.png');
+	//send the message, check for errors
+	//echo "<br>OK 2<br>";
+	if (!$mail->send()) {
+		//echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
+		echo "<h3>Problema nell'invio della mail";
+
+		echo '<br>L\'incarico &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
+		echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+		
+		if ($id!=''){
+			echo '<a href="../dettagli_evento.php">link</a> per saltare l\'attesa.</h3>' ;
+		} else {
+			echo '<a href="../dettagli_evento.php">link</a> per saltare l\'attesa.</h3>' ;
+		}
+		
+		//sleep(30);
+		if ($id!=''){
+			header("refresh:1;url=../dettagli_evento.php");
+		} else {
+			header("refresh:1;url=../dettagli_evento.php");
+		}
+	} else {
+		echo "Message sent!";
+		if ($id!=''){
+			header("location:../dettagli_evento.php");
+		} else {
+			header("location:../dettagli_evento.php");
+		}
+	}
 } else {
-    echo "Message sent!";
-	if ($id!=''){
-    	header("location:../dettagli_evento.php");
-    } else {
-    	header("location:../dettagli_evento.php");
-    }
+	header("location:../dettagli_evento.php");
 }
-
 
 
 

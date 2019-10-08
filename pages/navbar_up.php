@@ -1,7 +1,12 @@
 <?php 
 
 require ('./note_ambiente.php');
-
+if ($_GET['r']=='true'){
+	require('./check_evento.php');
+}
+if ($subtitle==''){
+	$subtitle=str_replace('_',' ',$_GET['s']);
+}
 ?>
 
 <style>
@@ -18,6 +23,7 @@ require ('./note_ambiente.php');
 
 
 <!-- Navigation -->
+<div id="navbar_emergenze">
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -773,5 +779,5 @@ require ('./note_ambiente.php');
             </ul>
             <!-- /.navbar-top-links -->
             
-            
-
+ </nav>           
+</div>

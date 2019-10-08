@@ -17,11 +17,9 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id_stato_incarico, descrizione, id_evento, time_start, 
-	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_sopralluoghi_eventi_chiusi_last_update ".$filter." 
-	UNION SELECT id_stato_incarico, descrizione, id_evento, time_start, 
-	time_preview, time_stop, id, id_segnalazione From segnalazioni.v_sopralluoghi_last_update 
-	where id_stato_incarico in (3,4) ".$filter." ORDER BY id_evento desc;";
+	$query="SELECT id_evento, data_ora_invio, id_stato_incarico, descrizione_stato, 
+	descrizione, note_ente, descrizione_uo, id_segnalazione, time_preview, time_start 
+	From segnalazioni.v_incarichi_last_update where id_stato_incarico < 3 ".$filter." ;";
     
    //echo $query;
 	$result = pg_query($conn, $query);

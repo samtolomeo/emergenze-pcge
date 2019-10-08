@@ -1,5 +1,7 @@
 <?php 
-
+pg_close($conn);
+$subtitle2=str_replace(' ','_',$subtitle);
+echo $subtitle2;
 ?>
 
 </div>
@@ -61,8 +63,7 @@
 <script type="text/javascript">
 
 //**************************************************************
-//Automatic refresh page in case of inactivity 
-
+//Automatic refresh page in case of inactivity every 10 minutes
   var time = new Date().getTime();
   //$(document.body).bind("mousemove keypress", function(e) {
   $(document.body).bind("click keypress wheel", function(e) {
@@ -71,14 +72,40 @@
   });
 
   function refresh() {
-      if(new Date().getTime() - time >= 180000) 
+      if(new Date().getTime() - time >= 600000) 
           window.location.reload(true);
       else 
-          setTimeout(refresh, 10000);
+          setTimeout(refresh, 30000);
   }
 
-  setTimeout(refresh, 10000);
+  setTimeout(refresh, 30000);
   
+  
+  
+// reload navbar ogni 30''
+$(document).ready(function(){
+  var timeout = setInterval(reloadChat, 30000); 
+});
+
+   
+function reloadChat () {
+     //$('#navbar_emergenze').load('navbar_up.php?r=true&&s\'<?php echo $subtitle;?>\'');
+	 $('#navbar_emergenze').load('navbar_up.php?r=true&s=<?php echo $subtitle2;?>');
+}
+
+/*function loadnavbar(){
+    $('#navbar_emergenze').load('./check_evento.php'),function () {
+         $(this).unwrap();
+    });
+}
+
+loadnavbar(); // This will run on page load
+setInterval(function(){
+    loadnavbar() // this will run after every 5 seconds
+}, 100000);*/
+
+
+ 
  
 //funge, ma sembra mandare in crisi il server... 
  
