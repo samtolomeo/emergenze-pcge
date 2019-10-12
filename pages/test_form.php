@@ -235,24 +235,89 @@ require('./req_bottom.php');
 ?>
 
 <script>
-let dropdown = $('#cf');
+/*
+$('#cf').selectpicker('refresh');
 
-dropdown.empty();
+var request = function(){
+  let dropdown = $('#cf');
+  
+  dropdown.empty();
+  
+  dropdown.append('<option selected="true" disabled>Scegli un dipendente</option>');
+  dropdown.prop('selectedIndex', 0);
+  
+  const url = './tables/griglia_dipendenti_incarichi.php';
+  
+  // Populate dropdown with list of provinces
+  $.getJSON(url, function (data) {
+    $.each(data, function (key, entry) {
+      dropdown.append($('<option></option>').attr('value', entry.matricola).text(entry.nome));
+    })
+  });
 
-dropdown.append('<option selected="true" disabled>Scegli un dipendente</option>');
-dropdown.prop('selectedIndex', 0);
 
-const url = './tables/griglia_dipendenti_incarichi.php';
+  $('#cf').selectpicker('refresh');
+}
 
-// Populate dropdown with list of provinces
-$.getJSON(url, function (data) {
-  $.each(data, function (key, entry) {
-    dropdown.append($('<option></option>').attr('value', entry.matricola).text(entry.nome));
-  })
-});
+refresh();
+*/
+
+$('#cf').selectpicker();
 
 
-dropdown.selectpicker('refresh');
+var Request = function () {
+
+    let dropdown = document.getElementById('cf');
+    dropdown.length = 0;
+
+    let defaultOption = document.createElement('option');
+    defaultOption.text = 'Seleziona un dipendente';
+
+    dropdown.add(defaultOption);
+    dropdown.selectedIndex = 0;
+    
+    // data
+	const url = 'tables/griglia_dipendenti_incarichi.php';
+
+	const request = new XMLHttpRequest();
+	request.open('GET', url, true);
+
+	request.onload = function() {
+	  if (request.status === 200) {
+		const data = JSON.parse(request.responseText);
+		for (let i = 0; i < data.length; i++) {
+			let option;
+			option = document.createElement('option');
+			option.text = data[i].nome;
+			option.value = data[i].matricola;
+			/*if (i==0){
+				alert(option.text);
+			}*/
+			dropdown.add(option);
+		}
+
+	   } else {
+		// Reached the server, but it returned an error
+	  }   
+	}
+
+	request.onerror = function() {
+	  console.error('An error occurred fetching the JSON from ' + url);
+	};
+
+	request.send();
+    
+    //alert('request has been sent!');
+    
+    // here we refresh selectpicker plugin
+    //$('#cf').selectpicker('refresh');
+    // OR destroy and initialize it IF "refresh" didn't work
+    $('#cf').selectpicker('destroy');
+    $('#cf').selectpicker();    
+    
+};
+
+Request();
 
 
 $(document).ready(function() {
