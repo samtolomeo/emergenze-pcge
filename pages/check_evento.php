@@ -219,7 +219,7 @@ while($r = pg_fetch_assoc($result)) {
 	$check_esterno=1;
 }
 
-$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."' and (indirizzo is null or comune_residenza is null or mail is null or data_nascita is null or telefono1 is null);";
+$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."' and (indirizzo is null or comune is null or mail is null or data_nascita is null or telefono1 is null);";
 $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
 	$check_esterno_update=1;
