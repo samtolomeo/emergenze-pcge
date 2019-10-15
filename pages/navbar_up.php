@@ -4,7 +4,9 @@ require ('./note_ambiente.php');
 if ($_GET['r']=='true'){
 	require('./check_evento.php');
 }
-if ($subtitle==''){
+if (isset($subtitle)) {
+	$subtitle=$subtitle;
+} else {
 	$subtitle=str_replace('_',' ',$_GET['s']);
 }
 ?>
