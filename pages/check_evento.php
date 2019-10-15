@@ -453,7 +453,7 @@ while($r = pg_fetch_assoc($result)) {
 	//******************************************************
 	//notifiche squadra
 	
-	
+	if (isset($id_squadra_operatore)){
 	// Conteggi incarichi
 	$query= "SELECT id_incarico_interno, id_sopralluogo, id_sm FROM users.v_squadre_notifica WHERE id=".$id_squadra_operatore.";";
 	//echo $query;
@@ -477,6 +477,7 @@ while($r = pg_fetch_assoc($result)) {
 	$ii_assegnati_squadra = count($id_ii_assegnati_squadra);
 	$s_assegnati_squadra = count($id_s_assegnati_squadra);
 	$sm_assegnati_squadra = count($id_sm_assegnati_squadra);
+	}
 	//$pc_assegnati_squadra = count($id_pc_assegnati_squadra);  
 	// Conteggi incarichi
 	/*$query= "SELECT  id, tipo_provvedimento FROM segnalazioni.v_incarichi_last_update where id_stato_incarichi<=2 and id_squadra=".$id_squadra_operatore.";";
@@ -556,13 +557,15 @@ order by to_timestamp(max(c.data_ora_stato),'DD/MM/YY HH24:MI:SS') desc;";
 	$n_id_lavorazione_m = count($id_lavorazione_m);
 	*/
 	
-	//controllo reperibilità
+	//controllo reperibilita
+
 	$check_reperibilita=0;
-	$query = "SELECT reperibilita FROM users.uo_1_livello where id1 = ".$id_uo1." and reperibilita='t';";
-	//echo $query;
-	$result = pg_query($conn, $query);
-	while($r = pg_fetch_assoc($result)) {
-		$check_reperibilita=1;
+	if (isset($id_uo1)){
+		$query = "SELECT reperibilita FROM users.uo_1_livello where id1 = ".$id_uo1." and reperibilita='t';";
+		//echo $query;
+		$result = pg_query($conn, $query);
+		while($r = pg_fetch_assoc($result)) {
+			$check_reperibilita=1;
+		}
 	}
-	
 ?>       
