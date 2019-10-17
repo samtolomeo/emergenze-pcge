@@ -9,7 +9,7 @@ $getfiltri=$_GET["f"];
 //echo $getfiltri;
 
 if ($getfiltri == 'prima_pagina'){
-	$filter = ' WHERE id_stato_sopralluogo=2 ';
+	$filter = ' AND id_stato_sopralluogo=2 ';
 } else {
 	require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
 	$filter=filtro($getfiltri);

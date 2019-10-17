@@ -525,7 +525,7 @@ if (isset($subtitle)) {
 									echo "<br><a href=\"dettagli_sopralluogo_mobile.php?id=".$id_sm_assegnati_resp[$ii]."\">";
 									if ($stato_sm_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
-										$query_cs='SELECT id FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi 
+										$query_cs='SELECT * FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi 
 										WHERE id_sopralluogo ='.$id_sm_assegnati_resp[$ii].' AND (eseguito = \'f\' OR eseguito is null);';
 										//echo $query_cs;
 										$result_cs = pg_query($conn, $query_cs);
