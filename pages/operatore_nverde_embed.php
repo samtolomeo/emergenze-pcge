@@ -187,7 +187,7 @@
 			if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
-				$query = $query. "where data_start < now() and and data_end > now() ";
+				$query = $query. "where data_start < now() and data_end > now() ";
 			}
 			//$query = $query. "and data_end > now() ";
 			//$query = $query. " and id1=".$r0["id1"]."";
