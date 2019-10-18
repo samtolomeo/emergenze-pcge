@@ -2,11 +2,11 @@
 # sidebar definition
 ?>
 
-
-
 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
+
+
                         <!--li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
@@ -36,6 +36,7 @@
 							</li>
 						<?php
 						}
+						if ($profilo_sistema!=10){
 						?>
 
                         <li>
@@ -60,11 +61,13 @@
                                    <a href="storico_sala_emergenze.php"><i class="fas fa-history"></i> Storico turni sala emergenze</a> 
 
                                 </li> 			
-<li>					                                  
-  <a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
+											<li>					                                  
+  											<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
 								<li>
-								<a href="rete_idro.php"><i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
+								<!--a href="rete_idro.php"-->
+								<a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
+								<i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
 								</li>
 								<li>
                                     <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>
@@ -76,42 +79,54 @@
                         <li>
                             <a href="gestione_squadre.php"><i class="fa fa-users"></i> Gestione squadre</a>
                         </li>
- 								<?php if ($profilo_ok==3){ ?>
-								<li>
-                            <a href="#"><i class="fas fa-phone"></i> Richieste / segnalazioni n. verde <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-								 		
-                            	<li>
-                                    <a href="nuova_richiesta.php">
-                                    <i class="fas fa-plus"></i>
-                                    Registra segnalazione /richiesta</a>
-                                </li>
-                                
-                                <li>
-                                    <a href="elenco_richieste.php"> 
-                                    <i class="fas fa-list-ul">
-                                    </i> Elenco richieste num verde
-                                     <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
-                                </li>
+ 								<?php 
+ 								}
+ 								if ($profilo_sistema==10){ ?>
+ 								
+ 								<li>
+                           <a href="nuova_richiesta.php">
+                           <i class="fas fa-plus"></i>
+                           Registra segnalazione /richiesta</a>
+                       </li>
+                       
+                       <li>
+                           <a href="elenco_richieste.php"> 
+                           <i class="fas fa-list-ul">
+                           </i> Elenco richieste
+                            <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
+                       </li>
+                       <li>
+                           <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
+                           <br><small> (<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small>
+                           </a>
+                       </li>
+ 								
+ 								<?php } 
+ 								
+ 								
+ 								if ($profilo_sistema<9){ ?>
+ 								
 
-                                <li>
-                                    <a href="elenco_richieste_storico.php">
-                                    <i class="fas fa-list"></i>
-                                    Elenco richieste num verde
-                                    <br> <small>Eventi passati</small></a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-								<?php } ?>
+
+
                         
                         
                          <li>
                             <a href="#"><i class="fas fa-map-marked-alt"></i> Segnalazioni <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                            
+                            <?php if ($profilo_ok==3){ ?>
+                            	<li>
+                                    <a href="nuova_richiesta.php">
+                                    <i class="fas fa-plus"></i>
+                                    Registra segnalazione /richiesta</a>
+                                </li>
+                             <?php } else if ($profilo_sistema < 9) { ?>
                             		<li>
                                     <a href="nuova_segnalazione.php">Nuova segnalazione</a>
                                 </li>
+                             <?php }?>
+                                
                                
                                 <li>
                                     <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
@@ -123,7 +138,20 @@
                                     <br><small> (<i class="fas fa-stop"></i>eventi chiusi)</small>
                                     </a>
                                 </li>
-								<li>
+                                 <li>
+                                    <a href="elenco_richieste.php"> 
+                                    <i class="fas fa-list-ul">
+                                    </i> Elenco richieste generiche
+                                     <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
+                                </li>
+
+                                <li>
+                                    <a href="elenco_richieste_storico.php">
+                                    <i class="fas fa-list"></i>
+                                    Elenco richieste generiche
+                                    <br> <small>Eventi passati</small></a>
+                                </li>
+											<li>
                                     <a href="elenco_inc.php">Elenco incarichi 
                                     <small> (<i class="fas fa-play"></i> in corso)</small>
                                     </a>
@@ -237,17 +265,17 @@
                             <!-- /.nav-second-level -->
                         </li>
                         
-                        
+                        <?php } ?>
                         
                         
 						
                         <!--li>
                             <a href="reportistica.php"> <i class="fas fa-chart-pie"></i> Riepilogo e report</a>
                         </li-->
-                         <li>
+                         <!--li>
                             <a target="_guida_in_linea" href="https://manuale-sistema-di-gestione-emergenze-comune-di-genova.readthedocs.io/it/latest/"> 
                             <i class="fas fa-question"></i> Guida in linea</a>
-                        </li>
+                        </li-->
                         <?php if ($profilo_sistema==1){ ?>
                         <li>
                             <a href="#"><i class="fa fa-user-shield"></i> Funzionalità amministratore sistema<span class="fa arrow"></span></a>
@@ -265,8 +293,26 @@
                         
                     </ul>
                     
-						<div style="text-align: center;">
-						   <br>
+                    <div style="text-align: center;">
+                    
+                    <!--div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-traffic-light fa-fw"></i> Mappa ufficiale <a target="_new" href="http://www.allertaliguria.gov.it">allertaliguria</a> 
+                        </div>
+                        <div class="panel-body"-->
+                         <a target="_new" title="Vai al sito www.allertaliguria.gov.it" href="http://www.allertaliguria.gov.it">   
+							  <img class="nav nav-second-level" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" 
+							  width="98%" src="https://mappe.comune.genova.it/allertaliguria/mappa_allerta_render.php">
+                        </a>
+						<!--/div>                    
+                    </div-->
+                  
+						
+						<hr>
+						   <a title="Vai al sito rete OMIRL"  href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
+                		<img class="nav nav-second-level" src="../img/omirl.png" width="50%" alt="">
+                		</a>
+                		<hr>
                 		<img class="nav nav-second-level" src="../img/pc_ge.png" width="65%" alt="">
                 		<br>
                 		

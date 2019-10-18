@@ -452,6 +452,9 @@ while($r = pg_fetch_assoc($result)) {
 	
 	//******************************************************
 	//notifiche squadra
+	$ii_assegnati_squadra = 0;
+	$s_assegnati_squadra = 0;
+	$sm_assegnati_squadra =0;
 	
 	if (isset($id_squadra_operatore)){
 	// Conteggi incarichi

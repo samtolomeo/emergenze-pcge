@@ -89,6 +89,7 @@ function integerToRoman($integer)
 	.sidebar{
 		overflow-y: scroll;
 		position: fixed;
+		margin-top: 0px;
 	}
     </style>
     

@@ -1,7 +1,14 @@
 <?php 
 
 require ('./note_ambiente.php');
-
+if ($_GET['r']=='true'){
+	require('./check_evento.php');
+}
+if (isset($subtitle)) {
+	$subtitle=$subtitle;
+} else {
+	$subtitle=str_replace('_',' ',$_GET['s']);
+}
 ?>
 
 <style>
@@ -18,6 +25,7 @@ require ('./note_ambiente.php');
 
 
 <!-- Navigation -->
+<div id="navbar_emergenze">
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -28,7 +36,9 @@ require ('./note_ambiente.php');
                 </button>
                 <!--a class="navbar-brand" href="index.php"> </a-->
                 <div class="navbar-brand"> <i class="fas fa-server"></i>
-                Gestione emergenze <?php echo $note_ambiente?> - <?php echo $subtitle?> </div>
+                Gestione emergenze <?php echo $note_ambiente?> - <?php echo $subtitle?> 
+                <?php if ($profilo_sistema==10){ echo '- <font color="#007c37"> Op. num verde </font>';}?> 
+                </div>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
@@ -47,13 +57,16 @@ require ('./note_ambiente.php');
 				</li>
 			<?php
 			} else {
+				if ($profilo_sistema == 10){
 			?>	
+			
 				<li class="nav-item active">
 					<a class="nav-link" title="Torna alla prima pagina" href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
 				</li>
 			<?php
 			}
-			if ($profilo_sistema == 8){
+			}
+			if ($profilo_sistema == 8 and $check_reperibilita==1){
 			?>
 			
 			<li class="nav-item active">
@@ -115,7 +128,7 @@ require ('./note_ambiente.php');
 							
 							<?php
 							//echo $len_c;
-								if ($len_c > 0){
+								if ($len_c > 0 and $profilo_ok <=3){
 							?>
 								<i class="fas fa-hourglass-end" style="color:red"></i>
 							<?php		
@@ -312,7 +325,7 @@ require ('./note_ambiente.php');
 				  font-weight:bold;
 				}
 				</style>
-				<?php if($segn_limbo>0){?>
+				<?php if($segn_limbo>0 and $profilo_ok < 7){?>
 					
 					<li id="limbo" class="dropdown">
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
@@ -517,7 +530,7 @@ require ('./note_ambiente.php');
 									echo "<br><a href=\"dettagli_sopralluogo_mobile.php?id=".$id_sm_assegnati_resp[$ii]."\">";
 									if ($stato_sm_assegnati_resp[$ii]==2){
 										echo '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
-										$query_cs='SELECT id FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi 
+										$query_cs='SELECT * FROM segnalazioni.t_sopralluoghi_mobili_richiesta_cambi 
 										WHERE id_sopralluogo ='.$id_sm_assegnati_resp[$ii].' AND (eseguito = \'f\' OR eseguito is null);';
 										//echo $query_cs;
 										$result_cs = pg_query($conn, $query_cs);
@@ -756,7 +769,8 @@ require ('./note_ambiente.php');
 					</a>
 					
                     <ul class="dropdown-menu dropdown-user">
-						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> (Clicca per visualizzare i dettagli)</a>
+						<li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> CF: <?php echo $CF;?> 
+						(Clicca per visualizzare i dettagli e gestire le notifiche telegram <i class="fab fa-telegram" style="color:#0088CC" ></i>)</a>
                         </li>
                         <!--li><a href="./profilo.php"><i class="fas fa-user fa-fw"></i> User Profile</a>
                         </li-->
@@ -772,5 +786,5 @@ require ('./note_ambiente.php');
             </ul>
             <!-- /.navbar-top-links -->
             
-            
-
+ </nav>           
+</div>

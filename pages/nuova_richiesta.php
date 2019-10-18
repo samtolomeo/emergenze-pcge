@@ -24,7 +24,7 @@ require('./check_evento.php');
 
 $page=basename($_SERVER['PHP_SELF']);
 
-if ($profilo_sistema > 8){
+if ($profilo_sistema == 9 or  $profilo_sistema > 10){
 	header("location: ./divieto_accesso.php");
 }
 ?>
