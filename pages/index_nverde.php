@@ -27,10 +27,6 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 require('./check_evento.php');
 //require('./conteggi_dashboard.php');
 
-
-if ($profilo_sistema == 10){
-	header("location: ./index_nverde.php");
-}
 ?>
     
 </head>

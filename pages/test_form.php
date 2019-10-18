@@ -235,33 +235,38 @@ require('./req_bottom.php');
 ?>
 
 <script>
+let dropdown = $('#cf');
+
+dropdown.selectpicker();
+
+dropdown.empty();
+
+dropdown.append('<option selected="true" disabled>Scegli un dipendente</option>');
+dropdown.prop('selectedIndex', 0);
+
+const url = './tables/griglia_dipendenti_incarichi.php';
+
+// Populate dropdown with list of provinces
+$.getJSON(url, function (data) {
+  $.each(data, function (key, entry) {
+    dropdown.append($('<option></option>').attr('value', entry.matricola).text(entry.nome));
+  })
+  dropdown.selectpicker('refresh');
+});
+
+
+//Test 1
+//dropdown.selectpicker('refresh');
+
+//Test 2
+//$(document).ready(function() {
+ //   $('#cf').selectpicker('refresh');
+//});
+
+
+
+
 /*
-$('#cf').selectpicker('refresh');
-
-var request = function(){
-  let dropdown = $('#cf');
-  
-  dropdown.empty();
-  
-  dropdown.append('<option selected="true" disabled>Scegli un dipendente</option>');
-  dropdown.prop('selectedIndex', 0);
-  
-  const url = './tables/griglia_dipendenti_incarichi.php';
-  
-  // Populate dropdown with list of provinces
-  $.getJSON(url, function (data) {
-    $.each(data, function (key, entry) {
-      dropdown.append($('<option></option>').attr('value', entry.matricola).text(entry.nome));
-    })
-  });
-
-
-  $('#cf').selectpicker('refresh');
-}
-
-refresh();
-*/
-
 $('#cf').selectpicker();
 
 
@@ -290,9 +295,7 @@ var Request = function () {
 			option = document.createElement('option');
 			option.text = data[i].nome;
 			option.value = data[i].matricola;
-			/*if (i==0){
-				alert(option.text);
-			}*/
+
 			dropdown.add(option);
 		}
 
@@ -318,7 +321,7 @@ var Request = function () {
 };
 
 Request();
-
+*/
 
 $(document).ready(function() {
     $('#js-date').datepicker({

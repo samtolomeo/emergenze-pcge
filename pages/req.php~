@@ -76,25 +76,20 @@ function integerToRoman($integer)
 
     <!-- Custom Fonts -->
     <link href="../vendor/fontawesome-free-5.2.0-web/css/all.css" rel="stylesheet" type="text/css">
+	
+	<link href="../vendor/font-awesome-animation/dist/font-awesome-animation.css" rel="stylesheet" type="text/css">
     
     <style type="text/css">
     #wrapper { 
     	/*padding-top:50px;*/
 		padding-top: $('.navbar').height()
     }
-	
-	
-	h3.anchor {
-    display: block;
-    position: relative;
-    /*top: $('.navbar').height();*/
-    top: 60px;
-    /*visibility: hidden;*/
-}
+
 	
 	.sidebar{
 		overflow-y: scroll;
 		position: fixed;
+		margin-top=0px;
 	}
     </style>
     

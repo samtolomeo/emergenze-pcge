@@ -36,7 +36,9 @@ if (isset($subtitle)) {
                 </button>
                 <!--a class="navbar-brand" href="index.php"> </a-->
                 <div class="navbar-brand"> <i class="fas fa-server"></i>
-                Gestione emergenze <?php echo $note_ambiente?> - <?php echo $subtitle?> </div>
+                Gestione emergenze <?php echo $note_ambiente?> - <?php echo $subtitle?> 
+                <?php if ($profilo_sistema==10){ echo '- <font color="#007c37"> Op. num verde </font>';}?> 
+                </div>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
@@ -55,11 +57,14 @@ if (isset($subtitle)) {
 				</li>
 			<?php
 			} else {
+				if ($profilo_sistema == 10){
 			?>	
+			
 				<li class="nav-item active">
 					<a class="nav-link" title="Torna alla prima pagina" href="index.php"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a>
 				</li>
 			<?php
+			}
 			}
 			if ($profilo_sistema == 8 and $check_reperibilita==1){
 			?>
@@ -777,6 +782,10 @@ if (isset($subtitle)) {
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
+				<li>
+				<a target="_guida_in_linea"  title="Guida in linea" href="https://manuale-sistema-di-gestione-emergenze-comune-di-genova.readthedocs.io/it/latest/"> 
+                            <i class="fas fa-question"></i></a>
+				</li>
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->

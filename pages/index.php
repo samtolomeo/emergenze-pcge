@@ -27,6 +27,10 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 require('./check_evento.php');
 //require('./conteggi_dashboard.php');
 
+
+/*if ($profilo_sistema == 10){
+	header("location: ./index_nverde.php");
+}*/
 ?>
     
 </head>
@@ -87,20 +91,12 @@ require('./check_evento.php');
             
             <br><br>
             <div class="row">
-                <div class="col-lg-8">
-                
-                
+                <div class="col-lg-12">
 
-
-
-
-                
-                
-                
                 <div id="segn_sintesi" >
 					<div  class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-list fa-fw" ></i> Sintesi segnalazioni pervenute (aperte / da elaborare)
+                            <i class="fa fa-list fa-fw" ></i> Sintesi segnalazioni da elaborare
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -155,7 +151,7 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
     
  function nameFormatterEditL(value) {
         
-		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+		return '<a class="btn btn-warning" title="Visualizza dettagli" href=./dettagli_segnalazione.php?id='+value+'>'+value+'<!--i class="fas fa-edit"></i--></a>';
  
     }
 
@@ -177,7 +173,41 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 
 </table>
 
-<hr>
+            </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                  </div>
+
+
+<div id="segn_sintesi2" >
+					<div  class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-list fa-fw" ></i> Sintesi segnalazioni aperte
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Altro
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li class="divider"></li>
+                                        <li><a href="elenco_segnalazioni.php">Vai all'elenco completo delle segnalazioni</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div >
 
 <table  id="segnalazioni" class="table table-condensed" style="vertical-align: middle;" data-toggle="table" data-url="./tables/griglia_segnalazioni_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 			
@@ -229,7 +259,7 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
     
  function nameFormatterEdit(value) {
         
-		return '<a class="btn btn-warning btn-sm" title="vai ai dettagli" href=./dettagli_segnalazione.php?id='+value+'><i class="fas fa-edit"></i></a>';
+		return '<a class="btn btn-warning btn-sm" title="Vai ai dettagli" href=./dettagli_segnalazione.php?id='+value+'>'+value+'<!--i class="fas fa-edit"></i--></a>';
  
     }
 
@@ -368,12 +398,12 @@ function nameFormatterMappa1(value, row) {
 
                 </div>
                 <!-- /.col-lg-8 -->
-                <div class="col-lg-4">
+                <!--div class="col-lg-4">
                 
                 <?php echo $note_debug; ?>
 				<br>
-				<!--a href="#mappa_segnalazioni" class="btn btn-info"> <i class="fa fa-map-marked-alt fa-fw"></i> Zoom sulla mappa </a>
-				<br--><br>
+
+				<br>
                 <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-traffic-light fa-fw"></i> Mappa ufficiale <a target="_new" href="http://www.allertaliguria.gov.it">allertaliguria</a> 
@@ -397,8 +427,8 @@ function nameFormatterMappa1(value, row) {
                            
 							  <img class="pull-right img-responsive" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" src="https://mappe.comune.genova.it/allertaliguria/mappa_allerta_render.php">
                         </div>                    
-                        <!-- /.panel-body -->
-                    </div>
+                        
+                    </div-->
                 
                 
                 
@@ -417,7 +447,7 @@ function nameFormatterMappa1(value, row) {
                     
                     
                     
-                    <div class="panel panel-default">
+                    <!--div class="panel panel-default">
                      <div class="panel-heading">
                             <i class="fab fa-twitter fa-fw"></i> Twitter
                         </div>
@@ -426,7 +456,7 @@ function nameFormatterMappa1(value, row) {
                      Tweets by ProtCivileGE</a> 
                      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                      </div>
-                     </div> 
+                     </div--> 
 
                      
                                      
@@ -436,7 +466,7 @@ function nameFormatterMappa1(value, row) {
 
                      
                      
-                    <div class="panel panel-default">
+                    <!--div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-tasks"></i> Gestione eventi
                         </div>
@@ -444,25 +474,12 @@ function nameFormatterMappa1(value, row) {
                             <div id="morris-donut-chart"></div>
                             <a href="dettagli_evento.php" class="btn btn-default btn-block">Visualizza dettagli</a>
                         </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                        
+                    </div-->
                     
 
-                </div>
+
+                <!--/div-->
                 <!-- /.col-lg-4 -->
             </div>
             <!-- /.row -->

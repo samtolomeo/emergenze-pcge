@@ -144,11 +144,14 @@ $(function() {
 var topNavBar = 50;
 var footer = 48;
 var height = $(window).height();
-$('.sidebar').css('height', (height - (topNavBar+footer)));
+//$('.sidebar').css('height', (height - (topNavBar+footer)));
+$('.sidebar').css('height', (height - (topNavBar)));
+
 
 $(window).resize(function(){
     var height = $(window).height();
-    $('.sidebar').css('height', (height - (topNavBar+footer)));
+    //$('.sidebar').css('height', (height - (topNavBar+footer)));
+    $('.sidebar').css('height', (height - (topNavBar)));
 });
 //////////////////////////////////////////////////////////////
 
