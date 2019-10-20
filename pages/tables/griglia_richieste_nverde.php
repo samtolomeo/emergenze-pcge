@@ -15,7 +15,7 @@ t.descrizione as tipo_segnalante
 	JOIN segnalazioni.tipo_segnalanti t ON t.id=s.id_tipo_segnalante
 	JOIN eventi.t_eventi e ON e.id = r.id_evento
 	 WHERE e.valido = true OR e.valido IS NULL
-  ORDER BY r.id_evento;";
+  ORDER BY r.data_ora desc, r.id_evento;";
     
     //echo $query;
 	$result = pg_query($conn, $query);
