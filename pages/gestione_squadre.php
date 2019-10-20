@@ -484,6 +484,9 @@ if ($profilo_sistema <= 8){
 									return  '<i class="fa fa-pause" aria-hidden="true" title="'+value+'"></i> - \
 							<a href="./squadre/riposo.php?id='+ row.id + '" class="btn btn-danger btn-sm" \
 				        title="Imposta come a riposo" role="button"><i class="fa fa-stop" aria-hidden="true"></i>\
+				         </a>\
+						 <a href="./squadre/svuota.php?id='+ row.id + '" class="btn btn-warning btn-sm" \
+				        title="Svuota squadra" role="button"><i class="fa fa-user-alt-slash" aria-hidden="true"></i>\
 				         </a>';
 				         	} else {
 				         		return  '<i class="fa fa-pause" aria-hidden="true" title="'+value+'"></i>';
