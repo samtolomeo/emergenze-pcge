@@ -74,7 +74,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
             <div class="col-md-6">
 				<?php
 				$query= "SELECT *, st_x(st_transform(geom,4326)) as lon , st_y(st_transform(geom,4326)) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
-				echo $query;
+				//echo $query;
         
 				$result=pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
