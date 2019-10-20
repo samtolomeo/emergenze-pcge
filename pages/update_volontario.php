@@ -80,7 +80,7 @@ require('./check_evento.php');
             <br>
 			
 			<?php
-			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
+			if ($profilo_sistema<=3 OR $id=='\''.$CF.'\''){
 			?>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_ana"> 
 				     <i class="fa fa-pencil-alt"></i>        
@@ -155,7 +155,7 @@ require('./check_evento.php');
            
            <br>
 		   <?php
-			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
+			if ($profilo_sistema<=3 OR $id=='\''.$CF.'\''){
 			?>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_res"> 
 				     <i class="fa fa-pencil-alt"></i>        
@@ -312,7 +312,7 @@ require('./check_evento.php');
 				<br>
 				
 			<?php
-			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
+			if ($profilo_sistema<=3 OR $id=='\''.$CF.'\''){
 			?>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_con"> 
 				     <i class="fa fa-pencil-alt"></i>        
@@ -378,7 +378,7 @@ require('./check_evento.php');
 				<b>N° Gruppo Genova</b>: <?php echo $r['numero_gg']?>
 				
 				<?php
-			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
+			if ($profilo_sistema<=3 OR $id=='\''.$CF.'\''){
 			?>
 				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_gg"> 
 				     <i class="fa fa-pencil-alt"></i>        
@@ -390,7 +390,7 @@ require('./check_evento.php');
 				
             <b>UO I livello</b>: <?php echo $r['livello1'] ?>  
 			<?php
-			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
+			if ($profilo_sistema<=3 OR $id=='\''.$CF.'\''){
 			?>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_I_livello"> 
 				     <i class="fa fa-pencil-alt"></i>        
@@ -402,7 +402,7 @@ require('./check_evento.php');
             
             <b>UO II livello</b>: <?php echo $r['livello2'] ?>
 			<?php
-			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
+			if ($profilo_sistema<=3 OR $id=='\''.$CF.'\''){
 			?>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_II_livello"> 
 				     <i class="fa fa-pencil-alt"></i>        
@@ -415,7 +415,7 @@ require('./check_evento.php');
             
             <!--b>UO III livello </b>: <?php echo $r['livello3'] ?>
             <?php
-			if ($profilo_sistema==1 OR $id=='\''.$CF.'\''){
+			if ($profilo_sistema<=3 OR $id=='\''.$CF.'\''){
 			?>
 			<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_III_livello"> 
 				     <i class="fa fa-pencil-alt"></i>        
