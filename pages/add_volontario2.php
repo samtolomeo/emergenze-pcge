@@ -27,11 +27,11 @@ $indirizzo= str_replace("'", "''", $_POST["indirizzo"]);
 
 
 // controllo CF
-$query_cf= "SELECT cf FROM users.utenti_esterni;";
+$query_cf= "SELECT cf FROM users.utenti_esterni where cf ilike '".$cf."';";
 $result_cf = pg_query($conn, $query_cf);
 while($r_cf = pg_fetch_assoc($result_cf)) {
     if("'".$r_cf['cf']."'"== "'".$cf."'") {
-        echo "Codice Fiscale già esistente. <br><br>";
+        echo "Codice Fiscale <b>".$cf."</b> già esistente. <br><br>";
         echo "<a href=\"add_volontario.php\"> Torna indietro </a>";
         exit;
     }
