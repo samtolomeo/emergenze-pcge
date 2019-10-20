@@ -138,7 +138,7 @@ function presidiFormatter(value,row) {
 
  function nameFormatterEdit(value) {
         
-		return '<a class="btn btn-warning" href=./dettagli_sopralluogo.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+		return '<a class="btn btn-warning" href=./dettagli_incarico.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
  
     }
 
