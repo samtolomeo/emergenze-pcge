@@ -1144,6 +1144,18 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<br><b>Data e ora inserimento</b>: <?php echo $r['data_ora']; ?>
 						<!--br><b>Matricola operatore inserimento segnalazione</b>: <?php echo $r['id_operatore']; ?>-->
 						<br><b>Tipologia operatore inserimento segnalazione</b>: <?php echo $r['uo_ins']; ?>
+						<?php if ($profilo_ok=3){ 
+						$query_u="select nome,cognome from users.v_utenti_sistema where matricola_cf='".$r['id_operatore']."';";
+						$result_u=pg_query($conn, $query_u);
+						while($r_u = pg_fetch_assoc($result_u)) {
+						?>
+							<br><b>Operatore inserimento</b>: <?php echo $r_u['cognome']; ?> <?php echo $r_u['nome']; ?>
+							
+							(<?php echo $r['id_operatore']; ?>)
+						<?php }
+						} 
+						?>
+						
 						<br>
 						<?php 
 						$query_altre="SELECT * FROM segnalazioni.".$table." where id_lavorazione=".$id_lavorazione." and id <>".$r['id']."";

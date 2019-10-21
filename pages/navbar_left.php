@@ -227,7 +227,9 @@
                             <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
 								 		<li>
-                                    <a href="elenco_utenti.php">Elenco utenti sistema</a>
+                                    <a href="elenco_utenti.php">
+									<i class="fas fa-user-clock">
+									</i>Elenco utenti sistema</a>
                                 </li>
                             	<li>
                                     <a href="add_volontario.php">
@@ -238,18 +240,25 @@
                                 <li>
                                     <a href="reperibilita_aziende.php"> 
                                     <i class="fas fa-user-clock">
-                                    </i> Reperibilit√† COC Esterni</a>
+                                    </i> Reperibilit&agrave† COC Esterni</a>
                                 </li>
 
                                 <li>
                                     <a href="lista_dipendenti.php">
                                     <i class="fas fa-user-tie"></i>
-                                    Permessi dipendenti</a>
+                                    Elenco dipendenti 
+									<?php if($profilo_sistema==1){ ?>
+									<small> (modifica permessi)</small>
+									<?php } ?>
+									</a>
                                 </li>
                                 <li>
                                     <a href="lista_volontari.php">
                                     <i class="fas fa-user-lock"></i>
-                                    Permessi utenti esterni</a>
+                                    Elenco utenti esterni
+									<?php if($profilo_sistema==1){ ?>
+									<small> (modifica permessi)</small></a>
+									<?php } ?>
                                 </li>
                                 <li>
                                     <a href="lista_mail.php">
