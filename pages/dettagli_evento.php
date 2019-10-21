@@ -681,7 +681,7 @@ require('./check_evento.php');
            
 				<div class="form-group">
 						<label for="data_inizio" >Data inizio attivazione (AAAA-MM-GG) </label>                 
-						<input type="text" class="form-control" name="data_inizio" id="js-date10" required>
+						<input type="text" class="form-control" name="data_inizio" id="js-date10_<?php echo $i; ?>" required>
 						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
 						</div-->
@@ -735,7 +735,7 @@ require('./check_evento.php');
 					
 					<div class="form-group">
 						<label for="data_fine" >Data fine attivazione (AAAA-MM-GG) </label>                 
-						<input type="text" class="form-control" name="data_fine" id="js-date11" required>
+						<input type="text" class="form-control" name="data_fine" id="js-date11_<?php echo $i; ?>" required>
 						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
 						</div-->
@@ -1256,7 +1256,18 @@ $(document).ready(function() {
         autoclose: true,
         todayHighlight: true
     });  
-    
+    $('#js-date10_<?php echo $i; ?>').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    }); 
+    $('#js-date11_<?php echo $i; ?>').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });     
 });
 
 <?php }} ?>
@@ -1266,7 +1277,16 @@ $(document).ready(function() {
      
 $(document).ready(function() {
     
-    $('#js-date10').datepicker({
+	
+	
+	$('#js-date9').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });  
+	
+    /*$('#js-date10').datepicker({
         format: "yyyy-mm-dd",
         clearBtn: true,
         autoclose: true,
@@ -1278,7 +1298,7 @@ $(document).ready(function() {
         clearBtn: true,
         autoclose: true,
         todayHighlight: true
-    }); 
+    }); */
 });     
 
  </script>   

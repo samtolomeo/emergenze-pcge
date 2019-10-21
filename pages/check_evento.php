@@ -119,7 +119,7 @@ if($contatore_eventi>0) {
 if($contatore_eventi>0) {
 	$query="SELECT id_evento FROM eventi.t_attivazione_nverde WHERE data_ora_inizio < now() AND data_ora_fine > now();";
 	$contatore_nverde=0;
-	$descrizione_nverde='Numero verde non attivo';
+	$descrizione_nverde='Numero verde attivo';
 	$color_nverde='#333333';
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
