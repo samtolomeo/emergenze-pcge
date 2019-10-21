@@ -43,7 +43,7 @@
 								<option value="">Seleziona personale</option>
 				<?php
 			foreach ($arr as $result){
-				echo '<option value="'.$result[matricola].'">'.$result[cognome].' '.$result[nome].'('.$result[settore].' - '.$result[ufficio].')</option>';
+				echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].'('.$result['settore'].' - '.$result['ufficio'].')</option>';
 			}
 			?>
 			</select>
@@ -290,7 +290,7 @@
 								<option value="">Seleziona personale</option>
 				<?php
 			foreach ($arr as $result){
-				echo '<option value="'.$result[matricola].'">'.$result[cognome].' '.$result[nome].'('.$result[settore].' - '.$result[ufficio].')</option>';
+				echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].' ('.$result['settore'].' - '.$result['ufficio'].')</option>';
 			}
 			?>
 				 </select>            
@@ -546,7 +546,7 @@ if ($id != '') {
 								<option value="">Seleziona personale</option>
 				<?php
 				foreach ($arr as $result){
-					echo '<option value="'.$result[matricola].'">'.$result[cognome].' '.$result[nome].'('.$result[settore].' - '.$result[ufficio].')</option>';
+					echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].'('.$result['settore'].' - '.$result['ufficio'].')</option>';
 				}
 				?>
 				 </select>            
@@ -806,7 +806,7 @@ if ($id != '') {
 								<option value="">Seleziona personale</option>
 				<?php
 				foreach ($arr as $result){
-					echo '<option value="'.$result[matricola].'">'.$result[cognome].' '.$result[nome].'('.$result[settore].' - '.$result[ufficio].')</option>';
+					echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].'('.$result['settore'].' - '.$result['ufficio'].')</option>';
 				}
 				?>
 				 </select>            
