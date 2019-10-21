@@ -477,7 +477,9 @@ if ($profilo_sistema <= 8){
 				
 				  function nameFormatter1(value, row, index) {
 						if (row.id_stato==1){
-							return ' <i class="fa fa-play" aria-hidden="true" title="'+value+'"></i>';
+							return '<a href="./dettagli_'+row.descrizione+'.php?id='+row.id_incarico+'">\
+							<i class="fa fa-play" aria-hidden="true" title="'+value+'"></i>\
+							</a>';
 						} else if (row.id_stato==2) {
 							if (<?php echo $check_operatore; ?> ==1){
 								if (row.num_componenti > 0) {
