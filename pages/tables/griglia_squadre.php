@@ -20,8 +20,12 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id,nome,stato,id_stato,num_componenti,componenti, da_nascondere From \"users\".\"v_squadre\" where profilo='".$profilo."'::text ".$filter." ORDER BY  num_componenti DESC, \"id_stato\", \"nome\" ;";
-   //echo $query;
+	$query="SELECT s.id,s.nome,s.stato,s.id_stato,s.num_componenti,s.componenti, s.da_nascondere, i.descrizione, i.id as id_incarico 
+	From \"users\".\"v_squadre\" s
+	LEFT JOIN segnalazioni.v_incarichi_squadre i ON s.id::integer=i.id_squadra::integer 
+	where profilo='".$profilo."'::text ".$filter." 
+	ORDER BY num_componenti DESC, \"id_stato\", \"nome\" ;";
+    //echo $query;
 	$result = pg_query($conn, $query);
 	//echo $query;
 	#exit;
