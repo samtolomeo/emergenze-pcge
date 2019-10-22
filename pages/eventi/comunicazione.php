@@ -5,6 +5,8 @@ session_start();
 //echo $_SESSION['user'];
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+require('../check_evento.php');
+
 
 
 //echo "<h2> La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2>";
@@ -71,7 +73,7 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 	$datafile=date("YmdHis");
 	$allegato=$uploaddir .$datafile."_". $userfile_name;
 
-	echo $allegato."<br>";
+	//echo $allegato."<br>";
 
 	//copio il file dalla sua posizione temporanea alla mia cartella upload
 	if (move_uploaded_file($userfile_tmp, $allegato)) {
@@ -95,11 +97,11 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 
 
 $query= "INSERT INTO report.t_comunicazione(id_evento, testo";
-if ($allegato!=''){
+if (isset($allegato)){
 	$query= $query . ", allegato";
 }
 $query= $query .")VALUES (".$id.", '".$note."'";
-if ($allegato!=''){
+if (isset($allegato)){
 	$query= $query . ",'". $allegato."'";
 }
 $query= $query .");";

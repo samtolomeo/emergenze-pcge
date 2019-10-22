@@ -42,8 +42,6 @@ function integerToRoman($integer)
 
 ?>
 
-<!-- REFRESH automatico pagine -->
-     <!--meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'" content="IE=edge"-->
 
 <meta http-equiv="Cache-control" content="public">
 
