@@ -32,13 +32,13 @@ if (substr($id_uo,0,3)=='com'){
 	$id_uo_sistema=8; //utenti esterni
 	$uo_array=explode('_',$id_uo);
 	$id_uo=$uo_array[1];
-	$query_o="SELECT * FROM users.uo_1_livello WHERE id1 ='". $id_uo."';";
+	$query_o="SELECT descrizione FROM users.uo_1_livello WHERE id1 ='". $id_uo."';";
 	//echo $query_o;
 	$result_o=pg_query($conn, $query_o);
 	while($r_o = pg_fetch_assoc($result_o)) {
 		$desc_livello1=$r_o['descrizione'];
 		//echo $id_uo_sistema;
-}
+	}
 }
 
 

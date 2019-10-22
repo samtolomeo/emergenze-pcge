@@ -636,6 +636,7 @@ if (isset($subtitle)) {
                         <i class="fas fa-users"></i>  <i class="fas fa-caret-down"></i>
 					<?php } ?>	
                     </a>
+					<?php if (isset($nome_squadra_operatore)){ ?>	
                     <ul class="dropdown-menu dropdown-alerts">
 					<li>
 						<a href="#">
@@ -752,6 +753,7 @@ if (isset($subtitle)) {
 							</a>
                         </li>
                     </ul>
+				<?php }?>
                 </li>
 
 				
@@ -763,9 +765,7 @@ if (isset($subtitle)) {
                         <i class="fas fa-user fa-fw faa-ring animated" style="color:#ff0000"></i> <i class="fas fa-caret-down"></i>
 				<?php } else { ?>
 						<i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
-				<?php } ?>
-					
-					
+				<?php }?>
 					</a>
 					
                     <ul class="dropdown-menu dropdown-user">
@@ -777,7 +777,7 @@ if (isset($subtitle)) {
                         <!--li><a href="#"><i class="fas fa-gear fa-fw"></i> Settings (DEMO)</a>
                         </li-->
                         <li class="divider"></li>
-                        <li><a href="https://gestemert.comune.genova.it/Shibboleth.sso/Logout"><i class="fas fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../../Shibboleth.sso/Logout"><i class="fas fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

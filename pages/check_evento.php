@@ -2,7 +2,7 @@
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 $check_evento=0;
-$contatore_eventi==0;
+$contatore_eventi=0;
 $contatore_allerte=0;
 $descrizione_allerta='Nessuna allerta';
 $color_allerta='#5cb85c';
@@ -235,9 +235,9 @@ while($r = pg_fetch_assoc($result)) {
 		$cognome = $r['cognome'];
 		$matricola = $r['matricola'];
 		$matricola_cf=$matricola;
-		$livello1=$r['direzione_area'];
-		$livello2=$r['settore'];
-		$livello3=$r['ufficio'];
+		$livello1=$r['descr_liv2'];
+		$livello2=$r['descr_liv4'];
+		$livello3=$r['descr_liv5'];
 	}
 	
 	
@@ -363,7 +363,11 @@ while($r = pg_fetch_assoc($result)) {
 	if($profilo_cod_munic !=''){
 		$f_mun= ' and id_municipio = '.$profilo_cod_munic.' ';
 	}
-	$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+	if(isset($f_mun)){
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+	} else {
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null;";
+	}
 	$id_segn_limbo=array();
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
@@ -373,7 +377,19 @@ while($r = pg_fetch_assoc($result)) {
 	$segn_limbo=count($id_segn_limbo);
 
 	// Conteggi incarichi
-	$query= "SELECT  id, descrizione, id_stato_incarico FROM segnalazioni.v_incarichi_last_update where id_stato_incarico<=2 and (id_profilo='".$profilo_ok."' OR id_uo='".$uo_inc."'  OR id_uo='".$periferico_inc."' ) GROUP BY id,descrizione, id_stato_incarico;";
+	
+	$query= "SELECT  id, descrizione, id_stato_incarico FROM segnalazioni.v_incarichi_last_update where id_stato_incarico<=2 and (";
+	if(isset($profilo_ok)){
+		$query = $query. "id_profilo='".$profilo_ok."' ";
+	}
+	if(isset($uo_inc)){
+		$query= $query." OR id_uo='".$uo_inc."' ";
+	}
+	if(isset($periferico_inc)){
+		$query = $query." OR id_uo='".$periferico_inc."' ";
+	}
+	$query=$query.") GROUP BY id,descrizione, id_stato_incarico;";
+	
 	//echo $query;
 	$result = pg_query($conn, $query);
 	$id_i_assegnati_resp=array();

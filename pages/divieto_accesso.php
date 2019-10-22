@@ -20,7 +20,7 @@ require('./req.php');
 
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
-require('./check_evento.php');
+//require('./check_evento.php');
 ?>
     
 </head>
@@ -30,12 +30,20 @@ require('./check_evento.php');
     <div id="wrapper">
 
         <?php 
-            require('./navbar_up.php')
+            //require('./navbar_up.php')
         ?>  
         <?php 
-            require('./navbar_left.php')
+            //require('./navbar_left.php')
         ?> 
-            
+        <div class="navbar-default sidebar" role="navigation">
+			<div class="sidebar-nav navbar-collapse">
+				<ul class="nav" id="side-menu">
+					<li class="nav-item active">
+						<a class="nav-link" href="index.php"><i class="fas fa-sync"></i>Ricarica prima pagina</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
         <div id="page-wrapper">
              <div class="row">
