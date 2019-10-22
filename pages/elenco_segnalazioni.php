@@ -2,11 +2,15 @@
 
 $subtitle="Elenco segnalazioni pervenute (eventi attivi e/o in fase di chiusura)";
 
-
-$getfiltri=$_GET["f"];
-$filtro_evento_attivo=$_GET["a"];
-$filtro_municipio=$_GET["m"];
-
+if(isset($_GET["f"])){
+	$getfiltri=$_GET["f"];
+}
+if(isset($_GET["a"])){
+	$filtro_evento_attivo=$_GET["a"];
+}
+if(isset($_GET["m"])){
+	$filtro_municipio=$_GET["m"];
+}
 //echo $filtro_evento_attivo; 
 
 
