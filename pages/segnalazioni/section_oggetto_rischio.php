@@ -642,7 +642,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 				<option  id="uo" name="uo" value="">Seleziona la squadra</option>
 				<?php    
 				while($r2 = pg_fetch_assoc($result2)) { 
-					$valore=  $r2['cf']. ";".$r2['nome'];            
+					$valore=  $r2['id']. ";".$r2['nome'];            
 				?>
 							
 						<option id="uo" name="uo" value="<?php echo $r2['id'];?>" ><?php echo $r2['nome'].' ('.$r2['id'].')';?></option>
