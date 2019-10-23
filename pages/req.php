@@ -88,6 +88,7 @@ function integerToRoman($integer)
 		overflow-y: scroll;
 		position: fixed;
 		margin-top: 0px;
+		z-index:1;
 	}
     </style>
     

@@ -242,7 +242,7 @@ require('./check_evento.php');
 					$query2="SELECT * FROM users.v_utenti_esterni v 
 					WHERE NOT EXISTS
 						(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.cf and data_end is null) 
-						AND id1=1
+						AND id1 in (1,8)
 						ORDER BY cognome";
 				} else if (substr($cod_profilo_squadra,0,2)=='uo' OR (int)substr($cod_profilo_squadra,-1,1)>1){
 					
