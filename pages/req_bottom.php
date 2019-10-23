@@ -1,7 +1,7 @@
 <?php 
 //pg_close($conn);
 $subtitle2=str_replace(' ','_',$subtitle);
-echo $subtitle2;
+//echo $subtitle2;
 ?>
 
 </div>
