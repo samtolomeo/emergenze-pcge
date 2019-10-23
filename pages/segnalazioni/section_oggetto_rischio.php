@@ -4,7 +4,7 @@
 
 
 $check_or=0;
-if ($id_lavorazione==''){
+if (isset($id_lavorazione)){
 	$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE  id_segnalazione=".$id." AND attivo='t';";
 } else {
 	$query_or="SELECT * FROM segnalazioni.v_join_oggetto_rischio WHERE id_segnalazione_in_lavorazione=".$id_lavorazione."  AND attivo='t';";
@@ -17,25 +17,25 @@ while($r_or = pg_fetch_assoc($result_or)) {
 	$id_oggetto_rischio=$r_or['id_oggetto'];
 }
 
-
-$query_or="SELECT * FROM segnalazioni.t_geometrie_provvedimenti_cautelari WHERE id_provvedimento=".$id_provvedimento.";";
-//echo $query_or;
-//echo "<br>";
-$result_or=pg_query($conn, $query_or);
-while($r_or = pg_fetch_assoc($result_or)) {
-	$check_or=1;
-	if ($r_or['tipo_oggetto']=='geodb.edifici'){
-		$id_tipo_oggetto_rischio=4;
-	} else if ($r_or['tipo_oggetto']=='geodb.civici'){
-		$id_tipo_oggetto_rischio=1;
-	} else if ($r_or['tipo_oggetto']=='geodb.sottopassi'){		
-		$id_tipo_oggetto_rischio=10;
-	} else if ($r_or['tipo_oggetto']=='geodb.v_vie_unite'){		
-		$id_tipo_oggetto_rischio=0;
+if (isset($id_provvedimento)){
+	$query_or="SELECT * FROM segnalazioni.t_geometrie_provvedimenti_cautelari WHERE id_provvedimento=".$id_provvedimento.";";
+	//echo $query_or;
+	//echo "<br>";
+	$result_or=pg_query($conn, $query_or);
+	while($r_or = pg_fetch_assoc($result_or)) {
+		$check_or=1;
+		if ($r_or['tipo_oggetto']=='geodb.edifici'){
+			$id_tipo_oggetto_rischio=4;
+		} else if ($r_or['tipo_oggetto']=='geodb.civici'){
+			$id_tipo_oggetto_rischio=1;
+		} else if ($r_or['tipo_oggetto']=='geodb.sottopassi'){		
+			$id_tipo_oggetto_rischio=10;
+		} else if ($r_or['tipo_oggetto']=='geodb.v_vie_unite'){		
+			$id_tipo_oggetto_rischio=0;
+		}
+		$id_oggetto_rischio=$r_or['id_oggetto'];
 	}
-	$id_oggetto_rischio=$r_or['id_oggetto'];
 }
-
 
 						
 

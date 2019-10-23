@@ -208,7 +208,7 @@ if ($profilo_sistema > 4){
                             <select disabled="" name="codvia"  id="via-list" class="selectpicker show-tick form-control" data-live-search="true" onChange="getCivico(this.value);" required="">
                             <option value="">Seleziona la via</option>
             <?php            
-            $query2="SELECT * From \"geodb\".\"m_vie_unite\";";
+            $query2="SELECT codvia, desvia From \"geodb\".\"m_vie_unite\";";
 	        $result2 = pg_query($conn, $query2);
             //echo $query1;    
             while($r2 = pg_fetch_assoc($result2)) { 
@@ -251,7 +251,7 @@ if ($profilo_sistema > 4){
                             <select disabled="" name="codvia" id="via-list2" class="selectpicker show-tick form-control" data-live-search="true" required="">
                             <option value="">Seleziona la via</option>
             <?php            
-            $query2="SELECT * From \"geodb\".\"m_vie_unite\";";
+            $query2="SELECT  codvia, desvia From \"geodb\".\"m_vie_unite\";";
 	        $result2 = pg_query($conn, $query2);
             //echo $query1;    
             while($r2 = pg_fetch_assoc($result2)) { 
