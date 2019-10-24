@@ -334,7 +334,7 @@ function nameFormatterMappa1(value, row) {
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li class="divider"></li>
-                                        <li><a href="elenco_ssopralluohi mobili.php">Vai all'elenco di tutti i presidi mobili</a>
+                                        <li><a href="elenco_sopralluohi mobili.php">Vai all'elenco di tutti i presidi mobili</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -353,10 +353,11 @@ function nameFormatterMappa1(value, row) {
 								<!--th data-field="state" data-checkbox="true"></th-->
 								<th data-field="id_stato_sopralluogo" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th> 
 								<!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
-									<th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Squadra</th>
 								<th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
-								<!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
 								<th data-field="data_ora_invio" data-sortable="true"  data-visible="true">Data e ora<br>assegnazione</th>
+								<th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Squadra</th>
+								<th data-field="componenti" data-sortable="true"  data-visible="true">Componenti</th>
+								<!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
 								<!--th data-field="time_start" data-sortable="true"  data-visible="true">Ora<br>inizio</th>
 								<th data-field="time_stop" data-sortable="true"  data-visible="true">Ora<br>fine</th>
 								<th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
