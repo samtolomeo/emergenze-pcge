@@ -1,8 +1,10 @@
 <?php 
 
 require ('./note_ambiente.php');
-if ($_GET['r']=='true'){
-	require('./check_evento.php');
+if(isset($_GET['r'])){
+	if ($_GET['r']=='true'){
+		require('./check_evento.php');
+	}
 }
 if (isset($subtitle)) {
 	$subtitle=$subtitle;

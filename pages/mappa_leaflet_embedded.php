@@ -55,7 +55,7 @@
         }).fitBounds([[44.4069527187,8.86036251006],[44.4847013265,8.96496972789]]);*/
          
 		 <?php
-        if ($zoom!=''){
+        if (isset($zoom)){
 		?>	
 		    var map = L.map('map').setView([<?php echo $lat;?>, <?php echo $lon;?>], <?php echo $zoom;?>),
 		<?php
@@ -657,19 +657,24 @@
       //map.addLayer(layer_v_pc);   
       //map.addLayer(layer_v_pc_linee);  
 		map.addLayer(pc);
-		
-		
-		<?php
-
- 		if ($check_lav==-1 or $no_segn==1 ){
-		?>
-			var marker_segnalazione = L.marker([<?php echo $lat.", ".$lon;?>]).addTo(map);
 			
-
 		<?php
+		if(isset($check_lav)){
+			if ($check_lav==-1){
+			?>
+				var marker_segnalazione = L.marker([<?php echo $lat.", ".$lon;?>]).addTo(map);
+			<?php
+			}
 		}
 
-
+		if(isset($no_segn)){
+			if ($no_segn==1){
+			?>
+				var marker_segnalazione = L.marker([<?php echo $lat.", ".$lon;?>]).addTo(map);
+			<?php
+			}
+		}
+if(isset($descrizione_oggetto_rischio)){
  if ($descrizione_oggetto_rischio=='Sottopassi'){
 
 ?>
@@ -858,17 +863,11 @@ var civico = [
 		
 		
 		map.addLayer(layer_v_civici);
-		
-
-
-		// 
-
-
-
 
 		<?php
 
  } 
+}
 
 ?> 
         

@@ -118,7 +118,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						//echo 'Munic'. $id_municipio.'<br>';
-						//echo 'Profilo'. $profilo_sistema.'<br>';
+						//echo 'Profilo:'. $profilo_sistema.'<br>';
+						//echo 'id_uo:'. $id_uo.'<br>';
 						require('./check_operatore.php');
 						
 						if ($r['id_lavorazione'] !='' and $r['in_lavorazione']=='t') {
