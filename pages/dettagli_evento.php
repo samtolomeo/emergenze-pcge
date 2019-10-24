@@ -155,7 +155,7 @@ require('./check_evento.php');
 					   
 					   ?>
 					   
-					   <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione">
+					   <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#comunicazione_<?php echo $eventi_attivi[$i]; ?>">
 					   <i class="fas fa-plus"></i> Aggiungi comunicazione</button>
 					   <ul>
 	   					<?php
@@ -182,14 +182,14 @@ require('./check_evento.php');
 						echo "</ul><hr>";
 						?>
 						<!-- Modal comunicazione da UO-->
-						<div id="comunicazione" class="modal fade" role="dialog">
+						<div id="comunicazione_<?php echo $eventi_attivi[$i]; ?>" class="modal fade" role="dialog">
 						  <div class="modal-dialog">
 
 							<!-- Modal content-->
 							<div class="modal-content">
 							  <div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Comunicazioni sull'evento / Verbale COC</h4>
+								<h4 class="modal-title">Comunicazioni sull'evento <?php echo $eventi_attivi[$i]; ?> / Verbale COC dell'evento <?php echo $eventi_attivi[$i]; ?></h4>
 							  </div>
 							  <div class="modal-body">
 							  
