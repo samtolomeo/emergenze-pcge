@@ -16,31 +16,31 @@ if ($test_municipi==2){
 }
 
 
-
-if (substr($id_uo,0,3)=='com'){
-	$uo_array=explode('_',$id_uo);
-	$id_uo=$uo_array[1];
-	$query_o="SELECT * FROM varie.t_incarichi_comune WHERE cod ='". $id_uo."';";
-	//echo $query_o;
-	$result_o=pg_query($conn, $query_o);
-	while($r_o = pg_fetch_assoc($result_o)) {
-			$id_uo_sistema=$r_o['profilo'];
+if(isset($id_uo)){
+	if (substr($id_uo,0,3)=='com'){
+		$uo_array=explode('_',$id_uo);
+		$id_uo=$uo_array[1];
+		$query_o="SELECT * FROM varie.t_incarichi_comune WHERE cod ='". $id_uo."';";
+		//echo $query_o;
+		$result_o=pg_query($conn, $query_o);
+		while($r_o = pg_fetch_assoc($result_o)) {
+				$id_uo_sistema=$r_o['profilo'];
+				//echo $id_uo_sistema;
+		}
+		//echo $profilo_sistema;
+	} else {
+		$id_uo_sistema=8; //utenti esterni
+		$uo_array=explode('_',$id_uo);
+		$id_uo=$uo_array[1];
+		$query_o="SELECT descrizione FROM users.uo_1_livello WHERE id1 ='". $id_uo."';";
+		//echo $query_o;
+		$result_o=pg_query($conn, $query_o);
+		while($r_o = pg_fetch_assoc($result_o)) {
+			$desc_livello1=$r_o['descrizione'];
 			//echo $id_uo_sistema;
-	}
-	//echo $profilo_sistema;
-} else {
-	$id_uo_sistema=8; //utenti esterni
-	$uo_array=explode('_',$id_uo);
-	$id_uo=$uo_array[1];
-	$query_o="SELECT descrizione FROM users.uo_1_livello WHERE id1 ='". $id_uo."';";
-	//echo $query_o;
-	$result_o=pg_query($conn, $query_o);
-	while($r_o = pg_fetch_assoc($result_o)) {
-		$desc_livello1=$r_o['descrizione'];
-		//echo $id_uo_sistema;
+		}
 	}
 }
-
 
 
 

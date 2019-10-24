@@ -344,7 +344,9 @@ while($r = pg_fetch_assoc($result)) {
 		$profilo_squadre=$profilo_ok;
 	} else {
 		//$profilo_squadre=$uo_inc;
-		$profilo_squadre=$periferico_inc;
+		if (isset($periferico_inc)){
+			$profilo_squadre=$periferico_inc;
+		}
 	}
 	$query2="SELECT * FROM varie.v_incarichi_mail WHERE profilo = '".$profilo_squadre."'::text ORDER BY descrizione;";
 	//echo $query2;
@@ -448,8 +450,22 @@ while($r = pg_fetch_assoc($result)) {
 	$sm_assegnati_resp = count($id_sm_assegnati_resp);
 
 
+
+
+
 	// Conteggi provvedimenti cautelari
-	$query= "SELECT  id, tipo_provvedimento,id_stato_provvedimenti_cautelari FROM segnalazioni.v_provvedimenti_cautelari_last_update where id_stato_provvedimenti_cautelari<=2 and (id_profilo='".$profilo_ok."' OR id_squadra='".$uo_inc."' OR id_squadra='".$periferico_inc."') GROUP BY id,tipo_provvedimento, id_stato_provvedimenti_cautelari;";
+	$query= "SELECT  id, tipo_provvedimento,id_stato_provvedimenti_cautelari FROM segnalazioni.v_provvedimenti_cautelari_last_update where id_stato_provvedimenti_cautelari<=2 and (";
+	if(isset($profilo_ok)){
+		$query = $query. "id_profilo='".$profilo_ok."' ";
+	}
+	if(isset($uo_inc)){
+		$query= $query." OR id_squadra='".$uo_inc."' ";
+	}
+	if(isset($periferico_inc)){
+		$query = $query." OR id_squadra='".$periferico_inc."' ";
+	}
+	$query=$query.") GROUP BY id,tipo_provvedimento, id_stato_provvedimenti_cautelari;";
+	//id_profilo='".$profilo_ok."' OR id_squadra='".$uo_inc."' OR id_squadra='".$periferico_inc."') GROUP BY id,tipo_provvedimento, id_stato_provvedimenti_cautelari;";
 	//echo $query;
 	$result = pg_query($conn, $query);
 	$id_pc_assegnati_resp=array();

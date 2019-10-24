@@ -5,11 +5,14 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 //require('../check_evento.php');
 
 // Filtro per tipologia di criticità
-$getfiltri=$_GET["f"];
-//echo $getfiltri;
+if(isset($_GET["f"])){
+	$getfiltri=$_GET["f"];
+	//echo $getfiltri;
 
-require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-$filter=filtro($getfiltri);
+	require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
+	$filter=filtro($getfiltri);
+}
+
 
 $filter= " WHERE in_lavorazione = 't' or in_lavorazione is null ";
 

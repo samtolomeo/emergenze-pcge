@@ -485,10 +485,21 @@ function nameFormatterMappa1(value, row) {
             <!-- /.row -->
 			
 			
+		<?php 
+		$query= "SELECT count(id) FROM segnalazioni.v_segnalazioni;";
+		$result = pg_query($conn, $query);
+		while($r = pg_fetch_assoc($result)) {
+			$segn_tot = $r['count'];	
+		}
+
+		// segnalazioni in lavorazione
+		$query= "SELECT count(id) FROM segnalazioni.v_segnalazioni WHERE in_lavorazione='t';";
+		$result = pg_query($conn, $query);
+		while($r = pg_fetch_assoc($result)) {
+			$segn_lav = $r['count'];	
+		}
 		
-		
-		
-		
+		?>
 		<!-- riga iniziale con i contatori -->
             <div class="row">
 				<!-- EVENTI IN CORSO -->
@@ -583,7 +594,7 @@ function nameFormatterMappa1(value, row) {
                                 <div class="col-xs-9 text-right">
                                     <div class="huge">
                                     <?php
-													echo $segn_lav;
+										echo $segn_lav;
                                     ?>
                                     
                                     </div>

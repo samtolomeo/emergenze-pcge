@@ -5,6 +5,8 @@ session_start();
 //echo $_SESSION['user'];
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+require('../check_evento.php');
+
 
 $id_squadra=$_GET['s'];
 

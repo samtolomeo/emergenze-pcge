@@ -3,10 +3,6 @@
 ?>
 
 
-            
-            
-            
-            
             <!-- riga iniziale con i contatori -->
             <div class="row">
 				<!-- EVENTI IN CORSO -->

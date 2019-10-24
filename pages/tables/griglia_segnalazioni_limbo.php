@@ -11,22 +11,26 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 
 
+$filter_completo =" ";
 // Filtro per tipologia di criticità
-$getfiltri=$_GET["f"];
+if(isset($_GET["f"])){
+	$getfiltri=$_GET["f"];
+}
 //echo $getfiltri;
-
 require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
 $filtro_c=filtro($getfiltri);
 
-if ($filtro_c=='' and $filter!=''){
+if ($filtro_c=='' and isset($filter)){
 	$filter_completo = " WHERE ".$filter." and in_lavorazione is null";
-} else if ($filtro_c != '' and $filter!=''){
+} else if ($filtro_c != '' and isset($filter)){
 	$filter_completo = $filtro_c." AND (".$filter .") and in_lavorazione is null" ;
 } else if ($filtro_c!='' and $filter==''){
 	$filter_completo = $filtro_c ." and in_lavorazione is null";
 } else if ($filtro_c=='' and $filter==''){
 	$filter_completo = " WHERE in_lavorazione is null ";
 }
+
+
 
 if(!$conn) {
     die('Connessione fallita !<br />');
