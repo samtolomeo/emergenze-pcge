@@ -190,7 +190,7 @@
                                     <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili attivi</a>
                                 </li>
 								<li>
-                                    <a href="elenco_sopralluoghi_ev_chiusi.php">Elenco presidi fissi schiusi</a>
+                                    <a href="elenco_sopralluoghi_ev_chiusi.php">Elenco presidi fissi chiusi</a>
                                 </li>
                                 <li>
                                     <a href="elenco_sopralluoghi_mobili_ev_chiusi.php">Elenco presidi mobili chiusi</a>
