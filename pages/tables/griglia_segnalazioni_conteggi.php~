@@ -5,16 +5,12 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 //require('../check_evento.php');
 
 // Filtro per tipologia di criticità
-$getfiltri=$_GET["f"];
-$filtro_evento_attivo=$_GET["a"];
-$filtro_municipio=$_GET["m"];
+
+
+$id=$_GET["id"];
 
 //echo $getfiltri;
 
-require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-//$filter=filtro($getfiltri);
-
-$filter=filtro2($getfiltri, $filtro_municipio);
 
 
 
@@ -22,9 +18,11 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id, data_ora, descrizione, criticita, 
-       rischio, id_evento, tipo_evento, 
-       note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter[0]." ;";
+	$query="SELECT s.criticita, count(s.id), r.risolte
+FROM segnalazioni.v_segnalazioni_all s
+LEFT JOIN segnalazioni.v_count_risolte r ON r.criticita=s.criticita 
+WHERE s.id_evento=".$id."
+GROUP BY s.criticita, r.risolte;";
     
     //echo $query."<br>";
 	$result = pg_query($conn, $query);
