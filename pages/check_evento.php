@@ -348,7 +348,11 @@ while($r = pg_fetch_assoc($result)) {
 			$profilo_squadre=$periferico_inc;
 		}
 	}
-	$query2="SELECT * FROM varie.v_incarichi_mail WHERE profilo = '".$profilo_squadre."'::text ORDER BY descrizione;";
+	
+	
+	
+	
+	$query2="SELECT * FROM varie.v_incarichi_mail WHERE profilo = '".$profilo_squadre."';";
 	//echo $query2;
 	$result2 = pg_query($conn, $query2);
 	//echo $query1;    

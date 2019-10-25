@@ -1,8 +1,8 @@
 <?php
-//require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
+require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 $check_evento=0;
-$contatore_eventi==0;
+$contatore_eventi=0;
 $contatore_allerte=0;
 $descrizione_allerta='Nessuna allerta';
 $color_allerta='#5cb85c';
@@ -23,6 +23,7 @@ while($r1 = pg_fetch_assoc($result1)) {
 	$result2 = pg_query($conn, $query2);
 	while($r2 = pg_fetch_assoc($result2)) {
 		$tipo_eventi_attivi[]=array($r1["id"],$r2["descrizione"]);
+		//echo $r1["id"];
 	}
 	$query2="SELECT  nota From eventi.t_note_eventi WHERE id_evento=".$r1["id"]." ;";
 	//echo $query2;
@@ -118,7 +119,7 @@ if($contatore_eventi>0) {
 if($contatore_eventi>0) {
 	$query="SELECT id_evento FROM eventi.t_attivazione_nverde WHERE data_ora_inizio < now() AND data_ora_fine > now();";
 	$contatore_nverde=0;
-	$descrizione_nverde='Numero verde non attivo';
+	$descrizione_nverde='Numero verde attivo';
 	$color_nverde='#333333';
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
@@ -210,6 +211,7 @@ while($r = pg_fetch_assoc($result)) {
 	$matricola_cf=$codfisc;
 	$operatore=$matricola_cf;
 	$uo_inc='uo_'.$r['id1'];
+	$id_uo1=$r['id1'];
 	$livello1=$r['livello1'];
 	$id_livello1=$r['id1'];
 	$livello2=$r['livello2'];
@@ -217,7 +219,7 @@ while($r = pg_fetch_assoc($result)) {
 	$check_esterno=1;
 }
 
-$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."' and (indirizzo is null or comune_residenza is null or mail is null or data_nascita is null or telefono1 is null);";
+$query= "SELECT * FROM users.v_utenti_esterni WHERE cf='".$CF."' and (indirizzo is null or comune is null or mail is null or data_nascita is null or telefono1 is null);";
 $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
 	$check_esterno_update=1;
@@ -233,9 +235,9 @@ while($r = pg_fetch_assoc($result)) {
 		$cognome = $r['cognome'];
 		$matricola = $r['matricola'];
 		$matricola_cf=$matricola;
-		$livello1=$r['direzione_area'];
-		$livello2=$r['settore'];
-		$livello3=$r['ufficio'];
+		$livello1=$r['descr_liv2'];
+		$livello2=$r['descr_liv4'];
+		$livello3=$r['descr_liv5'];
 	}
 	
 	
@@ -278,7 +280,8 @@ while($r = pg_fetch_assoc($result)) {
 	//notifiche
 	if ($profilo_sistema == 0 and
 	basename($_SERVER['PHP_SELF'])!='divieto_accesso.php' and
-	basename($_SERVER['PHP_SELF'])!='add_volontario.php') {
+	basename($_SERVER['PHP_SELF'])!='add_volontario.php' and
+	basename($_SERVER['PHP_SELF'])!='check_evento.php') {
 		header("location: ./divieto_accesso.php");
 	} else {
 		if ($privacy =='f')
@@ -341,8 +344,14 @@ while($r = pg_fetch_assoc($result)) {
 		$profilo_squadre=$profilo_ok;
 	} else {
 		//$profilo_squadre=$uo_inc;
-		$profilo_squadre=$periferico_inc;
+		if (isset($periferico_inc)){
+			$profilo_squadre=$periferico_inc;
+		}
 	}
+	
+	
+	
+	
 	$query2="SELECT * FROM varie.v_incarichi_mail WHERE profilo = '".$profilo_squadre."'::text ORDER BY descrizione;";
 	//echo $query2;
 	$result2 = pg_query($conn, $query2);
@@ -360,7 +369,11 @@ while($r = pg_fetch_assoc($result)) {
 	if($profilo_cod_munic !=''){
 		$f_mun= ' and id_municipio = '.$profilo_cod_munic.' ';
 	}
-	$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+	if(isset($f_mun)){
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+	} else {
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null;";
+	}
 	$id_segn_limbo=array();
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
@@ -370,7 +383,19 @@ while($r = pg_fetch_assoc($result)) {
 	$segn_limbo=count($id_segn_limbo);
 
 	// Conteggi incarichi
-	$query= "SELECT  id, descrizione, id_stato_incarico FROM segnalazioni.v_incarichi_last_update where id_stato_incarico<=2 and (id_profilo='".$profilo_ok."' OR id_uo='".$uo_inc."'  OR id_uo='".$periferico_inc."' ) GROUP BY id,descrizione, id_stato_incarico;";
+	
+	$query= "SELECT  id, descrizione, id_stato_incarico FROM segnalazioni.v_incarichi_last_update where id_stato_incarico<=2 and (";
+	if(isset($profilo_ok)){
+		$query = $query. "id_profilo='".$profilo_ok."' ";
+	}
+	if(isset($uo_inc)){
+		$query= $query." OR id_uo='".$uo_inc."' ";
+	}
+	if(isset($periferico_inc)){
+		$query = $query." OR id_uo='".$periferico_inc."' ";
+	}
+	$query=$query.") GROUP BY id,descrizione, id_stato_incarico;";
+	
 	//echo $query;
 	$result = pg_query($conn, $query);
 	$id_i_assegnati_resp=array();
@@ -429,8 +454,22 @@ while($r = pg_fetch_assoc($result)) {
 	$sm_assegnati_resp = count($id_sm_assegnati_resp);
 
 
+
+
+
 	// Conteggi provvedimenti cautelari
-	$query= "SELECT  id, tipo_provvedimento,id_stato_provvedimenti_cautelari FROM segnalazioni.v_provvedimenti_cautelari_last_update where id_stato_provvedimenti_cautelari<=2 and (id_profilo='".$profilo_ok."' OR id_squadra='".$uo_inc."' OR id_squadra='".$periferico_inc."') GROUP BY id,tipo_provvedimento, id_stato_provvedimenti_cautelari;";
+	$query= "SELECT  id, tipo_provvedimento,id_stato_provvedimenti_cautelari FROM segnalazioni.v_provvedimenti_cautelari_last_update where id_stato_provvedimenti_cautelari<=2 and (";
+	if(isset($profilo_ok)){
+		$query = $query. "id_profilo='".$profilo_ok."' ";
+	}
+	if(isset($uo_inc)){
+		$query= $query." OR id_squadra='".$uo_inc."' ";
+	}
+	if(isset($periferico_inc)){
+		$query = $query." OR id_squadra='".$periferico_inc."' ";
+	}
+	$query=$query.") GROUP BY id,tipo_provvedimento, id_stato_provvedimenti_cautelari;";
+	//id_profilo='".$profilo_ok."' OR id_squadra='".$uo_inc."' OR id_squadra='".$periferico_inc."') GROUP BY id,tipo_provvedimento, id_stato_provvedimenti_cautelari;";
 	//echo $query;
 	$result = pg_query($conn, $query);
 	$id_pc_assegnati_resp=array();
@@ -449,8 +488,11 @@ while($r = pg_fetch_assoc($result)) {
 	
 	//******************************************************
 	//notifiche squadra
+	$ii_assegnati_squadra = 0;
+	$s_assegnati_squadra = 0;
+	$sm_assegnati_squadra =0;
 	
-	
+	if (isset($id_squadra_operatore)){
 	// Conteggi incarichi
 	$query= "SELECT id_incarico_interno, id_sopralluogo, id_sm FROM users.v_squadre_notifica WHERE id=".$id_squadra_operatore.";";
 	//echo $query;
@@ -474,6 +516,7 @@ while($r = pg_fetch_assoc($result)) {
 	$ii_assegnati_squadra = count($id_ii_assegnati_squadra);
 	$s_assegnati_squadra = count($id_s_assegnati_squadra);
 	$sm_assegnati_squadra = count($id_sm_assegnati_squadra);
+	}
 	//$pc_assegnati_squadra = count($id_pc_assegnati_squadra);  
 	// Conteggi incarichi
 	/*$query= "SELECT  id, tipo_provvedimento FROM segnalazioni.v_incarichi_last_update where id_stato_incarichi<=2 and id_squadra=".$id_squadra_operatore.";";
@@ -553,5 +596,15 @@ order by to_timestamp(max(c.data_ora_stato),'DD/MM/YY HH24:MI:SS') desc;";
 	$n_id_lavorazione_m = count($id_lavorazione_m);
 	*/
 	
-	
+	//controllo reperibilita
+
+	$check_reperibilita=0;
+	if (isset($id_uo1)){
+		$query = "SELECT reperibilita FROM users.uo_1_livello where id1 = ".$id_uo1." and reperibilita='t';";
+		//echo $query;
+		$result = pg_query($conn, $query);
+		while($r = pg_fetch_assoc($result)) {
+			$check_reperibilita=1;
+		}
+	}
 ?>       

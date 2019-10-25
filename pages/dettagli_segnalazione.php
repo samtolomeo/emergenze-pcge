@@ -751,7 +751,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT id, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									$query2="SELECT id, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 AND cod_afferenza = '".$cod_profilo_squadra."' ORDER BY nome;";
 									
 									//echo $query2;
 									$result2 = pg_query($conn, $query2);
@@ -810,9 +810,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2= "SELECT id, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
+									$query2= "SELECT id, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and cod_afferenza = '".$cod_profilo_squadra."' ORDER BY nome;";
 									//$query2="SELECT cf, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
-									echo $query2;
+									//echo $query2;
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
