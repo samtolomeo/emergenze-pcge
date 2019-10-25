@@ -3,6 +3,15 @@ session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 $profilo=$_GET['p'];
 
+
+//cerco il codice afferenza perchè le query successive sono molto più rapide
+/*$query="SELECT cod FROM varie.v_incarichi_mail where profilo='".$profilo."';";
+$result = pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	$cod=$r["cod"];
+}*/
+
+
 $tipo=$_GET['t'];
 
 if ($tipo==1){
@@ -21,10 +30,10 @@ if(!$conn) {
 } else {
 	//$idcivico=$_GET["id"];
 	$query="SELECT s.id,s.nome,s.stato,s.id_stato,s.num_componenti,s.componenti, s.da_nascondere, i.descrizione, i.id as id_incarico 
-	From \"users\".\"v_squadre\" s
+	FROM users.v_squadre s
 	LEFT JOIN segnalazioni.v_incarichi_squadre i ON s.id::integer=i.id_squadra::integer 
-	where profilo='".$profilo."'::text ".$filter." 
-	ORDER BY num_componenti DESC, \"id_stato\", \"nome\" ;";
+	WHERE s.cod_afferenza='".$cod_profilo_squadra."' ".$filter." 
+	ORDER BY nome ;";
     //echo $query;
 	$result = pg_query($conn, $query);
 	//echo $query;
