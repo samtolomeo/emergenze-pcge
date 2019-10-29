@@ -31,6 +31,7 @@ $subtitle="Dettagli squadra"
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
 
     <meta charset="utf-8">
@@ -47,7 +48,8 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 ?>
-    
+<!-- jQuery -->
+<script src="../vendor/jquery/jquery.min.js"></script>  
 </head>
 
 <body>
@@ -113,10 +115,12 @@ require('./check_evento.php');
             
             
             <hr>
-				<h2>Componenti squadra:</h2><br>
+            <div id="componenti">
+            <h2>Componenti squadra:</h2><br>
 				<?php
 				$check_capo=0; // non ci sono ma diventa 1 se ce ne sono già
-				$query="SELECT * FROM users.v_componenti_squadre WHERE id=".$id." and data_end is null;";
+				$query="SELECT id, matricola_cf, nome, cognome, max(mail) as mail, max(telefono) as telefono FROM users.v_componenti_squadre WHERE id=".$id." and data_end is null 
+				GROUP BY id, matricola_cf, nome, cognome;";
 				//echo $query;
 				$result = pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
@@ -124,8 +128,10 @@ require('./check_evento.php');
 						$check_capo=1;
 					}
 				}
+				$m=0;
 				$result = pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
+					$m=$m+1;
 					echo '<div class="col-md-2"> <b>Cognome e nome</b>:</div>';
 					echo '<div class="col-md-2">'. $r['cognome'].' '.$r['nome'] .'</div>';
 					echo '<div class="col-md-3">';
@@ -137,26 +143,66 @@ require('./check_evento.php');
 					?>
 					
 					
-						<form class="form-inline" action="./incarichi_interni/cambia_mail.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST">
+						<!--form class="form-inline" action="./incarichi_interni/cambia_mail.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST"-->
+						<form class="form-inline">
 						<div class="form-group">
 							<label for="mail" class="sr-only">Email</label>
-							<input type="mail" class="form-control-plaintext" name="mailsq" value="<?php echo $r['mail']; ?>" >
+							<input type="mail" class="form-control-plaintext" 
+							id="mailsq<?php echo $m;?>" name="mailsq<?php echo $m;?>" value="<?php echo $r['mail']; ?>" >
 						</div>
-						<button  type="submit" class="btn btn-primary">Edit</button>
+						<button  type="submit" class="btn btn-primary" onclick="return editmail_<?php echo $m;?>()">Edit</button>
 						</form>
-						
+						<script type="text/javascript" >
+						function editmail_<?php echo $m;?>() {
+							//alert('Test1');
+							var mail=document.getElementById('mailsq<?php echo $m;?>').value;
+							var dataString='mail='+mail;
+							$.ajax({
+								type:"post",
+								url:"./incarichi_interni/cambia_mail.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>",
+								data:dataString,
+								cache:false,
+								/*success: function (html) {
+									$('#msg').html(html);
+								}*/
+							});
+							$('#componenti').load(document.URL +  ' #componenti');
+							return false;
+						};
+						</script>
 						
 					<?php
 						//}	
 					} else {
 						?>
-						<form class="form-inline" action="./incarichi_interni/import_mail.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST">
+						<!--form class="form-inline" action="./incarichi_interni/import_mail.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST"-->
+						<form class="form-inline">
 						<div class="form-group">
 							<label for="mail" class="sr-only">Email</label>
-							<input required="" type="mail" class="form-control-plaintext" name="mailsq" >
+							<input required="" type="mail" class="form-control-plaintext" id="mailsq<?php echo $m;?>" name="mailsq<?php echo $m;?>" >
 						</div>
-						<button  type="submit" class="btn btn-primary">Aggiungi mail</button>
+						<button  type="submit" class="btn btn-primary" onclick="return addmail_<?php echo $m;?>()">Aggiungi mail</button>
 						</form>
+						
+						
+						<script type="text/javascript" >
+						function addmail_<?php echo $m;?>() {
+							//alert('Test1');
+							var mail=document.getElementById('mailsq<?php echo $m;?>').value;
+							var dataString='mail='+mail;
+							$.ajax({
+								type:"post",
+								url:"./incarichi_interni/import_mail.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>",
+								data:dataString,
+								cache:false,
+								/*success: function (html) {
+									$('#msg').html(html);
+								}*/
+							});
+							$('#componenti').load(document.URL +  ' #componenti');
+							return false;
+						};
+						</script>						
 						<?php
 					}
 					echo '</div><div class="col-md-3">';
@@ -168,26 +214,66 @@ require('./check_evento.php');
 					?>
 					
 					
-						<form class="form-inline" action="./incarichi_interni/cambia_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST">
+						<!--form class="form-inline" action="./incarichi_interni/cambia_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST"-->
+						<form class="form-inline">
 						<div class="form-group">
 							<label for="telefono" class="sr-only">Tel</label>
-							<input type="telefono" class="form-control-plaintext" name="telsq" value="<?php echo $r['telefono']; ?>" >
+							<input type="telefono" class="form-control-plaintext" id="telsq<?php echo $m;?>" name="telsq<?php echo $m;?>" value="<?php echo $r['telefono']; ?>" >
 						</div>
-						<button  type="submit" class="btn btn-primary">Edit</button>
+						<button  type="submit" class="btn btn-primary" onclick="return edittel_<?php echo $m;?>()">Edit</button>
 						</form>
-						
+						<script type="text/javascript" >
+						function edittel_<?php echo $m;?>() {
+							//alert('Test1');
+							var tel=document.getElementById('telsq<?php echo $m;?>').value;
+							var dataString='tel='+tel;
+							$.ajax({
+								type:"post",
+								url:"./incarichi_interni/cambia_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>",
+								data:dataString,
+								cache:false,
+								/*success: function (html) {
+									$('#msg').html(html);
+								}*/
+							});
+							$('#componenti').load(document.URL +  ' #componenti');
+							return false;
+						};
+						</script>
 						
 					<?php
 						//}	
 					} else {
 						?>
-						<form class="form-inline" action="./incarichi_interni/import_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST">
+						
+						<!--form class="form-inline" action="./incarichi_interni/import_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>" method="POST"-->
+						<form class="form-inline">
 						<div class="form-group">
 							<label for="telefono" class="sr-only">Tel</label>
-							<input required="" type="telefono" class="form-control-plaintext" name="telsq" >
+							<input required="" type="telefono" class="form-control-plaintext" id="telsq<?php echo $m;?>" name="telsq<?php echo $m;?>">
 						</div>
-						<button  type="submit" class="btn btn-primary">Aggiungi tel</button>
+						<button  type="submit" class="btn btn-primary" onclick="return addtel_<?php echo $m;?>()">Aggiungi tel</button>
 						</form>
+						
+						<script type="text/javascript" >
+						function addtel_<?php echo $m;?>() {
+							//alert('Test1');
+							var tel=document.getElementById('telsq<?php echo $m;?>').value;
+							var dataString='tel='+tel;
+							$.ajax({
+								type:"post",
+								url:"./incarichi_interni/import_telefono.php?s=<?php echo $id;?>&cf=<?php echo $r['matricola_cf'];?>",
+								data:dataString,
+								cache:false,
+								/*success: function (html) {
+									$('#msg').html(html);
+								}*/
+							});
+							$('#componenti').load(document.URL +  ' #componenti');
+							return false;
+						};
+						</script>
+						
 						<?php
 					}
 					
@@ -222,13 +308,13 @@ require('./check_evento.php');
 				?>
 				
 				
-				
+				</div>
 				<br>
 				<h2>Aggiungi componenti</h2> 
 				</div>
             <!-- /.row -->
             <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" id="esterni">
             <h4>Cerca utenti esterni - <?php echo $descrizione_profilo_squadra; ?> </h4>
 			<?php    
 			if ($profilo_ok >3 and $profilo_ok < 8) {
@@ -237,7 +323,7 @@ require('./check_evento.php');
 				//echo "cod_profilo:_squadra=".$cod_profilo_squadra."<br>";
 				//echo (int)substr($cod_profilo_squadra,-1,1);
 				//echo "<br>";
-				if ($cod_profilo_squadra == "com_PC") {
+				/*if ($cod_profilo_squadra == "com_PC") {
 					// vedo solo il Gruppo Genova
 					$query2="SELECT * FROM users.v_utenti_esterni v 
 					WHERE NOT EXISTS
@@ -252,67 +338,48 @@ require('./check_evento.php');
 						and id1=".(int)substr($cod_profilo_squadra,-1)."
 						ORDER BY cognome";
 				}
-					$result2 = pg_query($conn, $query2);
+					$result2 = pg_query($conn, $query2);*/
 					//echo $query2;
 				?>
 						
-				<form action="./squadre/add_squadra.php?s=<?php echo $id;?>" method="POST">
-					
+				<!--form action="./squadre/add_squadra.php?s=<?php echo $id;?>" method="POST"-->
+				<form>
 				 <div class="form-group  ">
-				  <label for="cf">Utente esterno:</label> <font color="red">*</font>
-								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-dropup-auto="false" data-live-search="true" required="">
-								<option  id="cf" name="cf" value="">Seleziona l'utente esterno</option>
-				<?php    
-				while($r2 = pg_fetch_assoc($result2)) { 
-					$valore=  $r2['cf']. ";".$r2['nome'];            
-				?>
-							
-						<option id="cf" name="cf" value="<?php echo $r2['cf'];?>" ><?php echo $r2['cognome'].' '.$r2['nome'].' ('.$r2['livello1'].')';?></option>
-				 <?php } ?>
-
-				 </select>            
+				  <label for="cf1">Utente esterno:</label> <font color="red">*</font>
+					<select name="cf1" id="cf1" class="selectpicker show-tick form-control" data-dropup-auto="false" data-live-search="true" required="">
+					</select>            
 				 </div>
 
-					<button  type="submit" class="btn btn-primary"><i class="fas fa-plus"></i>
+					<button  type="submit" class="btn btn-primary" onclick="return volontario()">
+					<i class="fas fa-plus"></i>
 					Aggiungi utente esterno selezionato a squadra</button>
 
 				</form>
 			<?php } ?>
               </div>
-				<div class="col-md-6">
+				<div class="col-md-6"  id="dipendenti">
 					<h4>Cerca dipendenti comunali </h4> 
 					
             <?php 
 			if ($profilo_ok >=8) {
 				echo "<i class=\"fas fa-user-slash fa-2x\"></i><br>L'utente con profilo ".$descrizione_profilo_squadra." non è abilitato all'utilizzo dei dipendenti comunali";
 			} else {
-            	$query2="SELECT matricola, cognome, nome, settore,ufficio FROM varie.v_dipendenti v 
-            	WHERE NOT EXISTS
-					(SELECT matricola_cf FROM users.v_componenti_squadre s WHERE s.matricola_cf = v.matricola and data_end is null) 
-					ORDER BY cognome";
-	         	$result2 = pg_query($conn, $query2);
-            	//echo $query2;
+            	
             ?>
-							<form action="./squadre/add_squadra.php?s=<?php echo $id;?>" method="POST">
-							
+							<!--form action="./squadre/add_squadra.php?s=<?php echo $id;?>" method="POST"-->
+							<form>
 			             <div class="form-group  ">
-			              <label for="cf">Dipendente:</label> <font color="red">*</font>
-			                            <select name="cf" id="cf" class="selectpicker show-tick form-control" data-dropup-auto="false" data-live-search="true" required="">
-			                            <option  id="cf" name="cf" value="">Seleziona il dipendente</option>
-			            <?php    
-			            while($r2 = pg_fetch_assoc($result2)) { 
-			                //$valore=  $r2['cf']. ";".$r2['nome'];            
-			            ?>
-			                        
-			                    <option id="cf" name="cf" value="<?php echo $r2['matricola'];?>" ><?php echo $r2['cognome'].' '.$r2['nome'].' ('.$r2['settore'].' - '.$r2['ufficio'].' )';?></option>
-			             <?php } ?>
-			
-			             </select>            
+			              <label for="cf2">Dipendente:</label> <font color="red">*</font>
+			              <select name="cf2" id="cf2" class="selectpicker show-tick form-control" data-dropup-auto="false" data-live-search="true" required="">
+			              </select>            
 			             </div>
-			
-							<button  type="submit" class="btn btn-primary"><i class="fas fa-plus"></i>
-							Aggiungi dipendente selezionato a squadra</button>
-
+							
+							<button type="submit" class="btn btn-primary" onclick="return dipendente()">
+							<i class="fas fa-plus"></i>
+							Aggiungi dipendente selezionato a squadra </button>
+							<!--button  type="submit" class="btn btn-primary"><i class="fas fa-plus"></i>
+							Aggiungi dipendente selezionato a squadra</button-->
+							<p id="msg"></p>
 							</form>
 				<?php } ?>							
 				</div>
@@ -360,6 +427,107 @@ require('./req_bottom.php');
 
 ?>
 
+
+<script type="text/javascript" >
+
+//popolamento esterni
+let dropdown = $('#cf1');
+dropdown.selectpicker();
+dropdown.empty();
+dropdown.append('<option selected="true" disabled>Seleziona un utente esterno</option>');
+dropdown.prop('selectedIndex', 0);
+const url = './tables/griglia_squadre_esterni.php';
+// Populate dropdown with list of provinces
+$.getJSON(url, function (data) {
+  $.each(data, function (key, entry) {
+    dropdown.append($('<option></option>').attr('value', entry.matricola_cf).text(entry.nome));
+  })
+  dropdown.selectpicker('refresh');
+});
+
+
+//popolamento dipendenti
+let dropdown2 = $('#cf2');
+dropdown2.selectpicker();
+dropdown2.empty();
+dropdown2.append('<option selected="true" disabled>Seleziona un dipendente</option>');
+dropdown2.prop('selectedIndex', 0);
+const url2 = './tables/griglia_squadre_dipendenti.php';
+// Populate dropdown with list of provinces
+$.getJSON(url2, function (data) {
+  $.each(data, function (key, entry) {
+    dropdown2.append($('<option></option>').attr('value', entry.matricola_cf).text(entry.nome));
+  })
+  dropdown2.selectpicker('refresh');
+});
+
+
+
+
+function volontario() {
+	var cf=document.getElementById('cf1').value;
+	var dataString='cf='+cf;
+	//$('#cf1').selectpicker();
+	$.ajax({
+		type:"post",
+		url:"./squadre/add_squadra.php?s=<?php echo $id;?>",
+		data:dataString,
+		cache:false,
+		success: function (html) {
+			//$('#msg').html(html);
+			dropdown.empty();
+			dropdown.append('<option selected="true" disabled>Seleziona un utente esterno</option>');
+			dropdown.prop('selectedIndex', 0);
+			$.getJSON(url, function (data) {
+			  $.each(data, function (key, entry) {
+			    dropdown.append($('<option></option>').attr('value', entry.matricola_cf).text(entry.nome));
+			  })
+			  dropdown.selectpicker('refresh');
+			});
+			//dropdown.selectpicker('refresh');
+		}
+	});
+	//alert('Test 1');	
+	//$('#cf1').selectpicker('refresh');
+	//alert('Test 2');
+	$('#componenti').load(document.URL +  ' #componenti');
+	return false;
+}
+
+
+function dipendente() {
+	var cf=document.getElementById('cf2').value;
+	var dataString='cf='+cf;
+	$.ajax({
+		type:"post",
+		url:"./squadre/add_squadra.php?s=<?php echo $id;?>",
+		data:dataString,
+		cache:false,
+		success: function (html) {
+			//$('#msg').html(html);
+			dropdown2.empty();
+			dropdown2.append('<option selected="true" disabled>Seleziona un dipendente</option>');
+			dropdown2.prop('selectedIndex', 0);
+			$.getJSON(url2, function (data) {
+			  $.each(data, function (key, entry) {
+			    dropdown2.append($('<option></option>').attr('value', entry.matricola_cf).text(entry.nome));
+			  })
+			  dropdown2.selectpicker('refresh');
+			});
+			//dropdown2.selectpicker('refresh');
+			
+		}
+		});
+		$('#componenti').load(document.URL +  ' #componenti');
+		return false;
+}
+
+
+
+
+
+
+</script>
 
     
 
