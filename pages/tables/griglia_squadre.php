@@ -5,11 +5,11 @@ $profilo=$_GET['p'];
 
 
 //cerco il codice afferenza perchè le query successive sono molto più rapide
-/*$query="SELECT cod FROM varie.v_incarichi_mail where profilo='".$profilo."';";
+$query="SELECT cod FROM varie.v_incarichi_mail where profilo='".$profilo."';";
 $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
-	$cod=$r["cod"];
-}*/
+	$cod_profilo_squadra=$r["cod"];
+}
 
 
 $tipo=$_GET['t'];
@@ -34,7 +34,7 @@ if(!$conn) {
 	LEFT JOIN segnalazioni.v_incarichi_squadre i ON s.id::integer=i.id_squadra::integer 
 	WHERE s.cod_afferenza='".$cod_profilo_squadra."' ".$filter." 
 	ORDER BY nome ;";
-    //echo $query;
+   //echo $query;
 	$result = pg_query($conn, $query);
 	//echo $query;
 	#exit;

@@ -12,6 +12,10 @@ $id_squadra=$_GET['s'];
 
 $matricola_cf=$_POST['cf'];
 
+echo "Id squadra=".$id_squadra."<br>";
+echo "matricola_cf=".$matricola_cf."<br>";
+//exit;
+
 $query="INSERT INTO users.t_componenti_squadre(id_squadra, matricola_cf) 
 VALUES (".$id_squadra.", '".$matricola_cf."');";
 echo $query;
@@ -53,5 +57,5 @@ $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('use
 $result = pg_query($conn, $query_log);
 
 //exit;
-header("location: ../edit_squadra.php?id=".$id_squadra."");
+//header("location: ../edit_squadra.php?id=".$id_squadra."");
 ?>
