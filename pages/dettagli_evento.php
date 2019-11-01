@@ -142,7 +142,7 @@ require('./check_evento.php');
 							//echo " - " ;
 							if ($sospensione[$i]=='' or $dataScadenza < $oggi){
 								echo '<button type="button" class="btn btn-warning" title="Sospendi evento per 8 ore. Le segnalazioni legate all\'evento sospeso non saranno visibili in mappa e nell\'elenco della prima pagina"';	
-								echo 'onclick="return sospendi'.$eventi_attivi[$i].'()"><i class="fas fa-pause"></i></button> - ';
+								echo 'onclick="return sospendi'.$eventi_attivi[$i].'()"><i class="fas fa-pause"></i> 8h</button> - ';
 							} else {
 								echo '<i class="fas fa-pause" title="Evento sospeso per 8 ore fino al '.$sospensione_c[$i].'"></i> ';
 								echo '<button type="button" class="btn btn-success" title="Anticipa la riapertura dell\'evento sospeso fino al '.$sospensione[$i].'" ';	
