@@ -74,7 +74,7 @@ require('./token_telegram.php')
 					<h2> <i class="fab fa-telegram"  style="color:#0088CC" ></i> Notifiche telegram (servizio sperimentale) 
 					<i class="fab fa-telegram"  style="color:#0088CC"></i></h2>
 					<h4>Il servizio funziona tramite il bot telegram chiamato <b>@<?php echo $bot_name; ?></b>. 
-					Per info sui bot telegram <a href="https://telegram.org/faq/it#bot" target"=_new">clicca qua</a>. </h4>
+					Per info sui bot telegram <a href="https://telegram.org/faq/it#bot" target="_blank">clicca qua</a>. </h4>
 					<?php
 					$query = "SELECT telegram_id, telegram_attivo from users.v_utenti_sistema 
 					where matricola_cf='".$operatore."';";
