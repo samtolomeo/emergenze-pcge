@@ -121,7 +121,7 @@ require('./check_evento.php');
 								echo '<button type="button" class="btn btn-warning" title="Sospendi evento per 8 ore. Le segnalazioni legate all\'evento sospeso non saranno visibili in mappa e nell\'elenco della prima pagina"';	
 								echo 'onclick="return sospendi'.$eventi_attivi_c[$i].'()"><i class="fas fa-pause"></i></button> - ';
 							} else {
-								echo 'Sospeso (demo) ';
+								echo '<i class="fas fa-pause" title="Evento sospeso per 8 ore fino al '.$sospensione_c[$i].'"></i> ';
 								echo '<button type="button" class="btn btn-success" title="Anticipa la riapertura dell\'evento sospeso fino al '.$sospensione_c[$i].'" ';	
 								echo 'onclick="return riprendi'.$eventi_attivi_c[$i].'()"><i class="fas fa-play"></i></button> - ';
 							}
