@@ -14,7 +14,7 @@ if(isset($_GET["f"])){
 }
 
 
-$filter= " WHERE in_lavorazione = 't' or in_lavorazione is null ";
+$filter= " WHERE (in_lavorazione = 't' or in_lavorazione is null) and (fine_sospensione is null OR fine_sospensione < now()) ";
 
 
 if(!$conn) {

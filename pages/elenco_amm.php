@@ -256,7 +256,7 @@ if($_GET["s"] != '' and $_GET["t"] != ''){
 			?>
 				<div class="form-group col-lg-12">
                 <label for="<?php echo $r['column_name']?>"> <?php echo $r['column_name']?></label> *
-                <input type="text" value='<?php echo $r0[$r['column_name']]?>' name="<?php echo $r['column_name']?>" class="form-control" required>
+                <input type="text" name="<?php echo $r['column_name']?>" class="form-control" required>
 				</div>
 				<?php } else if ($r['column_name'] =='id') { ?>
 				<!--div class="form-group col-lg-12">

@@ -27,7 +27,7 @@ if ($filtro_c=='' and isset($filter)){
 } else if ($filtro_c!='' and $filter==''){
 	$filter_completo = $filtro_c ." and in_lavorazione is null";
 } else if ($filtro_c=='' and $filter==''){
-	$filter_completo = " WHERE in_lavorazione is null ";
+	$filter_completo = " WHERE in_lavorazione is null and (fine_sospensione is null OR fine_sospensione < now())";
 }
 
 
