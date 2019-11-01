@@ -61,7 +61,7 @@ if ($_POST["note"]){
 
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["Utente"] ."', 'Creazione evento n. ".$new_id."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["operatore"] ."', 'Creazione evento n. ".$new_id."');";
 $result = pg_query($conn, $query_log);
 
 

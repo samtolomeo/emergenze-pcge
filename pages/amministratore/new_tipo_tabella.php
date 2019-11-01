@@ -49,7 +49,7 @@ $query = $query." );";
 
 //$query = $query." WHERE id=".$_POST["id"].";";
 
-echo $query;
+//echo $query;
 
 
 $result = pg_query($conn, $query);

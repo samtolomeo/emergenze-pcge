@@ -3,7 +3,7 @@ if (gethostname()=='vm-lxprotcivemet'){
 	$note_ambiente='(<font color=red> <i class="fas fa-exclamation-triangle"></i> test )</font>';
 	?>
 	<script>
-		alert("Questo e' l'ambiente di test, da non usare in caso di emergenza!.\nSi prega di usare l'indirizzo https://emergenze.comune.genova.it");
+		//alert("Questo e' l'ambiente di test, da non usare in caso di emergenza!.\nSi prega di usare l'indirizzo https://emergenze.comune.genova.it");
 	</script>
 	<?php
 	$note_ambiente_mail = "(versione di test)";

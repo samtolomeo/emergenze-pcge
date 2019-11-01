@@ -51,7 +51,7 @@ require('./check_evento.php');
 	               	echo '<div class="row">';
 	               	echo '<div class="col-lg-5"><h2><i class="fa fa-chevron-circle-down"></i> Evento in chiusura <small>(id='.$eventi_attivi_c[$i].')</small> ';
 	               	echo ' - <a href="reportistica.php?id='.$eventi_attivi_c[$i].'" class="btn btn-info">Report </a></h2></div>';
-	   					echo '<div class="col-lg-5"><div style="text-align: center;"><h2 id=timer'.$i.' > </h2></div></div>';
+	   					echo '<div class="col-lg-4"><div style="text-align: center;"><h3 id=timer'.$i.' > </h3></div></div>';
 	   					$check_segnalazioni=0;
 	   					$query="SELECT id FROM segnalazioni.v_segnalazioni where id_evento=".$eventi_attivi_c[$i]." and (in_lavorazione='t' OR in_lavorazione is null) ";
 	   					$result = pg_query($conn, $query);
@@ -100,10 +100,77 @@ require('./check_evento.php');
 	   					<?php
 	   					
 	   					
-	   					echo '<div class="col-lg-2"><br>';
+	   					echo '<div class="col-lg-3"><br>';
 						
 						if ($profilo_sistema <= 2){
-						
+						//sospensione
+							//echo $sospensione[$i];
+							//echo " - OGGI:";
+							date_default_timezone_set('Europe/Rome');  // Set timezone.
+
+							$now_time=date("Y/m/d H:i:s");
+							//echo $now_time;
+							$oggi = strtotime($now_time);
+							$dataScadenza = strtotime($sospensione_c[$i]);
+							//echo " - OGGI:";
+							//echo $oggi;
+							//echo " - DATA SCADENZA:";
+							//echo $dataScadenza;
+							//echo " - " ;
+							if ($sospensione_c[$i]=='' or $dataScadenza < $oggi){
+								echo '<button type="button" class="btn btn-warning" title="Sospendi evento per 8 ore. Le segnalazioni legate all\'evento sospeso non saranno visibili in mappa e nell\'elenco della prima pagina"';	
+								echo 'onclick="return sospendi'.$eventi_attivi_c[$i].'()"><i class="fas fa-pause"></i></button> - ';
+							} else {
+								echo 'Sospeso (demo) ';
+								echo '<button type="button" class="btn btn-success" title="Anticipa la riapertura dell\'evento sospeso fino al '.$sospensione_c[$i].'" ';	
+								echo 'onclick="return riprendi'.$eventi_attivi_c[$i].'()"><i class="fas fa-play"></i></button> - ';
+							}
+							?>
+							<p id="msg"></p>
+							<script type="text/javascript" >
+							function sospendi<?php echo $eventi_attivi_c[$i];?>() {
+								//alert('Test1');
+								//var tel=document.getElementById('telsq<?php echo $m;?>').value;
+								//var dataString='tel='+tel;
+								$.ajax({
+									type:"post",
+									url:"./eventi/sospendi.php?id=<?php echo $eventi_attivi_c[$i];?>",
+									//data:dataString,
+									cache:false,
+									success: function (html) {
+										//$('#msg').html(html);
+										setTimeout(function(){// wait for 1 secs(2)
+											location.reload(); // then reload the page.(3)
+										}, 100); 
+									}
+								});
+								//$('#navbar_emergenze').load('navbar_up.php?r=true&s=<?php echo $subtitle2;?>');
+								//$('#sospensione<?php echo $eventi_attivi[$i];?>').load(document.URL +  ' #sospensione<?php echo $eventi_attivi[$i];?>');
+								return false;
+								
+							};
+							function riprendi<?php echo $eventi_attivi_c[$i];?>() {
+								//alert('Test1');
+								//var tel=document.getElementById('telsq<?php echo $m;?>').value;
+								//var dataString='tel='+tel;
+								$.ajax({
+									type:"post",
+									url:"./eventi/riprendi.php?id=<?php echo $eventi_attivi_c[$i];?>",
+									//data:dataString,
+									cache:false,
+									success: function (html) {
+										//$('#msg').html(html);
+										setTimeout(function(){// wait for 1 secs(2)
+											location.reload(); // then reload the page.(3)
+										}, 100); 
+									}
+								});
+								//$('#navbar_emergenze').load('navbar_up.php?r=true&s=<?php echo $subtitle2;?>');
+								//$('#sospensione<?php echo $eventi_attivi[$i];?>').load(document.URL +  ' #sospensione<?php echo $eventi_attivi[$i];?>');
+								return false;
+							};
+							</script>
+							<?php
 	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi'.$eventi_attivi_c[$i].'"';
 	   					if($check_segnalazioni) {
 	   						echo 'disabled=""';

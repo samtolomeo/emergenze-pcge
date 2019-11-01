@@ -5,6 +5,8 @@ session_start();
 //echo $_SESSION['user'];
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+//require('../check_evento.php');
+
 
 $id_squadra=$_GET['s'];
 
@@ -17,9 +19,9 @@ echo $query;
 $result=pg_query($conn, $query);
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Componente ".$matricola_cf." della squadra con id: ".$id_squadra." diventato capo squadra');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["operatore"] ."', 'Componente ".$matricola_cf." della squadra con id: ".$id_squadra." diventato capo squadra');";
 $result = pg_query($conn, $query_log);
 
 //exit;
-header("location: ../edit_squadra.php?id=".$id_squadra."");
+//header("location: ../edit_squadra.php?id=".$id_squadra."");
 ?>

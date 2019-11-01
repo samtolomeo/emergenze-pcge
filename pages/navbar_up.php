@@ -132,10 +132,19 @@ if (isset($subtitle)) {
 							//echo $len_c;
 								if ($len_c > 0 and $profilo_ok <=3){
 							?>
-								<i class="fas fa-hourglass-end" style="color:red"></i>
+								<i class="fas fa-hourglass-end faa-ring animated" title="ATTENZIONE: ci sono <?php echo $len_c;?> eventi in chiusura" style="color:red"></i>
 							<?php		
 								}
 							?>
+							<?php
+							//echo $check_pausa;
+								if ($check_pausa >=1){
+							?>
+								<i class="fas fa-pause" title="Ci sono <?php echo $check_pausa;?> eventi sospesi" style="color:orange"></i>
+							<?php		
+								}
+							?>
+							
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i> 
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i>
                     		<i class="fas fa-phone-square fa-1x" style="color:<?php echo $color_nverde; ?>"></i>
@@ -220,9 +229,19 @@ if (isset($subtitle)) {
                                 for ($i=0;$i<$len;$i++){
                                 ?>
                                 <a href="#">
-                                <b><i>Tipo</i>: <?php echo $tipo_eventi_attivi[$i][1];?></b><br>
-                                </a>
-                                 <a href="dettagli_evento.php">
+                                <b><i>Tipo</i>: <?php echo $tipo_eventi_attivi[$i][1];?></b>
+                                
+								<?php 
+								if ($sospeso[$i]==1){
+								?>
+									<span class="pull-right text-muted">
+                                        <em><i class="fas fa-pause faa-ring animated" style="color:orange" 
+										title="Evento temporaneamente sospeso fino alle <?php echo $sospensione[$i];?>"></i></em>
+                                    </span>
+								<?php 
+								}
+								?>
+                                </a><!--br--><a href="dettagli_evento.php">
                                    - Visualizza dettagli <br>
                                  </a>
                                   <a href="monitoraggio_meteo.php?id=<?php echo $tipo_eventi_attivi[$i][0];?>">
@@ -264,7 +283,18 @@ if (isset($subtitle)) {
                                 for ($i=0;$i<$len_c;$i++){
                                 ?>
 								<a href="#">
-                                <b><i>Tipo</i>: <?php echo $tipo_eventi_c[$i][1];?></b><br>
+                                <b><i>Tipo</i>: <?php echo $tipo_eventi_c[$i][1];?></b>
+								
+								<?php 
+								if ($sospeso_c[$i]==1){
+								?>
+									<span class="pull-right text-muted">
+                                        <em><i class="fas fa-pause faa-ring animated" style="color:orange" 
+										title="Evento temporaneamente sospeso fino alle <?php echo $sospensione_c[$i];?>"></i></em>
+                                    </span>
+								<?php 
+								}
+								?><!--br-->
                                 </a>
                                  <a href="dettagli_evento.php">
                                    - Visualizza dettagli <br>
@@ -332,7 +362,7 @@ if (isset($subtitle)) {
 					<li id="limbo" class="dropdown">
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
-						<i class="fa fa-exclamation fa-fw" style="color:red"></i> <i class="fas fa-caret-down"></i>
+						<i class="fa fa-exclamation fa-fw faa-ring animated" style="color:red"></i> <i class="fas fa-caret-down"></i>
                     </a>	
                     <ul class="dropdown-menu dropdown-alerts">
                     
@@ -376,7 +406,7 @@ if (isset($subtitle)) {
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
 					<?php if ($count_resp >0) { ?>
-						<i class="fas fa-bell fa-fw" style="color:#ff0000"></i> <?php echo $count_resp;?> <i class="fas fa-caret-down"></i>
+						<i class="fas fa-bell fa-fw faa-ring animated" style="color:#ff0000"></i> <?php echo $count_resp;?> <i class="fas fa-caret-down"></i>
 					<?php } else { ?>	
                         <i class="fas fa-bell fa-fw"></i>  <i class="fas fa-caret-down"></i>
 					<?php } ?>	

@@ -4,6 +4,7 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 $check_evento=0;
 $contatore_eventi=0;
 $contatore_allerte=0;
+$check_pausa=0;
 $descrizione_allerta='Nessuna allerta';
 $color_allerta='#5cb85c';
 
@@ -18,6 +19,17 @@ while($r1 = pg_fetch_assoc($result1)) {
 	$contatore_eventi=$contatore_eventi+1;
 	$eventi_attivi[]=$r1["id"];
 	$start[]=$r1["data_ora_inizio_evento"];
+	$sospensione[]=$r1["fine_sospensione"];
+	date_default_timezone_set('Europe/Rome');  // Set timezone.
+	$now_time=date("Y/m/d H:i:s");
+	$oggi = strtotime($now_time);
+	$dataScadenza = strtotime($r1["fine_sospensione"]);
+	if ($dataScadenza > $oggi){
+		$check_pausa=$check_pausa+1;
+		$sospeso[]=1;
+	} else{
+		$sospeso[]=0;
+	}
 	$query2="SELECT  b.descrizione From eventi.join_tipo_evento a,eventi.tipo_evento b  WHERE a.id_evento=".$r1["id"]." and a.id_tipo_evento=b.id;";
 	//echo $query2;
 	$result2 = pg_query($conn, $query2);
@@ -147,6 +159,20 @@ while($r1 = pg_fetch_assoc($result1)) {
 	$contatore_eventi_c=$contatore_eventi_c+1;
 	$eventi_attivi_c[]=$r1["id"];
 	$start_c[]=$r1["data_ora_inizio_evento"];
+	
+	$sospensione_c[]=$r1["fine_sospensione"];
+	date_default_timezone_set('Europe/Rome');  // Set timezone.
+	$now_time=date("Y/m/d H:i:s");
+	$oggi = strtotime($now_time);
+	$dataScadenza = strtotime($r1["fine_sospensione"]);
+	if ($dataScadenza > $oggi){
+		$check_pausa=$check_pausa+1;
+		$sospeso_c[]=1;
+	} else{
+		$sospeso_c[]=0;
+	}
+	
+	
 	$query2="SELECT  b.descrizione From eventi.join_tipo_evento a,eventi.tipo_evento b  WHERE a.id_evento=".$r1["id"]." and a.id_tipo_evento=b.id;";
 	//echo "<br>".$query2;
 	$result2 = pg_query($conn, $query2);
@@ -607,4 +633,7 @@ order by to_timestamp(max(c.data_ora_stato),'DD/MM/YY HH24:MI:SS') desc;";
 			$check_reperibilita=1;
 		}
 	}
+	
+	
+	$_SESSION["operatore"] = $operatore;
 ?>       

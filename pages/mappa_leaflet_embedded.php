@@ -174,7 +174,7 @@
         var segn_non_lav = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione is null;";
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione is null and (fine_sospensione is null OR fine_sospensione < now());";
 
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -204,7 +204,7 @@
         var segn_lav = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione > 0 and in_lavorazione='t';";
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione > 0 and in_lavorazione='t' and (fine_sospensione is null OR fine_sospensione < now());";
 
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}
@@ -233,7 +233,7 @@
 			var segn_chiuse = [
         
         <?php 
-        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione > 0 and in_lavorazione='f';";
+        $query_g="SELECT id, ST_AsGeoJson(geom) as geo, rischio, criticita, descrizione, note FROM segnalazioni.v_segnalazioni WHERE id_lavorazione > 0 and in_lavorazione='f' and (fine_sospensione is null OR fine_sospensione < now());";
 
 
 			// GeoJson Postgis: {"type":"Point","coordinates":[8.90092674245687,44.4828501691802]}

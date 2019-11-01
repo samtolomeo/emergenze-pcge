@@ -5,7 +5,7 @@ session_start();
 //echo $_SESSION['user'];
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
-require('../check_evento.php');
+//require('../check_evento.php');
 
 
 $id_squadra=$_GET['s'];
@@ -53,7 +53,7 @@ if ($telefono!=''){
 }
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Aggiunto componente a squadra con id: ".$id_squadra."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["operatore"] ."', 'Aggiunto componente a squadra con id: ".$id_squadra."');";
 $result = pg_query($conn, $query_log);
 
 //exit;

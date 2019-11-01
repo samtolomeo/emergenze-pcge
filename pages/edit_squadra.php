@@ -119,8 +119,8 @@ require('./check_evento.php');
             <h2>Componenti squadra:</h2><br>
 				<?php
 				$check_capo=0; // non ci sono ma diventa 1 se ce ne sono già
-				$query="SELECT id, matricola_cf, nome, cognome, max(mail) as mail, max(telefono) as telefono FROM users.v_componenti_squadre WHERE id=".$id." and data_end is null 
-				GROUP BY id, matricola_cf, nome, cognome;";
+				$query="SELECT id, matricola_cf, nome, cognome, max(mail) as mail, max(telefono) as telefono, capo_squadra FROM users.v_componenti_squadre WHERE id=".$id." and data_end is null 
+				GROUP BY id, matricola_cf, nome, cognome, capo_squadra;";
 				//echo $query;
 				$result = pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
@@ -281,14 +281,77 @@ require('./check_evento.php');
 					echo '</div>';
 					echo '<div class="col-md-2">';
 					if($r['capo_squadra']=='t'){
-						echo '<i class="fas fa-user-check"></i>  <a class="btn btn-danger" href="./squadre/elimina_capo_squadra.php?m='.$r['matricola_cf'].'&s='.$r['id'].'"> <i class="fas fa-user-times"></i> Rimuovi come capo squadra </a>';					
+						//echo '<i class="fas fa-user-check"></i>  <a class="btn btn-danger" href="./squadre/elimina_capo_squadra.php?m='.$r['matricola_cf'].'&s='.$r['id'].'"> <i class="fas fa-user-times"></i> Rimuovi come capo squadra </a>';					
+						echo '<i class="fas fa-user-check"></i>  <button class="btn btn-danger" onclick="return eliminacs'.$m.'()"> <i class="fas fa-user-times"></i> Rimuovi come capo squadra</button>'; 
 					} else {
-						echo '<a class="btn btn-danger" href="./squadre/elimina_componente.php?m='.$r['matricola_cf'].'&s='.$r['id'].'"> <i class="fas fa-user-times"></i> Elimina componente </a>';
+						//echo '<a class="btn btn-danger" href="./squadre/elimina_componente.php?m='.$r['matricola_cf'].'&s='.$r['id'].'"> <i class="fas fa-user-times"></i> Elimina componente </a>';
+						echo '<button class="btn btn-danger" onclick="return eliminac'.$m.'()"> <i class="fas fa-user-times"></i> Elimina componente</button>';
+
 					}
 					if($check_capo==0){
-						echo ' - <a class="btn btn-info" href="./squadre/add_capo_squadra.php?m='.$r['matricola_cf'].'&s='.$r['id'].'"> <i class="fas fa-user-check"></i>  Rendi capo squadra </a>';
+						//echo ' - <a class="btn btn-info" href="./squadre/add_capo_squadra.php?m='.$r['matricola_cf'].'&s='.$r['id'].'"> <i class="fas fa-user-check"></i>  Rendi capo squadra </a>';
+						echo ' - <button class="btn btn-info" onclick="return addcs'.$m.'()"> <i class="fas fa-user-check"></i> Rendi capo squadra</button>';
 					}
 					echo "</div><br><hr>";
+				
+				?>
+				
+					<script type="text/javascript" >
+						function eliminacs<?php echo $m;?>() {
+							//alert('Test1');
+							//var tel=document.getElementById('telsq<?php echo $m;?>').value;
+							//var dataString='tel='+tel;
+							$.ajax({
+								type:"post",
+								url:"./squadre/elimina_capo_squadra.php?s=<?php echo $id;?>&m=<?php echo $r['matricola_cf'];?>",
+								//data:dataString,
+								cache:false,
+								/*success: function (html) {
+									$('#msg').html(html);
+								}*/
+							});
+							$('#componenti').load(document.URL +  ' #componenti');
+							return false;
+						};
+						
+						function addcs<?php echo $m;?>() {
+							//alert('Test1');
+							//var tel=document.getElementById('telsq<?php echo $m;?>').value;
+							//var dataString='tel='+tel;
+							$.ajax({
+								type:"post",
+								url:"./squadre/add_capo_squadra.php?s=<?php echo $id;?>&m=<?php echo $r['matricola_cf'];?>",
+								//data:dataString,
+								cache:false,
+								/*success: function (html) {
+									$('#msg').html(html);
+								}*/
+							});
+							$('#componenti').load(document.URL +  ' #componenti');
+							return false;
+						};
+						
+						function eliminac<?php echo $m;?>() {
+							//alert('Test1');
+							//var tel=document.getElementById('telsq<?php echo $m;?>').value;
+							//var dataString='tel='+tel;
+							$.ajax({
+								type:"post",
+								url:"./squadre/elimina_componente.php?s=<?php echo $id;?>&m=<?php echo $r['matricola_cf'];?>",
+								//data:dataString,
+								cache:false,
+								/*success: function (html) {
+									$('#msg').html(html);
+								}*/
+							});
+							$('#componenti').load(document.URL +  ' #componenti');
+							return false;
+						};
+						
+						
+						
+						</script>
+				<?php
 				}
 				
 				$i=0;

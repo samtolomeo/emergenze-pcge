@@ -151,9 +151,10 @@ if ($profilo_sistema == 9 or  $profilo_sistema > 10){
                      <option value=''>Seleziona un evento tra quelli attivi </option>
                     <?php 
                      for ($i=0;$i<$len;$i++){
-                      
-                        echo '<option name="evento" value="'.$tipo_eventi_attivi[$i][0].'">'. $tipo_eventi_attivi[$i][1].' (id='.$tipo_eventi_attivi[$i][0].')</option>';
-                      }
+						if($sospeso[$i]==0){
+							echo '<option name="evento" value="'.$tipo_eventi_attivi[$i][0].'">'. $tipo_eventi_attivi[$i][1].' (id='.$tipo_eventi_attivi[$i][0].')</option>';
+						}
+					  }
                     ?>
                   </select>
 
