@@ -49,7 +49,7 @@
                                     <a href="dettagli_evento.php"><i class="fas fa-info"></i> Dettagli eventi in corso</a>
                                 </li>
                                  <li>
-                                    <a href="dettagli_evento_c.php"><i class="fas fa-info-circle"></i> Dettagli eventi in fase di chiusura</a>
+                                    <a href="dettagli_evento_c.php"><i class="fas fa-hourglass-end faa-ring animated"></i> Dettagli eventi in fase di chiusura</a>
                                 </li>
                                  <li>
                                     <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi / reportistica </a>
@@ -266,9 +266,11 @@
                                     Contatti a cui notificare incarichi</a>
                                 </li>
                                 <li>
-                                    <a href="rubrica.php">
+                                    <!--a href="rubrica.php"-->
+									<a href="http://172.19.48.7/rubrica.php" target="_blank">
                                     <i class="fas fa-address-book"></i>
-                                    Rubrica Comune di Genova</a>
+                                    Rubrica Comune di Genova <small>(rete intranet)</small>
+									</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
