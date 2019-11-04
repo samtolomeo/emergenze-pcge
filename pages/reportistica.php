@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Reportistica";
+$subtitle="Riepilogo evento";
 
 $id=$_GET['id'];
 

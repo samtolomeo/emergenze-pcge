@@ -64,14 +64,14 @@
 											<li>					                                  
   											<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
-								<li>
+								<!--li-->
 								<!--a href="rete_idro.php"-->
-								<a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
+								<!--a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
 								<i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
 								</li>
 								<li>
                                     <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>
-                                </li>
+                                </li-->
 								
                             </ul>
                             <!-- /.nav-second-level -->
