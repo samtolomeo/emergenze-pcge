@@ -50,7 +50,11 @@ require('./check_evento.php');
 	               for ($i=0;$i<$len;$i++){
 	               	echo '<div class="row">';
 	               	echo '<div class="col-lg-5"><h2><i class="fa fa-chevron-circle-down"></i> Evento in chiusura <small>(id='.$eventi_attivi_c[$i].')</small> ';
-	               	echo ' - <a href="reportistica.php?id='.$eventi_attivi_c[$i].'" class="btn btn-info">Report </a></h2></div>';
+	               	echo ' - <a href="reportistica.php?id='.$eventi_attivi_c[$i].'" class="btn btn-info">Riepilogo';
+					if($profilo_sistema<=2){
+						echo ' (stampa report)';
+					}
+					echo '</a></h2></div>';
 	   					echo '<div class="col-lg-4"><div style="text-align: center;"><h3 id=timer'.$i.' > </h3></div></div>';
 	   					$check_segnalazioni=0;
 	   					$query="SELECT id FROM segnalazioni.v_segnalazioni where id_evento=".$eventi_attivi_c[$i]." and (in_lavorazione='t' OR in_lavorazione is null) ";
@@ -207,12 +211,12 @@ require('./check_evento.php');
 							</div>
 							<div class="col-lg-6">
 							<?php
-							$check_allerte==0;
+							$check_allerte=0;
 							$check_foc=0;
 							$query="SELECT * FROM eventi.v_allerte WHERE id_evento=".$eventi_attivi_c[$i]." and data_ora_fine_allerta <= now();";
-	   					//echo $query;
+							//echo $query;
 							//exit;
-								$result = pg_query($conn, $query);
+							$result = pg_query($conn, $query);
 							while($r = pg_fetch_assoc($result)) {
 								$check_allerte=2;
 							}
@@ -225,10 +229,10 @@ require('./check_evento.php');
   								<div class="panel panel-primary">
 								    <div class="panel-heading">
 								      <h4 class="panel-title">
-								        <a data-toggle="collapse" href="#collapse_allerte">Allerte passate</a>
+								        <a data-toggle="collapse" href="#collapse_allerte<?php echo $eventi_attivi_c[$i];?>">Allerte passate</a>
 								      </h4>
 								    </div>
-								    <div id="collapse_allerte" class="panel-collapse collapse">
+								    <div id="collapse_allerte<?php echo $eventi_attivi_c[$i];?>" class="panel-collapse collapse">
 								      <div class="panel-body"><ul>
 								<?php
 							}
@@ -283,10 +287,10 @@ require('./check_evento.php');
   								<div class="panel panel-primary">
 								    <div class="panel-heading">
 								      <h4 class="panel-title">
-								        <a data-toggle="collapse" href="#collapse_foc">Fasi Operative Comunali passate</a>
+								        <a data-toggle="collapse" href="#collapse_foc<?php echo $eventi_attivi_c[$i];?>">Fasi Operative Comunali passate</a>
 								      </h4>
 								    </div>
-								    <div id="collapse_foc" class="panel-collapse collapse">
+								    <div id="collapse_foc<?php echo $eventi_attivi_c[$i];?>" class="panel-collapse collapse">
 								      <div class="panel-body">
 								<?php
 								}
