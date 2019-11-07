@@ -6,7 +6,7 @@ session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
-require('../check_evento.php');
+//require('../check_evento.php');
 
 
 //$id=$_GET["id"];
@@ -181,7 +181,7 @@ $query=$query.");";
 $result=pg_query($conn, $query);*/
 
 
-$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato presidio/sopralluogo ".$id_sopralluogo."');";
+$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$_SESSION["operatore"] ."', 'Inviato presidio/sopralluogo ".$id_sopralluogo."');";
 $result = pg_query($conn, $query_log);
 
 
