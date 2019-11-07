@@ -106,7 +106,13 @@ if ($profilo_sistema > 3){
             <?php require('./attivita_sala_emergenze_embed.php'); ?>
 			
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h4>Attivazione numero verde: <?php echo $descrizione_nverde; ?></h4>
+            <h4>Attivazione numero verde: 
+			<?php if( $contatore_nverde > 0) {?>
+				<i> Attivo</i>
+			 <?php } else { ?>
+				<i> Non attivo</i>
+			 <?php }  ?> 
+			</h4>
             </div>
             
             
@@ -236,7 +242,18 @@ $(document).ready(function() {
         autoclose: true,
         todayHighlight: true
     });
-    
+         $('#js-date14').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });
+    $('#js-date15').datepicker({
+        format: "yyyy-mm-dd",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });
 });
 
 

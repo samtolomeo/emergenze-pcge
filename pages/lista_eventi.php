@@ -77,19 +77,21 @@ if ($profilo_sistema > 6){
 
  	<tr>
             <!--th data-field="state" data-checkbox="true"></th-->
+			 <!--th class="col-md-2" data-field="id" data-sortable="true"  data-visible="true" >Id</th-->
+			<?php
+				if ($check_operatore <= 3){
+ù				?>
+            <th class="col-md-2" data-field="id" data-sortable="true" data-formatter="nameFormatter1" data-visible="true" >Riepilogo</th>
+				<?php 
+				}
+				?>
+			<th class="col-md-2" data-field="id" data-sortable="true"  data-visible="true" >Id</th>
 	         <th class="col-md-2" data-field="descrizione" data-sortable="true"  data-visible="true" >Tipologia</th>
 	         <th class="col-md-3" data-field="nota" data-sortable="true"  data-visible="true" >Nota</th>
 	  	      <th class="col-md-2" data-field="data_ora_inizio_evento" data-sortable="true"  data-visible="true" >Inizio</th>      
 	        	<th class="col-md-2" data-field="data_ora_fine_evento" data-sortable="true"  data-visible="true" >Fine</th>
             <th class="col-md-1" data-field="valido" data-sortable="true" data-formatter="nameFormatter0" data-visible="true" >Stato</th>
             <!--th data-field="cod" data-sortable="false" data-formatter="nameFormatter0" data-visible="true" >Fragilità</th-->
-            <?php
-				if ($check_operatore <= 3){
-ù				?>
-            <th class="col-md-2" data-field="id" data-sortable="true" data-formatter="nameFormatter1" data-visible="true" >Report</th>
-				<?php 
-				}
-				?>
 
     </tr>
 </thead>
@@ -114,7 +116,7 @@ function nameFormatter0(value) {
 
   function nameFormatter1(value) {
 
-        return '<a href="./reportistica.php?id=\''+ value + '\'" class="btn btn-info" title=Report" role="button"><i class="fa fa-file-invoice" aria-hidden="true"></i> Report</a>';
+        return '<a href="./reportistica.php?id=\''+ value + '\'" class="btn btn-info" title=Riepilogo" role="button"><i class="fa fa-file-invoice" aria-hidden="true"></i> Riepilogo </a>';
     }
 
 

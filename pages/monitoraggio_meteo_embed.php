@@ -5,9 +5,10 @@
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<hr>
-         </div>
+</div>
 			
-			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+			<!--div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"-->
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<h4>Aggiornamenti monitoraggio
             <?php
 				if ($profilo_sistema <= 3){
@@ -179,30 +180,20 @@
 				
 			}
 			?>
-			
-			
-			
-			
-			
-			
-			
+
 			</div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                
-                
-                <div class="panel panel-default">
-                        <div class="panel-heading noprint">
-                            <i class="fa fa-traffic-light fa-fw"></i> Mappa ufficiale <a target="_new" href="http://www.allertaliguria.gov.it">allertaliguria</a> 
-							 <div class="pull-right">
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                           
-							  <img class="pull-right img-responsive" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" src="https://mappe.comune.genova.it/allertaliguria/mappa_allerta_render.php">
-                        </div>                    
-                        <!-- /.panel-body -->
-                    </div>
+			<!--div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<div class="panel panel-default">
+					<div class="panel-heading noprint">
+						<i class="fa fa-traffic-light fa-fw"></i> Mappa ufficiale <a target="_new" href="http://www.allertaliguria.gov.it">allertaliguria</a> 
+						<div class="pull-right">
+						</div>
+					</div>
+					<div class="panel-body">
+							<img class="pull-right img-responsive" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" src="https://mappe.comune.genova.it/allertaliguria/mappa_allerta_render.php">
+					</div>                    
+				</div>
                 
                 
 
-            </div>
+            </div-->

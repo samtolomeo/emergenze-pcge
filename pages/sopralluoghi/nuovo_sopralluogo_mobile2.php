@@ -9,10 +9,8 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 require('../check_evento.php');
 
 
-
 //$id=$_GET["id"];
 //$id=str_replace("'", "", $_GET['id']); //segnazione in lavorazione
-
 //$segn=str_replace("'", "", $_GET['s']); //segnazione in lavorazione
 
 $descrizione= str_replace("'", "''", $_POST["descrizione"]);
@@ -77,6 +75,20 @@ $query="UPDATE users.t_squadre SET id_stato=1 WHERE id=".$uo.";";
 //echo $query;
 //exit;
 $result=pg_query($conn, $query);
+
+
+// metti un check
+$query= "SELECT * FROM segnalazioni.t_sopralluoghi_mobili 
+where descrizione = ".$percorso." and data_fine is null;";
+$result=pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	echo "ATTENZIONE: il percorso risulta già inserito. Probabilmente hai schiacciato due volte il tasto";
+	echo '<br>Entro 10" verrai re-indirizzato alla pagina del presidio mobile, clicca al seguente ';
+	echo '<a href="../dettagli_sopralluogo_mobile.php?id='.$id_sopralluogo.'">link</a> per saltare l\'attesa.</h3>' ;
+	//sleep(30);
+    header("refresh:10;url=../dettagli_sopralluogo_mobile.php?id=".$id_sopralluogo);
+	
+}
 
 
 
@@ -246,7 +258,7 @@ if (!$mail->send()) {
 	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
 	echo '<br>Il presidio &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+	echo '<br>Entro 15" verrai re-indirizzato alla pagina del presidio mobile, clicca al seguente ';
 	echo '<a href="../dettagli_sopralluogo_mobile.php?id='.$id_sopralluogo.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
     header("refresh:15;url=../dettagli_sopralluogo_mobile.php?id=".$id_sopralluogo);

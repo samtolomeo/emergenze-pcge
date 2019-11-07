@@ -113,7 +113,7 @@ if ($profilo_sistema >=3){
            
            
            <div class="form-group">
-                <label for="note"> Note</label>
+                <label for="note"> Descrizione </label>
   						<textarea class="form-control" rows="5" name="note" id="note"></textarea>
 
               </div>

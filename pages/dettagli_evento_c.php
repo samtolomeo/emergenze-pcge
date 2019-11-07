@@ -1,4 +1,4 @@
-<?php 
+Fasi<?php 
 
 $subtitle="Dettagli eventi in chiusura"
 
@@ -344,10 +344,10 @@ require('./check_evento.php');
   								<div class="panel panel-success">
 								    <div class="panel-heading">
 								      <h4 class="panel-title">
-								        <a data-toggle="collapse" href="#collapse_nverde">Fasi Operative Comunali passate</a>
+								        <a data-toggle="collapse" href="#collapse_nverde<?php echo $eventi_attivi_c[$i];?>">Attivazioni passate numero verde</a>
 								      </h4>
 								    </div>
-								    <div id="collapse_nverde" class="panel-collapse collapse">
+								    <div id="collapse_nverde<?php echo $eventi_attivi_c[$i];?>" class="panel-collapse collapse">
 								      <div class="panel-body">
 								<?php
 								}
@@ -361,7 +361,7 @@ require('./check_evento.php');
 								$data_end = strftime('%A %e %B %G', $timestamp);
 								$ora_end = date('H:i', $timestamp);
 								$color=str_replace("'","",$r["rgb_hex"]);								
-								echo "<li> <i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b> Fase di ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " </li>";
+								echo "<li> <i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\007c37\"></i>  <b>Numero verde  attivo</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " </li>";
 							}
 							if($check_nverde==2) {
 								//echo "<h3> Allerte passate:</h3><ul>";

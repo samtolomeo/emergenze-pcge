@@ -370,7 +370,7 @@ require('./check_evento.php');
 								$ora_end = date('H:i', $timestamp);								
 								$color=str_replace("'","",$r["rgb_hex"]);
 								//echo $color;
-								echo "<li> <i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b>Numero verde  attivo</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " </li>";
+								echo "<li> <i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\007c37\"></i> <b>Numero verde  attivo</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " </li>";
 							}
 							if($check_nverde==2) {
 								//echo "<h3> Allerte passate:</h3><ul>";
