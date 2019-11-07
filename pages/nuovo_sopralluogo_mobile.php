@@ -146,6 +146,17 @@ if ($profilo_sistema > 4){
 				</div> 
  				<hr>
 				<div class="row"> 
+				
+				
+				<div class="form-group col-md-12">
+					<input type="checkbox" class="form-check-input" name="permanente" id="permanente">
+						<label class="form-check-label" for="permanente">Accettazione automatica e immediata <br>
+						</label>
+						<br>
+						<small>Con questo flag non sarà necessario accettare il presidio mobile. La squadra si considererà automaticamente sul posto. 
+						Cliccare solo se la squadra sta effettivamente iniziando il presidio.
+						</small>           
+				</div>
 				<div class="form-group col-md-12">
                 <label for="descrizione"> Note</label> 
                 <input type="text" name="descrizione" class="form-control" >
