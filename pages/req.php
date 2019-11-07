@@ -103,6 +103,9 @@ function integerToRoman($integer)
 
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
+	
+	<!-- GRAFICI d3js -->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
 
 <?php
 ?>

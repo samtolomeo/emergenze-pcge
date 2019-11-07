@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Nuovo Provvedimento Cautelare (Interdizione all'accesso)"
+$subtitle='Nuovo Provvedimento Cautelare (Interdizione all\'accesso)';
 
 ?>
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ if ($profilo_sistema > 4){
 
 ?>
 
-   <link rel="stylesheet" href="../vendor//leaflet-search/src/leaflet-search.css">
+   <link rel="stylesheet" href="../vendor/leaflet-search/src/leaflet-search.css">
    
 </head>
 

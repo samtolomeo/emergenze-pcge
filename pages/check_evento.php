@@ -50,7 +50,6 @@ while($r1 = pg_fetch_assoc($result1)) {
 		$municipi[]=array($r1["id"],$r3["nome_munic"]);
 	}
 	
-	
 }
 
 if($contatore_eventi==0) {
