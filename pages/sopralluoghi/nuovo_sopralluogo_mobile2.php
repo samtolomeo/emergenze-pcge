@@ -21,6 +21,8 @@ $id_evento = str_replace("'", "''", $_POST["evento"]);
 
 $percorso = $_POST["percorso"];
 
+
+
 //echo "Segnalazione in lavorazione:".$id. "<br>";
 //echo "Segnalazione:".$segn. "<br>";
 //echo "Descrizione:".$descrizione. "<br>";
@@ -78,7 +80,7 @@ $result=pg_query($conn, $query);
 
 
 // metti un check
-$query= "SELECT * FROM segnalazioni.t_sopralluoghi_mobili 
+/*$query= "SELECT * FROM segnalazioni.t_sopralluoghi_mobili 
 where descrizione = ".$percorso." and data_fine is null;";
 $result=pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
@@ -88,7 +90,7 @@ while($r = pg_fetch_assoc($result)) {
 	//sleep(30);
     header("refresh:10;url=../dettagli_sopralluogo_mobile.php?id=".$id_sopralluogo);
 	
-}
+}*/
 
 
 
@@ -109,6 +111,33 @@ $query=$query.");";
 //exit;
 $result=pg_query($conn, $query);
 //exit;
+
+
+
+if($_POST["permanente"]=='on') {
+	$query="UPDATE segnalazioni.t_sopralluoghi_mobili SET time_preview=now(), time_start=now() WHERE id=".$id_sopralluogo.";";
+	$result=pg_query($conn, $query);
+	$query= "INSERT INTO segnalazioni.stato_sopralluoghi_mobili(id_sopralluogo, id_stato_sopralluogo";
+
+	//values
+	$query=$query.") VALUES (".$id_sopralluogo.", 2 ";
+
+	$query=$query.");";
+
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+
+} else {
+	$query= "INSERT INTO segnalazioni.stato_sopralluoghi_mobili(id_sopralluogo, id_stato_sopralluogo";
+	//values
+	$query=$query.") VALUES (".$id_sopralluogo.", 1 ";
+	$query=$query.");";
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+}
+
 
 
 echo "<br>";
@@ -137,16 +166,6 @@ $query=$query.");";
 $result=pg_query($conn, $query);
 */
 
-$query= "INSERT INTO segnalazioni.stato_sopralluoghi_mobili(id_sopralluogo, id_stato_sopralluogo";
-
-//values
-$query=$query.") VALUES (".$id_sopralluogo.", 1 ";
-
-$query=$query.");";
-
-//echo $query."<br>";
-//exit;
-$result=pg_query($conn, $query);
 
 
 
