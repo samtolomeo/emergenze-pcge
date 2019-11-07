@@ -93,6 +93,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
                if ($check_squadra==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
 				}
+				
 				$check_s=0;
 				$query_s="SELECT a.data_ora FROM segnalazioni.join_sopralluoghi_mobili_squadra a
 				WHERE id_sopralluogo =".$id.";";
@@ -396,15 +397,15 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							
 							
 						?>
-							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
+							<h4><br><b>Ora prevista per iniziare il presidio mobile</b>: <?php echo $r['time_preview']; ?></h4>
 							<?php if ($r['time_start']==''){
 								if ($check_squadra==1 or $check_operatore==1){
 							?>
-								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La squadra è sul posto </a><br><br>
+								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La prima squadra<br>ha iniziato il<br>presidio mobile </a><br><br>
 							<?php 
 								}
 							} else { ?>
-								<h4><br><b>Ora inizio esecuzione presidio</b>: <?php echo $r['time_start']; ?></h4>
+								<h4><br><b>Ora inizio esecuzione presidio mobile</b>: <?php echo $r['time_start']; ?></h4>
 							<?php } 
 							
 							
@@ -611,6 +612,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					
 					}
 					echo "<hr>";
+					
+					?>
+					</div> 
+					<div class="col-md-6">
+					<?php
 					if ($check_segnalazione==1){
 						include 'incarichi/panel_comunicazioni.php';
 					} else{
@@ -721,97 +727,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					<hr>
 					<?php
 					}
-					if ($check_segnalazione==1){
 					?>
-					<h3><i class="fas fa-list-ul"></i> Segnalazioni collegate al presidio </h3><br>
-
-					<?php
-					// fine $query che verifica lo stato
-					$query= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_sopralluogo =".$stato_attuale."  ORDER BY id_segnalazione;";
 					
 					
-					//echo $query
-        
-					$result=pg_query($conn, $query);
-					while($r = pg_fetch_assoc($result)) {
-						//echo '<b>Unità operativa</b>: '.$r['descrizione_uo'];
 						
-						
-					?>
-						
-						
-									<div class="panel-group">
-									  <div class="panel panel-info">
-									    <div class="panel-heading">
-									      <h4 class="panel-title">
-									        <a data-toggle="collapse" href="#segnalazione_<?php echo $r["id_segnalazione"];?>"><i class="fas fa-map-marker-alt"></i> Segnalazione n. <?php echo $r['id_segnalazione'];?> </a>
-									      </h4>
-									    </div>
-									    <div id="segnalazione_<?php echo $r["id_segnalazione"];?>" class="panel-collapse collapse">
-									      <div class="panel-body"-->
-										<?php
-										if($r['rischio'] =='t') {
-											echo '<i class="fas fa-circle fa-1x" style="color:#ff0000"></i> Persona a rischio';
-										} else if ($r['rischio'] =='f') {
-											echo '<i class="fas fa-circle fa-1x" style="color:#008000"></i> Non ci sono persone a rischio';
-										} else {
-											echo '<i class="fas fa-circle fa-1x" style="color:#ffd800"></i> Non è specificato se ci siano persone a rischio';
-										}
-										?>
-										<!--h4><i class="fas fa-list-ul"></i> Generalità </h4-->
-										<br><b>Descrizione</b>: <?php echo $r['descrizione_segnalazione']; ?>
-										<br><b>Tipologia</b>: <?php echo $r['criticita']; ?>
-										<br> <a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r['id_segnalazione']; ?>" > Vai alla pagina della segnalazione </a>
-										<hr>
-										<?php
-										$id_segnalazione=$r['id_segnalazione'];
-										include './segnalazioni/section_oggetto_rischio.php';
-										?>
-										
-							
-							
-										
-									
-									
-												</div>
-									    </div>
-									  </div>
-									</div>
-						
-						<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r["id_segnalazione"];?>"><i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r["id_segnalazione"];?></a>
-						<br><br>
-						<?php
-						
-						
-						} // chiudi if
-					}
-					
-						$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
-						$zoom=16;
-					
-					?>
-						
-						<br>
-						
-						<br>
-						</div> 
-						<div class="col-md-6">
-						<h4> <i class="fas fa-map-marker-alt"></i> Indirizzo </h4>
-						<?php
-						require('./indirizzo_embedded.php');
-						?>
-						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
-						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
-						
-						<div id="map" style="width: 100%; padding-top: 100%;">
-						</div>
-						
-						<!--div style="width: 100%; padding-top: 100%;"-->
-							<!--iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe-->
-						<!--/div-->
-						<hr>
-						
-						</div>
+				</div>
 			
 					
 
@@ -826,8 +746,6 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 require('./req_bottom.php');
 $id_segnalazione=$id;
-
-include './mappa_leaflet_embedded.php';
 
 
 //}
