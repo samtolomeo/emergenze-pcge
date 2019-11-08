@@ -297,13 +297,43 @@ require('./check_evento.php');
 			</div>
 			<div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h4>Attivazione numero verde: 
+            <h4> 
 			 <?php if( $contatore_nverde > 0) {?>
-				<i> Attivo</i>
+				<i>Numero verde non attivo</i>
 			 <?php } else { ?>
-				<i> Non attivo</i>
+				<i>Numero verde attivo</i>
 			 <?php }  ?> 
 			</h4>
+			
+			<?php
+
+			$query="SELECT * FROM eventi.t_attivazione_nverde WHERE id_evento=".$id." and data_ora_fine <= now();";
+			//echo $query;
+			//exit;
+				$result = pg_query($conn, $query);
+			while($r = pg_fetch_assoc($result)) {
+				$check_nverde=2;
+			}
+			
+				
+			if($check_nverde==2) {
+				echo "<h5>Storico numero verde<h5>";
+			$result = pg_query($conn, $query);
+			while($r = pg_fetch_assoc($result)) {	
+
+				$timestamp = strtotime($r["data_ora_inizio"]);
+				setlocale(LC_TIME, 'it_IT.UTF8');
+				$data_start = strftime('%A %e %B %G', $timestamp);
+				$ora_start = date('H:i', $timestamp);
+				$timestamp = strtotime($r["data_ora_fine"]);
+				$data_end = strftime('%A %e %B %G', $timestamp);
+				$ora_end = date('H:i', $timestamp);								
+				$color=str_replace("'","",$r["rgb_hex"]);
+				//echo $color;
+				echo "<li> <i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\007c37\"></i> <b>Numero verde  attivo</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " </li>";
+			}
+			}
+			?>
             </div>
             
             </div>
