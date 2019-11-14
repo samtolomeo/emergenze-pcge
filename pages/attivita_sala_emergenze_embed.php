@@ -472,9 +472,9 @@ if ($id != '') {
 			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now();";
 			//$query = $query. " and id1=".$r0["id1"]."";
-			$query = $query. " order by cognome;";
+			//$query = $query. " order by cognome;";
 			
-			//echo $query;
+			echo $query;
 			
 			$check_reperibile=0;
 			$result = pg_query($conn, $query);
@@ -729,7 +729,7 @@ if ($id != '') {
 			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now();";
 			//$query = $query. " and id1=".$r0["id1"]."";
-			$query = $query. " order by cognome;";
+			//$query = $query. " order by cognome;";
 			
 			//echo $query;
 			
@@ -985,7 +985,7 @@ if ($id != '') {
 			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now();";
 			//$query = $query. " and id1=".$r0["id1"]."";
-			$query = $query. " order by cognome;";
+			//$query = $query. " order by cognome;";
 			
 			//echo $query;
 			
@@ -1015,6 +1015,9 @@ if ($id != '') {
             
             
             <hr>
+			</div>
+			
+			<div class="row">
 
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
              <hr>
@@ -1239,7 +1242,7 @@ if ($id != '') {
 			$query = $query. "JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			$query = $query. "where data_start > now();";
 			//$query = $query. " and id1=".$r0["id1"]."";
-			$query = $query. " order by cognome;";
+			//$query = $query. " order by cognome;";
 			
 			//echo $query;
 			
@@ -1491,7 +1494,7 @@ if ($id != '') {
 			$query = $query. "JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			$query = $query. "where data_start > now();";
 			//$query = $query. " and id1=".$r0["id1"]."";
-			$query = $query. " order by cognome;";
+			//$query = $query. " order by cognome;";
 			
 			//echo $query;
 			

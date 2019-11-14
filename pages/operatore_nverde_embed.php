@@ -208,7 +208,7 @@
 			}
 			
 			if ($check_reperibile==0){
-				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
+				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono operatori del Numero Verde <br>';
 			}
 			
 			echo "---.---.---<br>";
