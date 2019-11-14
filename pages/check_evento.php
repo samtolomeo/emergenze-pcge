@@ -361,9 +361,9 @@ while($r = pg_fetch_assoc($result)) {
 	if ($profilo_sistema>0 and $profilo_sistema<=3){
 		$profilo_ok=3;
 	} else {
-   $profilo_ok=$profilo_sistema;
+		$profilo_ok=$profilo_sistema;
    }
-	
+	 $_SESSION['profilo_ok']=$profilo_ok;
 	//profili per le squadre
 	if ($profilo_sistema < 8 and $profilo_ok!=''){
 		$profilo_squadre=$profilo_ok;

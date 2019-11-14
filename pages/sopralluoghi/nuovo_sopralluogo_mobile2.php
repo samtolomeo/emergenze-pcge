@@ -7,6 +7,7 @@ session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 //require('../check_evento.php');
+$profilo_ok= $_SESSION['profilo_ok'];
 
 
 //$id=$_GET["id"];

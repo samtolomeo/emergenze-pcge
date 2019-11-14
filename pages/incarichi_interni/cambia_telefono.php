@@ -33,7 +33,7 @@ echo "<br>";
 echo $query_log;
 
 //exit;
-//header("location: ../edit_squadra.php?id=".$uo);
+header("location: ../edit_squadra.php?id=".$uo);
 
 
 ?>
