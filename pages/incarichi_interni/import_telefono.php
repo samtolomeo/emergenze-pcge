@@ -7,7 +7,7 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 
 $uo=$_GET["s"];
-$telefono=$_POST["tel"];
+$telefono=$_POST["telsq"];
 $matricola_cf=$_GET["cf"];
 
 echo $matricola_cf;
@@ -37,7 +37,7 @@ echo "<br>";
 echo $query_log;
 
 //exit;
-//header("location: ../edit_squadra.php?id=".$uo);
+header("location: ../edit_squadra.php?id=".$uo);
 
 
 ?>

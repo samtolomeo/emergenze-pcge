@@ -81,11 +81,16 @@ $subtitle2=str_replace("'","\'",str_replace(' ','_',$subtitle));
   setTimeout(refresh, 30000);
   
   
-  
+<?php 
+if ($profilo_sistema > 0) {
+?> 
 // reload navbar ogni 30''
 $(document).ready(function(){
   var timeout = setInterval(reloadChat, 30000); 
 });
+<?php 
+}
+?>
 
    
 function reloadChat () {

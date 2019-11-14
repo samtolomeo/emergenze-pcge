@@ -22,5 +22,5 @@ $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('use
 $result = pg_query($conn, $query_log);
 
 //exit;
-//header("location: ../edit_squadra.php?id=".$id_squadra."");
+header("location: ../edit_squadra.php?id=".$id_squadra."");
 ?>
