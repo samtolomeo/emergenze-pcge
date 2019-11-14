@@ -474,7 +474,7 @@ if ($id != '') {
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
 			
-			echo $query;
+			//echo $query;
 			
 			$check_reperibile=0;
 			$result = pg_query($conn, $query);
