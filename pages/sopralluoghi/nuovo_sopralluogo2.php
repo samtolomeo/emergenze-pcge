@@ -8,7 +8,9 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 require('../check_evento.php');
 
-
+if($profilo_sistema==8 and $uo_inc=='uo_1' ){
+	$profilo_ok=3;
+}
 
 //$id=$_GET["id"];
 $id=str_replace("'", "", $_GET['id']); //segnazione in lavorazione
@@ -148,16 +150,31 @@ $query=$query.");";
 $result=pg_query($conn, $query);
 */
 
-$query= "INSERT INTO segnalazioni.stato_sopralluoghi(id_sopralluogo, id_stato_sopralluogo";
 
-//values
-$query=$query.") VALUES (".$id_sopralluogo.", 1 ";
+if($_POST["permanente"]=='on') {
+	$query="UPDATE segnalazioni.t_sopralluoghi SET time_preview=now(), time_start=now() WHERE id=".$id_sopralluogo.";";
+	$result=pg_query($conn, $query);
+	$query= "INSERT INTO segnalazioni.stato_sopralluoghi(id_sopralluogo, id_stato_sopralluogo";
 
-$query=$query.");";
+	//values
+	$query=$query.") VALUES (".$id_sopralluogo.", 2 ";
 
-//echo $query."<br>";
-//exit;
-$result=pg_query($conn, $query);
+	$query=$query.");";
+
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+
+} else {
+	$query= "INSERT INTO segnalazioni.stato_sopralluoghi(id_sopralluogo, id_stato_sopralluogo";
+	//values
+	$query=$query.") VALUES (".$id_sopralluogo.", 1 ";
+	$query=$query.");";
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+}
+
 
 
 

@@ -3,7 +3,7 @@
 
 session_start();
 
-//echo $_SESSION['user'];
+//echo $_SESSION['operatore'];
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
@@ -73,7 +73,7 @@ if ($id_lavorazione!=''){
 	$result=pg_query($conn, $query);
 }
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('sopralluoghi','".$operatore ."', 'Cambio squadra per presidio (o sopralluogo) ".$id_sopralluogo." accordato e in corso');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('sopralluoghi','".$_SESSION['operatore']."', 'Cambio squadra per presidio (o sopralluogo) ".$id_sopralluogo." accordato e in corso');";
 echo $query_log."<br>";
 $result = pg_query($conn, $query_log);
 

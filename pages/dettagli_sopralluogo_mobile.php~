@@ -82,17 +82,172 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					//$check_operatore=0;
 					$id_squadra=$r['id_squadra'];
 					$id_profilo=$r['id_profilo'];
+					//echo $profilo_sistema;
+					//echo $uo_inc;
+					if($profilo_sistema==8 and $uo_inc='uo_1'){
+						$profilo_sistema=3;
+					}
 					//echo $id_profilo;
 					//echo "<br>";
 					require('./check_operatore.php');
-					?>            
-            	
-            	
+					            
+            	$query_s="SELECT a.id_squadra, to_char(a.data_ora,'YYYY-mm-dd HH24:MI') as data_ora, 
+				to_char(a.data_ora_cambio, 'YYYY-mm-dd HH24:MI') as data_ora_cambio, to_char(c.time_stop,'YYYY-mm-dd HH24:MI') as time_stop,
+				b.nome FROM segnalazioni.join_sopralluoghi_mobili_squadra a
+				JOIN users.t_squadre b ON a.id_squadra=b.id 
+				JOIN segnalazioni.t_sopralluoghi_mobili c ON c.id=a.id_sopralluogo";
+				if($r["id_stato_sopralluogo"] < 3){
+				?>
                <h4><br><b>Squadra</b>: <?php echo $r['descrizione_uo'];?>
+			   
                <?php
-               if ($check_squadra==1){
+			   if ($check_squadra==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
 				}
+				echo " </h4>";
+				$query_s1=$query_s. " WHERE id_sopralluogo =".$id." and id_squadra=".$id_squadra_attiva.";";
+				$result_s1=pg_query($conn, $query_s1);
+				while($r_s = pg_fetch_assoc($result_s1)) {
+					if ($r_s['data_ora_cambio']!=''){
+						$data_cambio=$r_s['data_ora_cambio'];
+					} else if ($r_s['time_stop']!='') {
+						$data_cambio=$r_s['time_stop'];
+					} else {
+						$data_cambio=date("Y-m-d H:i");
+					}
+					//echo "<li>Dalle ore ".$r_s['data_ora']." alle ore ".$data_cambio." squadra <b>".$r_s['nome']." </b><ul>";
+					$query_ss="SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+					to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end FROM users.t_componenti_squadre a
+						JOIN varie.dipendenti_storici b ON a.matricola_cf = b.matricola  
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION 
+						SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+						to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION 
+						SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+						to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end  FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni_eliminati b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. "  and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						ORDER BY cognome";
+						//echo $query_ss;
+						$result_ss=pg_query($conn, $query_ss);
+						while($r_ss = pg_fetch_assoc($result_ss)) {
+							echo "<li>".$r_ss['cognome']." ".$r_ss['nome']." ";
+							if ($r_ss['capo_squadra']=='t'){
+								echo '(<i class="fas fa-user-tie" title="Capo squadra"></i>)';
+							}
+							echo ' da '.max($r_ss['data_start'], $r_s['data_ora']).' ';
+							if ( $r_ss['data_end']!='' and $data_cambio!=''){
+								echo 'alle ' .min($r_ss['data_end'],$data_cambio).'';
+							} else {
+								echo 'alle ' .$data_cambio.'';
+							}
+							echo "</li>";
+						}
+					
+					echo "</ul><br>";
+				
+				}
+			   	}
+               
+				
+				$check_s0=0;
+				$query_s0="SELECT a.data_ora FROM segnalazioni.join_sopralluoghi_mobili_squadra a
+				WHERE id_sopralluogo =".$id.";";
+				//echo $query_s;
+				$result_s0=pg_query($conn, $query_s0);
+				while($r_s0 = pg_fetch_assoc($result_s0)) {
+					$check_s=1;
+				}
+				
+				
+				if ($check_s==1){
+				?>
+				
+				<button type="button" class="btn btn-success"  data-toggle="modal" data-target="#storico_s"><i class="fas fa-users"></i> Storico squadre </button>
+				</h4>
+				<!-- Modal storico_s-->
+				<div id="storico_s" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+				
+					<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Storico squadre</h4>
+					</div>
+					<div class="modal-body">
+					<ul>
+				<?php
+				
+				$query_s=$query_s. " WHERE id_sopralluogo =".$id." 
+				ORDER BY data_ora";
+				//echo $query_s;
+				$result_s=pg_query($conn, $query_s);
+				while($r_s = pg_fetch_assoc($result_s)) {
+					if ($r_s['data_ora_cambio']!=''){
+						$data_cambio=$r_s['data_ora_cambio'];
+					} else if ($r_s['time_stop']!='') {
+						$data_cambio=$r_s['time_stop'];
+					} else {
+						$data_cambio=date("Y-m-d H:i");
+					}
+					echo "<li>Dalle ore ".$r_s['data_ora']." alle ore ".$data_cambio." squadra <b>".$r_s['nome']." </b><ul>";
+					$query_ss="SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+					to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end FROM users.t_componenti_squadre a
+						JOIN varie.dipendenti_storici b ON a.matricola_cf = b.matricola  
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION 
+						SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+						to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION 
+						SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+						to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end  FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni_eliminati b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. "  and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						ORDER BY cognome";
+						//echo $query_ss;
+						$result_ss=pg_query($conn, $query_ss);
+						while($r_ss = pg_fetch_assoc($result_ss)) {
+							echo "<li>".$r_ss['cognome']." ".$r_ss['nome']." ";
+							if ($r_ss['capo_squadra']=='t'){
+								echo '(<i class="fas fa-user-tie" title="Capo squadra"></i>)';
+							}
+							echo ' da '.max($r_ss['data_start'], $r_s['data_ora']).' ';
+							if ( $r_ss['data_end']!='' and $data_cambio!=''){
+								echo 'alle ' .min($r_ss['data_end'],$data_cambio).'';
+							} else {
+								echo 'alle ' .$data_cambio.'';
+							}
+							echo "</li>";
+						}
+					
+					echo "</ul></li>";
+				}
+				?>
+				</ul>
+					</div>
+				</div>
+				</div>
+				</div>
+				<?php
+				} else { echo '</h4>'; }//close if
 				require('./check_responsabile.php');
 				?>
                </h4>
@@ -316,15 +471,15 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							
 							
 						?>
-							<h4><br><b>Ora prevista per eseguire il presidio</b>: <?php echo $r['time_preview']; ?></h4>
+							<h4><br><b>Ora prevista per iniziare il presidio mobile</b>: <?php echo $r['time_preview']; ?></h4>
 							<?php if ($r['time_start']==''){
 								if ($check_squadra==1 or $check_operatore==1){
 							?>
-								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La squadra è sul posto </a><br><br>
+								<a class="btn btn-success" href="./sopralluoghi/start_m.php?id=<?php echo $id;?>"><i class="fas fa-play"></i> La prima squadra<br>ha iniziato il<br>presidio mobile </a><br><br>
 							<?php 
 								}
 							} else { ?>
-								<h4><br><b>Ora inizio esecuzione presidio</b>: <?php echo $r['time_start']; ?></h4>
+								<h4><br><b>Ora inizio esecuzione presidio mobile</b>: <?php echo $r['time_start']; ?></h4>
 							<?php } 
 							
 							
@@ -531,6 +686,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					
 					}
 					echo "<hr>";
+					
+					?>
+					</div> 
+					<div class="col-md-6">
+					<?php
 					if ($check_segnalazione==1){
 						include 'incarichi/panel_comunicazioni.php';
 					} else{
@@ -641,93 +801,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					<hr>
 					<?php
 					}
-					if ($check_segnalazione==1){
 					?>
-					<h3><i class="fas fa-list-ul"></i> Segnalazioni collegate al presidio </h3><br>
-
-					<?php
-					// fine $query che verifica lo stato
-					$query= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_sopralluogo =".$stato_attuale."  ORDER BY id_segnalazione;";
 					
 					
-					//echo $query
-        
-					$result=pg_query($conn, $query);
-					while($r = pg_fetch_assoc($result)) {
-						//echo '<b>Unità operativa</b>: '.$r['descrizione_uo'];
 						
-						
-					?>
-						
-						
-									<div class="panel-group">
-									  <div class="panel panel-info">
-									    <div class="panel-heading">
-									      <h4 class="panel-title">
-									        <a data-toggle="collapse" href="#segnalazione_<?php echo $r["id_segnalazione"];?>"><i class="fas fa-map-marker-alt"></i> Segnalazione n. <?php echo $r['id_segnalazione'];?> </a>
-									      </h4>
-									    </div>
-									    <div id="segnalazione_<?php echo $r["id_segnalazione"];?>" class="panel-collapse collapse">
-									      <div class="panel-body"-->
-										<?php
-										if($r['rischio'] =='t') {
-											echo '<i class="fas fa-circle fa-1x" style="color:#ff0000"></i> Persona a rischio';
-										} else if ($r['rischio'] =='f') {
-											echo '<i class="fas fa-circle fa-1x" style="color:#008000"></i> Non ci sono persone a rischio';
-										} else {
-											echo '<i class="fas fa-circle fa-1x" style="color:#ffd800"></i> Non è specificato se ci siano persone a rischio';
-										}
-										?>
-										<!--h4><i class="fas fa-list-ul"></i> Generalità </h4-->
-										<br><b>Descrizione</b>: <?php echo $r['descrizione_segnalazione']; ?>
-										<br><b>Tipologia</b>: <?php echo $r['criticita']; ?>
-										<br> <a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r['id_segnalazione']; ?>" > Vai alla pagina della segnalazione </a>
-										<hr>
-										<?php
-										$id_segnalazione=$r['id_segnalazione'];
-										include './segnalazioni/section_oggetto_rischio.php';
-										?>
-										
-							
-							
-										
-									
-									
-												</div>
-									    </div>
-									  </div>
-									</div>
-						
-						<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r["id_segnalazione"];?>"><i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r["id_segnalazione"];?></a>
-						<br><br>
-						<?php
-						
-						
-						} // chiudi if
-					}
-					
-						$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
-						$zoom=16;
-					
-					?>
-						
-						<br>
-						
-						<br>
-						</div> 
-						<div class="col-md-6">
-						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
-						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
-						
-						<div id="map" style="width: 100%; padding-top: 100%;">
-						</div>
-						
-						<!--div style="width: 100%; padding-top: 100%;"-->
-							<!--iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe-->
-						<!--/div-->
-						<hr>
-						
-						</div>
+				</div>
 			
 					
 
@@ -742,8 +820,6 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 require('./req_bottom.php');
 $id_segnalazione=$id;
-
-include './mappa_leaflet_embedded.php';
 
 
 //}

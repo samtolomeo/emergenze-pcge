@@ -57,6 +57,9 @@ if ($profilo_sistema <= 8){
             <!--div class="row"-->
             <!--div class="col-md-6"-->
             <?php
+				echo $uo_inc;
+				echo '<br>';
+				echo $profilo_squadre;
 				if ($check_operatore == 0){
 					echo '<!--h4--><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a creare nuove squadre</h3><hr> ';
 				} else {
@@ -141,11 +144,6 @@ if ($profilo_sistema <= 8){
     									<small>Verrà creata in automatico una squadra con lo stesso nome anche per gli eventi futuri
     									</small>           
 					             </div>
-					             
-					                      
-					                  
-					
-					
 					
 					        <button  id="conferma" type="submit" class="btn btn-primary">Crea squadra</button>
 					            </form>
@@ -194,14 +192,13 @@ if ($profilo_sistema <= 8){
 			  data-sidePagination="true" data-show-refresh="true" 
 			  data-show-toggle="false" data-show-columns="true" 
 			  data-toolbar="#toolbar">
-				        
-				        
+
 				<thead>
 				
 			 	<tr>
             <!--th data-field="state" data-checkbox="true"></th-->
             <!--th data-field="id" data-sortable="false"  data-visible="true">ID</th-->
-            <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
+            <th data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
             <!--th style="word-break:break-all; word-wrap:break-word; " data-field="evento" data-sortable="true"  data-visible="true">Evento</th>
 	         <th data-field="afferenza" data-sortable="true"  data-visible="true" >Afferenza</th-->
 	    	
