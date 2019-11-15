@@ -6,8 +6,13 @@ session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
-//require('../check_evento.php');
-$profilo_ok= $_SESSION['profilo_ok'];
+require('../check_evento.php');
+//$profilo_ok= $_SESSION['profilo_ok'];
+
+
+if($profilo_ok==8 and $uo_inc=='uo_1' ){
+	$profilo_ok=3;
+}
 
 
 //$id=$_GET["id"];

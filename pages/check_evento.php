@@ -369,8 +369,12 @@ while($r = pg_fetch_assoc($result)) {
 		$profilo_squadre=$profilo_ok;
 	} else {
 		//$profilo_squadre=$uo_inc;
-		if (isset($periferico_inc)){
-			$profilo_squadre=$periferico_inc;
+		if ($uo_inc=='uo_1' or $uo_inc=='uo_8') {  // Gruppo Genova e convenzionate come squadre sono equiparati ad un operatore di PC
+			$profilo_squadre=3;
+		} else {
+			if (isset($periferico_inc)){
+				$profilo_squadre=$periferico_inc;
+			}
 		}
 	}
 	

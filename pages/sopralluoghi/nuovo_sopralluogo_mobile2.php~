@@ -7,12 +7,16 @@ session_start();
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 require('../check_evento.php');
+//$profilo_ok= $_SESSION['profilo_ok'];
 
+
+if($profilo_ok==8 and $uo_inc=='uo_1' ){
+	$profilo_ok=3;
+}
 
 
 //$id=$_GET["id"];
 //$id=str_replace("'", "", $_GET['id']); //segnazione in lavorazione
-
 //$segn=str_replace("'", "", $_GET['s']); //segnazione in lavorazione
 
 $descrizione= str_replace("'", "''", $_POST["descrizione"]);
@@ -22,6 +26,8 @@ $uo = str_replace("'", "''", $_POST["uo"]);
 $id_evento = str_replace("'", "''", $_POST["evento"]);
 
 $percorso = $_POST["percorso"];
+
+
 
 //echo "Segnalazione in lavorazione:".$id. "<br>";
 //echo "Segnalazione:".$segn. "<br>";
@@ -79,18 +85,65 @@ $query="UPDATE users.t_squadre SET id_stato=1 WHERE id=".$uo.";";
 $result=pg_query($conn, $query);
 
 
+// metti un check
+/*$query= "SELECT * FROM segnalazioni.t_sopralluoghi_mobili 
+where descrizione = ".$percorso." and data_fine is null;";
+$result=pg_query($conn, $query);
+while($r = pg_fetch_assoc($result)) {
+	echo "ATTENZIONE: il percorso risulta già inserito. Probabilmente hai schiacciato due volte il tasto";
+	echo '<br>Entro 10" verrai re-indirizzato alla pagina del presidio mobile, clicca al seguente ';
+	echo '<a href="../dettagli_sopralluogo_mobile.php?id='.$id_sopralluogo.'">link</a> per saltare l\'attesa.</h3>' ;
+	//sleep(30);
+    header("refresh:10;url=../dettagli_sopralluogo_mobile.php?id=".$id_sopralluogo);
+	
+}*/
+
+
 
 $query= "INSERT INTO segnalazioni.t_sopralluoghi_mobili ( id, descrizione, id_profilo, id_evento, geom";
 
-//values
-$query=$query.") VALUES (".$id_sopralluogo.", '".$percorso." ".$descrizione."', '".$profilo_ok."',  ". $id_evento. ", ". $geom." ";
+if ($descrizione!=''){
+$query=$query.",note_ente";
+}
 
+//values
+$query=$query.") VALUES (".$id_sopralluogo.", '".$percorso."', '".$profilo_ok."',  ". $id_evento. ", ". $geom." ";
+if ($descrizione!=''){
+$query=$query.",'".$descrizione."'";
+}
 $query=$query.");";
 
 //echo $query;
 //exit;
 $result=pg_query($conn, $query);
 //exit;
+
+
+
+if($_POST["permanente"]=='on') {
+	$query="UPDATE segnalazioni.t_sopralluoghi_mobili SET time_preview=now(), time_start=now() WHERE id=".$id_sopralluogo.";";
+	$result=pg_query($conn, $query);
+	$query= "INSERT INTO segnalazioni.stato_sopralluoghi_mobili(id_sopralluogo, id_stato_sopralluogo";
+
+	//values
+	$query=$query.") VALUES (".$id_sopralluogo.", 2 ";
+
+	$query=$query.");";
+
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+
+} else {
+	$query= "INSERT INTO segnalazioni.stato_sopralluoghi_mobili(id_sopralluogo, id_stato_sopralluogo";
+	//values
+	$query=$query.") VALUES (".$id_sopralluogo.", 1 ";
+	$query=$query.");";
+	//echo $query."<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+}
+
 
 
 echo "<br>";
@@ -119,16 +172,6 @@ $query=$query.");";
 $result=pg_query($conn, $query);
 */
 
-$query= "INSERT INTO segnalazioni.stato_sopralluoghi_mobili(id_sopralluogo, id_stato_sopralluogo";
-
-//values
-$query=$query.") VALUES (".$id_sopralluogo.", 1 ";
-
-$query=$query.");";
-
-//echo $query."<br>";
-//exit;
-$result=pg_query($conn, $query);
 
 
 
@@ -144,7 +187,7 @@ $query=$query.");";
 $result=pg_query($conn, $query);*/
 
 
-$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Inviato presidio/sopralluogo ".$id_sopralluogo."');";
+$query_log= "INSERT INTO varie.t_log (schema, operatore, operazione) VALUES ('segnalazioni','".$_SESSION["operatore"] ."', 'Inviato presidio/sopralluogo ".$id_sopralluogo."');";
 $result = pg_query($conn, $query_log);
 
 
@@ -240,7 +283,7 @@ if (!$mail->send()) {
 	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
 	echo '<br>Il presidio &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+	echo '<br>Entro 15" verrai re-indirizzato alla pagina del presidio mobile, clicca al seguente ';
 	echo '<a href="../dettagli_sopralluogo_mobile.php?id='.$id_sopralluogo.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
     header("refresh:15;url=../dettagli_sopralluogo_mobile.php?id=".$id_sopralluogo);

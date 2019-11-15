@@ -84,6 +84,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					$id_profilo=$r['id_profilo'];
 					//echo $id_profilo;
 					//echo "<br>";
+					if($profilo_sistema==8 and $uo_inc=='uo_1' ){
+						$profilo_sistema=3;
+					}
 					require('./check_operatore.php');
 					?>            
             	
@@ -493,7 +496,16 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										 <?php } ?>
 									</select>
 									<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
-									 </div>       
+									 </div>
+
+									<div class="form-group">
+										<input type="checkbox" class="form-check-input" name="permanente" id="permanente" checked="">
+											<label class="form-check-label" for="permanente">La squadra &egrave gi&agrave cambiata<br>
+											</label>
+											<br>
+											<small>Togliere il flag se il cambio squadra fosse solo programmato ma non effettivo. 
+											</small>           
+									</div>									 
 									
 										  
 

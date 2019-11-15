@@ -57,6 +57,9 @@ if ($profilo_sistema <= 8){
             <!--div class="row"-->
             <!--div class="col-md-6"-->
             <?php
+				//echo $uo_inc;
+				//echo '<br>';
+				//echo $profilo_squadre;
 				if ($check_operatore == 0){
 					echo '<!--h4--><i class="fas fa-minus-circle"></i> L\'utente non è autorizzato a creare nuove squadre</h3><hr> ';
 				} else {

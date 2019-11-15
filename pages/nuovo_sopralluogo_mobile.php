@@ -22,6 +22,10 @@ require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 require('./check_evento.php');
 
+if($profilo_sistema==8 and $uo_inc=='uo_1'){
+	$profilo_sistema=3;
+}
+
 if ($profilo_sistema > 4){
 	header("location: ./divieto_accesso.php");
 }
@@ -157,6 +161,9 @@ if ($profilo_sistema > 4){
 						Cliccare solo se la squadra sta effettivamente iniziando il presidio.
 						</small>           
 				</div>
+				</div> 
+ 				<hr>
+				<div class="row"> 
 				<div class="form-group col-md-12">
                 <label for="descrizione"> Note</label> 
                 <input type="text" name="descrizione" class="form-control" >
