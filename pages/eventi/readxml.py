@@ -4,7 +4,8 @@
 #   Roberto Marzocchi
 
 import os
-import urllib2 #problema con python3
+#import urllib2 #problema con python3
+import urllib.request
 import xml.etree.ElementTree as et
 
 import psycopg2
@@ -36,7 +37,7 @@ def scarica_bollettino(tipo,nome,ora):
         if ora!='NULL':
             data_read=datetime.datetime.strptime(ora,"%Y%m%d%H%M")
             print(data_read)
-        f = urllib2.urlopen("{}/docs/{}".format(sito_allerta,nome))
+        f = urllib.request.urlopen("{}/docs/{}".format(sito_allerta,nome))
         data = f.read()
         with open("{}/bollettini/{}/{}".format(abs_path_bollettini,tipo,nome), "wb") as code:
             code.write(data)
@@ -74,7 +75,7 @@ def scarica_bollettino(tipo,nome,ora):
 
 def main():
     url="{}/xml/allertaliguria.xml".format(sito_allerta);
-    file = urllib2.urlopen(url)
+    file = urllib.request.urlopen(url)
     data = file.read()
     file.close()
 
