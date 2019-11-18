@@ -4,7 +4,7 @@
 #   Roberto Marzocchi
 
 import os
-import urllib2 #problema con python3
+import urllib3 #problema con python3
 import xml.etree.ElementTree as et
 
 import psycopg2
