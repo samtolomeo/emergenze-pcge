@@ -116,7 +116,7 @@ if ($profilo_sistema > 8){
 
              </select>            
              </div>
-               <div class="form-group col-md-6">
+             <div class="form-group col-md-6">
                 <label for="altro"> Specifica altro...</label>
                 <input type="text" id="altro" name="altro" class="form-control" disabled="">
               </div>

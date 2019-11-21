@@ -122,6 +122,24 @@ if ($profilo_sistema > 8){
               </div>
             
             </div>
+			
+			<?php
+			if ($profilo_ok==3){
+			?>
+			<div class="row">       
+				<div class="form-group col-md-6">
+					<label for="nverde"> Operatore numero verde?</label> <font color="red">*</font><br>
+					<label class="radio-inline"><input type="radio" name="nverde" value="t">Sì</label>
+					<label class="radio-inline"><input type="radio" name="nverde"value="f" checked>Non specificato</label>
+				</div>
+				</div> 
+			<?php } ?>
+
+				
+
+				
+				
+				
             <hr>
 				<div class="row">             
             <h4><i class="fa fa-play"></i> Evento:</h4>
@@ -402,7 +420,18 @@ require('./mappa_georef.php');
 
 		
 
+<script type="text/javascript" >
 
+// con questa parte scritta in JQuery si evita che 
+// l'uso del tasto enter abbia effetto sul submit del form
+
+$(document).on("keydown", ":input:not(textarea)", function(event) {
+    if (event.key == "Enter") {
+        event.preventDefault();
+    }
+});
+
+</script>
 
 
 
