@@ -132,7 +132,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Municipio";
 										if ($check_operatore == 1){ ?>
 											<!--div style="text-align: center;"-->
-												<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=3" class="btn btn-info"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale PC</a><br>
+												<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=3" class="btn btn-info noprint"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale PC</a><br>
 											<!--/div-->
 										<?php 
 											//$check_operatore=1;
@@ -142,7 +142,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Distretto";
 										if ($check_operatore == 1){ ?>
 										<!--div style="text-align: center;"-->										
-											<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=4" class="btn btn-info"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale COA</a><br>
+											<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=4" class="btn btn-info noprint"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale COA</a><br>
 										<!--/div-->
 											<?php
 											//$check_operatore=1;
@@ -367,14 +367,14 @@ while($r_e = pg_fetch_assoc($result_e)) {
 												echo " (Note chiusura:" .$r_incarichi['note_ente']. ")";
 											}
 											echo " - " .$r_incarichi['descrizione_uo'];
-											echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico.php?id=".$r_incarichi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+											echo " - <a class=\"btn btn-info noprint\" href=\"dettagli_incarico.php?id=".$r_incarichi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 										}
 										
 							
 									if($check_operatore==1 and $r['in_lavorazione']!='f') {
 										?>
 									<hr><p>
-				      			<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
+				      			<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
 						 			</p>
 									<?php } ?>
 									</div>
@@ -437,7 +437,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 												echo " (Note chiusura:" .$r_incarichi['note_ente']. ")";
 											}
 											echo " - " .$r_incarichi['descrizione_uo'];
-											echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico_interno.php?id=".$r_incarichi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+											echo " - <a class=\"btn btn-info noprint\" href=\"dettagli_incarico_interno.php?id=".$r_incarichi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 										}
 										
 									//echo $check_open_ii;
@@ -445,7 +445,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										?>
 									
 									 <hr><p>
-									<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico_interno"><i class="fas fa-plus"></i> Assegna incarico interno </button>
+									<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#new_incarico_interno"><i class="fas fa-plus"></i> Assegna incarico interno </button>
 						 			</p>
 						 			<?php } ?>
 									</div>
@@ -509,7 +509,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 												echo " (Note chiusura:" .$r_sopralluoghi['note_ente']. ")";
 											}
 											echo " - " .$r_sopralluoghi['descrizione_uo'];
-											echo " - <a class=\"btn btn-info\" href=\"dettagli_sopralluogo.php?id=".$r_sopralluoghi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+											echo " - <a class=\"btn btn-info noprint\" href=\"dettagli_sopralluogo.php?id=".$r_sopralluoghi['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 										}
 										
 							
@@ -517,7 +517,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										?>
 									
 									 <hr><p>
-									<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_sopralluogo"><i class="fas fa-pencil-ruler"></i> Assegna nuovo presidio </button>
+									<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#new_sopralluogo"><i class="fas fa-pencil-ruler"></i> Assegna nuovo presidio </button>
 									</p>
 									<?php } ?>
 									</div>
@@ -583,7 +583,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 												Provvedimento rimosso con successiva ordinanza sindacale';
 											}
 											echo " - " .$r_provvedimenti['descrizione_uo'];
-											echo " - <a class=\"btn btn-info\" href=\"dettagli_provvedimento_cautelare.php?id=".$r_provvedimenti['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
+											echo " - <a class=\"btn btn-info noprint\" href=\"dettagli_provvedimento_cautelare.php?id=".$r_provvedimenti['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 										}
 										
 							
@@ -615,7 +615,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<hr>
 						<?php
 						if($check_operatore==1) {
-	   					echo '<button type="button" class="btn btn-danger"  data-toggle="modal" ';
+	   					echo '<button type="button" class="btn btn-danger noprint"  data-toggle="modal" ';
 	   					// check sugli incarichi / sopralluoghi attivi
 	   					if($check_incarichi_aperti==1 OR $check_incarichi_interni_aperti==1 OR $check_sopralluoghi==1 OR $check_chiusura<0 ){
 	   						echo 'disabled="" title="Impossibile chiudere la segnalazione. Incarichi / presidi / provvedimenti cautelari risultano ancora in corso o non presi in carico."';
@@ -721,12 +721,12 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 
-								<button  id="conferma" type="submit" class="btn btn-primary">Invia incarico</button>
+								<button  id="conferma" type="submit" class="btn btn-primary noprint">Invia incarico</button>
 									</form>
 
 							  </div>
 							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+								<button type="button" class="btn btn-default noprint" data-dismiss="modal">Annulla</button>
 							  </div>
 							</div>
 
@@ -751,7 +751,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
 								
 									<?php
-									$query2="SELECT id, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and cod_afferenza = '".$cod_profilo_squadra."' ORDER BY nome;";
+									$query2="SELECT id, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 AND cod_afferenza = '".$cod_profilo_squadra."' ORDER BY nome;";
 									
 									//echo $query2;
 									$result2 = pg_query($conn, $query2);
@@ -780,12 +780,12 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 
-								<button  id="conferma" type="submit" class="btn btn-primary">Invia incarico</button>
+								<button  id="conferma" type="submit" class="btn btn-primary noprint">Invia incarico</button>
 									</form>
 
 							  </div>
 							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+								<button type="button" class="btn btn-default noprint" data-dismiss="modal">Annulla</button>
 							  </div>
 							</div>
 
@@ -812,7 +812,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<?php
 									$query2= "SELECT id, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and cod_afferenza = '".$cod_profilo_squadra."' ORDER BY nome;";
 									//$query2="SELECT cf, nome FROM users.v_squadre WHERE id_stato=2 AND num_componenti > 0 and profilo = '".$profilo_squadre."' ORDER BY nome;";
-									echo $query2;
+									//echo $query2;
 									$result2 = pg_query($conn, $query2);
 									?>
 									<div class="form-group">
@@ -838,12 +838,12 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 
 
-								<button  id="conferma" type="submit" class="btn btn-primary"  data-toggle="tooltip" data-placement="top" title="Cliccando su questo tasto confermi le informazioni precedenti e assegni il presidio alla squadra specificata">Assegna presidio</button>
+								<button  id="conferma" type="submit" class="btn btn-primary noprint"  data-toggle="tooltip" data-placement="top" title="Cliccando su questo tasto confermi le informazioni precedenti e assegni il presidio alla squadra specificata">Assegna presidio</button>
 									</form>
 
 							  </div>
 							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+								<button type="button" class="btn btn-default noprint" data-dismiss="modal">Annulla</button>
 							  </div>
 							</div>
 
@@ -897,12 +897,12 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						
-						        <button id="conferma_chiudi" type="submit" class="btn btn-danger">Conferma chiusura segnalazione</button>
+						        <button id="conferma_chiudi" type="submit" class="btn btn-danger noprint">Conferma chiusura segnalazione</button>
 						            </form>
 						
 						      </div>
 						      <div class="modal-footer">
-						        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+						        <button type="button" class="btn btn-default noprint" data-dismiss="modal">Annulla</button>
 						      </div>
 						    </div>
 						
@@ -964,11 +964,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<br><b>Descrizione</b>: <?php echo $r_civico['descrizione']; ?>
 									
 									<hr>
-									<a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r_civico['id'];?>"> <i class="fas fa-angle-right"></i> Vai alla segnalazione </a>
+									<a class="btn btn-info noprint" href="./dettagli_segnalazione.php?id=<?php echo $r_civico['id'];?>"> <i class="fas fa-angle-right"></i> Vai alla segnalazione </a>
 									<br> <br>
 									<?php
 									if ($r_civico['id_lavorazione']!='' and $r['id_lavorazione']=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <=6 ){
-										echo '<a class="btn btn-info" href="./segnalazioni/unisci_segnalazione.php?id_from='.$id.'&id_to='.$r_civico['id'].'"><i class="fas fa-link"></i> Unisci segnalazione. </a>';
+										echo '<a class="btn btn-info noprint" href="./segnalazioni/unisci_segnalazione.php?id_from='.$id.'&id_to='.$r_civico['id'].'"><i class="fas fa-link"></i> Unisci segnalazione. </a>';
 									} 
 									?>
 									</div>
@@ -1034,11 +1034,11 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<br><b>Descrizione</b>: <?php echo $r_vic['descrizione']; ?>
 									
 									<hr>
-									<a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r_vic['id'];?>"> <i class="fas fa-angle-right"></i> Vai alla segnalazione </a>
+									<a class="btn btn-info noprint" href="./dettagli_segnalazione.php?id=<?php echo $r_vic['id'];?>"> <i class="fas fa-angle-right"></i> Vai alla segnalazione </a>
 									<br> <br>
 									<?php
 									if ($r_vic['id_lavorazione']!='' and $r['id_lavorazione']=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <= 6){
-										echo '<a class="btn btn-info" href="./segnalazioni/unisci_segnalazione.php?id_from='.$id.'&id_to='.$r_vic['id'].'"><i class="fas fa-link"></i> Unisci segnalazione. </a>';
+										echo '<a class="btn btn-info noprint" href="./segnalazioni/unisci_segnalazione.php?id_from='.$id.'&id_to='.$r_vic['id'].'"><i class="fas fa-link"></i> Unisci segnalazione. </a>';
 									} 
 									?>
 									
@@ -1060,7 +1060,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<?php
 						
 						 if ($r['id_lavorazione']=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <= 6){ ?>
-								<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#lavorazione"> <i class="fas fa-plus"></i> 
+								<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#lavorazione"> <i class="fas fa-plus"></i> 
 								<?php
 								 // solo se non ancora in lavorazione
 								 
@@ -1113,12 +1113,12 @@ while($r_e = pg_fetch_assoc($result_e)) {
 		
 			<hr>
 			
-        <button  id="conferma" type="submit" class="btn btn-primary" >Inserisci in lavorazione</button>
+        <button  id="conferma" type="submit" class="btn btn-primary noprint" >Inserisci in lavorazione</button>
             </form>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+        <button type="button" class="btn btn-default noprint" data-dismiss="modal">Annulla</button>
       </div>
     </div>
 
@@ -1164,7 +1164,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$result_altre=pg_query($conn, $query_altre);
 						while($r_altre = pg_fetch_assoc($result_altre)) {
 							$check_spostamento=0;
-							echo '<br><br><a class="btn btn-info" href="dettagli_segnalazione.php?id='.$r_altre["id"].'">Vai alla segnalazione congiunta (id='.$r_altre["id"].')</a>';
+							echo '<br><br><a class="btn btn-info noprint" href="dettagli_segnalazione.php?id='.$r_altre["id"].'">Vai alla segnalazione congiunta (id='.$r_altre["id"].')</a>';
 						}
 						?>
 						
@@ -1226,7 +1226,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						if ($check_spostamento==1 and $check_operatore==1) {
 								$zoom_plus=$zoom+1;
-								echo ' - <a href="sposta_segnalazione.php?id='.$id.'&lat='.$lat.'&lon='.$lon.'&z='.$zoom_plus.'" class="btn btn-info">
+								echo ' - <a href="sposta_segnalazione.php?id='.$id.'&lat='.$lat.'&lon='.$lon.'&z='.$zoom_plus.'" class="btn btn-info noprint">
 								<i class="fas fa-map-marker-alt"></i> Sposta segnalazione</a>';
 							}
 						?>

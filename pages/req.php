@@ -90,8 +90,79 @@ function integerToRoman($integer)
 		margin-top: 0px;
 		z-index:1;
 	}
-    </style>
-    
+
+      .panel-allerta {
+		  border-color: <?php echo $color_allerta; ?>;
+		}
+		.panel-allerta > .panel-heading {
+		  border-color: <?php echo $color_allerta; ?>;
+		  color: white;
+		  background-color: <?php echo $color_allerta; ?>;
+		}
+		.panel-allerta > a {
+		  color: <?php echo $color_allerta; ?>;
+		}
+		.panel-allerta > a:hover {
+		  color: #337ab7;
+		  /* <?php echo $color_allerta; ?>;*/
+		}
+      
+      
+		.dot {
+  height: 25px;
+  width: 25px;
+  /*background-color: #bbb;*/
+  border-radius: 50%;
+  display: inline-block;
+}      
+      
+      
+      @media print
+   {
+	  p.bodyText {
+		  font-family:georgia, times, serif;
+		  -webkit-print-color-adjust: exact;
+		  color-adjust: exact;
+	  }
+	  
+	  .rows-print-as-pages .row {
+		page-break-before: auto;
+	  }
+	  
+	  .btn {
+    		display: none;
+  		}
+	  
+	  
+	   table,
+		table tr td,
+		table tr th {
+			page-break-inside: avoid;
+		}
+
+		.collapse {
+   	display: block !important;
+   	height: auto !important;
+	}
+	
+	
+	#break {
+		 page-break-before: always;
+	}
+	
+	.fa-inverse {
+        color: #fff !important;
+    }
+	  .noprint
+	  {
+		display:none
+	  }
+	  
+   }
+   
+      
+      
+      </style>
     
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

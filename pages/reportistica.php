@@ -62,47 +62,7 @@ require('./check_evento.php');
            
 
             
-			<style type="text/css">
-            
-            .panel-allerta {
-				  border-color: <?php echo $color_allerta; ?>;
-				}
-				.panel-allerta > .panel-heading {
-				  border-color: <?php echo $color_allerta; ?>;
-				  color: white;
-				  background-color: <?php echo $color_allerta; ?>;
-				}
-				.panel-allerta > a {
-				  color: <?php echo $color_allerta; ?>;
-				}
-				.panel-allerta > a:hover {
-				  color: #337ab7;
-				  /* <?php echo $color_allerta; ?>;*/
-				}
-            
-            @media print
-		   {
-			  p.bodyText {font-family:georgia, times, serif;}
-			  
-			  .rows-print-as-pages .row {
-				page-break-before: auto;
-			  }
-			  
-			  
-			   table,
-				table tr td,
-				table tr th {
-					page-break-inside: avoid;
-				}
-			  .noprint
-			  {
-				display:none
-			  }
-			  
-		   }
-            
-            
-            </style>
+			
 
             <div class="row">
 			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -120,7 +80,8 @@ require('./check_evento.php');
 					$nota_evento=$r_e['nota'];
 				}
 			?>
-			<button class="btn btn-info noprint" onclick="printDiv('page-wrapper')"><i class="fa fa-print" aria-hidden="true"></i> Stampa pagina report (demo)</button>
+			<button class="btn btn-info noprint" onclick="printDiv('page-wrapper')">
+			<i class="fa fa-print" aria-hidden="true"></i> Stampa pagina report (demo)</button>
 			</h3>
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -181,6 +142,7 @@ require('./check_evento.php');
 				$ora_end = date('H:i', $timestamp);								
 				$color=str_replace("'","",$r["rgb_hex"]);
 				//echo $color;
+				//echo '<span class="dot" style="background-color:'.$color.'"></span>';
 				echo "<i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b>Allerta ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " <br>";
 			}
 			?>
@@ -923,22 +885,6 @@ $(document).ready(function() {
         todayHighlight: true
     }); 
 });
-
-
-
-
-function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-
-
 
 </script>
     

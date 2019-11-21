@@ -42,8 +42,6 @@ function integerToRoman($integer)
 
 ?>
 
-<!-- REFRESH automatico pagine -->
-     <!--meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'" content="IE=edge"-->
 
 <meta http-equiv="Cache-control" content="public">
 
@@ -89,10 +87,77 @@ function integerToRoman($integer)
 	.sidebar{
 		overflow-y: scroll;
 		position: fixed;
-		margin-top=0px;
+		margin-top: 0px;
+		z-index:1;
 	}
-    </style>
-    
+
+      .panel-allerta {
+		  border-color: <?php echo $color_allerta; ?>;
+		}
+		.panel-allerta > .panel-heading {
+		  border-color: <?php echo $color_allerta; ?>;
+		  color: white;
+		  background-color: <?php echo $color_allerta; ?>;
+		}
+		.panel-allerta > a {
+		  color: <?php echo $color_allerta; ?>;
+		}
+		.panel-allerta > a:hover {
+		  color: #337ab7;
+		  /* <?php echo $color_allerta; ?>;*/
+		}
+      
+      
+		.dot {
+  height: 25px;
+  width: 25px;
+  /*background-color: #bbb;*/
+  border-radius: 50%;
+  display: inline-block;
+}      
+      
+      
+      @media print
+   {
+	  p.bodyText {
+		  font-family:georgia, times, serif;
+		  -webkit-print-color-adjust: exact;
+		  color-adjust: exact;
+	  }
+	  
+	  .rows-print-as-pages .row {
+		page-break-before: auto;
+	  }
+	  
+	  #printPageButton {
+    		display: none;
+  		}
+	  
+	  
+	   table,
+		table tr td,
+		table tr th {
+			page-break-inside: avoid;
+		}
+
+		.collapse {
+   	display: block !important;
+   	height: auto !important;
+	}
+	
+	.fa-inverse {
+        color: #fff !important;
+    }
+	  .noprint
+	  {
+		display:none
+	  }
+	  
+   }
+   
+      
+      
+      </style>
     
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -102,7 +167,11 @@ function integerToRoman($integer)
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+	
+	<!-- GRAFICI d3js -->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
 
 <?php
 ?>

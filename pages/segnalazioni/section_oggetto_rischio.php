@@ -56,7 +56,7 @@ if($check_or==1) {
 	echo "<br><b>Id oggetto a rischio </b>:".$id_oggetto_rischio;
 	
 	if ($check_spostamento==1 and $check_operatore==1 and $check_or==1) {
-	echo '<br><br><a href="segnalazioni/remove_e_r.php?id='.$id.'"&lav='.$id_lavorazione.' class="btn btn-danger">
+	echo '<br><br><a href="segnalazioni/remove_e_r.php?id='.$id.'"&lav='.$id_lavorazione.' class="btn btn-danger noprint">
 	<i class="fas fa-times"></i> Rimuovi oggetto a rischio</a>';
 }
 	
@@ -88,7 +88,7 @@ if($check_or==1) {
 
     </select>            
     </div>
-	 <button  type="submit" class="btn btn-primary"> <i class="fas fa-plus-square"></i> Aggiungi elemento a rischio</button>
+	 <button  type="submit" class="btn btn-primary noprint"> <i class="fas fa-plus-square"></i> Aggiungi elemento a rischio</button>
      </form>
 	
 	<?php
@@ -110,7 +110,7 @@ while($r_or = pg_fetch_assoc($result_or)) {
 	while($r_tipo = pg_fetch_assoc($result_tipo)) {
 		echo $r_tipo['descrizione'];
 	}
-	echo "(id=".$r_or['id_oggetto'].")</li>";
+	echo " (id=".$r_or['id_oggetto'].")</li>";
 }
 echo "</lu>";
 
@@ -130,7 +130,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 	}
 	//echo "<br><b>Indirizzo</b>: ".$via. ", " .$numciv;
 	?>
-	<br> <br> <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#anagrafe_civico"><i class="fas fa-address-book"></i> Visualizza anagrafe civico </button>
+	<br> <br> <button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#anagrafe_civico"><i class="fas fa-address-book"></i> Visualizza anagrafe civico </button>
 	<br> <br> 
 	<!-- Modal incarico-->
 						<div id="anagrafe_civico" class="modal fade" role="dialog">
@@ -189,7 +189,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 
 							  </div>
 							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+								<button type="button" class="btn btn-default noprint" data-dismiss="modal">Annulla</button>
 							  </div>
 							</div>
 
@@ -215,13 +215,13 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								echo '<br><br>Una volta completati gli incarichi è possibile rimuovere il Provvedimento dal sistema</h5>';
 								
 							echo '
-							<button type="button" class="btn btn-info"  data-toggle="modal" 
+							<button type="button" class="btn btn-info noprint"  data-toggle="modal" 
 							data-target="#new_incarico"><i class="fas fa-plus"></i>
 							 Assegna incarico per rimuovere Provvedimento Cautelare</button>
 							 
 						   - 
 								 
-							<button type="button" class="btn btn-danger"  data-toggle="modal" 
+							<button type="button" class="btn btn-danger noprint"  data-toggle="modal" 
 							data-target="#rimuovi_pc_civico">
 							<i class="fas fa-times"></i> Rimuovi PC</button>';
 							
@@ -246,10 +246,10 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
 								<hr>
 								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $r_pc['id']; ?>" method="POST">
-									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
+									<button  id="conferma" type="submit" class="btn btn-warning noprint">Gli incarichi sono stati completati?
 									<br>Rimuovi il provvedimento cautelare</button>
 									
-									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+									<button type="button" class="btn btn-default noprint" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
 								</form>
 	
 							  </div>
@@ -272,7 +272,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 					if($check_pc==0) {
 				?>
 				<br> <br>
-				<button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#new_pc_sgombero"><i class="fas fa-plus"></i> Provvedimento cautelare<br>Sgombero civico </button>
+				<button type="button" class="btn btn-warning noprint"  data-toggle="modal" data-target="#new_pc_sgombero"><i class="fas fa-plus"></i> Provvedimento cautelare<br>Sgombero civico </button>
 
 
 <?php
@@ -286,7 +286,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 	$query_or3="SELECT * from geodb.anagrafe_edifici where id_edificio = ".$id_oggetto_rischio.";";
 	//echo $query_or3;
 	?>
-<br> <br> <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#anagrafe_edificio"><i class="fas fa-address-book"></i> Visualizza anagrafe edificio </button>
+<br> <br> <button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#anagrafe_edificio"><i class="fas fa-address-book"></i> Visualizza anagrafe edificio </button>
 	<!-- Modal incarico-->
 						<div id="anagrafe_edificio" class="modal fade" role="dialog">
 						  <div class="modal-dialog modal-lg">
@@ -344,7 +344,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 
 							  </div>
 							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
+								<button type="button" class="btn btn-default noprint" data-dismiss="modal">Annulla</button>
 							  </div>
 							</div>
 
@@ -369,13 +369,13 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								echo '<br><br>Una volta completati gli incarichi è possibile rimuovere il Provvedimento dal sistema</h5>';
 							
 							echo '
-							<button type="button" class="btn btn-info"  data-toggle="modal" 
+							<button type="button" class="btn btn-info noprint"  data-toggle="modal" 
 							data-target="#new_incarico"><i class="fas fa-plus"></i>
 							 Assegna incarico per rimuovere Provvedimento Cautelare</button>
 							 
 						   - 
 								 
-							<button type="button" class="btn btn-danger"  data-toggle="modal" 
+							<button type="button" class="btn btn-danger noprint"  data-toggle="modal" 
 							data-target="#rimuovi_pc_edificio">
 							<i class="fas fa-times"></i> Rimuovi PC</button>';
 							
@@ -396,7 +396,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								rimuovere un provvedimento cautelare è necessaria una nuova ordinanza sindacale.
 								<br><br>Se sei in possesso di ordinanza sindacale prima di tutto assegna uno 
 								o più incarichi per ripristinare la situazione. 
-								<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
+								<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
 								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
 								<hr>
 								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $r_pc['id']; ?>" method="POST">
