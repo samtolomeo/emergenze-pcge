@@ -157,8 +157,84 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<h4><br><b>Note chiusura</b>: <?php echo $r['descrizione_chiusura']; ?></h4>
 									<?php
 						}
+						?>
+						<hr>
+						<!--h4> Persona a rischio? </h4-->
+						<h3><i class="fas fa-list-ul"></i> Dettagli segnalazione n. <?php echo $r['id'];?></h3>
+						<?php 
+						if($r['rischio'] =='t') {
+							echo '<i class="fas fa-circle fa-1x" style="color:#ff0000"></i> Persona a rischio';
+						} else if ($r['rischio'] =='f') {
+							echo '<i class="fas fa-circle fa-1x" style="color:#008000"></i> Non ci sono persone a rischio';
+						} else {
+							echo '<i class="fas fa-circle fa-1x" style="color:#ffd800"></i> Non è specificato se ci siano persone a rischio';
+						}
+						?>
+						<!--h4><i class="fas fa-list-ul"></i> Generalità </h4-->
+						<br><b>Identificativo evento</b>: <?php echo $r['id_evento']; ?>
+						<br><b>Descrizione</b>: <?php echo $r['descrizione']; ?>
+						<br><b>Note</b>: <?php echo $r['note']; ?>
+						<br><b>Data e ora inserimento</b>: <?php echo $r['data_ora']; ?>
+						<!--br><b>Matricola operatore inserimento segnalazione</b>: <?php echo $r['id_operatore']; ?>-->
+						<br><b>Tipologia operatore inserimento segnalazione</b>: <?php echo $r['uo_ins']; ?>
+						<?php if ($profilo_ok=3){ 
+						$query_u="select nome,cognome from users.v_utenti_sistema where matricola_cf='".$r['id_operatore']."';";
+						$result_u=pg_query($conn, $query_u);
+						while($r_u = pg_fetch_assoc($result_u)) {
+						?>
+							<br><b>Operatore inserimento</b>: <?php echo $r_u['cognome']; ?> <?php echo $r_u['nome']; ?>
+							
+							(<?php echo $r['id_operatore']; ?>)
+						<?php }
+						} 
+						?>
+						
+						<br>
+						<?php 
+						$query_altre="SELECT * FROM segnalazioni.".$table." where id_lavorazione=".$id_lavorazione." and id <>".$r['id']."";
+						//echo $query_altre;
+						$result_altre=pg_query($conn, $query_altre);
+						while($r_altre = pg_fetch_assoc($result_altre)) {
+							$check_spostamento=0;
+							echo '<br><br><a class="btn btn-info noprint" href="dettagli_segnalazione.php?id='.$r_altre["id"].'">Vai alla segnalazione congiunta (id='.$r_altre["id"].')</a>';
+						}
+						?>
+						
+						<!--div class="panel-group">
+						  <div class="panel panel-default">
+						    <div class="panel-heading">
+						      <h4 class="panel-title">
+						        <a data-toggle="collapse" href="#c_segnalante">Generalità segnalante</a>
+						      </h4>
+						    </div>
+						    <div id="c_segnalante" class="panel-collapse collapse">
+						      <div class="panel-body"-->
+						      <hr>
+						     <h4><i class="fas fa-user"></i> Segnalante </h4> 
+						     <?php 
+						     $query_segnalante="SELECT * FROM segnalazioni.v_segnalanti where id_segnalazione=".$id.";";
+						     $result_segnalante=pg_query($conn, $query_segnalante);
+								while($r_segnalante = pg_fetch_assoc($result_segnalante)) {
+									echo "<br><b>Tipo</b>:".$r_segnalante['descrizione'];
+									if ($r_segnalante['altro_tipo']!='') {
+										echo "(".$r_segnalante['altro_tipo'].")";
+									}
+									echo "<br><b>Nome</b>:".$r_segnalante['nome_cognome'];
+									echo "<br><b>Telefono</b>:".$r_segnalante['telefono'];
+									echo "<br><b>Note segnalante</b>:".$r_segnalante['note'];
+								}
+						     ?>
+						      <!--/div>
+						      <div class="panel-footer">Panel Footer</div>
+						    </div>
+						  </div>
+						</div-->
 						
 						
+						<br>
+						
+						
+						<?php
 						if ($check_lav==1 OR $check_lav==-1 ){
 								?>
 								<hr>
@@ -1128,78 +1204,6 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 <?php } ?>
 						
-						<!--h4> Persona a rischio? </h4-->
-						<h3><i class="fas fa-list-ul"></i> Dettagli segnalazione n. <?php echo $r['id'];?></h3>
-						<?php 
-						if($r['rischio'] =='t') {
-							echo '<i class="fas fa-circle fa-1x" style="color:#ff0000"></i> Persona a rischio';
-						} else if ($r['rischio'] =='f') {
-							echo '<i class="fas fa-circle fa-1x" style="color:#008000"></i> Non ci sono persone a rischio';
-						} else {
-							echo '<i class="fas fa-circle fa-1x" style="color:#ffd800"></i> Non è specificato se ci siano persone a rischio';
-						}
-						?>
-						<!--h4><i class="fas fa-list-ul"></i> Generalità </h4-->
-						<br><b>Identificativo evento</b>: <?php echo $r['id_evento']; ?>
-						<br><b>Descrizione</b>: <?php echo $r['descrizione']; ?>
-						<br><b>Data e ora inserimento</b>: <?php echo $r['data_ora']; ?>
-						<!--br><b>Matricola operatore inserimento segnalazione</b>: <?php echo $r['id_operatore']; ?>-->
-						<br><b>Tipologia operatore inserimento segnalazione</b>: <?php echo $r['uo_ins']; ?>
-						<?php if ($profilo_ok=3){ 
-						$query_u="select nome,cognome from users.v_utenti_sistema where matricola_cf='".$r['id_operatore']."';";
-						$result_u=pg_query($conn, $query_u);
-						while($r_u = pg_fetch_assoc($result_u)) {
-						?>
-							<br><b>Operatore inserimento</b>: <?php echo $r_u['cognome']; ?> <?php echo $r_u['nome']; ?>
-							
-							(<?php echo $r['id_operatore']; ?>)
-						<?php }
-						} 
-						?>
-						
-						<br>
-						<?php 
-						$query_altre="SELECT * FROM segnalazioni.".$table." where id_lavorazione=".$id_lavorazione." and id <>".$r['id']."";
-						//echo $query_altre;
-						$result_altre=pg_query($conn, $query_altre);
-						while($r_altre = pg_fetch_assoc($result_altre)) {
-							$check_spostamento=0;
-							echo '<br><br><a class="btn btn-info noprint" href="dettagli_segnalazione.php?id='.$r_altre["id"].'">Vai alla segnalazione congiunta (id='.$r_altre["id"].')</a>';
-						}
-						?>
-						
-						<!--div class="panel-group">
-						  <div class="panel panel-default">
-						    <div class="panel-heading">
-						      <h4 class="panel-title">
-						        <a data-toggle="collapse" href="#c_segnalante">Generalità segnalante</a>
-						      </h4>
-						    </div>
-						    <div id="c_segnalante" class="panel-collapse collapse">
-						      <div class="panel-body"-->
-						      <hr>
-						     <h4><i class="fas fa-user"></i> Segnalante </h4> 
-						     <?php 
-						     $query_segnalante="SELECT * FROM segnalazioni.v_segnalanti where id_segnalazione=".$id.";";
-						     $result_segnalante=pg_query($conn, $query_segnalante);
-								while($r_segnalante = pg_fetch_assoc($result_segnalante)) {
-									echo "<br><b>Tipo</b>:".$r_segnalante['descrizione'];
-									if ($r_segnalante['altro_tipo']!='') {
-										echo "(".$r_segnalante['altro_tipo'].")";
-									}
-									echo "<br><b>Nome</b>:".$r_segnalante['nome_cognome'];
-									echo "<br><b>Telefono</b>:".$r_segnalante['telefono'];
-									echo "<br><b>Note segnalante</b>:".$r_segnalante['note'];
-								}
-						     ?>
-						      <!--/div>
-						      <div class="panel-footer">Panel Footer</div>
-						    </div>
-						  </div>
-						</div-->
-						
-						
-						<br>
 						
 						<br>
 						</div> 

@@ -92,7 +92,9 @@ if($profilo_sistema==1) {
 	$check_operatore=1;
 }
 
-
+//echo 'check_operatore='.$check_operatore.'<br>';
+//echo 'check_squadra='.$check_squadra.'<br>';
+//echo 'check_uo='.$check_uo.'<br>';
 
 if ($check_operatore==1 or $check_squadra==1 or $check_uo==1){
 	echo ' <h3><i class="fas fa-user-check" style="color:#5fba7d"></i></h3>';
