@@ -74,7 +74,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
             <div class="col-md-6">
 				<?php
 				$query= "SELECT *, st_x(st_centroid(st_transform(geom,4326))) as lon , st_y(st_centroid(st_transform(geom,4326))) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
-				//echo $query
+				//echo $query;
         
 				$result=pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
@@ -90,7 +90,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					//echo $id_profilo;
 					//echo "<br>";
 					require('./check_operatore.php');
-					            
+					//echo $check_operatore;            
             	$query_s="SELECT a.id_squadra, to_char(a.data_ora,'YYYY-mm-dd HH24:MI') as data_ora, 
 				to_char(a.data_ora_cambio, 'YYYY-mm-dd HH24:MI') as data_ora_cambio, to_char(c.time_stop,'YYYY-mm-dd HH24:MI') as time_stop,
 				b.nome FROM segnalazioni.join_sopralluoghi_mobili_squadra a
@@ -540,6 +540,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				      	<i class="fa fa-exclamation fa-fw" style="color:red"></i>
 				      	</h3>
 				      	<?php 
+				      	//echo $check_operatore; 
 							if ($check_operatore==1){
 							?>
 				      	<button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#cambio"><i class="fas fa-exchange-alt"></i> Cambio squadra</button>
@@ -620,7 +621,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							
 							
 							
-								if ($check_squadra==1 or $check_operatore==1){
+								if (($check_squadra==1 or $check_operatore==1) and $check_richiesta_cambio<1){
 							?>
 							
 							<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi"><i class="fas fa-stop"></i> Chiudi</button>

@@ -82,25 +82,169 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					$result=pg_query($conn, $query);
 					while($r = pg_fetch_assoc($result)) {
 						$id_squadra=$r['id_squadra'];
+						$id_squadra_attiva=$r['id_squadra'];
 						//$id_uo=$r['id_uo'];
 						if ($r['id_segnalazione']!=''){
 							$check_segnalazione=1;
 						}
                	$id_profilo=$r['id_profilo'];
 						require('./check_operatore.php');
-						//require('./check_responsabile.php');
 						
-						
-					?>            
-            	
-               <h4><br><b>Squadra</b>: <?php echo $r['descrizione_uo']; ?>
+						$query_s="SELECT a.id_squadra, to_char(a.data_ora,'YYYY-mm-dd HH24:MI') as data_ora, 
+				to_char(a.data_ora_cambio, 'YYYY-mm-dd HH24:MI') as data_ora_cambio, to_char(c.time_stop,'YYYY-mm-dd HH24:MI') as time_stop,
+				b.nome FROM segnalazioni.join_incarichi_interni_squadra a
+				JOIN users.t_squadre b ON a.id_squadra=b.id 
+				JOIN segnalazioni.t_incarichi_interni c ON c.id=a.id_incarico";
+				
+				
+				if($r["id_stato_incarico"] < 3){
+				?>
+               <h4><br><b>Squadra</b>: <?php echo $r['descrizione_uo'];?>
+			   
                <?php
-               if ($check_squadra==1){
+			   if ($check_squadra==1){
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
+				}
+				echo " </h4>";
+				$query_s1=$query_s. " WHERE id_incarico =".$id." and a.id_squadra=".$id_squadra_attiva." order by a.data_ora desc LIMIT 1;";
+				//echo $query_s1;
+				$result_s1=pg_query($conn, $query_s1);
+				while($r_s = pg_fetch_assoc($result_s1)) {
+					if ($r_s['data_ora_cambio']!=''){
+						$data_cambio=$r_s['data_ora_cambio'];
+					} else if ($r_s['time_stop']!='') {
+						$data_cambio=$r_s['time_stop'];
+					} else {
+						$data_cambio=date("Y-m-d H:i");
 					}
-					require('./check_responsabile.php');
-					?>
-               </h4>
+				
+					//echo "<li>Dalle ore ".$r_s['data_ora']." alle ore ".$data_cambio." squadra <b>".$r_s['nome']." </b><ul>";
+					$query_ss="SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+					to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end FROM users.t_componenti_squadre a
+						JOIN varie.dipendenti_storici b ON a.matricola_cf = b.matricola  
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION 
+						SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+						to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION 
+						SELECT b.cognome, b.nome, a.capo_squadra, to_char(a.data_start, 'YYYY-mm-dd HH24:MI') as data_start, 
+						to_char(a.data_end, 'YYYY-mm-dd HH24:MI') as data_end  FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni_eliminati b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. "  and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						ORDER BY cognome";
+						echo $query_ss;
+						$result_ss=pg_query($conn, $query_ss);
+						while($r_ss = pg_fetch_assoc($result_ss)) {
+							echo "<li>".$r_ss['cognome']." ".$r_ss['nome']." ";
+							if ($r_ss['capo_squadra']=='t'){
+								echo '(<i class="fas fa-user-tie" title="Capo squadra"></i>)';
+							}
+							echo ' da '.max($r_ss['data_start'], $r_s['data_ora']).' ';
+							if ( $r_ss['data_end']!='' and $data_cambio!=''){
+								echo 'alle ' .min($r_ss['data_end'],$data_cambio).'';
+							} else {
+								echo 'alle ' .$data_cambio.'';
+							}
+							echo "</li>";
+						}
+					
+					echo "</ul><br>";
+				
+				}
+			   	}
+               
+				
+				$check_s0=0;
+				$query_s0="SELECT a.data_ora FROM segnalazioni.join_incarichi_interni_squadra a
+				WHERE id_incarico =".$id.";";
+				//echo $query_ss;
+				$result_s0=pg_query($conn, $query_s0);
+				while($r_s0 = pg_fetch_assoc($result_s0)) {
+					$check_s=1;
+				}
+				
+				
+				if ($check_s==1){
+				?>
+				
+				<button type="button" class="btn btn-success"  data-toggle="modal" data-target="#storico_s"><i class="fas fa-users"></i> Storico squadre </button>
+				</h4>
+				<!-- Modal storico_s-->
+				<div id="storico_s" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+				
+					<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Storico squadre</h4>
+					</div>
+					<div class="modal-body">
+					<ul>
+				<?php
+				$query_s="SELECT a.id_squadra, a.data_ora, a.data_ora_cambio, c.time_stop, b.nome FROM segnalazioni.join_incarichi_interni_squadra a
+				JOIN users.t_squadre b ON a.id_squadra=b.id 
+				JOIN segnalazioni.t_incarichi_interni c ON c.id=a.id_incarico
+				WHERE id_incarico =".$id." 
+				ORDER BY data_ora";
+				//echo $query_s;
+				$result_s=pg_query($conn, $query_s);
+				while($r_s = pg_fetch_assoc($result_s)) {
+					if ($r_s['data_ora_cambio']!=''){
+						$data_cambio=$r_s['data_ora_cambio'];
+					} else if ($r_s['time_stop']!='') {
+						$data_cambio=$r_s['time_stop'];
+					} else {
+						$data_cambio=date("Y-m-d H:i:s");
+					}
+					echo "<li>Dalle ore ".$r_s['data_ora']." alle ore ".$data_cambio." squadra <b>".$r_s['nome']." </b><ul>";
+					$query_ss="SELECT b.cognome, b.nome, a.capo_squadra FROM users.t_componenti_squadre a
+						JOIN varie.dipendenti_storici b ON a.matricola_cf = b.matricola  
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION SELECT b.cognome, b.nome, a.capo_squadra FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. " and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						UNION SELECT b.cognome, b.nome, a.capo_squadra FROM users.t_componenti_squadre a
+						JOIN users.utenti_esterni_eliminati b ON a.matricola_cf = b.cf 
+						WHERE a.id_squadra = ".$r_s['id_squadra']. "  and 
+						((a.data_start < '".$r_s['data_ora']."' and (a.data_end > '".$r_s['data_ora']."' or a.data_end is null)) OR
+						(a.data_start < '".$data_cambio."' and (a.data_end > '".$data_cambio."' or a.data_end is null)))
+						ORDER BY cognome";
+						//echo $query_ss;
+						$result_ss=pg_query($conn, $query_ss);
+						while($r_ss = pg_fetch_assoc($result_ss)) {
+							echo "<li>".$r_ss['cognome']." ".$r_ss['nome']." ";
+							if ($r_ss['capo_squadra']=='t'){
+								echo '(<i class="fas fa-user-tie" title="Capo squadra"></i>)';
+							}
+							echo "</li>";
+						}
+					
+					echo "</ul></li>";
+				}
+				?>
+				</ul>
+					</div>
+				</div>
+				</div>
+				</div>
+				<?php
+				} else { echo '</h4>'; }//close if
+				require('./check_responsabile.php');
+				?>
+				
                <h4><br><b>Descrizione incarico</b>: <?php echo $r['descrizione']; ?></h4>
                <h4><br><b>Data e ora invio incarico</b>: <?php echo $r['data_ora_invio']; ?></h4>
                

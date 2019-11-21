@@ -74,7 +74,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
             <div class="col-md-6">
 				<?php
 				$query= "SELECT *, st_x(st_centroid(st_transform(geom,4326))) as lon , st_y(st_centroid(st_transform(geom,4326))) as lat FROM segnalazioni.".$table." WHERE id=".$id." ORDER BY data_ora_stato DESC LIMIT 1;";
-				//echo $query
+				//echo $query;
         
 				$result=pg_query($conn, $query);
 				while($r = pg_fetch_assoc($result)) {
@@ -84,13 +84,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					$id_profilo=$r['id_profilo'];
 					//echo $profilo_sistema;
 					//echo $uo_inc;
-					if($profilo_sistema==8 and $uo_inc='uo_1'){
+					if($profilo_sistema==8 and $uo_inc=='uo_1'){
 						$profilo_sistema=3;
 					}
 					//echo $id_profilo;
 					//echo "<br>";
 					require('./check_operatore.php');
-					            
+					//echo $check_operatore;            
             	$query_s="SELECT a.id_squadra, to_char(a.data_ora,'YYYY-mm-dd HH24:MI') as data_ora, 
 				to_char(a.data_ora_cambio, 'YYYY-mm-dd HH24:MI') as data_ora_cambio, to_char(c.time_stop,'YYYY-mm-dd HH24:MI') as time_stop,
 				b.nome FROM segnalazioni.join_sopralluoghi_mobili_squadra a
@@ -105,7 +105,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						echo ' ( <i class="fas fa-user-check" style="color:#5fba7d"></i> )';
 				}
 				echo " </h4>";
-				$query_s1=$query_s. " WHERE id_sopralluogo =".$id." and id_squadra=".$id_squadra_attiva.";";
+				$query_s1=$query_s. " WHERE id_sopralluogo =".$id." and id_squadra=".$id_squadra_attiva." order by a.data_ora desc LIMIT 1;";
 				$result_s1=pg_query($conn, $query_s1);
 				while($r_s = pg_fetch_assoc($result_s1)) {
 					if ($r_s['data_ora_cambio']!=''){
@@ -162,7 +162,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				$check_s0=0;
 				$query_s0="SELECT a.data_ora FROM segnalazioni.join_sopralluoghi_mobili_squadra a
 				WHERE id_sopralluogo =".$id.";";
-				//echo $query_s;
+				//echo $query_ss;
 				$result_s0=pg_query($conn, $query_s0);
 				while($r_s0 = pg_fetch_assoc($result_s0)) {
 					$check_s=1;
@@ -540,6 +540,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				      	<i class="fa fa-exclamation fa-fw" style="color:red"></i>
 				      	</h3>
 				      	<?php 
+				      	//echo $check_operatore; 
 							if ($check_operatore==1){
 							?>
 				      	<button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#cambio"><i class="fas fa-exchange-alt"></i> Cambio squadra</button>
@@ -581,7 +582,16 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										 <?php } ?>
 									</select>
 									<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
-									 </div>       
+									 </div>
+
+									<div class="form-group">
+										<input type="checkbox" class="form-check-input" name="permanente" id="permanente" checked="">
+											<label class="form-check-label" for="permanente">La squadra &egrave gi&agrave cambiata<br>
+											</label>
+											<br>
+											<small>Togliere il flag se il cambio squadra fosse solo programmato, ma non effettivo. 
+											</small>           
+									</div>
 									
 										  
 
@@ -611,7 +621,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							
 							
 							
-								if ($check_squadra==1 or $check_operatore==1){
+								if (($check_squadra==1 or $check_operatore==1) and $check_richiesta_cambio>-1){
 							?>
 							
 							<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#chiudi"><i class="fas fa-stop"></i> Chiudi</button>
