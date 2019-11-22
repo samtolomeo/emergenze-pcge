@@ -61,9 +61,17 @@ echo $query;
 $result = pg_query($conn, $query);
 echo "<br>";
 
-
-$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, id_segnalazione) VALUES (".$id_lavorazione.",".$id_segnalazione.");";
-echo $query;
+if(isset($_POST["mun"])) {
+	if ($_POST["mun"]=='on'){
+		$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione 
+		(id_segnalazione_in_lavorazione, id_segnalazione, sospeso) 
+		VALUES (".$id_lavorazione.",".$id_segnalazione.", 't');";
+		echo $query;
+	} else {
+		$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, id_segnalazione) VALUES (".$id_lavorazione.",".$id_segnalazione.");";
+		echo $query;
+	}
+}
 //exit;
 $result = pg_query($conn, $query);
 echo "<br>";
@@ -77,8 +85,13 @@ $result = pg_query($conn, $query);
 echo "<br>";
 
 
-
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$CF ."', 'Presa in carico segnalazione ".$id_segnalazione."');";
+if(isset($_POST["mun"])) {
+	if ($_POST["mun"]=='on' and $id_profilo==3){
+		$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$CF ."', 'Invio segnalazione ".$id_segnalazione." alla PC');";
+	} else {
+		$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$CF ."', 'Presa in carico segnalazione ".$id_segnalazione."');";
+	} 
+}
 $result = pg_query($conn, $query_log);
 echo "<br>";
 echo $query_log;

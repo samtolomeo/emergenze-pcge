@@ -107,6 +107,15 @@ $result=pg_query($conn, $query);
 
 
 
+$query= "INSERT INTO segnalazioni.join_incarichi_interni_squadra (id_incarico,id_squadra ";
+$query=$query.") VALUES (".$id_incarico.",".$uo.");";
+//echo $query;
+//exit;
+$result=pg_query($conn, $query);
+
+
+
+
 $query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(	id_segnalazione_in_lavorazione, log_aggiornamento";
 
 //values

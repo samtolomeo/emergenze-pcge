@@ -17,7 +17,7 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id_evento, data_ora_invio, id_stato_incarico, descrizione_stato, 
+	$query="SELECT id, id_evento, data_ora_invio, id_stato_incarico, descrizione_stato, 
 	descrizione, note_ente, descrizione_uo, id_segnalazione, time_preview, time_start 
 	From segnalazioni.v_incarichi_last_update where id_stato_incarico < 3 ".$filter." ;";
     

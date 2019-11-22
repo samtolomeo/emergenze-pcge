@@ -404,6 +404,7 @@ data-show-toggle="false" data-show-columns="false" data-toolbar="#toolbar">
 $query= " SELECT 
  min(s.data_ora) as data_ora,
     count(s.id) AS num,
+	string_agg(s.id::text, ', '::text) AS id_segn,
     string_agg(s.descrizione::text, ', '::text) AS descrizione,
     array_to_string(array_agg(DISTINCT c.descrizione::text), ', '::text) AS criticita,
     array_to_string(array_agg(DISTINCT m.nome_munic::text), ', '::text) AS nome_munic,
@@ -461,7 +462,11 @@ $query= " SELECT
 //echo $query;
 $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
-	echo "<b>Numero segnalazioni:</b>".$r['num']." - <b>Stato</b>: ";
+	echo "<b>Id segnalazioni:</b>".$r['id_segn']." - ";
+	if ($r['num'] > 1){
+		echo "<b>Num. segnalazioni collegate:</b>".$r['num']." - ";
+	}
+	echo "<b>Stato</b>: ";
 	if ($r['in_lavorazione']=='t'){
 		echo '<i class="fas fa-play" style="color:#5cb85c"></i> in lavorazione';
 	} else if ($r['in_lavorazione']=='f') {

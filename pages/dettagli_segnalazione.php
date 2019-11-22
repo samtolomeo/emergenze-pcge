@@ -124,7 +124,28 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						if ($r['id_lavorazione'] !='' and $r['in_lavorazione']=='t') {
 									$check_lav=1;
-									echo '<h4> <i class="fas fa-play"></i> La segnalazione è in lavorazione </h4>';
+									
+									
+									$check_mun=0;
+									$query_sospeso="SELECT sospeso FROM segnalazioni.join_segnalazioni_in_lavorazione 
+									WHERE id_segnalazione_in_lavorazione = ".$id_lavorazione." AND sospeso = 't';";
+									$result_sospeso=pg_query($conn, $query_sospeso);
+									while($r_sospeso = pg_fetch_assoc($result_sospeso)) {
+										echo '<h4>La segnalazione è stata inviata alla centrale di PC';
+										if($profilo_ok==3) {
+											echo ' - <a class="btn btn-success" 
+											href="segnalazioni/import_lavorazione_2mun.php?id='.$id.'&idl='.$id_lavorazione.'" 
+											title="Prendi in carico"> <i class="fas fa-play"></i> </a>';
+										}
+										echo '</h4>';
+										$check_mun=1;
+									}
+									
+									if($check_mun==0) {
+										echo '<h4> <i class="fas fa-play"></i> La segnalazione è in lavorazione';
+										echo '</h4>';
+									}
+									
 									
 									require('./check_responsabile.php');
 									
@@ -1180,6 +1201,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						<label class="radio-inline"><input type="radio" name="uo" required="" value="4" checked="checked" >Prendi in carico come centrale COA </label>
 					<?php } else if ($profilo_sistema == 5) { ?>
 						<label class="radio-inline"><input type="radio" name="uo" required="" value="3">Invia alla centrale PC </label>
+						<input type="hidden" name="mun" id="hiddenField" value="<?php echo 'on'; ?>" />
 						<label class="radio-inline"><input type="radio" name="uo" required="" value="5">Elabora come Municipio  </label>
 					<?php } else if ($profilo_sistema == 6) { ?>
 						<label class="radio-inline"><input type="radio" name="uo" required="" value="4">Invia alla centrale COA </label>

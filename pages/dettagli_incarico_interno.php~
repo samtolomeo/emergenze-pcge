@@ -107,7 +107,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 				}
 				echo " </h4>";
 				$query_s1=$query_s. " WHERE id_incarico =".$id." and a.id_squadra=".$id_squadra_attiva." order by a.data_ora desc LIMIT 1;";
-				echo $query_s1;
+				//echo $query_s1;
 				$result_s1=pg_query($conn, $query_s1);
 				while($r_s = pg_fetch_assoc($result_s1)) {
 					if ($r_s['data_ora_cambio']!=''){

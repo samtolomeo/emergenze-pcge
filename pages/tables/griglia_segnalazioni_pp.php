@@ -14,17 +14,18 @@ if(isset($_GET["f"])){
 }
 
 
-$filter= " WHERE (in_lavorazione = 't' or in_lavorazione is null) and (fine_sospensione is null OR fine_sospensione < now()) ";
+$filter= " WHERE (s.in_lavorazione = 't' or s.in_lavorazione is null) and (s.fine_sospensione is null OR s.fine_sospensione < now()) ";
 
 
 if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id, criticita, id_evento,
-       num, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat, incarichi 
-       FROM segnalazioni.v_segnalazioni_lista_pp ".$filter." ;";
-    
+	$query="SELECT s.id, s.criticita, s.id_evento,
+       s.num, s.in_lavorazione, s.localizzazione, s.nome_munic, st_x(s.geom) as lon, st_y(s.geom) as lat, s.incarichi 
+       FROM segnalazioni.v_segnalazioni_lista_pp s
+       JOIN segnalazioni.join_segnalazioni_in_lavorazione j ON s.id_lavorazione=j.id_segnalazione_in_lavorazione ".$filter." and j.sospeso='f';";
+     
    //echo $query;
 	//echo "<br>";
 	$result = pg_query($conn, $query);
