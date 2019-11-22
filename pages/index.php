@@ -135,6 +135,8 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 				<th data-field="id_evento" data-sortable="true" data-visible="true" >Evento</th>
             <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
             <th style="word-break:break-all; word-wrap:break-word;" data-field="criticita" data-sortable="true"   data-visible="true">Tipo criticità</th>
+          	<th data-field="nome_munic" data-sortable="true"  data-visible="true">Mun.</th>
+            <th data-field="localizzazione" data-sortable="false"  data-visible="true">Civico</th>
             <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
             <!--th style="word-break:break-all; word-wrap:break-word;" data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo evento</th-->
             <th style="word-break:break-all; word-wrap:break-word;" data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
@@ -173,6 +175,97 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 
 </table>
 
+<?php
+ if ($profilo_ok==3){
+?>
+
+<hr>
+<h4>Segnalazioni provenienti dai municipi</h4>
+<table  id="segnalazioni" class="table table-condensed" 
+style="vertical-align: middle;" data-toggle="table" 
+data-url="./tables/griglia_segnalazioni_mun_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+			
+
+        
+        
+<thead>
+
+ 	<tr>
+            <!--th data-field="state" data-checkbox="true"></th-->
+            <th data-field="id" style="vertical-align:center" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" ></th>
+            <!--th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" ></th-->
+            <th data-field="id_evento" data-sortable="true" data-visible="true" >Evento</th>
+            <th data-field="in_lavorazione" data-sortable="true" data-halign="center" data-valign="center" data-formatter="nameFormatter" data-visible="true" >Stato</th> 
+            <!--th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th-->
+            <th data-field="criticita" data-sortable="true"   data-visible="true">Tipo<br>criticità</th>
+            <!--th data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th-->
+            <!--th data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th-->
+            <th data-field="nome_munic" data-sortable="true"  data-visible="true">Mun.</th>
+            <th data-field="localizzazione" data-sortable="false"  data-visible="true">Civico</th>
+            <th data-field="incarichi" data-sortable="false" data-halign="center" data-valign="center" data-formatter="nameFormatterIncarichi" data-visible="true" >Incarichi<br>in corso</th>
+            <th data-field="num" data-sortable="false" data-visible="true" >Num<br>segn</th>
+            <!--th data-field="note" data-sortable="false" data-visible="true" >Note</th>
+            <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
+            <th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th-->
+
+    </tr>
+</thead>
+<script>
+
+ function nameFormatter(value) {
+        if (value=='t'){
+        		return '<i class="fas fa-play" title="in lavorazione" style="color:#5cb85c"></i>';
+        } else if (value=='f') {
+        	   return '<i class="fas title="chiusa" fa-stop"></i>';
+        } else {
+        	   return '<i class="fas fa-exclamation" title="da eleaborare" style="color:#ff0000"></i>';
+        }
+
+    }
+
+ function nameFormatterIncarichi(value) {
+        if (value=='t'){
+        		return '<div style="text-align: center;"><i class="fas fa-circle" title="incarichi in corso" style="color:#f2d921"></i></div>';
+        } else if (value=='f') {
+        	   return '<div style="text-align: center;"><i class="fas fa-circle" title="nessun incarico in corso" style="color:#ff0000"></i></div>';
+        }
+}
+    
+ function nameFormatterEdit(value) {
+        
+		return '<a class="btn btn-warning btn-sm" title="Vai ai dettagli" href=./dettagli_segnalazione.php?id='+value+'>'+value+'<!--i class="fas fa-edit"></i--></a>';
+ 
+    }
+
+function nameFormatterMappa1(value, row) {
+	//var test_id= row.id;
+	return' <button type="button" class="btn btn-info btn-sm" title="anteprima mappa" data-toggle="modal" data-target="#myMap'+value+'"><i class="fas fa-map-marked-alt"></i></button> \
+    <div class="modal fade" id="myMap'+value+'" role="dialog"> \
+    <div class="modal-dialog"> \
+      <div class="modal-content">\
+        <div class="modal-header">\
+          <button type="button" class="close" data-dismiss="modal">&times;</button>\
+          <h4 class="modal-title">Anteprima segnalazione '+value+'</h4>\
+        </div>\
+        <div class="modal-body">\
+        <iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#17/'+row.lat +'/'+row.lon +'"></iframe>\
+        </div>\
+        <!--div class="modal-footer">\
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
+        </div-->\
+      </div>\
+    </div>\
+  </div>\
+</div>';
+}
+</script>
+
+</table>
+
+
+<?php
+ }
+?>
             </div>
                                     <!-- /.table-responsive -->
                                 </div>

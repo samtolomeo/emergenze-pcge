@@ -450,6 +450,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					?>
 						<hr>
 						<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mail"><i class="fas fa-comment"></i> Invia mail a squadra</button>
+						 - 
+						<button class="btn btn-info noprint" onclick="printDiv('page-wrapper')">
+               <i class="fa fa-print" aria-hidden="true"></i> Crea stampa o PDF 
+			   <i class="fa fa-file-pdf" aria-hidden="true"></i></button>
 					<?php }
 					?>
 					
@@ -704,7 +708,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$zoom=16;
 						?>
 						<hr>
-						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
+						<h4>  <div id="break"> <i class="fas fa-map-marked-alt"></i> Mappa </div> </h4>
 						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
 						
 						<div id="map" style="width: 100%; padding-top: 100%;">

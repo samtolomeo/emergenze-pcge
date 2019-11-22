@@ -3,6 +3,7 @@
 session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+require('../check_evento.php');
 
 $id_segnalazione=$_POST["id"];
 
@@ -50,10 +51,7 @@ echo $id_segnalazione;
 echo "<br>";
 
 
-//************************************
-// DEMO da rimuovere quando ci sarà le gestione utenti
-$operatore="MRZRRT84B01D969U";
-//*************************************
+
 
 $query="INSERT INTO segnalazioni.t_segnalazioni_in_lavorazione(id, id_profilo, geom ";
 $query=$query.") VALUES ("; 
@@ -63,9 +61,17 @@ echo $query;
 $result = pg_query($conn, $query);
 echo "<br>";
 
-
-$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, id_segnalazione) VALUES (".$id_lavorazione.",".$id_segnalazione.");";
-echo $query;
+if(isset($_POST["mun"])) {
+	if ($_POST["mun"]=='on'){
+		$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione 
+		(id_segnalazione_in_lavorazione, id_segnalazione, sospeso) 
+		VALUES (".$id_lavorazione.",".$id_segnalazione.", 't');";
+		echo $query;
+	} else {
+		$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, id_segnalazione) VALUES (".$id_lavorazione.",".$id_segnalazione.");";
+		echo $query;
+	}
+}
 //exit;
 $result = pg_query($conn, $query);
 echo "<br>";
@@ -79,8 +85,13 @@ $result = pg_query($conn, $query);
 echo "<br>";
 
 
-
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Presa in carico segnalazione ".$id_segnalazione."');";
+if(isset($_POST["mun"])) {
+	if ($_POST["mun"]=='on'){
+		$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$CF ."', 'Invio segnalazione ".$id_segnalazione." alla PC');";
+	} else {
+		$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$CF ."', 'Presa in carico segnalazione ".$id_segnalazione."');";
+	} 
+}
 $result = pg_query($conn, $query_log);
 echo "<br>";
 echo $query_log;
