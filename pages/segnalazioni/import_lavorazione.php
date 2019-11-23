@@ -71,6 +71,9 @@ if(isset($_POST["mun"])) {
 		$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, id_segnalazione) VALUES (".$id_lavorazione.",".$id_segnalazione.");";
 		echo $query;
 	}
+} else {
+	$query="INSERT INTO segnalazioni.join_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, id_segnalazione) VALUES (".$id_lavorazione.",".$id_segnalazione.");";
+	echo $query;
 }
 //exit;
 $result = pg_query($conn, $query);
