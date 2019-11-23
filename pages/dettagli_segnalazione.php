@@ -171,6 +171,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									echo '</h4>';
 								}
 								} else if ($r['id_lavorazione'] !=''  and $r['in_lavorazione']=='f') {
+									
 									$check_lav=-1;
 									$check_spostamento=0;
 									echo '<h4> <i class="fas fa-stop"></i> La segnalazione è chiusa </h4>';
@@ -1155,8 +1156,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						<div style="text-align: center;">
 						<?php
-						
-						 if ($r['id_lavorazione']=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <= 6){ ?>
+						//echo "test";
+						//echo $profilo_sistema;
+						//echo $id_lavorazione;
+						 if ($id_lavorazione=='' and ($profilo_cod_munic==$id_municipio or $profilo_cod_munic =='') and $profilo_sistema <= 6){ ?>
 								<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#lavorazione"> <i class="fas fa-plus"></i> 
 								<?php
 								 // solo se non ancora in lavorazione
@@ -1195,7 +1198,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
          
 			<div class="form-group">
 					<label for="nome"> Chi si occuperà della gestione della segnalazione ?</label> <font color="red">*</font><br>
-					<?php if ($profilo_sistema <= 3) { ?>
+					<?php 
+					//echo $profilo_sistema;
+					if ($profilo_sistema <= 3) { ?>
 						<label class="radio-inline"><input type="radio" name="uo" required="" value="3" checked="checked" >Prendi in carico come centrale PC </label>
 					<?php } else if ($profilo_sistema == 4) { ?>
 						<label class="radio-inline"><input type="radio" name="uo" required="" value="4" checked="checked" >Prendi in carico come centrale COA </label>
