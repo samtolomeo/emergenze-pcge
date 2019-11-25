@@ -26,7 +26,6 @@ require('./check_evento.php');
 	header("location: ./divieto_accesso.php");
 }*/
 
-
 ?>
     
 </head>
