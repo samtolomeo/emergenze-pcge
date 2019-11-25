@@ -1,5 +1,6 @@
 pages/conn.php
 pages/conn.php
+pages/eventi/__pycache__/*
 pages/eventi/conn.py
 pages/eventi/conn.pyc
 pages/eventi/config.py
