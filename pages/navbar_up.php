@@ -362,7 +362,7 @@ if (isset($subtitle)) {
 					<li id="limbo" class="dropdown">
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
-						<i class="fa fa-exclamation fa-fw faa-ring animated" style="color:red"></i> <i class="fas fa-caret-down"></i>
+						<i class="fa fa-exclamation fa-fw faa-ring animated" title="Segnalazioni ancora da elaborare" style="color:red"></i> <i class="fas fa-caret-down"></i>
                     </a>	
                     <ul class="dropdown-menu dropdown-alerts">
                     
@@ -399,6 +399,50 @@ if (isset($subtitle)) {
 					
 				<?php }?>
 				
+				
+				
+				<?php if($segn_limbo_municipi>0 and $profilo_ok =3){?>
+					
+					<li id="limbo" class="dropdown">
+                    <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
+						<i class="fas fa-hashtag fa-fw faa-ring animated" 
+						title="Segnalazioni provenienti dai municipi" style="color:red"></i> <i class="fas fa-caret-down"></i>
+                    </a>	
+                    <ul class="dropdown-menu dropdown-alerts">
+                    
+                    <li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-user-shield"></i> Segnalazioni provenienti dai municipi
+                                    <span class="pull-right text-muted small"><?php echo $segn_limbo_municipi;?></span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $segn_limbo_municipi; $ii++) {
+									echo "<br><a href=\"dettagli_segnalazione.php?id=".$id_segn_limbo_municipi[$ii]."\">";
+									echo '<i class="fas fa-hashtag" title="da elaborare" style="color:#ff0000"></i>';
+									echo " Vai alla segnalazione ". $id_segn_limbo_municipi[$ii] ." " ;
+									echo "</a>";
+								}
+								?>
+                            
+							</a>
+                        </li>
+                    <li class="divider"></li>
+                    
+                    
+                    
+					<li>
+						<a href="index.php#segn_limbo2_table">
+							<div>
+								Visualizza elenco segnalazioni provenienti dai municipi!
+							</div>
+						</a>
+					</li>
+					</ul>
+					</li>
+					
+				<?php }?>
 				
 
 				
@@ -661,7 +705,7 @@ if (isset($subtitle)) {
                 
 				
 				<li id="notifiche_squadra" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" title="Notifiche squadra" data-toggle="dropdown" href="#">
                         <?php if ($count_squadra >0) { ?>
 						<i class="fas fa-users" style="color:#ff0000"></i> <?php echo $count_squadra;?> <i class="fas fa-caret-down"></i>
 					<?php } else { ?>	

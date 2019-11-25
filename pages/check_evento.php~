@@ -369,10 +369,10 @@ while($r = pg_fetch_assoc($result)) {
 		$profilo_squadre=$profilo_ok;
 	} else {
 		//$profilo_squadre=$uo_inc;
-		if (isset($periferico_inc)){
-			if ($uo_inc=='uo_1' or $uo_inc=='uo_8') {  // Gruppo Genova e convenzionate come squadre sono equiparati ad un operatore di PC
-				$profilo_squadre=3;
-			} else {
+		if ($uo_inc=='uo_1' or $uo_inc=='uo_8') {  // Gruppo Genova e convenzionate come squadre sono equiparati ad un operatore di PC
+			$profilo_squadre=3;
+		} else {
+			if (isset($periferico_inc)){
 				$profilo_squadre=$periferico_inc;
 			}
 		}
@@ -410,6 +410,20 @@ while($r = pg_fetch_assoc($result)) {
 	}
 
 	$segn_limbo=count($id_segn_limbo);
+	
+	
+	if($profilo_ok==3){
+		$id_segn_limbo_municipi=array();
+		$query="SELECT s.id 
+					FROM segnalazioni.t_segnalazioni s
+					JOIN segnalazioni.join_segnalazioni_in_lavorazione l ON s.id=l.id_segnalazione
+					WHERE sospeso='t';";
+		$result = pg_query($conn, $query);
+		while($r = pg_fetch_assoc($result)) {
+			$id_segn_limbo_municipi[] = $r['id'];
+		}
+		$segn_limbo_municipi=count($id_segn_limbo);
+	}
 
 	// Conteggi incarichi
 	

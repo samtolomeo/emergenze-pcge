@@ -410,6 +410,20 @@ while($r = pg_fetch_assoc($result)) {
 	}
 
 	$segn_limbo=count($id_segn_limbo);
+	
+	
+	if($profilo_ok==3){
+		$id_segn_limbo_municipi=array();
+		$query="SELECT s.id 
+					FROM segnalazioni.t_segnalazioni s
+					JOIN segnalazioni.join_segnalazioni_in_lavorazione l ON s.id=l.id_segnalazione
+					WHERE sospeso='t';";
+		$result = pg_query($conn, $query);
+		while($r = pg_fetch_assoc($result)) {
+			$id_segn_limbo_municipi[] = $r['id'];
+		}
+		$segn_limbo_municipi=count($id_segn_limbo_municipi);
+	}
 
 	// Conteggi incarichi
 	

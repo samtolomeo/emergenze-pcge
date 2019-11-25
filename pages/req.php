@@ -117,8 +117,28 @@ function integerToRoman($integer)
 }      
       
       
+      .fa{ 
+    -webkit-print-color-adjust: exact;
+		}
+
+	  .fas{ 
+    -webkit-print-color-adjust: exact;
+		}
+		
+		
+      
       @media print
    {
+   	
+   	/* commentata riga 191 del file bootstrap.css per consentire la stampa dei colori*/ 
+   	.fa{ 
+    -webkit-print-color-adjust: exact;
+		}
+
+	  .fas{ 
+    -webkit-print-color-adjust: exact;
+		}
+		
 	  p.bodyText {
 		  font-family:georgia, times, serif;
 		  -webkit-print-color-adjust: exact;
@@ -157,6 +177,7 @@ function integerToRoman($integer)
 	  {
 		display:none
 	  }
+	  
 	  
    }
    

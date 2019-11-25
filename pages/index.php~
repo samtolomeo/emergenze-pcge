@@ -180,7 +180,7 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 ?>
 
 <hr>
-
+<h4>Segnalazioni provenienti dai municipi</h4>
 <table  id="segnalazioni" class="table table-condensed" 
 style="vertical-align: middle;" data-toggle="table" 
 data-url="./tables/griglia_segnalazioni_mun_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
