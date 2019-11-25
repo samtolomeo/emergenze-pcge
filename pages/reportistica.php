@@ -89,7 +89,7 @@ require('./check_evento.php');
 			<script>
 			var d = new Date();
 			var curr_date = d.getDate();
-			var curr_month = d.getMonth();
+			var curr_month = d.getMonth()+1;
 			var curr_year = d.getFullYear();
 			document.write(curr_date + "/" + curr_month + "/" + curr_year);
 			</script>
@@ -113,11 +113,15 @@ require('./check_evento.php');
 			}
 			echo '<br><b>Municipi interessati</b>: ';
 			$len2=count($municipi);
-			//echo $len2;	               
+			//echo $municipi[0][0];
+			//echo $id;
+			//echo $municipi[8][1];
+			//echo $len2;	              
 			$k=0;
 			for ($j=0;$j<$len2;$j++){
 				
-				if ($municipi[$j][0]==$eventi_attivi[$i]){
+				if ($municipi[$j][0]==str_replace("'", "", $id)){
+					//echo "ok<br>";
 					if ($k==0) {echo $municipi[$j][1];} else {echo ', '.$municipi[$j][1];};
 					$k=$k+1;
 				}
@@ -143,7 +147,8 @@ require('./check_evento.php');
 				$color=str_replace("'","",$r["rgb_hex"]);
 				//echo $color;
 				//echo '<span class="dot" style="background-color:'.$color.'"></span>';
-				echo "<i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b>Allerta ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " <br>";
+				//echo "<style> .fas { color: ".$color."; -webkit-print-color-adjust: exact;}</style>";
+				echo "<i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"></i> <b>Allerta ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " <br>";
 			}
 			?>
 			
@@ -163,7 +168,7 @@ require('./check_evento.php');
 				$data_end = strftime('%A %e %B %G', $timestamp);
 				$ora_end = date('H:i', $timestamp);
 				$color=str_replace("'","",$r["rgb_hex"]);								
-				echo "<i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"\"></i> <b> Fase di ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " <br>";
+				echo "<i class=\"fas fa-circle fa-1x\" style=\"color:".$color."\"></i> <b> Fase di ".$r["descrizione"]."</b> dalle ".$ora_start." di ".$data_start." alle ore " .$ora_end ." di ".$data_end. " <br>";
 			}
 			?>
 			</div>
@@ -397,7 +402,7 @@ data-show-toggle="false" data-show-columns="false" data-toolbar="#toolbar">
 </div>             
 <hr>		 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">			 
-<h4>Dettaglio segnalazioni</h4>
+<h4>Dettaglio segnalazioni in elaborazione o chiuse</h4>
 
 <?php 
 
@@ -456,7 +461,7 @@ $query= " SELECT
      LEFT JOIN segnalazioni.t_segnalazioni_in_lavorazione l ON jl.id_segnalazione_in_lavorazione = l.id
      LEFT JOIN geodb.municipi m ON s.id_municipio = m.id::integer
      LEFT JOIN geodb.civici g ON g.id = s.id_civico
-  WHERE s.id_evento=".$id."
+  WHERE s.id_evento=".$id." and jl.id_segnalazione_in_lavorazione > 0
   GROUP BY jl.id_segnalazione_in_lavorazione, l.in_lavorazione, l.id_profilo, s.id_evento, e.fine_sospensione
   ORDER BY data_ora ASC;";
 //echo $query;
@@ -495,7 +500,7 @@ while($r = pg_fetch_assoc($result)) {
 		echo 'Nessun incarico assegnato - ';
 	}
 	if ($r['conteggio_incarichi_interni']>0){
-		echo ' '.$r['conteggio_incarichi'].' incarichi interni assegnati - ';
+		echo ' '.$r['conteggio_incarichi_interni'].' incarichi interni assegnati - ';
 	} else {
 		echo 'Nessun incarico interno assegnato - ';
 	}
@@ -505,10 +510,64 @@ while($r = pg_fetch_assoc($result)) {
 		echo 'Nessun presidio assegnato - ';
 	}
 	if ($r['conteggio_pc']>0){
-		echo ' '.$r['conteggio_incarichi'].' provvedimenti cautelari assegnati - ';
+		echo ' '.$r['conteggio_pc'].' provvedimenti cautelari assegnati - ';
 	} else {
 		echo 'Nessun provvedidimento cautelare assegnato - ';
 	}
+	
+	
+		if ($r['conteggio_incarichi']>0){
+			echo '<br>--<br><b>Incarichi in corso:</b> ';
+			$query_i = 'SELECT 
+			data_ora_invio, 
+			descrizione, 
+			descrizione_uo, descrizione_stato
+			FROM segnalazioni.v_incarichi_last_update s 
+			WHERE s.id_lavorazione='.$r['id_lavorazione'].' ORDER BY data_ora_invio asc;';
+			//echo $query_i;
+			$result_i = pg_query($conn, $query_i);
+			while($r_i = pg_fetch_assoc($result_i)) {
+				echo '<br>' .$r_i['data_ora_invio'];
+				echo ' - ' . $r_i['descrizione_stato']. ' - ';
+				echo $r_i['descrizione_uo'] .' ('.$r_i['descrizione'].')';
+			}
+		}
+	
+		if ($r['conteggio_incarichi_interni']>0){
+			echo '<br>--<br><b>Incarichi interni in corso:</b> ';
+			$query_i = 'SELECT 
+			data_ora_invio, 
+			descrizione, 
+			descrizione_uo, descrizione_stato
+			FROM segnalazioni.v_incarichi_interni_last_update s 
+			WHERE s.id_lavorazione='.$r['id_lavorazione'].' ORDER BY data_ora_invio asc;';
+			//echo $query_i;
+			$result_i = pg_query($conn, $query_i);
+			while($r_i = pg_fetch_assoc($result_i)) {
+				echo '<br>' .$r_i['data_ora_invio'];
+				echo ' - ' . $r_i['descrizione_stato']. ' - ';
+				echo $r_i['descrizione_uo'] .' ('.$r_i['descrizione'].')';
+			}
+		}
+		
+		
+		
+		if ($r['conteggio_sopralluoghi']>0){
+			echo '<br>--<br><b>Sopralluoghi in corso:</b> ';
+			$query_i = 'SELECT 
+			data_ora_invio, 
+			descrizione, 
+			descrizione_uo, descrizione_stato
+			FROM segnalazioni.v_sopralluoghi_last_update s 
+			WHERE id_lavorazione='.$r['id_lavorazione'].' ORDER BY data_ora_invio asc;';
+			//echo $query_i;
+			$result_i = pg_query($conn, $query_i);
+			while($r_i = pg_fetch_assoc($result_i)) {
+				echo '<br>' .$r_i['data_ora_invio'];
+				echo ' - ' . $r_i['descrizione_stato']. ' - ';
+				echo $r_i['descrizione_uo'] .' ('.$r_i['descrizione'].')';
+			}
+		}
 	//echo "<b>Note:</b>".$r['localizzazione']."<br>";
 	echo "<hr>";
 }

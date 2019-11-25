@@ -1,8 +1,10 @@
 <?php 
 
 require ('./note_ambiente.php');
-if ($_GET['r']=='true'){
-	require('./check_evento.php');
+if(isset($_GET['r'])){
+	if ($_GET['r']=='true'){
+		require('./check_evento.php');
+	}
 }
 if (isset($subtitle)) {
 	$subtitle=$subtitle;
@@ -130,10 +132,19 @@ if (isset($subtitle)) {
 							//echo $len_c;
 								if ($len_c > 0 and $profilo_ok <=3){
 							?>
-								<i class="fas fa-hourglass-end" style="color:red"></i>
+								<i class="fas fa-hourglass-end faa-ring animated" title="ATTENZIONE: ci sono <?php echo $len_c;?> eventi in chiusura" style="color:red"></i>
 							<?php		
 								}
 							?>
+							<?php
+							//echo $check_pausa;
+								if ($check_pausa >=1){
+							?>
+								<i class="fas fa-pause" title="Ci sono <?php echo $check_pausa;?> eventi sospesi" style="color:orange"></i>
+							<?php		
+								}
+							?>
+							
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_allerta; ?>"></i> 
                     		<i class="fas fa-circle fa-1x" style="color:<?php echo $color_foc; ?>"></i>
                     		<i class="fas fa-phone-square fa-1x" style="color:<?php echo $color_nverde; ?>"></i>
@@ -218,9 +229,19 @@ if (isset($subtitle)) {
                                 for ($i=0;$i<$len;$i++){
                                 ?>
                                 <a href="#">
-                                <b><i>Tipo</i>: <?php echo $tipo_eventi_attivi[$i][1];?></b><br>
-                                </a>
-                                 <a href="dettagli_evento.php">
+                                <b><i>Tipo</i>: <?php echo $tipo_eventi_attivi[$i][1];?></b>
+                                
+								<?php 
+								if ($sospeso[$i]==1){
+								?>
+									<span class="pull-right text-muted">
+                                        <em><i class="fas fa-pause faa-ring animated" style="color:orange" 
+										title="Evento temporaneamente sospeso fino alle <?php echo $sospensione[$i];?>"></i></em>
+                                    </span>
+								<?php 
+								}
+								?>
+                                </a><!--br--><a href="dettagli_evento.php">
                                    - Visualizza dettagli <br>
                                  </a>
                                   <a href="monitoraggio_meteo.php?id=<?php echo $tipo_eventi_attivi[$i][0];?>">
@@ -262,7 +283,18 @@ if (isset($subtitle)) {
                                 for ($i=0;$i<$len_c;$i++){
                                 ?>
 								<a href="#">
-                                <b><i>Tipo</i>: <?php echo $tipo_eventi_c[$i][1];?></b><br>
+                                <b><i>Tipo</i>: <?php echo $tipo_eventi_c[$i][1];?></b>
+								
+								<?php 
+								if ($sospeso_c[$i]==1){
+								?>
+									<span class="pull-right text-muted">
+                                        <em><i class="fas fa-pause faa-ring animated" style="color:orange" 
+										title="Evento temporaneamente sospeso fino alle <?php echo $sospensione_c[$i];?>"></i></em>
+                                    </span>
+								<?php 
+								}
+								?><!--br-->
                                 </a>
                                  <a href="dettagli_evento.php">
                                    - Visualizza dettagli <br>
@@ -330,7 +362,7 @@ if (isset($subtitle)) {
 					<li id="limbo" class="dropdown">
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
-						<i class="fa fa-exclamation fa-fw" style="color:red"></i> <i class="fas fa-caret-down"></i>
+						<i class="fa fa-exclamation fa-fw faa-ring animated" title="Segnalazioni ancora da elaborare" style="color:red"></i> <i class="fas fa-caret-down"></i>
                     </a>	
                     <ul class="dropdown-menu dropdown-alerts">
                     
@@ -368,13 +400,57 @@ if (isset($subtitle)) {
 				<?php }?>
 				
 				
+				
+				<?php if($segn_limbo_municipi>0 and $profilo_ok =3){?>
+					
+					<li id="limbo" class="dropdown">
+                    <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
+						<i class="fas fa-hashtag fa-fw faa-ring animated" 
+						title="Segnalazioni provenienti dai municipi" style="color:red"></i> <i class="fas fa-caret-down"></i>
+                    </a>	
+                    <ul class="dropdown-menu dropdown-alerts">
+                    
+                    <li>
+					<a href="#">
+                                <div>
+                                    <i class="fas fa-user-shield"></i> Segnalazioni provenienti dai municipi
+                                    <span class="pull-right text-muted small"><?php echo $segn_limbo_municipi;?></span>
+								</div>                              
+                                <?php
+								for ($ii = 0; $ii < $segn_limbo_municipi; $ii++) {
+									echo "<br><a href=\"dettagli_segnalazione.php?id=".$id_segn_limbo_municipi[$ii]."\">";
+									echo '<i class="fas fa-hashtag" title="da elaborare" style="color:#ff0000"></i>';
+									echo " Vai alla segnalazione ". $id_segn_limbo_municipi[$ii] ." " ;
+									echo "</a>";
+								}
+								?>
+                            
+							</a>
+                        </li>
+                    <li class="divider"></li>
+                    
+                    
+                    
+					<li>
+						<a href="index.php#segn_limbo_table">
+							<div>
+								Visualizza elenco segnalazioni provenienti dai municipi!
+							</div>
+						</a>
+					</li>
+					</ul>
+					</li>
+					
+				<?php }?>
+				
 
 				
                 <li id="notifiche_profilo" title="Incarichi in corso" class="dropdown" >
                     <!--a class="dropdown-toggle fa-stack fa-1x has-badge" data-count="4" data-toggle="dropdown" href="#"-->
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"-->
 					<?php if ($count_resp >0) { ?>
-						<i class="fas fa-bell fa-fw" style="color:#ff0000"></i> <?php echo $count_resp;?> <i class="fas fa-caret-down"></i>
+						<i class="fas fa-bell fa-fw faa-ring animated" style="color:#ff0000"></i> <?php echo $count_resp;?> <i class="fas fa-caret-down"></i>
 					<?php } else { ?>	
                         <i class="fas fa-bell fa-fw"></i>  <i class="fas fa-caret-down"></i>
 					<?php } ?>	
@@ -629,13 +705,14 @@ if (isset($subtitle)) {
                 
 				
 				<li id="notifiche_squadra" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" title="Notifiche squadra" data-toggle="dropdown" href="#">
                         <?php if ($count_squadra >0) { ?>
 						<i class="fas fa-users" style="color:#ff0000"></i> <?php echo $count_squadra;?> <i class="fas fa-caret-down"></i>
 					<?php } else { ?>	
                         <i class="fas fa-users"></i>  <i class="fas fa-caret-down"></i>
 					<?php } ?>	
                     </a>
+					<?php if (isset($nome_squadra_operatore)){ ?>	
                     <ul class="dropdown-menu dropdown-alerts">
 					<li>
 						<a href="#">
@@ -752,6 +829,7 @@ if (isset($subtitle)) {
 							</a>
                         </li>
                     </ul>
+				<?php }?>
                 </li>
 
 				
@@ -763,9 +841,7 @@ if (isset($subtitle)) {
                         <i class="fas fa-user fa-fw faa-ring animated" style="color:#ff0000"></i> <i class="fas fa-caret-down"></i>
 				<?php } else { ?>
 						<i class="fas fa-user fa-fw"></i> <i class="fas fa-caret-down"></i>
-				<?php } ?>
-					
-					
+				<?php }?>
 					</a>
 					
                     <ul class="dropdown-menu dropdown-user">
@@ -777,11 +853,15 @@ if (isset($subtitle)) {
                         <!--li><a href="#"><i class="fas fa-gear fa-fw"></i> Settings (DEMO)</a>
                         </li-->
                         <li class="divider"></li>
-                        <li><a href="https://gestemert.comune.genova.it/Shibboleth.sso/Logout"><i class="fas fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../../Shibboleth.sso/Logout"><i class="fas fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
+				<li>
+				<a target="_guida_in_linea"  title="Guida in linea" href="https://manuale-sistema-di-gestione-emergenze-comune-di-genova.readthedocs.io/it/latest/"> 
+                            <i class="fas fa-question"></i></a>
+				</li>
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
