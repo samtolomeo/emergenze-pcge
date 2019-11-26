@@ -846,44 +846,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					$no_segn=1; //non sono nella pagina della segnalazione--> disegno marker
 					$zoom=16;
 					?>
-						
-						<br>
-						
-						<br>
-						</div> 
-						<div class="col-md-6">
-						<h4> <i class="fas fa-map-marker-alt"></i> Indirizzo </h4>
-						
-						<?php
-						require('./indirizzo_embedded.php');
-						?>
-						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
-						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
-						<div id="map" style="width: 100%; padding-top: 100%;">
-						</div>
-						
-						
-						
-						<!--div style="width: 100%; padding-top: 100%;"-->
-							<!--iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe-->
-						<!--/div-->
-						<hr>
-						<?php
-						include './segnalazioni/section_oggetto_rischio.php';
-						
-						?>
-						</div>
-						
-						
-
-
-            </div>
-            <!-- /.row -->
-    </div>
-    <!-- /#wrapper -->
-
-
-<!-- Modal incarico-->
+						<!-- Modal incarico-->
 						<div id="new_incarico" class="modal fade" role="dialog">
 						  <div class="modal-dialog">
 
@@ -988,6 +951,43 @@ while($r_e = pg_fetch_assoc($result_e)) {
 
 						  </div>
 						</div>
+
+						<br>
+						
+						<br>
+						</div> 
+						<div class="col-md-6">
+						<h4> <i class="fas fa-map-marker-alt"></i> Indirizzo </h4>
+						
+						<?php
+						require('./indirizzo_embedded.php');
+						?>
+						<h4> <i class="fas fa-map-marked-alt"></i> Mappa </h4>
+						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
+						<div id="map" style="width: 100%; padding-top: 100%;">
+						</div>
+						
+						
+						
+						<!--div style="width: 100%; padding-top: 100%;"-->
+							<!--iframe class="embed-responsive-item" style="width:100%; padding-top:0%; height:600px;" src="./mappa_leaflet.php#16/<?php echo $lat;?>/<?php echo $lon;?>"></iframe-->
+						<!--/div-->
+						<hr>
+						<?php
+						include './segnalazioni/section_oggetto_rischio.php';
+						
+						?>
+						</div>
+						
+						
+
+
+            </div>
+            <!-- /.row -->
+    </div>
+    <!-- /#wrapper -->
+
+
 
 
 <?php 

@@ -86,7 +86,7 @@ $result=pg_query($conn, $query);
 
 echo "<br>";
 
-if (isset($id)){
+if ($id!=''){
 	$query= "INSERT INTO segnalazioni.join_segnalazioni_incarichi(id_incarico, id_segnalazione_in_lavorazione";
 	
 	//values
@@ -97,7 +97,7 @@ if (isset($id)){
 	//echo $query."<br>";
 	//exit;
 	$result=pg_query($conn, $query);
-} else if(isset($id_pc)) {
+} else if($id_pc!='') {
 	$query= "INSERT INTO segnalazioni.join_incarico_provvedimenti_cautelari(id_incarico, id_provvedimento";
 	
 	//values
