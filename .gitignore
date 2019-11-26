@@ -1,5 +1,4 @@
-pages/conn.php
-pages/conn.php
+# ignore python telegram credential
 pages/eventi/__pycache__/*.pyc
 pages/eventi/conn.py
 pages/eventi/conn.pyc
