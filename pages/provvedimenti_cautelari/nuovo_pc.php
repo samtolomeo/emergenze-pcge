@@ -460,16 +460,14 @@ while($r_telegram = pg_fetch_assoc($result_telegram)) {
 
 
 //echo $query_log;
-/*
-$query="SELECT mail FROM users.t_mail_squadre WHERE cod='".$uo."';";
+$query="SELECT mail FROM users.tipo_mail_provvedimenti_cautelari WHERE valido='t';";
 $result=pg_query($conn, $query);
 $mails=array();
 while($r = pg_fetch_assoc($result)) {
   array_push($mails,$r['mail']);
 }
-*/
-$mails=array();
-array_push($mails,'roberto.marzocchi@gter');
+
+
 
 
 echo "<br>";
