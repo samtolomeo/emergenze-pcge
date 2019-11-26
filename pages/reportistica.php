@@ -66,7 +66,7 @@ require('./check_evento.php');
 
             <div class="row">
 			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-			<h3>Evento n. <?php echo $id; ?> - Tipo: 
+			<h3>Evento n. <?php echo str_replace("'", "", $id); ?> - Tipo: 
 			<?php
 			$query_e='SELECT e.id, tt.descrizione, n.nota 
             FROM eventi.t_eventi e
@@ -96,8 +96,8 @@ require('./check_evento.php');
 			Ora:
 			<script>
 			var d = new Date();
-			var curr_h = d.getHours();
-			var curr_min = d.getMinutes();
+			var curr_h = ('0'+d.getHours()).slice(-2);
+			var curr_min = ('0'+d.getMinutes()).slice(-2);
 			document.write(curr_h + ":" + curr_min);
 			</script>
 			</h3>
