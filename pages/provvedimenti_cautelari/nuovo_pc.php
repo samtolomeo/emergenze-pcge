@@ -127,7 +127,7 @@ if ($punto1=='' or $punto2 ==''){
 		$civico2=$r['testo'];
 	}
 	
-	$desc_via= "da civico ".$civico1." a civico ".$civico2." (geometria non individuabile su mappa)";
+	$desc_via= "(geometria non individuabile su mappa)";
 }
 
 //echo "Desc via:" .$desc_via."<br>";
@@ -192,15 +192,15 @@ while($r_max = pg_fetch_assoc($result_max)) {
 
 
 
-
-$query_g= "SELECT id_evento, geom FROM segnalazioni.v_segnalazioni where id='".$segn."';";
-$result_g = pg_query($conn, $query_g);
-while($r_g = pg_fetch_assoc($result_g)) {
-	//$geom=$r_g['geom'];
-	$id_evento=$r_g['id_evento'];
+if (isset($segn)){
+	$query_g= "SELECT id_evento, geom FROM segnalazioni.v_segnalazioni where id='".$segn."';";
+	$result_g = pg_query($conn, $query_g);
+	while($r_g = pg_fetch_assoc($result_g)) {
+		//$geom=$r_g['geom'];
+		$id_evento=$r_g['id_evento'];
+	}
+	//echo $query_g."<br>";
 }
-//echo $query_g."<br>";
-
 
 
 // recupero info su U.O. 
@@ -328,23 +328,67 @@ echo "<br>";
 
 
 echo "<br>";
-$query= "INSERT INTO segnalazioni.join_segnalazioni_provvedimenti_cautelari(id_provvedimento, id_segnalazione_in_lavorazione";
 
-//values
-$query=$query.") VALUES (".$id_provvedimento.", ".$id." ";
 
-$query=$query.");";
+if (isset($id)){
+	$query= "INSERT INTO segnalazioni.join_segnalazioni_provvedimenti_cautelari(id_provvedimento, id_segnalazione_in_lavorazione";
+	//values
+	$query=$query.") VALUES (".$id_provvedimento.", ".$id." ";
+	$query=$query.");";
+	//echo $query;
+	echo "<br>";
+	//exit;
+	$result=pg_query($conn, $query);
+} else {
+	// creo una segnalazione fittizia
+	/*
+	// SEGNALANTE
+	$query_max= "SELECT max(id) FROM segnalazioni.t_segnalanti;";
+	$result_max = pg_query($conn, $query_max);
+	while($r_max = pg_fetch_assoc($result_max)) {
+		if ($r_max["max"]>0) {
+			$id_segnalante=$r_max["max"]+1;
+		} else {
+			$id_segnalante=1;	
+		}
+	}
+	echo $id_segnalante;
+	echo "<br>";
 
-//echo $query;
-echo "<br>";
-//exit;
-$result=pg_query($conn, $query);
+	$query= "INSERT INTO segnalazioni.t_segnalanti( id, id_tipo_segnalante, nome_cognome";
+	//values
+	$query=$query.") VALUES (".$id_segnalante.", 4, 'Segnalazione inserita in automatico dal sistema per l'inserimento di un provv. cautelare' ";
+	$query=$query.");";
+	echo $query;
+	$result=pg_query($conn, $query);
+	echo "<br>";
+	
+	
+	//SEGNALAZIONE
+	$query_max= "SELECT max(id) FROM segnalazioni.t_segnalazioni;";
+	$result_max = pg_query($conn, $query_max);
+	while($r_max = pg_fetch_assoc($result_max)) {
+		if ($r_max["max"]>0) {
+			$id_segnalazione=$r_max["max"]+1;
+		} else {
+			$id_segnalazione=1;	
+		}
+	}
+	echo $id_segnalazione;
+	echo "<br>";
+	*/
+	
+}
+
+
+
+
 
 
 $query= "INSERT INTO segnalazioni.stato_provvedimenti_cautelari(id_provvedimento, id_stato_provvedimenti_cautelari";
 
 //values
-$query=$query.") VALUES (".$id_provvedimento.", 1 ";
+$query=$query.") VALUES (".$id_provvedimento.", 2 ";
 
 $query=$query.");";
 
@@ -383,14 +427,50 @@ $result = pg_query($conn, $query_log);
 //$idfascicolo=str_replace('A','',$idfascicolo);
 //$idfascicolo=str_replace('B','',$idfascicolo);
 echo "<br>";
-//echo $query_log;
+require('../token_telegram.php');
 
+require('../send_message_telegram.php');
+
+
+$query_telegram="SELECT telegram_id from users.utenti_sistema where id_profilo <= 3 and telegram_id !='' and telegram_attivo='t';";
+echo $query_telegram;
+echo "<br>";
+
+// https://apps.timwhitlock.info/emoji/tables/unicode
+// \xE2\x9A\xA0 warning
+// \xE2\x80\xBC punti esclamativi
+
+$messaggio="\xE2\x9B\x94 E' stato creato un nuovo provvedimento cautelare, consultare il programma ".$link." ";
+if ($notifiche =='f'){
+	$messaggio= $messaggio ." (\xE2\x84\xB9 ricevi questo messaggio in quanto operatore di Protezione Civile \xE2\x84\xB9)";
+}
+$messaggio= $messaggio ."\xE2\x9B\x94";
+
+echo $messaggio;
+echo "<br>";
+$result_telegram = pg_query($conn, $query_telegram);
+while($r_telegram = pg_fetch_assoc($result_telegram)) {
+	//echo $r_telegram['telegram_id'];
+	//$chat_id = $r_telegram['telegram_id'];
+	sendMessage($r_telegram['telegram_id'], $messaggio , $token);
+}
+
+
+
+
+
+//echo $query_log;
+/*
 $query="SELECT mail FROM users.t_mail_squadre WHERE cod='".$uo."';";
 $result=pg_query($conn, $query);
 $mails=array();
 while($r = pg_fetch_assoc($result)) {
   array_push($mails,$r['mail']);
 }
+*/
+$mails=array();
+array_push($mails,'roberto.marzocchi@gter');
+
 
 echo "<br>";
 //echo $query;

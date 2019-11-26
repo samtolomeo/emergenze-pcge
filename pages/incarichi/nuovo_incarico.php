@@ -86,7 +86,7 @@ $result=pg_query($conn, $query);
 
 echo "<br>";
 
-if ($id!=''){
+if (isset($id)){
 	$query= "INSERT INTO segnalazioni.join_segnalazioni_incarichi(id_incarico, id_segnalazione_in_lavorazione";
 	
 	//values
@@ -97,7 +97,7 @@ if ($id!=''){
 	//echo $query."<br>";
 	//exit;
 	$result=pg_query($conn, $query);
-} else if($id_pc!='') {
+} else if(isset($id_pc)) {
 	$query= "INSERT INTO segnalazioni.join_incarico_provvedimenti_cautelari(id_incarico, id_provvedimento";
 	
 	//values
@@ -232,11 +232,11 @@ $mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo incarico alla seguente Unità  operativa 
+$body =  'Hai ricevuto questo messaggio in quanto è¡³tato assegnato un nuovo incarico alla seguente Unità  operativa 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali al nuovo <a href="https://emergenze.comune.genova.it/emergenze/pages/dettagli_incarico.php?id='.$id_incarico.'" " > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
- <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
- Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
+ <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è¡²egistrato a sistema. 
+ Per modificare queste impostazioni è¡°ossibile inviare una mail a salaemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
 
 
   

@@ -124,14 +124,13 @@ if ($profilo_sistema > 4){
 			 </div> 
 			
 			
-              <div class="form-group col-lg-3">
+              <!--div class="form-group col-lg-3">
 			 <label for="tipo">Tipologia di UO:</label> <font color="red">*</font>
 				<select class="form-control" name="tipo" id="tipo" onChange="getUO2(this.value);"  required="">
 				   <option name="tipo" value="" >  </option>
 				<option name="tipo" value="direzioni" > Incarico a Direzioni (COC) </option>
 				<option name="tipo" value="municipi" > Incarico a municipi </option>
 				<option name="tipo" value="distretti" > Incarico a distretti di PM </option>
-				<!--option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option-->
 			</select>
 			</div>
 				 
@@ -156,7 +155,27 @@ if ($profilo_sistema > 4){
 					<select class="form-control" name="uo" id="uo-list-pc" class="demoInputBox" required="">
 					<option value=""> ...</option>
 				</select>         
-				 </div>  
+				 </div-->  
+             
+			 
+			 <?php
+			$query3="SELECT * FROM users.tipo_origine_provvedimenti_cautelari";
+			$result3 = pg_query($conn, $query3);
+			?>
+			 <div class="form-group col-lg-7">
+				  <label for="id_uo_pc">Seleziona l'Unità Operativa che ha inviato il Provvedimento:</label> <font color="red">*</font>
+					<select class="form-control" name="uo" id="uo" required="">
+					<option value=""> ...</option>
+					<?php    
+				while($r3 = pg_fetch_assoc($result3)) { 
+					$valore=  $r3['id']. ";".$r3['descrizione'];            
+				?>
+							
+						<option id="tipo_pc" name="tipo_pc" value="<?php echo $r3['id'];?>" ><?php echo $r3['descrizione'];?></option>
+				 <?php } ?>
+			</select>
+				</select>         
+				 </div>
              
       
              
