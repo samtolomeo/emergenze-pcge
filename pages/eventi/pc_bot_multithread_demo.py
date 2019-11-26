@@ -41,7 +41,7 @@ import config
 
 # Il token è contenuto nel file config.py e non è aggiornato su GitHub per evitare utilizzi impropri
 TOKEN=config.TOKEN
-
+link=config.link
 
 check=0
 testo_segnalazione=''
@@ -94,7 +94,7 @@ class MessageCounter(telepot.aio.helper.ChatHandler):
             #bot.sendMessage(chat_id,message)
             await self.sender.sendMessage(message)
         elif command == '/sito':
-            message = "Gentile {1} {2} il sito del Sistema di Gestione Emergenze è https://emergenze.comune.genova.iter.it".format(self._count,nome, cognome)
+            message = "Gentile {1} {2} il sito del Sistema di Gestione Emergenze è {3} ".format(self._count,nome, cognome, link)
             #bot.sendMessage(chat_id,message)
             await self.sender.sendMessage(message)
             #bot.sendMessage(chat_id,"https://www.gter.it")
