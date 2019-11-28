@@ -40,6 +40,7 @@
 				  <label for="cf">Seleziona dipendente comunale:</label> <font color="red">*</font>
 								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
 								<option value="">Seleziona personale</option>
+								<option value="NO_TURNO"><font color="red">TURNO VUOTO</font></option>
 				<?php
 				foreach ($arr as $result){
 					echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].'('.$result['settore'].' - '.$result['ufficio'].')</option>';
@@ -183,7 +184,7 @@
 				
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_nverde r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -202,8 +203,14 @@
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				//echo "</li>";
 			}
 			
@@ -214,7 +221,7 @@
 			echo "---.---.---<br>";
 			//echo "</ul>";
          $query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_nverde r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now() ORDER by data_start;";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
@@ -228,8 +235,14 @@
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				//echo "</li>";
 			}
 			

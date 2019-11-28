@@ -41,6 +41,7 @@
 				  <label for="cf">Seleziona dipendente comunale:</label> <font color="red">*</font>
 								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
 								<option value="">Seleziona personale</option>
+								<option value="NO_TURNO"><font color="red">TURNO VUOTO</font></option>
 				<?php
 			foreach ($arr as $result){
 				echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].'('.$result['settore'].' - '.$result['ufficio'].')</option>';
@@ -184,7 +185,7 @@
 				
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. " LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -202,8 +203,14 @@
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -215,7 +222,7 @@
 			
 			echo "---.---.---<br>";
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now() ";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			$query = $query. " order by data_start, cognome;";
@@ -229,8 +236,14 @@
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -288,6 +301,7 @@
 				  <label for="cf">Seleziona dipendente comunale:</label> <font color="red">*</font>
 								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
 								<option value="">Seleziona personale</option>
+								<option value="NO_TURNO"><font color="red">TURNO VUOTO</font></option>
 				<?php
 			foreach ($arr as $result){
 				echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].' ('.$result['settore'].' - '.$result['ufficio'].')</option>';
@@ -434,7 +448,7 @@
 				
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_monitoraggio_meteo r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -453,8 +467,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -469,7 +489,7 @@ if ($id != '') {
 			//echo "</ul>";
 			
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_monitoraggio_meteo r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now() ORDER by data_start;";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
@@ -483,8 +503,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -544,6 +570,7 @@ if ($id != '') {
 				  <label for="cf">Seleziona dipendente comunale:</label> <font color="red">*</font>
 								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
 								<option value="">Seleziona personale</option>
+								<option value="NO_TURNO"><font color="red">TURNO VUOTO</font></option>
 				<?php
 				foreach ($arr as $result){
 					echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].'('.$result['settore'].' - '.$result['ufficio'].')</option>';
@@ -691,7 +718,7 @@ if ($id != '') {
 				
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_presidio_territoriale r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -710,8 +737,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -726,7 +759,7 @@ if ($id != '') {
 			
 			
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_presidio_territoriale r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now() ORDER by data_start;";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
@@ -740,8 +773,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -804,6 +843,7 @@ if ($id != '') {
 				  <label for="cf">Seleziona dipendente comunale:</label> <font color="red">*</font>
 								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
 								<option value="">Seleziona personale</option>
+								<option value="NO_TURNO"><font color="red">TURNO VUOTO</font></option>
 				<?php
 				foreach ($arr as $result){
 					echo '<option value="'.$result['matricola'].'">'.$result['cognome'].' '.$result['nome'].'('.$result['settore'].' - '.$result['ufficio'].')</option>';
@@ -950,7 +990,7 @@ if ($id != '') {
 				
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -969,8 +1009,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -982,7 +1028,7 @@ if ($id != '') {
 
 			echo "---.---.---<br>";
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
-			$query = $query. "JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			$query = $query. "where data_start > now();";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
@@ -996,8 +1042,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -1061,6 +1113,7 @@ if ($id != '') {
 				  <label for="cf">Seleziona operatore tra i volontari (Gruppo Genova):</label> <font color="red">*</font>
 								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
 								<option value="">Seleziona volontario </option>
+								<option value="NO_TURNO"><font color="red">TURNO VUOTO</font></option>
 				<?php
 				foreach ($arr2 as $result2){
 					echo '<option value="'.$result2["cf"].'">'.$result2["cognome"].' '.$result2["nome"].'('.$result2["livello1"].')</option>';
@@ -1207,7 +1260,7 @@ if ($id != '') {
 				
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
-			$query = $query. "JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -1226,8 +1279,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -1239,7 +1298,7 @@ if ($id != '') {
 
 			echo "---.---.---<br>";
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
-			$query = $query. "JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			$query = $query. "where data_start > now() ORDER by data_start;";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
@@ -1253,8 +1312,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -1313,6 +1378,7 @@ if ($id != '') {
 				  <label for="cf">Seleziona operatore tra i volontari (Gruppo Genova e convenzionate):</label> <font color="red">*</font>
 								<select name="cf" id="cf" class="selectpicker show-tick form-control" data-live-search="true" required="">
 								<option value="">Seleziona volontario </option>
+								<option value="NO_TURNO"><font color="red">TURNO VUOTO</font></option>
 				<?php
 				foreach ($arr2 as $result2){
 					echo '<option value="'.$result2["cf"].'">'.$result2["cognome"].' '.$result2["nome"].'('.$result2["livello1"].')</option>';
@@ -1459,7 +1525,7 @@ if ($id != '') {
 				
 				
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_anpas r ";
-			$query = $query. "JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			if ($id != '') {
 				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -1478,8 +1544,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
@@ -1491,7 +1563,7 @@ if ($id != '') {
 
 			echo "---.---.---<br>";
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_anpas r ";
-			$query = $query. "JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			$query = $query. "where data_start > now() ORDER by data_start;";
 			//$query = $query. " and id1=".$r0["id1"]."";
 			//$query = $query. " order by cognome;";
@@ -1505,8 +1577,14 @@ if ($id != '') {
 				$check_reperibile=1;
 				//echo "<li>";
 				echo "- ";
-				echo  $r['cognome']." ".$r['nome']." - Dalle ";
-				echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				if($r['cognome']==''){
+					echo  "TURNO VUOTO - Dalle ";
+				} else {
+					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+				}
+				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
 				
 				
 				//echo "</li>";
