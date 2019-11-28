@@ -424,6 +424,7 @@ $query= " SELECT
         END, ', '::text) AS localizzazione,
     jl.id_segnalazione_in_lavorazione AS id_lavorazione,
     l.in_lavorazione,
+    l.descrizione_chiusura,
     l.id_profilo,
         CASE
             WHEN (( SELECT count(i.id) AS sum
@@ -462,7 +463,7 @@ $query= " SELECT
      LEFT JOIN geodb.municipi m ON s.id_municipio = m.id::integer
      LEFT JOIN geodb.civici g ON g.id = s.id_civico
   WHERE s.id_evento=".$id." and jl.id_segnalazione_in_lavorazione > 0
-  GROUP BY jl.id_segnalazione_in_lavorazione, l.in_lavorazione, l.id_profilo, s.id_evento, e.fine_sospensione
+  GROUP BY jl.id_segnalazione_in_lavorazione, l.in_lavorazione, l.id_profilo, s.id_evento, e.fine_sospensione, l.descrizione_chiusura
   ORDER BY data_ora ASC;";
 //echo $query;
 $result = pg_query($conn, $query);
@@ -489,6 +490,9 @@ while($r = pg_fetch_assoc($result)) {
 	echo "<b>Descrizione:</b>".$r['descrizione']."<br>";
 	echo "<b>Municipio:</b>".$r['nome_munic']." - ";
 	echo "<b>Indirizzo:</b>".$r['localizzazione']."<br>";
+	if ($r['descrizione_chiusura']!=''){
+		echo "<b>Note chiusura:</b>".$r['descrizione_chiusura']."<br>";
+	}
 	if ($r['incarichi']=='t'){
 		echo '<i class="fas fa-circle" title="incarichi in corso" style="color:#f2d921"></i> Lavorazione in corso - ';
 	} else if ($r['incarichi']=='f') {
@@ -517,13 +521,15 @@ while($r = pg_fetch_assoc($result)) {
 	
 	
 		if ($r['conteggio_incarichi']>0){
-			echo '<br>--<br><b>Incarichi in corso:</b> ';
+			echo '<br>--<br><b>Incarichi:</b> ';
 			$query_i = 'SELECT 
 			data_ora_invio, 
 			descrizione, 
 			descrizione_uo, descrizione_stato
 			FROM segnalazioni.v_incarichi_last_update s 
-			WHERE s.id_lavorazione='.$r['id_lavorazione'].' ORDER BY data_ora_invio asc;';
+			WHERE s.id_lavorazione='.$r['id_lavorazione'].' GROUP BY data_ora_invio, 
+			descrizione, 
+			descrizione_uo, descrizione_stato ORDER BY data_ora_invio asc;';
 			//echo $query_i;
 			$result_i = pg_query($conn, $query_i);
 			while($r_i = pg_fetch_assoc($result_i)) {
@@ -534,13 +540,16 @@ while($r = pg_fetch_assoc($result)) {
 		}
 	
 		if ($r['conteggio_incarichi_interni']>0){
-			echo '<br>--<br><b>Incarichi interni in corso:</b> ';
+			echo '<br>--<br><b>Incarichi interni:</b> ';
 			$query_i = 'SELECT 
 			data_ora_invio, 
 			descrizione, 
 			descrizione_uo, descrizione_stato
 			FROM segnalazioni.v_incarichi_interni_last_update s 
-			WHERE s.id_lavorazione='.$r['id_lavorazione'].' ORDER BY data_ora_invio asc;';
+			WHERE s.id_lavorazione='.$r['id_lavorazione'].' GROUP BY data_ora_invio, 
+			descrizione, 
+			descrizione_uo, descrizione_stato  
+			ORDER BY data_ora_invio asc;';
 			//echo $query_i;
 			$result_i = pg_query($conn, $query_i);
 			while($r_i = pg_fetch_assoc($result_i)) {
@@ -553,13 +562,15 @@ while($r = pg_fetch_assoc($result)) {
 		
 		
 		if ($r['conteggio_sopralluoghi']>0){
-			echo '<br>--<br><b>Sopralluoghi in corso:</b> ';
+			echo '<br>--<br><b>Presidi:</b> ';
 			$query_i = 'SELECT 
 			data_ora_invio, 
 			descrizione, 
 			descrizione_uo, descrizione_stato
 			FROM segnalazioni.v_sopralluoghi_last_update s 
-			WHERE id_lavorazione='.$r['id_lavorazione'].' ORDER BY data_ora_invio asc;';
+			WHERE id_lavorazione='.$r['id_lavorazione'].' GROUP BY data_ora_invio, 
+			descrizione, 
+			descrizione_uo, descrizione_stato ORDER BY data_ora_invio asc;';
 			//echo $query_i;
 			$result_i = pg_query($conn, $query_i);
 			while($r_i = pg_fetch_assoc($result_i)) {
