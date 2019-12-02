@@ -24,4 +24,4 @@ lista_chat_id = curr.fetchall()
 for row in lista_chat_id:
     chat_id=row[0]
     print(chat_id)
-    sleep(1)
+    time.sleep(1)
