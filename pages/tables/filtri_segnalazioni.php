@@ -49,7 +49,7 @@ function filtro($idfilter){
 
 
 
-function filtro2($idfilter, $idfilter1){
+function filtro2($idfilter, $idfilter1, $idfilter2, $idfilter3){
 	//echo $idfilter."<br>";
 	#############################################################################################################################################
 	#                                       CREAZIONE DEL FILTRO
@@ -185,9 +185,46 @@ function filtro2($idfilter, $idfilter1){
 		$el_filtri_m = $el_filtri_m.')';
 	}
 	
+	//echo strlen($idfilter2)."<br>";
+	//echo strlen($idfilter3)."<br>";
+	$check2=0;
+	if (strlen($idfilter2)>=12 || strlen($idfilter3)>=12){
+		$check2=1;
+	}
+	
+	if ($check==1 && $check2==1) {
+	    $filter = $filter . " AND  " ;
+	} else if ($check==0 && $check2==1) {
+	    $filter = $filter . " WHERE  " ;
+	}
+	
+	
+	
+	if ($check2==1) {
+		$filter = $filter . " (" ;
+	}
+	
+	if (strlen($idfilter2)>=12 ) {
+		$filter = $filter . " data_ora > ".$idfilter2." ";
+	}
+	
+	if (strlen($idfilter2)>=12 && strlen($idfilter3)>=12) {
+		$filter = $filter . " AND " ;
+	}
+	
+	if (strlen($idfilter3)>=12) {
+		$filter = $filter . " data_ora < ".$idfilter3." ";
+	}
+	
+	if ($check2==1){
+		$filter = $filter . ")" ;
+	}
+	
+	
 	
 	//$filter = $filter . ')';
 	//echo $filter;
+	
 	return array($filter,$check_s, $check_m,$el_filtri_s,$el_filtri_m);
 	#############################################################################################################################################
 }
