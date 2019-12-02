@@ -61,8 +61,10 @@ function GeneralEvents_OnWebServiceRequest(Sender, Request, Helper, RequestInfo)
                 '</soap:Envelope>';
             //specify request headers
             //xmlhttp.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
-            xmlhttp.setRequestHeader('Authorization', 'Bearer 10ac7b40-c252-3544-9b5e-301836e485a5');
-
+            //xmlhttp.setRequestHeader('Authorization', 'Bearer 10ac7b40-c252-3544-9b5e-301836e485a5');
+            xmlhttp.setRequestHeader('Software', 'test');
+            xmlhttp.setRequestHeader('User', 'test');				
+            xmlhttp.setRequestHeader('Password', 'test');				
             //FOR TESTING: display results in an alert box once the response is received
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {

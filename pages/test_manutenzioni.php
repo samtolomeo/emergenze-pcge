@@ -43,9 +43,9 @@ function GeneralEvents_OnWebServiceRequest(Sender, Request, Helper, RequestInfo)
                      '<soap:Header>' +
                         '<api:some_api_call soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
                             '<Authorization>Bearer 10ac7b40-c252-3544-9b5e-301836e485a5</Authorization>' +
-                            '<Software>test</Authorization>' +
-                            '<user>test</Authorization>' +
-                            '<Password>test</Authorization>' +
+                            '<Software>test</Software>' +
+                            '<user>test</user>' +
+                            '<Password>test</Password>' +
                         '</api:some_api_call>' +
                     '</soap:Header>' +
                     '<soap:Body>' +
