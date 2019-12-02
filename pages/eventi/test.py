@@ -10,6 +10,8 @@ import xml.etree.ElementTree as et
 
 import psycopg2
 from conn import *
+import datetime
+import time
 
 conn = psycopg2.connect(host=ip, dbname=db, user=user, password=pwd, port=port)
 curr = conn.cursor()
