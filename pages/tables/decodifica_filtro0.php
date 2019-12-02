@@ -5,6 +5,8 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 $getfiltri=$_GET["f"];
 $filtro_evento_attivo=$_GET["a"];
 $filtro_municipio=$_GET["m"];
+$filtro_from=$_GET["from"];
+$filtro_to=$_GET["to"];
 
 
 $pagina=$_POST["pagina"];
@@ -25,7 +27,7 @@ while($r = pg_fetch_assoc($result)) {
 }
 
 
-header("Location: ../".$pagina."?f=".$filter."&a=".$filtro_evento_attivo."&m=".$filtro_municipio."");
+header("Location: ../".$pagina."?f=".$filter."&a=".$filtro_evento_attivo."&from=".$filtro_from."&to=".$filtro_to."&m=".$filtro_municipio."");
 
 echo $filter; 
 

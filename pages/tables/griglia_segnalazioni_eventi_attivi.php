@@ -24,13 +24,14 @@ if ($check_evento==1){
 $getfiltri=$_GET["f"];
 //echo $getfiltri;
 $filtro_municipio=$_GET["m"];
-
+$filtro_from=$_GET["from"];
+$filtro_to=$_GET["to"];
 
 
 require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
 //$filtro_c=filtro($getfiltri);
-$filtro_c=filtro2($getfiltri,$filtro_municipio);
-
+//$filtro_c=filtro2($getfiltri,$filtro_municipio);
+$filtro_c=filtro2($getfiltri, $filtro_municipio,$filtro_from,$filtro_to)[0];
 
 
 if ($filtro_c=='' and $filter!=''){
@@ -54,7 +55,7 @@ if(!$conn) {
        rischio, id_evento, id_civico, id_municipio, id_operatore, 
        note, lavorazione From segnalazioni.v_segnalazioni WHERE ".$filter .";";*/
     
-   //echo $query;
+    //echo $query ."<br>";
 	$result = pg_query($conn, $query);
 	#echo $query;
 	#exit;
