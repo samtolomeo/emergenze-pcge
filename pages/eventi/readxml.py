@@ -11,6 +11,7 @@ import xml.etree.ElementTree as et
 import psycopg2
 from conn import *
 
+import time
 import datetime
 import telepot
 
