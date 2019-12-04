@@ -1,13 +1,13 @@
 <?php
 
 if ($id_profilo<=3 and $id_profilo>0){
-	echo "<h4><br><b>Responsabile</b>: Centrale PC";
+	echo "<h4><br><b>Centrale responsabile</b>: Centrale PC";
 } else if($id_profilo==4) {
-	echo "<h4><br><b>Responsabile</b>: Centrale COA";
+	echo "<h4><br><b>Centrale responsabile</b>: Centrale COA";
 } else if($id_profilo==5) {
-	echo "<h4><br><b>Responsabile</b>: Municipio ".$id_municipio."";
+	echo "<h4><br><b>Centrale responsabile</b>: Municipio ".$id_municipio."";
 } else if($id_profilo==6) {
-	echo "<h4><br><b>Responsabile</b>: Distretto ".$id_municipio."";
+	echo "<h4><br><b>Cetrale responsabile</b>: Distretto ".$id_municipio."";
 }
 
 //echo $check_operatore;

@@ -1,16 +1,25 @@
 <?php 
 
-$subtitle="Elenco incarichi interni in corso";
+$subtitle="Elenco incarichi chiusi";
 
 
 $getfiltri=$_GET["f"];
 $filtro_evento_attivo=$_GET["a"];
-
+if(isset($_GET["from"])){
+	$filtro_from=$_GET["from"];
+}
+if(isset($_GET["to"])){
+	$filtro_to=$_GET["to"];
+}
+$resp=$_GET["r"];
+$uo=$_GET["u"];
 //echo $filtro_evento_attivo; 
 
 
 $uri=basename($_SERVER['REQUEST_URI']);
 //echo $uri;
+
+$pagina=basename($_SERVER['PHP_SELF']); 
 
 ?>
 <!DOCTYPE html>
@@ -61,6 +70,76 @@ require('./tables/filtri_segnalazioni.php');
             <div class="row">
 
 
+<a class="btn btn-primary" data-toggle="collapse" href="#collapsedata" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fas fa-hourglass"></i>  Filtra per data
+         </a>
+         <?php if($resp!=''){?>
+			<a class="btn btn-primary" href="<?php echo $pagina?>?u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-users"></i> Vedi tutti gli incarichi 
+            (non solo quelli di cui sei responsabile)
+          </a>
+			<?php } else {?>  
+           <a class="btn btn-primary" href="<?php echo $pagina?>?r=<?php echo $profilo_ok?>&u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-user-check"></i> Vedi solo gli incarichi di cui sei responsabile
+          </a>
+		  <?php }?>
+		  
+         <?php 
+         if (isset($periferico_inc)){
+         if($uo!=''){?>
+			<a class="btn btn-primary" href="<?php echo $pagina?>?r=<?php echo $resp?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-users"></i> Vedi anche gli incarichi assegnati ad altre Unità operative
+         </a>
+			<?php } else {?>  
+           <a class="btn btn-primary" href="<?php echo $pagina?>?r=<?php echo $resp?>&u=<?php echo $periferico_inc?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-user-check"></i> Vedi solo gli incarichi che sono assegnati alla tua Unità Operativa
+          </a>
+		  <?php 
+		  	}
+			}
+		  //echo $profilo_ok;
+		  //echo $periferico_inc;
+		  ?>		  
+		 
+		  
+		   
+
+<div class="collapse" id="collapsedata">
+          <div class="card card-body">
+         		  
+          <form id="filtro_data" action="./tables/decodifica_filtro_inc.php?r=<?php echo $resp?>&u=<?php echo $uo?>" method="post">
+            <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>"/>
+			
+				<div class="form-check col-md-6">
+				<label for="startdate">Da (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="startdate" name="startdate" value="<?php echo str_replace("'", "", $filtro_from)?>">
+				<small id="sdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+				
+				
+				<div class="form-check col-md-6">
+				<label for="todate">A (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="todate" name="todate" value="<?php echo str_replace("'", "", $filtro_to)?>">
+				<small id="tdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+			
+			
+			<button id="checkBtn_filtri" type="submit" class="btn btn-primary"> 
+			<?php if ($getfiltri=='' or intval($getfiltri)==0) {?>
+				Filtra 
+			<?php } else {?>
+				Aggiorna filtro
+			<?php }?>
+			</button>
+			
+
+        </form>
+          </div>
+        </div>
+
+
+        <hr>
+
 	
         <div id="toolbar">
             <select class="form-control">
@@ -71,7 +150,11 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_inc_ev_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pres" class="table-hover" data-toggle="table" 
+        data-url="./tables/griglia_inc_ev_chiusi.php?r=<?php echo $resp;?>&u=<?php echo $uo;?>&from=<?php echo $filtro_from;?>&to=<?php echo $filtro_to;?>" 
+        data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" 
+        data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" 
+        data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -80,6 +163,7 @@ require('./tables/filtri_segnalazioni.php');
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="id_stato_incarico" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th>
+            <th data-field="id_profilo" data-sortable="true" data-formatter="presidiFormatter2" data-visible="true" >Resp</th>            
             <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
 			<!--th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th-->
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
@@ -116,13 +200,23 @@ function presidiFormatter(value,row) {
         if (value==2){
         		return '<i class="fas fa-play" title="'+row.descrizione_stato+'" style="color:#5cb85c"></i>';
         } else if (value==3) {
-        	   return '<i class="fas fa-check" title="'+row.descrizione_stato+'" style="color:#5cb85c" ></i>';
+        	   return '<i class="fas fa-stop" title="'+row.descrizione_stato+'" style="color:#5cb85c" ></i>';
         } else if (value==1){
         	   return '<i class="fas fa-exclamation" title="'+row.descrizione_stato+'" style="color:#ff0000"></i>';
         } else if (value==4){
         	   return '<i class="fas fa-times" title="'+row.descrizione_stato+'" style="color:#ff0000"></i>';
         } else {
         	   return '<i class="fas fa-question" title="'+row.descrizione_stato+'" style="color:#ff0000"></i>';
+        }
+
+    }
+
+
+function presidiFormatter2(value,row) {
+        if (value=='<?php echo $profilo_ok;?>'){
+        	   return '<i class="fas fa-check" title="Il tuo profilo utente è responsabile di questo incarico" style="color:#5cb85c" ></i>';
+        } else {
+        	   return '-';
         }
 
     }

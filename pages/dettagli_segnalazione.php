@@ -131,14 +131,18 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									WHERE id_segnalazione_in_lavorazione = ".$id_lavorazione." AND sospeso = 't';";
 									$result_sospeso=pg_query($conn, $query_sospeso);
 									while($r_sospeso = pg_fetch_assoc($result_sospeso)) {
-										echo '<h4>La segnalazione è stata inviata alla centrale di PC';
+										if ($check_operatore==0){
+											echo '<h4>La segnalazione è stata inviata alla centrale di PC';
+										} else {
 										if($profilo_ok==3) {
+											echo '<h4>La segnalazione è stata inviata alla centrale di PC';
 											echo ' - <a class="btn btn-success" 
 											href="segnalazioni/import_lavorazione_2mun.php?id='.$id.'&idl='.$id_lavorazione.'" 
 											title="Prendi in carico"> <i class="fas fa-play"></i> </a>';
 										}
 										echo '</h4>';
 										$check_mun=1;
+									}
 									}
 									
 									if($check_mun==0) {
@@ -149,27 +153,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									
 									require('./check_responsabile.php');
 									
-									if($r['id_profilo']==5) {	
-										//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Municipio";
-										if ($check_operatore == 1){ ?>
-											<!--div style="text-align: center;"-->
-												<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=3" class="btn btn-info noprint"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale PC</a><br>
-											<!--/div-->
-										<?php 
-											//$check_operatore=1;
-										}
-										echo '</h4>';	
-									} else if($r['id_profilo']==6) {
-										//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Distretto";
-										if ($check_operatore == 1){ ?>
-										<!--div style="text-align: center;"-->										
-											<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=4" class="btn btn-info noprint"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale COA</a><br>
-										<!--/div-->
-											<?php
-											//$check_operatore=1;
-										}
-									echo '</h4>';
-								}
+									
 								} else if ($r['id_lavorazione'] !=''  and $r['in_lavorazione']=='f') {
 									
 									$check_lav=-1;
@@ -361,7 +345,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								$check_sopralluoghi=2;
 							} else if  ($ri['id_stato_sopralluogo']==2){
 								$check_sopralluoghi=1;
-							} else if  ($ri['id_stato_sopralluogo']==2){
+							} else if  ($ri['id_stato_sopralluogo']==1){
 								$check_sopralluoghi=-1;
 								$check_chiusura=$check_chiusura-1;
 							}
@@ -472,7 +456,13 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									if($check_operatore==1 and $r['in_lavorazione']!='f') {
 										?>
 									<hr><p>
-				      			<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico </button>
+				      			<button type="button" class="btn btn-info noprint"  data-toggle="modal" data-target="#new_incarico"><i class="fas fa-plus"></i> Assegna incarico 
+				      			<?php
+								if($id_profilo==5 or $id_profilo==6) {
+									echo " ad altro municipio";
+								}
+								?>
+				      			</button>
 						 			</p>
 									<?php } ?>
 									</div>
@@ -712,6 +702,39 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						</p-->
 						<hr>
 						<?php
+						if($r['id_profilo']==5) {	
+							//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Municipio";
+							if ($check_operatore == 1){ 
+								if($check_incarichi_aperti==1 OR $check_incarichi_interni_aperti==1 OR $check_sopralluoghi==1 OR $check_chiusura<0 ){
+									echo "Per trasferire / chiudere la segnalazione è necessario chiudere gli incarichi attivi<br><br>";
+								} else {
+								?>
+								<!--div style="text-align: center;"-->
+									<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=3" class="btn btn-info noprint"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale PC</a> - 
+								<!--/div-->
+							<?php 
+								}
+							}
+							//echo '</h4>';	
+						} else if($r['id_profilo']==6) {
+							//echo "<h4><i class=\"fas fa-lock\"></i> In carico al Distretto";
+							if ($check_operatore == 1) { 
+								if($check_incarichi_aperti==1 OR $check_incarichi_interni_aperti==1 OR $check_sopralluoghi==1 OR $check_chiusura<0 ){
+									echo "Per trasferire / chiudere la segnalazione è necessario chiudere gli incarichi attivi<br><br>";
+								} else {
+							
+								?>
+									<!--div style="text-align: center;"-->										
+									<a href="segnalazioni/trasferisci.php?l=<?php echo $r['id_lavorazione'];?>&id=<?php echo $id?>&t=4" class="btn btn-info noprint"><i class="fas fa-exchange-alt"></i> Trasferisci alla centrale COA</a> - 
+									<!--/div-->
+								<?php
+								}
+							}
+						//echo '</h4>';
+						}
+						
+						
+						//echo $check_operatore;
 						if($check_operatore==1) {
 	   					echo '<button type="button" class="btn btn-danger noprint"  data-toggle="modal" ';
 	   					// check sugli incarichi / sopralluoghi attivi
@@ -720,7 +743,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 	   					}
 	   					echo 'data-target="#chiudi"><i class="fas fa-times"></i> Chiudi segnalazione </button>';
 	   				}
+
 						?>
+						
 						</div>
 						
 						
@@ -745,7 +770,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								if($id_profilo==5 or $id_profilo==6) {
 									if($id_profilo==5){
 										$query = "select concat('com_',cod) as cod, descrizione from varie.t_incarichi_comune";
-										$query = $query ." where (cod like '%MU%' and descrizione not like '% ".integerToRoman($id_municipio)."') or (cod not like '%MU%' and descrizione ilike 'distretto ".$id_municipio."')";
+										//$query = $query ." where (cod like '%MU%' and cod not like '%00".$id_municipio."') or (cod not like '%MU%' and descrizione ilike 'distretto ".$id_municipio."')";
+										$query = $query ." where (cod like '%MU%' and cod not like '%00".$id_municipio."') ";
 										$query = $query ." order by descrizione;";
 										//echo $query;
 									} else {
@@ -754,6 +780,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										$query = $query ." order by descrizione;";
 									}
 								//$result = pg_query($conn, $query);
+								//echo $query;
 
 								?>
 								<div class="form-group">

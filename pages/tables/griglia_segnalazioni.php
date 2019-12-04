@@ -10,6 +10,7 @@ $filtro_evento_attivo=$_GET["a"];
 $filtro_municipio=$_GET["m"];
 $filtro_from=$_GET["from"];
 $filtro_to=$_GET["to"];
+$resp=$_GET["r"];
 
 //echo $getfiltri;
 
@@ -18,7 +19,14 @@ require('./filtri_segnalazioni.php'); //contain the function filtro used in the 
 
 $filter=filtro2($getfiltri, $filtro_municipio, $filtro_from, $filtro_to);
 
-
+if (strlen($resp)>1){
+	if ($filter[0] !='') {
+		$filter_r= ' AND ';
+	} else {
+		$filter_r= ' WHERE ';
+	}
+	$filter_r = $filter_r ." id_profilo='".$resp."'";
+}
 
 if(!$conn) {
     die('Connessione fallita !<br />');
@@ -26,7 +34,7 @@ if(!$conn) {
 	//$idcivico=$_GET["id"];
 	$query="SELECT id, data_ora, descrizione, criticita, 
        rischio, id_evento, tipo_evento, 
-       note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter[0]." ;";
+       note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter[0]." ".$filter_r.";";
     
     //echo $query."<br>";
 	$result = pg_query($conn, $query);

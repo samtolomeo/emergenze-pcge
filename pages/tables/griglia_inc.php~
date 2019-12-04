@@ -7,13 +7,11 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 // Filtro per tipologia di criticità
 $getfiltri=$_GET["f"];
 //echo $getfiltri;
-
-//require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-//$filter=filtro($getfiltri);
-
-
 $filtro_from=$_GET["from"];
 $filtro_to=$_GET["to"];
+
+$resp=$_GET["r"];
+$uo=$_GET["u"];
 
 
 //require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
@@ -29,7 +27,7 @@ if (strlen($filtro_from)>=12 || strlen($filtro_to)>=12){
 	}
 	
 	if (strlen($filtro_from)>=12 ) {
-		$filter = $filter . " data_ora_invio > ".$filtro_from." ";
+		$filter = $filter . " TO_TIMESTAMP(data_ora_invio, 'DD/MM/YYYY HH24:MI:SS') > ".$filtro_from." ";
 	}
 	
 	if (strlen($filtro_from)>=12 && strlen($filtro_to)>=12) {
@@ -37,26 +35,33 @@ if (strlen($filtro_from)>=12 || strlen($filtro_to)>=12){
 	}
 	
 	if (strlen($filtro_to)>=12) {
-		$filter = $filter . " data_ora_invio < ".$filtro_to." ";
+		$filter = $filter . " TO_TIMESTAMP(data_ora_invio, 'DD/MM/YYYY HH24:MI:SS') < ".$filtro_to." ";
 	}
 	
 	if ($check2==1){
 		$filter = $filter . ")" ;
 	}
 
+if(strlen($resp)>=1) {
+	$filter = $filter . " and id_profilo='".$resp."' " ;
+}
 
+if(strlen($uo)>=1) {
+	$filter = $filter . " and id_profilo='".$resp."' " ;
+}
 
 if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT id_evento, data_ora_invio, id_stato_provvedimenti_cautelari, descrizione_stato, 
-	tipo_provvedimento, oggetto, descrizione, note_ente, id, id_segnalazione, rimosso 
-	From segnalazioni.v_provvedimenti_cautelari_last_update where id > 1 ".$filter." ;";
+	$query="SELECT id, id_profilo, id_evento, data_ora_invio, id_stato_incarico, descrizione_stato, 
+	descrizione, note_ente, descrizione_uo, id_segnalazione, time_preview, time_start 
+	From segnalazioni.v_incarichi_last_update 
+	where id_stato_incarico < 3 ".$filter." ;";
     
-   echo $query ."<br>";
+   //echo $query ."<br>";
 	$result = pg_query($conn, $query);
-	//echo $query;
+	#echo $query;
 	#exit;
 	$rows = array();
 	while($r = pg_fetch_assoc($result)) {
