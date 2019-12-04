@@ -19,7 +19,7 @@ if(!$conn) {
 	//$idcivico=$_GET["id"];
 	$query="SELECT p.id_stato_incarico, p.id_evento, p.descrizione, p.time_preview, p.time_start,p.time_stop, 
 		p.id, p.id_segnalazione, s.componenti, s.nome From segnalazioni.v_incarichi_interni_last_update p
-		left join users.v_squadre s ON s.id=p.id_squadra where id_stato_incarico < 3 ".$filter." ;";
+		left join users.v_squadre s ON s.id::text=p.id_squadra::text where id_stato_incarico < 3 ".$filter." ;";
     
    //echo $query;
 	$result = pg_query($conn, $query);

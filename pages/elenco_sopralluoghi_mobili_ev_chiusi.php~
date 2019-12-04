@@ -5,12 +5,20 @@ $subtitle="Elenco presidi mobili (eventi attivi o in chiusura)";
 
 $getfiltri=$_GET["f"];
 $filtro_evento_attivo=$_GET["a"];
-
+if(isset($_GET["from"])){
+	$filtro_from=$_GET["from"];
+}
+if(isset($_GET["to"])){
+	$filtro_to=$_GET["to"];
+}
 //echo $filtro_evento_attivo; 
 
 
 $uri=basename($_SERVER['REQUEST_URI']);
 //echo $uri;
+
+$pagina=basename($_SERVER['PHP_SELF']); 
+
 
 ?>
 <!DOCTYPE html>
@@ -60,7 +68,49 @@ require('./tables/filtri_segnalazioni.php');
             <br><br>
             <div class="row">
 
+<a class="btn btn-primary" data-toggle="collapse" href="#collapsedata" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fas fa-hourglass"></i>  Filtra per data
+         </a>
 
+		  
+
+
+<div class="collapse" id="collapsedata">
+          <div class="card card-body">
+         		  
+          <form id="filtro_data" action="./tables/decodifica_filtro_data.php" method="post">
+            <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>"/>
+			
+				<div class="form-check col-md-6">
+				<label for="startdate">Da (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="startdate" name="startdate" value="<?php echo str_replace("'", "", $filtro_from)?>">
+				<small id="sdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+				
+				
+				<div class="form-check col-md-6">
+				<label for="todate">A (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="todate" name="todate" value="<?php echo str_replace("'", "", $filtro_to)?>">
+				<small id="tdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+			
+			
+			<button id="checkBtn_filtri" type="submit" class="btn btn-primary"> 
+			<?php if ($getfiltri=='' or intval($getfiltri)==0) {?>
+				Filtra 
+			<?php } else {?>
+				Aggiorna filtro
+			<?php }?>
+			</button>
+			
+
+        </form>
+          </div>
+        </div>
+
+
+        <hr>
+        
 	
         <div id="toolbar">
             <select class="form-control">
@@ -71,7 +121,7 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi_mobili.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi_mobili_eventi_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -82,7 +132,8 @@ require('./tables/filtri_segnalazioni.php');
             <!--th data-field="state" data-checkbox="true"></th-->
             <th data-field="id_stato_sopralluogo" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th> 
             <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
-				<th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Squadra</th>
+			<th data-field="id_evento" data-sortable="true" data-visible="true" >Evento</th> 
+				<th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Ultima squadra</th>
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
             <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
             <th data-field="data_ora_invio" data-sortable="true"  data-visible="true">Data e ora<br>assegnazione</th>
@@ -106,11 +157,11 @@ require('./tables/filtri_segnalazioni.php');
 
  function presidiFormatter(value) {
         if (value==2){
-        		return '<i class="fas fa-play" style="color:#5cb85c"></i> Preso in carico';
+        		return '<i class="fas fa-play" title="Preso in carico" style="color:#5cb85c"></i>';
         } else if (value==3) {
-        	   return '<i class="fas fa-stop"></i> Chiuso';
+        	   return '<i class="fas fa-stop" title="Chiuso"></i>';
         } else if (value==1){
-        	   return '<i class="fas fa-exclamation" style="color:#ff0000"></i>Da prendere in carico';
+        	   return '<i class="fas fa-exclamation" title="Da prendere in carico" style="color:#ff0000"></i>';
         }
 
     }

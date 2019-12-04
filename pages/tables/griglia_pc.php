@@ -8,8 +8,41 @@ include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 $getfiltri=$_GET["f"];
 //echo $getfiltri;
 
-require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
-$filter=filtro($getfiltri);
+//require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
+//$filter=filtro($getfiltri);
+
+
+$filtro_from=$_GET["from"];
+$filtro_to=$_GET["to"];
+
+
+//require('./filtri_segnalazioni.php'); //contain the function filtro used in the following line
+//$filter=filtro($getfiltri);
+
+
+if (strlen($filtro_from)>=12 || strlen($filtro_to)>=12){
+		$check2=1;
+	}
+	
+	if ($check2==1) {
+		$filter = $filter . " AND (" ;
+	}
+	
+	if (strlen($filtro_from)>=12 ) {
+		$filter = $filter . " data_ora_invio > ".$filtro_from." ";
+	}
+	
+	if (strlen($filtro_from)>=12 && strlen($filtro_to)>=12) {
+		$filter = $filter . " AND " ;
+	}
+	
+	if (strlen($filtro_to)>=12) {
+		$filter = $filter . " data_ora_invio < ".$filtro_to." ";
+	}
+	
+	if ($check2==1){
+		$filter = $filter . ")" ;
+	}
 
 
 
@@ -19,11 +52,11 @@ if(!$conn) {
 	//$idcivico=$_GET["id"];
 	$query="SELECT id_evento, data_ora_invio, id_stato_provvedimenti_cautelari, descrizione_stato, 
 	tipo_provvedimento, oggetto, descrizione, note_ente, id, id_segnalazione, rimosso 
-	From segnalazioni.v_provvedimenti_cautelari_last_update ".$filter." ;";
+	From segnalazioni.v_provvedimenti_cautelari_last_update where id > 1 ".$filter." ;";
     
-   //echo $query;
+   //echo $query ."<br>";
 	$result = pg_query($conn, $query);
-	#echo $query;
+	//echo $query;
 	#exit;
 	$rows = array();
 	while($r = pg_fetch_assoc($result)) {

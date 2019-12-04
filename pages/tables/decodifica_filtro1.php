@@ -7,7 +7,7 @@ $filtro_evento_attivo=$_GET["a"];
 $filtro_municipio=$_GET["m"];
 $filtro_from=$_GET["from"];
 $filtro_to=$_GET["to"];
-
+$resp=$_GET["r"];
 
 $pagina=$_POST["pagina"];
 
@@ -31,7 +31,7 @@ while($r = pg_fetch_assoc($result)) {
 
 #echo $filter; 
 #exit;
-header("Location: ../".$pagina."?m=".$filter."&a=".$filtro_evento_attivo."&from=".$filtro_from."&to=".$filtro_to."&f=".$getfiltri."");
+header("Location: ../".$pagina."?r=".$resp."&m=".$filter."&a=".$filtro_evento_attivo."&from=".$filtro_from."&to=".$filtro_to."&f=".$getfiltri."");
 
 
 

@@ -1,16 +1,24 @@
 <?php 
 
-$subtitle="Elenco incarichi in corso (eventi attivi o in chiusura)";
+$subtitle="Elenco presidi in corso (eventi attivi o in chiusura)";
 
 
 $getfiltri=$_GET["f"];
 $filtro_evento_attivo=$_GET["a"];
-
-//echo $filtro_evento_attivo; 
+if(isset($_GET["from"])){
+	$filtro_from=$_GET["from"];
+}
+if(isset($_GET["to"])){
+	$filtro_to=$_GET["to"];
+}
+$resp=$_GET["r"];
+$uo=$_GET["u"];
 
 
 $uri=basename($_SERVER['REQUEST_URI']);
 //echo $uri;
+
+$pagina=basename($_SERVER['PHP_SELF']); 
 
 ?>
 <!DOCTYPE html>
@@ -61,6 +69,58 @@ require('./tables/filtri_segnalazioni.php');
             <div class="row">
 
 
+		<a class="btn btn-primary" data-toggle="collapse" href="#collapsedata" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fas fa-hourglass"></i>  Filtra per data
+         </a>
+         <?php if($resp!=''){?>
+			<a class="btn btn-primary" href="./<?php echo $pagina?>?u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-users"></i> Vedi tutti gli incarichi 
+            (non solo quelli di cui sei responsabile)
+          </a>
+			<?php } else {?>  
+           <a class="btn btn-primary" href="./<?php echo $pagina?>?r=<?php echo $profilo_ok?>&u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-user-check"></i> Vedi solo gli incarichi di cui sei responsabile
+          </a>
+		  <?php }?>
+		  
+
+
+		<div class="collapse" id="collapsedata">
+          <div class="card card-body">
+         		  
+          <form id="filtro_data" action="./tables/decodifica_filtro_inc.php?r=<?php echo $resp?>" method="post">
+            <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>"/>
+			
+				<div class="form-check col-md-6">
+				<label for="startdate">Da (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="startdate" name="startdate" value="<?php echo str_replace("'", "", $filtro_from)?>">
+				<small id="sdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+				
+				
+				<div class="form-check col-md-6">
+				<label for="todate">A (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="todate" name="todate" value="<?php echo str_replace("'", "", $filtro_to)?>">
+				<small id="tdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+			
+			
+			<button id="checkBtn_filtri" type="submit" class="btn btn-primary"> 
+			<?php if ($getfiltri=='' or intval($getfiltri)==0) {?>
+				Filtra 
+			<?php } else {?>
+				Aggiorna filtro
+			<?php }?>
+			</button>
+			
+
+        </form>
+          </div>
+        </div>
+
+
+        <hr>
+
 	
         <div id="toolbar">
             <select class="form-control">
@@ -71,7 +131,9 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pres" class="table-hover" data-toggle="table" data-url="./tables/griglia_sopralluoghi.php?r=<?php echo $resp;?>&u=<?php echo $uo;?>&from=<?php echo $filtro_from;?>&to=<?php echo $filtro_to;?>" 
+		data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" 
+		data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 
 
         
@@ -81,7 +143,9 @@ require('./tables/filtri_segnalazioni.php');
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="id_stato_sopralluogo" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th>
-            <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
+            <th data-field="id_profilo" data-sortable="true" data-formatter="presidiFormatter2" data-visible="true" >Resp</th>
+			<th data-field="data_ora_invio" data-sortable="true"  data-visible="true">Ora<br>assegnazione</th>
+			<!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
 			<!--th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th-->
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
             <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
@@ -126,7 +190,16 @@ function presidiFormatter(value) {
 
     }
 
+function presidiFormatter2(value,row) {
+        if (value=='<?php echo $profilo_ok;?>'){
+        	   return '<i class="fas fa-check" title="Il tuo profilo utente รจ responsabile di questo incarico" style="color:#5cb85c" ></i>';
+        } else {
+        	   return '-';
+        }
 
+    }
+	
+	
  function nameFormatter(value) {
         if (value=='t'){
         		return '<i class="fas fa-play" style="color:#5cb85c"></i>';

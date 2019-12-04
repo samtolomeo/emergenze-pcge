@@ -17,7 +17,9 @@ if(isset($_GET["from"])){
 if(isset($_GET["to"])){
 	$filtro_to=$_GET["to"];
 }
-
+if(isset($_GET["r"])){
+	$resp=$_GET["r"];
+}
 
 //echo $filtro_evento_attivo; 
 
@@ -88,14 +90,25 @@ require('./tables/filtri_segnalazioni.php');
             <i class="fas fa-hourglass"></i>  Filtra per data
           </a>
 			<?php if($filtro_evento_attivo==1){?>
-			<a class="btn btn-primary" href="./elenco_segnalazioni.php?&m=<?php echo $filtro_municipio?>&f=<?php echo $getfiltri?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+			<a class="btn btn-primary" href="./elenco_segnalazioni.php?r=<?php echo $resp;?>&m=<?php echo $filtro_municipio?>&f=<?php echo $getfiltri?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
             <i class="fas fa-play"></i> <i class="fas fa-pause"></i> Vedi tutti gli eventi (non solo gli attivi)
           </a>
 			<?php } else {?>  
-           <a class="btn btn-primary" href="./elenco_segnalazioni.php?a=1&m=<?php echo $filtro_municipio?>&f=<?php echo $getfiltri?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+           <a class="btn btn-primary" href="./elenco_segnalazioni.php?r=<?php echo $resp;?>&a=1&m=<?php echo $filtro_municipio?>&f=<?php echo $getfiltri?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
             <i class="fas fa-play"></i> Vedi solo eventi attivi
           </a>
 		  <?php }?> 
+		  
+		  <?php if($resp!=''){?>
+			<a class="btn btn-primary" href="./<?php echo $pagina?>?u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>&f=<?php echo $getfiltri?>&a=<?php echo $filtro_evento_attivo?>&m=<?php echo $filtro_municipio?>">
+            <i class="fas fa-users"></i> Vedi tutte le segnalazioni 
+            (non solo quelle di cui sei responsabile)
+          </a>
+			<?php } else {?>  
+           <a class="btn btn-primary" href="./<?php echo $pagina?>?r=<?php echo $profilo_ok?>&u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>&f=<?php echo $getfiltri?>&a=<?php echo $filtro_evento_attivo?>&m=<?php echo $filtro_municipio?>">
+            <i class="fas fa-user-check"></i> Vedi solo le segnalazioni di cui sei responsabile
+          </a>
+		  <?php }?>
         </p>
         
 		
@@ -105,7 +118,7 @@ require('./tables/filtri_segnalazioni.php');
 		<div class="collapse" id="collapsecriticita">
           <div class="card card-body">
          		  
-          <form id="filtro_cr" action="./tables/decodifica_filtro0.php?a=<?php echo $filtro_evento_attivo?>&from=<?php echo $filtro_from?>&to=<?php echo $filtro_to?>&m=<?php echo $filtro_municipio?>" method="post">
+          <form id="filtro_cr" action="./tables/decodifica_filtro0.php?r=<?php echo $resp;?>&a=<?php echo $filtro_evento_attivo?>&from=<?php echo $filtro_from?>&to=<?php echo $filtro_to?>&m=<?php echo $filtro_municipio?>" method="post">
             <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>" />
 			
 			<?php
@@ -144,7 +157,7 @@ require('./tables/filtri_segnalazioni.php');
 		<div class="collapse" id="collapsemunicipio">
           <div class="card card-body">
          		  
-          <form id="filtro_mun" action="./tables/decodifica_filtro1.php?a=<?php echo $filtro_evento_attivo?>&from=<?php echo $filtro_from?>&to=<?php echo $filtro_to?>&f=<?php echo $getfiltri?>" method="post">
+          <form id="filtro_mun" action="./tables/decodifica_filtro1.php?r=<?php echo $resp;?>&a=<?php echo $filtro_evento_attivo?>&from=<?php echo $filtro_from?>&to=<?php echo $filtro_to?>&f=<?php echo $getfiltri?>" method="post">
             <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>" />
 			<?php
             $query='SELECT * FROM geodb.municipi ORDER BY codice_mun;';
@@ -184,7 +197,7 @@ require('./tables/filtri_segnalazioni.php');
 		<div class="collapse" id="collapsedata">
           <div class="card card-body">
          		  
-          <form id="filtro_data" action="./tables/decodifica_filtro2.php?a=<?php echo $filtro_evento_attivo?>&m=<?php echo $filtro_municipio?>&f=<?php echo $getfiltri?>" method="post">
+          <form id="filtro_data" action="./tables/decodifica_filtro2.php?r=<?php echo $resp;?>&a=<?php echo $filtro_evento_attivo?>&m=<?php echo $filtro_municipio?>&f=<?php echo $getfiltri?>" method="post">
             <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>" />
 			
 				<div class="form-check col-md-6">
@@ -213,6 +226,7 @@ require('./tables/filtri_segnalazioni.php');
         </form>
           </div>
         </div>
+		
 		
 		
 		
@@ -255,9 +269,9 @@ require('./tables/filtri_segnalazioni.php');
 
       	<?php if ($filtro_evento_attivo == 1){
       	?>
-        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_attivi.php?f=<?php echo $getfiltri;?>&from=<?php echo $filtro_from; ?>&to=<?php echo $filtro_to;?>&m=<?php echo $filtro_municipio;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni_eventi_attivi.php?r=<?php echo $resp;?>&f=<?php echo $getfiltri;?>&from=<?php echo $filtro_from; ?>&to=<?php echo $filtro_to;?>&m=<?php echo $filtro_municipio;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
       	<?php } else { ?>
-        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni.php?f=<?php echo $getfiltri;?>&from=<?php echo $filtro_from; ?>&to=<?php echo $filtro_to;?>&m=<?php echo $filtro_municipio;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="segnalazioni" class="table-hover" data-toggle="table" data-url="./tables/griglia_segnalazioni.php?r=<?php echo $resp;?>&f=<?php echo $getfiltri;?>&from=<?php echo $filtro_from; ?>&to=<?php echo $filtro_to;?>&m=<?php echo $filtro_municipio;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
 			<?php } ?>
 
         

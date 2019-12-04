@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Elenco provvedimenti cautelari (eventi attivi o in chiusura)";
+$subtitle="Elenco incarichi chiusi";
 
 
 $getfiltri=$_GET["f"];
@@ -11,6 +11,8 @@ if(isset($_GET["from"])){
 if(isset($_GET["to"])){
 	$filtro_to=$_GET["to"];
 }
+$resp=$_GET["r"];
+$uo=$_GET["u"];
 //echo $filtro_evento_attivo; 
 
 
@@ -18,7 +20,6 @@ $uri=basename($_SERVER['REQUEST_URI']);
 //echo $uri;
 
 $pagina=basename($_SERVER['PHP_SELF']); 
-
 
 ?>
 <!DOCTYPE html>
@@ -68,17 +69,45 @@ require('./tables/filtri_segnalazioni.php');
             <br><br>
             <div class="row">
 
+
 <a class="btn btn-primary" data-toggle="collapse" href="#collapsedata" role="button" aria-expanded="false" aria-controls="collapseExample">
             <i class="fas fa-hourglass"></i>  Filtra per data
          </a>
-
+         <?php if($resp!=''){?>
+			<a class="btn btn-primary" href="<?php echo $pagina?>?u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-users"></i> Vedi tutti gli incarichi 
+            (non solo quelli di cui sei responsabile)
+          </a>
+			<?php } else {?>  
+           <a class="btn btn-primary" href="<?php echo $pagina?>?r=<?php echo $profilo_ok?>&u=<?php echo $uo?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-user-check"></i> Vedi solo gli incarichi di cui sei responsabile
+          </a>
+		  <?php }?>
 		  
-
+         <?php 
+         if (isset($periferico_inc)){
+         if($uo!=''){?>
+			<a class="btn btn-primary" href="<?php echo $pagina?>?r=<?php echo $resp?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-users"></i> Vedi anche gli incarichi assegnati ad altre Unità operative
+         </a>
+			<?php } else {?>  
+           <a class="btn btn-primary" href="<?php echo $pagina?>?r=<?php echo $resp?>&u=<?php echo $periferico_inc?>&to=<?php echo $filtro_to?>&from=<?php echo $filtro_from?>">
+            <i class="fas fa-user-check"></i> Vedi solo gli incarichi che sono assegnati alla tua Unità Operativa
+          </a>
+		  <?php 
+		  	}
+			}
+		  //echo $profilo_ok;
+		  //echo $periferico_inc;
+		  ?>		  
+		 
+		  
+		   
 
 <div class="collapse" id="collapsedata">
           <div class="card card-body">
          		  
-          <form id="filtro_data" action="./tables/decodifica_filtro_data.php" method="post">
+          <form id="filtro_data" action="./tables/decodifica_filtro_inc.php?" method="post">
             <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>"/>
 			
 				<div class="form-check col-md-6">
@@ -110,6 +139,7 @@ require('./tables/filtri_segnalazioni.php');
 
 
         <hr>
+
 	
         <div id="toolbar">
             <select class="form-control">
@@ -120,8 +150,8 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pc" class="table-hover" data-toggle="table" 
-        data-url="./tables/griglia_pc.php?from=<?php echo $filtro_from;?>&to=<?php echo $filtro_to;?>" 
+        <table  id="pres" class="table-hover" data-toggle="table" 
+        data-url="./tables/griglia_inc_ev_chiusi.php?r=<?php echo $resp;?>&u=<?php echo $uo;?>&from=<?php echo $filtro_from;?>&to=<?php echo $filtro_to;?>" 
         data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" 
         data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" 
         data-show-columns="true" data-toolbar="#toolbar">
@@ -130,23 +160,20 @@ require('./tables/filtri_segnalazioni.php');
         
         
 <thead>
-
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
-			<th data-field="id_evento" data-sortable="true" data-visible="true">Id<br>evento</th>
-			<th data-field="data_ora_invio" data-sortable="true" data-visible="true">Data<br>assegnazione</th>
-            <th data-field="id_stato_provvedimenti_cautelari" data-formatter="presidiFormatter"data-sortable="true" data-visible="true" >Stato</th> 
-            <th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th>
-			   <th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th>
+            <th data-field="id_stato_incarico" data-sortable="true" data-formatter="presidiFormatter" data-visible="true" >Stato</th>
+            <th data-field="id_profilo" data-sortable="true" data-formatter="presidiFormatter2" data-visible="true" >Resp</th>            
+            <!--th data-field="tipo_provvedimento" data-sortable="true" data-visible="true">Tipo</th-->
+			<!--th data-field="oggetto" data-sortable="true"  data-visible="true">Localizzazione</th-->
             <th data-field="descrizione" data-sortable="true"   data-visible="true">Descrizione</th>
-            <!--th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th-->
-            <!--th data-field="time_preview" data-sortable="true"  data-visible="true">Ora<br>prevista</th>
-            <th data-field="time_start" data-sortable="true"  data-visible="true">Ora<br>inizio</th>
-            <th data-field="time_stop" data-sortable="true"  data-visible="true">Ora<br>fine</th-->
-            <th data-field="note_ente" data-sortable="false" data-visible="true" >Note</th>
+            <th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
+			<th data-field="data_ora_invio" data-sortable="true"  data-visible="true">Ora<br>assegnazione</th>
+            <th data-field="time_stop" data-sortable="true"  data-visible="true">Ora<br>fine</th>
+            <th data-field="descrizione_uo" data-sortable="true"  data-visible="true">Referente<br>incarico</th>
+            <!--th data-field="note" data-sortable="false" data-visible="true" >Note</th-->
             <th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>            
 				<th data-field="id_segnalazione" data-sortable="false" data-formatter="nameFormatterEdit1" data-visible="true" >Segnalazione</th>
-    			<th data-field="rimosso" data-sortable="false" data-formatter="nameFormatterRem" data-visible="true" >Rimozione</th>            
     </tr>
 </thead>
 
@@ -155,7 +182,7 @@ require('./tables/filtri_segnalazioni.php');
 
 <script>
     // DA MODIFICARE NELLA PRIMA RIGA L'ID DELLA TABELLA VISUALIZZATA (in questo caso t_volontari)
-    var $table = $('#pc');
+    var $table = $('#pres');
     $(function () {
         $('#toolbar').find('select').change(function () {
             $table.bootstrapTable('destroy').bootstrapTable({
@@ -163,22 +190,36 @@ require('./tables/filtri_segnalazioni.php');
             });
         });
     })
-	
-	function presidiFormatter(value,row) {
+</script>
+
+<br><br>
+
+<script>
+
+function presidiFormatter(value,row) {
         if (value==2){
         		return '<i class="fas fa-play" title="'+row.descrizione_stato+'" style="color:#5cb85c"></i>';
         } else if (value==3) {
         	   return '<i class="fas fa-check" title="'+row.descrizione_stato+'" style="color:#5cb85c" ></i>';
         } else if (value==1){
         	   return '<i class="fas fa-exclamation" title="'+row.descrizione_stato+'" style="color:#ff0000"></i>';
+        } else if (value==4){
+        	   return '<i class="fas fa-times" title="'+row.descrizione_stato+'" style="color:#ff0000"></i>';
+        } else {
+        	   return '<i class="fas fa-question" title="'+row.descrizione_stato+'" style="color:#ff0000"></i>';
         }
 
     }
-</script>
 
-<br><br>
 
-<script>
+function presidiFormatter2(value,row) {
+        if (value=='<?php echo $profilo_ok;?>'){
+        	   return '<i class="fas fa-check" title="Il tuo profilo utente è responsabile di questo incarico" style="color:#5cb85c" ></i>';
+        } else {
+        	   return '-';
+        }
+
+    }
 
 
  function nameFormatter(value) {
@@ -192,50 +233,9 @@ require('./tables/filtri_segnalazioni.php');
 
     }
 
-
-
-function nameFormatterRem(value,row) {
-        if (value=='t'){
-        		return '<i class="fas fa-times" title="Provvedimento rimosso" style="color:red"></i>';
-        } else {
-        	   return '-';
-		}
-        }
-
-function nameFormatterRemtemp(value,row) {
-        if (value=='t'){
-        		return '<i class="fas fa-times" title="Provvedimento rimosso" style="color:red"></i>';
-        } else if (row.id_stato_provvedimenti_cautelari==3) {
-        	   return' <button type="button" class="btn btn-danger" data-toggle="modal" title="rimozione PC" data-target="#rimuovi'+row.id+'"><i class="fas fa-times"></i></button> \
-    <div class="modal fade" id="rimuovi'+row.id+'" role="dialog"> \
-    <div class="modal-dialog"> \
-      <div class="modal-content">\
-        <div class="modal-header">\
-          <button type="button" class="close" data-dismiss="modal">&times;</button>\
-          <h4 class="modal-title">Conferma rimozione provvedimento cautelare '+row.id+'</h4>\
-        </div>\
-        <div class="modal-body">\
-        Confermi di voler rimuovere il presente Provvedimento Cautelare? <br> Ricorda che per \
-		  rimuovere un provvedimento cautelare è necessaria una nuova ordinanza sindacale.<hr>\
-			<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id='+row.id+'" method="POST">\
-				<button  id="conferma" type="submit" class="btn btn-primary">Rimuovi provvedimento cautelare</button>\
-			</form>\
-        </div>\
-        <!--div class="modal-footer">\
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
-        </div-->\
-      </div>\
-    </div>\
-  </div>\
-</div>';
-		}
-        }
-
-
-
  function nameFormatterEdit(value) {
         
-		return '<a class="btn btn-warning" href=./dettagli_provvedimento_cautelare.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+		return '<a class="btn btn-warning" href=./dettagli_incarico.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
  
     }
 

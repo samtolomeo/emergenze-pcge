@@ -6,11 +6,20 @@ $subtitle="Elenco provvedimenti cautelari (eventi chiusi)";
 $getfiltri=$_GET["f"];
 $filtro_evento_attivo=$_GET["a"];
 
+if(isset($_GET["from"])){
+	$filtro_from=$_GET["from"];
+}
+if(isset($_GET["to"])){
+	$filtro_to=$_GET["to"];
+}
 //echo $filtro_evento_attivo; 
 
 
 $uri=basename($_SERVER['REQUEST_URI']);
 //echo $uri;
+
+$pagina=basename($_SERVER['PHP_SELF']); 
+
 
 ?>
 <!DOCTYPE html>
@@ -60,6 +69,48 @@ require('./tables/filtri_segnalazioni.php');
             <br><br>
             <div class="row">
 
+<a class="btn btn-primary" data-toggle="collapse" href="#collapsedata" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fas fa-hourglass"></i>  Filtra per data
+         </a>
+
+		  
+
+
+<div class="collapse" id="collapsedata">
+          <div class="card card-body">
+         		  
+          <form id="filtro_data" action="./tables/decodifica_filtro_data.php" method="post">
+            <input type="hidden" name="pagina" id="hiddenField" value="<?php echo $pagina; ?>"/>
+			
+				<div class="form-check col-md-6">
+				<label for="startdate">Da (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="startdate" name="startdate" value="<?php echo str_replace("'", "", $filtro_from)?>">
+				<small id="sdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+				
+				
+				<div class="form-check col-md-6">
+				<label for="todate">A (AAAA/MM/GG HH:MM):</label>
+				<input type="text" class="form-control" id="todate" name="todate" value="<?php echo str_replace("'", "", $filtro_to)?>">
+				<small id="tdateHelp" class="form-text text-muted"> Inserire la data e l'ora (opzionale)</small>
+				</div>
+			
+			
+			<button id="checkBtn_filtri" type="submit" class="btn btn-primary"> 
+			<?php if ($getfiltri=='' or intval($getfiltri)==0) {?>
+				Filtra 
+			<?php } else {?>
+				Aggiorna filtro
+			<?php }?>
+			</button>
+			
+
+        </form>
+          </div>
+        </div>
+
+
+        <hr>
 
 	
         <div id="toolbar">
@@ -71,7 +122,11 @@ require('./tables/filtri_segnalazioni.php');
         </div>
         
 
-        <table  id="pc" class="table-hover" data-toggle="table" data-url="./tables/griglia_pc_ev_chiusi.php?f=<?php echo $getfiltri;?>" data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <table  id="pc" class="table-hover" data-toggle="table" 
+        data-url="./tables/griglia_pc_ev_chiusi.php?from=<?php echo $filtro_from;?>&to=<?php echo $filtro_to;?>" 
+        data-height="900" data-show-export="true" data-search="true" data-click-to-select="true" 
+        data-pagination="true" data-sidePagination="true" data-show-refresh="true" data-show-toggle="true" 
+        data-show-columns="true" data-toolbar="#toolbar">
 
 
         
