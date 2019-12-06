@@ -1046,7 +1046,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						if($check_lav==0){
 						// controllo se ci sono altre segnalazioni sullo stesso civico
 						$check_civico=0;
-						$query_civico="SELECT * FROM segnalazioni.".$table." where id_civico=".$r['id_civico']." and id !=".$id." and id_evento=".$r['id_evento'].";";
+						$query_civico="SELECT * FROM segnalazioni.".$table." where id_civico=".$r['id_civico']." and id !=".$id." and id_evento=".$r['id_evento']." and in_lavorazione='t';";
+						//echo $query_civico . "<br>";
 						$result_civico=pg_query($conn, $query_civico);
 								while($r_civico = pg_fetch_assoc($result_civico)) {
 									$check_civico=1;
@@ -1103,7 +1104,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<?php	
 								}
 						 if($check_civico==0 and $r['id_civico']!=''){
-						 	echo "Non ci sono altre segnalazioni in corrispondenza dello stesso civico.<br><br>";
+						 	echo "Non ci sono altre segnalazioni aperte in corrispondenza dello stesso civico.<br><br>";
 						 }
 						 ?>
 						 
@@ -1114,9 +1115,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$geom_s=$r['geom'];
 						$id_evento_s=$r['id_evento'];
 						if ($r['id_civico']!=''){
-							$query_vic="SELECT * FROM segnalazioni.".$table." where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and (id_civico!=".$r['id_civico']." or id_civico is null) and id !=".$id.";";
+							$query_vic="SELECT * FROM segnalazioni.".$table." where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and (id_civico!=".$r['id_civico']." or id_civico is null) and id !=".$id." and in_lavorazione='t';";
 						} else {
-							$query_vic="SELECT * FROM segnalazioni.".$table." where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and id !=".$id.";";
+							$query_vic="SELECT * FROM segnalazioni.".$table." where st_distance(st_transform('".$r['geom']."'::geometry(point,4326),3003),st_transform(geom,3003))< 200 and id_evento=".$r['id_evento']." and id !=".$id." and in_lavorazione='t';";
 						}
 						//echo $query_vic."<br>";
 						$result_vic=pg_query($conn, $query_vic);
@@ -1176,7 +1177,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								}
 								
 						 if($check_vic==0){
-						 	echo "Non ci sono altre segnalazioni nelle vicinanze.<br><br>";
+						 	echo "Non ci sono altre segnalazioni aperte nelle vicinanze.<br><br>";
 						 }
 						 ?>
 						
