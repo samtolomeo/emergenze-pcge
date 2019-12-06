@@ -206,8 +206,10 @@ if ($descrizione_oggetto_rischio=='Civici'){
 					while($r_pc = pg_fetch_assoc($result_pc)) {
 						$check_pc=1;
 						echo "Provvedimento cautelare già in corso o effettuato";
-						//echo $r_pc['id_stato_provvedimenti_cautelari'];
-						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1 && basename($_SERVER['PHP_SELF']) == 'dettagli_segnalazione.php'){
+						//echo "<br>". basename($_SERVER['PHP_SELF']). "<br>";
+						//echo $r_pc['id_stato_provvedimenti_cautelari'] . "<br>";
+						//echo $check_operatore . "<br>";
+						if ($r_pc['id_stato_provvedimenti_cautelari']==3 && $check_operatore==1 && (basename($_SERVER['PHP_SELF']) == 'dettagli_segnalazione.php' || trim(basename($_SERVER['PHP_SELF'])) == 'dettagli_provvedimento_cautelare.php' )){
 							echo'<h5> Se la situazione fosse tornata normale, <b>in presenza di una nuova ordinanza sindacale</b>, 
 								è possibile rimuovere il provvedimento cautelare. <br><br>';
 								echo 'Prima di tutto è necessario  assegnare uno o più incarichi per ripristinare la situazione.';
@@ -535,41 +537,26 @@ if ($descrizione_oggetto_rischio=='Civici'){
 			<input type="hidden" name="nome_campo_id_oggetto_rischio" id="hiddenField" value="<?php echo $nome_campo_id_oggetto_rischio; ?>" />
 			<input type="hidden" name="id_oggetto_rischio" id="hiddenField" value="<?php echo $id_oggetto_rischio; ?>" />
 			<input type="hidden" name="id_profilo" id="hiddenField" value="<?php echo $profilo_sistema ?>" />
-	
-			<div class="form-group">
-			 <label for="tipo">Tipologia di incarico:</label> <font color="red">*</font>
-				<select class="form-control" name="tipo" id="tipo" onChange="getUO2(this.value);"  required="">
-				   <option name="tipo" value="" >  </option>
-				<option name="tipo" value="direzioni" > Incarico a Direzioni (COC) </option>
-				<option name="tipo" value="municipi" > Incarico a municipi </option>
-				<option name="tipo" value="distretti" > Incarico a distretti di PM </option>
-				<!--option name="tipo" value="esterni" > Incarico a Unità Operative esterne. </option-->
-			</select>
-			</div>
-				 
-							 <script>
-				function getUO2(val) {
-					$.ajax({
-					type: "POST",
-					url: "get_uo.php",
-					data:'cod='+val,
-					success: function(data){
-						$("#uo-list-pc").html(data);
-					}
-					});
-				}
-
-				</script>
-
-				 
-				 
-				<div class="form-group">
-				  <label for="id_uo_pc">Seleziona l'Unità Operativa cui assegnare l'incarico:</label> <font color="red">*</font>
-					<select class="form-control" name="uo" id="uo-list-pc" class="demoInputBox" required="">
+			
+			
+			<?php
+			$query3="SELECT * FROM users.tipo_origine_provvedimenti_cautelari";
+			$result3 = pg_query($conn, $query3);
+			?>
+			 <div class="form-group">
+				  <label for="id_uo_pc">Seleziona l'Unità Operativa che ha inviato il Provvedimento:</label> <font color="red">*</font>
+					<select class="form-control" name="uo" id="uo" required="">
 					<option value=""> ...</option>
+					<?php    
+				while($r3 = pg_fetch_assoc($result3)) { 
+					$valore=  $r3['id']. ";".$r3['descrizione'];            
+				?>
+							
+						<option id="tipo_pc" name="tipo_pc" value="<?php echo $r3['id'];?>" ><?php echo $r3['descrizione'];?></option>
+				 <?php } ?>
+			</select>
 				</select>         
-				 </div>     
-				
+				 </div>	
 			
 			
 			
@@ -633,23 +620,23 @@ if ($descrizione_oggetto_rischio=='Civici'){
 			
 	
 			<?php
-			$query2="SELECT * FROM users.v_squadre WHERE id_stato=2 ORDER BY nome ";
-			$result2 = pg_query($conn, $query2);
+			$query3="SELECT * FROM users.tipo_origine_provvedimenti_cautelari";
+			$result3 = pg_query($conn, $query3);
 			?>
-			<div class="form-group">
-			  <label for="id_civico">Seleziona squadra:</label> <font color="red">*</font>
-				<select class="form-control" name="uo" id="uo-list" class="demoInputBox" required="">
-				<option  id="uo" name="uo" value="">Seleziona la squadra</option>
-				<?php    
-				while($r2 = pg_fetch_assoc($result2)) { 
-					$valore=  $r2['id']. ";".$r2['nome'];            
+			 <div class="form-group">
+				  <label for="id_uo_pc">Seleziona l'Unità Operativa che ha inviato il Provvedimento:</label> <font color="red">*</font>
+					<select class="form-control" name="uo" id="uo" required="">
+					<option value=""> ...</option>
+					<?php    
+				while($r3 = pg_fetch_assoc($result3)) { 
+					$valore=  $r3['id']. ";".$r3['descrizione'];            
 				?>
 							
-						<option id="uo" name="uo" value="<?php echo $r2['id'];?>" ><?php echo $r2['nome'].' ('.$r2['id'].')';?></option>
+						<option id="tipo_pc" name="tipo_pc" value="<?php echo $r3['id'];?>" ><?php echo $r3['descrizione'];?></option>
 				 <?php } ?>
 			</select>
-			<small> Se non trovi una squadra adatta vai alla <a href="gestione_squadre.php" >gestione squadre</a>. </small>
-			 </div>       
+				</select>         
+				 </div>	
 			
 			
 			
