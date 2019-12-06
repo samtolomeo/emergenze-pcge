@@ -237,7 +237,7 @@ require('./tables/filtri_segnalazioni.php');
 			if (filtro2($getfiltri, $filtro_municipio, $filtro_from, $filtro_to)[1]>0 or filtro2($getfiltri, $filtro_municipio, $filtro_from, $filtro_to)[2]>0 or $filtro_evento_attivo!='') {
 			    echo '<i class="fas fa-filter"></i> I dati visualizzati sono filtrati';
 				if (filtro2($getfiltri, $filtro_municipio, $filtro_from, $filtro_to)[1]>0){
-					echo ' per criticità '.filtro2($getfiltri, $filtro_municipio)[3].',';
+					echo ' per criticità '.filtro2($getfiltri, $filtro_municipio, $filtro_from, $filtro_to)[3].',';
 				}
 				if (filtro2($getfiltri, $filtro_municipio, $filtro_from, $filtro_to)[2]>0){
 					echo ' per municipio '.filtro2($getfiltri, $filtro_municipio, $filtro_from, $filtro_to)[4].',';
