@@ -399,9 +399,9 @@ while($r = pg_fetch_assoc($result)) {
 		$f_mun= ' and id_municipio = '.$profilo_cod_munic.' ';
 	}
 	if(isset($f_mun)){
-		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. ";";
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. " AND fine_sospensione > ".$now_time." ;";
 	} else {
-		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null;";
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null AND fine_sospensione > ".$now_time." ;";
 	}
 	$id_segn_limbo=array();
 	$result = pg_query($conn, $query);
@@ -417,7 +417,8 @@ while($r = pg_fetch_assoc($result)) {
 		$query="SELECT s.id 
 					FROM segnalazioni.t_segnalazioni s
 					JOIN segnalazioni.join_segnalazioni_in_lavorazione l ON s.id=l.id_segnalazione
-					WHERE sospeso='t';";
+					JOIN eventi.t_eventi e ON e.id = s.id_evento
+					WHERE sospeso='t' AND fine_sospensione > ".$now_time.";";
 		$result = pg_query($conn, $query);
 		while($r = pg_fetch_assoc($result)) {
 			$id_segn_limbo_municipi[] = $r['id'];
