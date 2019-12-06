@@ -45,6 +45,45 @@ $result=pg_query($conn, $query);
 
 
 
+$query= "SELECT id_profilo, max(id_segnalazione) as id_segn FROM segnalazioni.v_incarichi WHERE id = ".$id." group by id_profilo;";
+$result=pg_query($conn, $query);
+
+while($r = pg_fetch_assoc($result)) {
+	$id_profilo=$r['id_profilo'];
+	$id_segnalazione=$r['id_segn'];
+}
+
+
+require('../token_telegram.php');
+
+require('../send_message_telegram.php');
+
+
+if ($id_profilo == '3'){
+	$query_telegram="SELECT telegram_id from users.utenti_sistema where id_profilo <= 3 and telegram_id !='' and telegram_attivo='t';";
+} else {
+	$query_telegram="SELECT telegram_id from users.utenti_sistema where id_profilo = '".$id_profilo."' and telegram_id !='' and telegram_attivo='t';";
+}
+echo $query_telegram;
+echo "<br>";
+
+// https://apps.timwhitlock.info/emoji/tables/unicode
+// \xE2\x9A\xA0 warning
+// \xE2\x80\xBC punti esclamativi
+
+$messaggio="\xE2\x9A\xA0 L'incarico assegnato sulla segnalazione con id = ".$id_segnalazione.", è stato rifiutato con le seguenti note: ";
+$messaggio= $messaggio ." \xE2\x84\xB9 ".$note_rifiuto."";
+
+
+echo $messaggio;
+echo "<br>";
+$result_telegram = pg_query($conn, $query_telegram);
+while($r_telegram = pg_fetch_assoc($result_telegram)) {
+	//echo $r_telegram['telegram_id'];
+	//$chat_id = $r_telegram['telegram_id'];
+	sendMessage($r_telegram['telegram_id'], $messaggio , $token);
+}
+
 
 
 

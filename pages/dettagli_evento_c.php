@@ -1,4 +1,4 @@
-Fasi<?php 
+<?php 
 
 $subtitle="Dettagli eventi in chiusura"
 
