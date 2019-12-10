@@ -107,6 +107,15 @@ $result=pg_query($conn, $query);
 
 
 
+$query= "INSERT INTO segnalazioni.join_incarichi_interni_squadra (id_incarico,id_squadra ";
+$query=$query.") VALUES (".$id_incarico.",".$uo.");";
+//echo $query;
+//exit;
+$result=pg_query($conn, $query);
+
+
+
+
 $query= "INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(	id_segnalazione_in_lavorazione, log_aggiornamento";
 
 //values
@@ -189,11 +198,16 @@ $mail->Subject = 'Urgente - Nuovo incarico interno assegnato tramite il Sistema 
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->Body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo incarico interno alla squadra di tua appartenenza 
+$body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo incarico interno alla squadra di tua appartenenza 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
  con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico_interno.php?id='.$id_incarico.'" > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
  <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
  Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it ';
+
+  
+require('../informativa_privacy_mail.php');
+
+$mail-> Body=$body ;
 
 
 //$mail->Body =  'Corpo del messaggio';
@@ -210,11 +224,12 @@ if (!$mail->send()) {
 	?>
 	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
-	echo '<br>L\'incarico &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+	//echo '<br>L\'incarico &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
+   echo '<div style="text-align: center;"><img src="../../img/no_mail.png" width="75%" alt=""></div>';
+   echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
 	echo '<a href="../dettagli_segnalazione.php?id='.$segn.'">link</a> per saltare l\'attesa.</h3>' ;
 	//sleep(30);
-    header("refresh:15;url=../dettagli_segnalazione.php?id=".$segn);
+    header("refresh:12;url=../dettagli_segnalazione.php?id=".$segn);
 } else {
     echo "Message sent!";
 	header("location: ../dettagli_segnalazione.php?id=".$segn);

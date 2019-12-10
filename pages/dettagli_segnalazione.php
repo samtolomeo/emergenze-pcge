@@ -1287,7 +1287,12 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								$zoom_plus=$zoom+1;
 								echo ' - <a href="sposta_segnalazione.php?id='.$id.'&lat='.$lat.'&lon='.$lon.'&z='.$zoom_plus.'" class="btn btn-info noprint">
 								<i class="fas fa-map-marker-alt"></i> Sposta segnalazione</a>';
-							}
+						} else {
+							echo "E' possibile spostare le segnalazioni di cui si è responsabile a
+							meno che: <ul>
+							<li> non ci siano elementi a rischio / provvedimenti cautelari associati </li>
+							<li> non ci siano altre segnalazioni congiunte nelle vicinanze </li></ul>";
+						}
 						?>
 						</h4>
 						<!--div id="map_dettaglio" style="width: 100%; padding-top: 100%;"></div-->
