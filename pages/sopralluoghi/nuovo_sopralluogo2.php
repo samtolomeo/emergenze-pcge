@@ -284,11 +284,12 @@ if (!$mail->send()) {
 	?>
 	<!--script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script-->
 	<?php
-	echo '<br>Il presidio &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
-	echo '<a href="../dettagli_sopralluogo.php?id='.$id_sopralluogo.'">link</a> per saltare l\'attesa.</h3>' ;
+	//echo '<br>Il presidio &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
+	echo '<div style="text-align: center;"><img src="../../img/no_mail.png" width="75%" alt=""></div>';
+	echo '<br><h1>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+	echo '<a href="../dettagli_sopralluogo.php?id='.$id_sopralluogo.'">link</a> per saltare l\'attesa.</h1>' ;
 	//sleep(30);
-    header("refresh:15;url=../dettagli_sopralluogo.php?id=".$id_sopralluogo);
+    header("refresh:12;url=../dettagli_sopralluogo.php?id=".$id_sopralluogo);
 } else {
     echo "Message sent!";
 	header("location: ../dettagli_sopralluogo.php?id=".$id_sopralluogo);

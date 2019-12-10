@@ -62,7 +62,10 @@ if($check_or==1) {
 	
 } else if ($check_or==0 ) {
 	echo "<h4> <i class=\"fas fa-exclamation-triangle\"></i> Nessun oggetto a rischio segnalato.</h4>";
-	if ($check_lav>=0 and $check_operatore == 1){
+	if ($check_lav==0){
+		echo "Sarà possibile aggiungere elementi a rischio solo una volta presa in carico la segnalazione.<br>";
+	} 
+	if ($check_lav>0 and $check_operatore == 1){
 	
 	if (basename($_SERVER['PHP_SELF'])=='dettagli_segnalazione.php') {
 	?>
@@ -225,7 +228,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								 
 							<button type="button" class="btn btn-danger noprint"  data-toggle="modal" 
 							data-target="#rimuovi_pc_civico">
-							<i class="fas fa-times"></i> Rimuovi PC</button>';
+							<i class="fas fa-times"></i> Revoca Provvedimento Cautelare </button>';
 							
 							
 							?>
@@ -379,7 +382,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								 
 							<button type="button" class="btn btn-danger noprint"  data-toggle="modal" 
 							data-target="#rimuovi_pc_edificio">
-							<i class="fas fa-times"></i> Rimuovi PC</button>';
+							<i class="fas fa-times"></i> Revoca Provvedimento Cautelare </button>';
 							
 							
 							?>
@@ -456,7 +459,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								 
 							<button type="button" class="btn btn-danger"  data-toggle="modal" 
 							data-target="#rimuovi_pc_sottopasso">
-							<i class="fas fa-times"></i> Rimuovi PC</button>';
+							<i class="fas fa-times"></i> Revoca Provvedimento Cautelare </button>';
 							
 							
 							?>

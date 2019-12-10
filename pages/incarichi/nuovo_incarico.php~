@@ -143,6 +143,31 @@ $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('seg
 $result = pg_query($conn, $query_log);
 
 
+//**********************************************************
+// telegram
+
+/*
+require('../token_telegram.php');
+
+require('../send_message_telegram.php');
+
+
+$query_telegram="SELECT telegram_id from users.utenti_sistema where telegram_id !='' and telegram_attivo='t';";
+echo $query_telegram;
+echo "<br>";
+$messaggio="E ' stato creato un nuovo evento, consultare il programma ".$link." ";
+echo $messaggio;
+echo "<br>";
+$result_telegram = pg_query($conn, $query_telegram);
+while($r_telegram = pg_fetch_assoc($result_telegram)) {
+	sendMessage($r_telegram['telegram_id'], $messaggio , $token);
+}
+
+*/
+
+
+
+//**********************************************************
 
 
 //$idfascicolo=str_replace('A','',$idfascicolo);
@@ -207,11 +232,11 @@ $mail->Subject = 'Urgente - Nuovo incarico dalla Protezione Civile del Comune di
 //$mail->Subject = 'PHPMailer SMTP without auth test';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$body =  'Hai ricevuto questo messaggio in quanto è stato assegnato un nuovo incarico alla seguente Unità  operativa 
+$body =  'Hai ricevuto questo messaggio in quanto è¡³tato assegnato un nuovo incarico alla seguente Unità  operativa 
  '.$uo_descrizione.'. <br> Ti preghiamo di non rispondere a questa mail, ma di visualizzare i dettagli dell\'incarico accedendo 
- con le tue credenziali al nuovo <a href="http://192.168.153.110/emergenze/pages/dettagli_incarico.php?id='.$id_incarico.'" " > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
- <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è registrato a sistema. 
- Per modificare queste impostazioni è possibile inviare una mail a salaemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
+ con le tue credenziali al nuovo <a href="https://emergenze.comune.genova.it/emergenze/pages/dettagli_incarico.php?id='.$id_incarico.'" " > Sistema di Gestione delle Emergenze </a> del Comune di Genova.
+ <br> <br> Protezione Civile del Comune di Genova. <br><br>--<br> Ricevi questa mail  in quanto il tuo indirizzo mail è¡²egistrato a sistema. 
+ Per modificare queste impostazioni è¡°ossibile inviare una mail a salaemergenzepc@comune.genova.it inoltrando il presente messaggio. Ti ringraziamo per la preziosa collaborazione.';
 
 
   
@@ -230,10 +255,10 @@ $mail->AltBody = 'This is a plain-text message body';
 //echo "<br>OK 2<br>";
 if (!$mail->send()) {
     //echo "<h3>Problema nell'invio della mail: " . $mail->ErrorInfo;
-    echo "<h3>Problema nell'invio della mail";
-
+   echo "<h3>Problema nell'invio della mail";
+   echo '<div style="text-align: center;"><img src="../../img/no_mail.png" width="75%" alt=""></div>';
 	echo '<br>L\'incarico &egrave stato correttamente assegnato, ma si &egrave riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+	echo '<br><h1>Entro 15" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente </h1>';
 	
 	if ($id!=''){
     	echo '<a href="../dettagli_segnalazione.php?id='.$segn.'">link</a> per saltare l\'attesa.</h3>' ;
@@ -243,16 +268,16 @@ if (!$mail->send()) {
 	
 	//sleep(30);
 	if ($id!=''){
-    	header("refresh:1;url=../dettagli_segnalazione.php?id=".$segn);
+    	header("refresh:12;url=../dettagli_segnalazione.php?id=".$segn);
     } else {
-    	header("refresh:1;url=../dettagli_provvedimento_cautelare.php?id=".$id_pc);
+    	header("refresh:12;url=../dettagli_provvedimento_cautelare.php?id=".$id_pc);
     }
 } else {
     echo "Message sent!";
 	if ($id!=''){
-    	header("url=../dettagli_segnalazione.php?id=".$segn);
+    	header("location:../dettagli_segnalazione.php?id=".$segn);
     } else {
-    	header("url=../dettagli_provvedimento_cautelare.php?id=".$id_pc);
+    	header("location:../dettagli_provvedimento_cautelare.php?id=".$id_pc);
     }
 }
 

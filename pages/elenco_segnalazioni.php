@@ -319,7 +319,7 @@ require('./tables/filtri_segnalazioni.php');
     
  function nameFormatterEdit(value) {
         
-		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> '+value+' </a>';
  
     }
 

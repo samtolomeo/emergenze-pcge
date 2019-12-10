@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Elenco segnalazioni pervenute (eventi attivi e/o in fase di chiusura)";
+$subtitle="Elenco segnalazioni pervenute (eventi chiusi)";
 
 
 $getfiltri=$_GET["f"];
@@ -269,7 +269,7 @@ require('./tables/filtri_segnalazioni.php');
 	
 		<th data-field="state" data-checkbox="true"></th>
 		<th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>
-		<th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Stato</th> 
+		<!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Stato</th--> 
 		<th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
 		<th data-field="criticita" data-sortable="true"   data-visible="true">Tipo<br>criticità</th>
 		<th data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
@@ -279,7 +279,7 @@ require('./tables/filtri_segnalazioni.php');
 		<th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>
 		<th data-field="note" data-sortable="false" data-visible="true" >Note</th>
 		<th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
-		<th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th>
+		<!--th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th-->
 	
 	
 	
@@ -333,7 +333,7 @@ require('./tables/filtri_segnalazioni.php');
     
  function nameFormatterEdit(value) {
         
-		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> <i class="fas fa-edit"></i> </a>';
+		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> '+value+' </a>';
  
     }
 

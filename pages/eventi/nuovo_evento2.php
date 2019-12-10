@@ -96,7 +96,7 @@ echo "<br>";
 // \xE2\x9A\xA0 warning
 // \xE2\x80\xBC punti esclamativi
 
-$messaggio="\xE2\x9A\xA0 \xF0\x9F\x86\x95 E' stato creato un nuovo evento di tipo ".$descrizione_tipo.", consultare il programma ".$link." ";
+$messaggio="\xE2\x9A\xA0 \xF0\x9F\x86\x95 E' stato creato un nuovo evento di tipo ".$descrizione_tipo." (id=".$new_id."), consultare il programma ".$link." ";
 if ($notifiche =='f'){
 	$messaggio= $messaggio ." (\xE2\x84\xB9 ricevi questo messaggio in quanto operatore di Protezione Civile \xE2\x84\xB9)";
 }
@@ -172,7 +172,7 @@ if ($notifiche =='t') {
 	//$mail->Subject = 'PHPMailer SMTP without auth test';
 	//Read an HTML message body from an external file, convert referenced images to embedded,
 	//convert HTML into a basic plain-text alternative body
-	$body =  'La tua unit&agrave operativa ha ricevuto questo messaggio automaticamente in quanto &egrave stato creato un nuovo evento da parte 
+	$body =  'La tua unit&agrave operativa ha ricevuto questo messaggio automaticamente in quanto &egrave stato creato un nuovo evento di tipo '.$descrizione_tipo.' (id='.$new_id.') da parte 
 	della Protezione Civile. <br>
 	 Ti preghiamo di non rispondere a questa mail, ma di avvisare chi di dovere perch&egrave il sistema venga mantenuto sotto controllo.  <br>
 	 Per accedere al nuovo <a href="https;//emergenze.comune.genova.it/pages/index.php" > Sistema di Gestione delle Emergenze </a> del Comune di Genova &egrave necessaria
