@@ -42,8 +42,10 @@
                         <li>
                             <a href="#"><i class="fa fa-stream fa-fw"></i> Gestione eventi<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                            		<li>
+                            	  <li>
+                            	  <?php if ($profilo_ok==3){ ?>
                                     <a href="nuovo_evento.php"><i class="fas fa-plus"></i> Crea nuovo evento</a>
+                                <?php } ?>
                                 </li>
                                 <li>
                                     <a href="dettagli_evento.php"><i class="fas fa-info"></i> Dettagli eventi in corso</a>
@@ -177,12 +179,14 @@
                         <li>
                             <a href="#"><i class="fas fa-pencil-ruler"></i> Presidi <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                            <?php if ($profilo_ok==3 or ($profilo_sistema==8 and $uo_inc=='uo_1')){ ?>
                             		<li>
                                     <a href="nuovo_sopralluogo.php">Nuovo presidio fisso</a>
                                 </li>
                                 <li>
                                     <a href="nuovo_sopralluogo_mobile.php">Nuovo presidio mobile</a>
                                 </li>
+                            <?php } ?>
                                 <li>
                                     <a href="elenco_sopralluoghi.php">Elenco presidi fissi attivi</a>
                                 </li>
@@ -202,6 +206,7 @@
                         <li>
                             <a href="#"><i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                            <?php if ($profilo_ok==3){ ?>
                             		<li>
                                     <a href="nuovo_pc_sgombero.php">Sgombero civici</a>
                                 </li>
@@ -211,6 +216,7 @@
 								<li>
                                     <a href="nuovo_pc_strada.php">Chiusura strada</a>
                                 </li>
+                        <?php } ?>
 								<li>
                                     <a href="elenco_pc.php">Elenco provvedimenti cautelari (eventi aperti)</a>
                                 </li>

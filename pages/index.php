@@ -176,13 +176,51 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 </table>
 
 </section>
+
+            </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                  </div>
+
+
+<div id="segn_sintesi2" >
+					<div  class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-list fa-fw" ></i> Sintesi segnalazioni aperte
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Altro
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li class="divider"></li>
+                                        <li><a href="elenco_segnalazioni.php">Vai all'elenco completo delle segnalazioni</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div >
+
+
 <?php
  if ($profilo_ok==3){
 ?>
 
 <section id="segn_limbo2_table">   
-<hr>
-<h4>Segnalazioni provenienti dai municipi</h4>
+<!--hr-->
+<h4>Segnalazioni in carico provenienti dai municipi</h4>
 <table  id="segnalazioni" class="table table-condensed" 
 style="vertical-align: middle;" data-toggle="table" 
 data-url="./tables/griglia_segnalazioni_mun_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
@@ -268,42 +306,9 @@ function nameFormatterMappa1(value, row) {
 <?php
  }
 ?>
-            </div>
-                                    <!-- /.table-responsive -->
-                                </div>
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                  </div>
 
-
-<div id="segn_sintesi2" >
-					<div  class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-list fa-fw" ></i> Sintesi segnalazioni aperte
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Altro
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li class="divider"></li>
-                                        <li><a href="elenco_segnalazioni.php">Vai all'elenco completo delle segnalazioni</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div >
-
+<hr>
+<h4>Segnalazioni prese in carico direttamente</h4>
 <table  id="segnalazioni" class="table table-condensed" style="vertical-align: middle;" data-toggle="table" data-url="./tables/griglia_segnalazioni_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
 			
 

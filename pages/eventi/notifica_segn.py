@@ -84,7 +84,7 @@ def main():
     print(current_time)
     query= "SELECT count(id) " \
            "FROM segnalazioni.v_segnalazioni " \
-           "WHERE in_lavorazione is null AND fine_sospensione <'{}'" .format(current_time)
+           "WHERE in_lavorazione is null AND (fine_sospensione <'{}' OR fine_sospensione is null)" .format(current_time)
     print(query)
     curr.execute(query)
     segn = curr.fetchall()
