@@ -42,14 +42,16 @@
                         <li>
                             <a href="#"><i class="fa fa-stream fa-fw"></i> Gestione eventi<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                            		<li>
+                            	  <li>
+                            	  <?php if ($profilo_ok==3){ ?>
                                     <a href="nuovo_evento.php"><i class="fas fa-plus"></i> Crea nuovo evento</a>
+                                <?php } ?>
                                 </li>
                                 <li>
                                     <a href="dettagli_evento.php"><i class="fas fa-info"></i> Dettagli eventi in corso</a>
                                 </li>
                                  <li>
-                                    <a href="dettagli_evento_c.php"><i class="fas fa-info-circle"></i> Dettagli eventi in fase di chiusura</a>
+                                    <a href="dettagli_evento_c.php"><i class="fas fa-hourglass-end faa-ring animated"></i> Dettagli eventi in fase di chiusura</a>
                                 </li>
                                  <li>
                                     <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi / reportistica </a>
@@ -64,14 +66,14 @@
 											<li>					                                  
   											<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
-								<li>
+								<!--li-->
 								<!--a href="rete_idro.php"-->
-								<a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
+								<!--a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
 								<i class="fas fa-tint"></i> Rete meteorologica regionale (OMIRL) </a>
 								</li>
 								<li>
                                     <a href="rassegna_stampa.php"><i class="far fa-newspaper"></i> Rassegna stampa comunale </a>
-                                </li>
+                                </li-->
 								
                             </ul>
                             <!-- /.nav-second-level -->
@@ -177,12 +179,14 @@
                         <li>
                             <a href="#"><i class="fas fa-pencil-ruler"></i> Presidi <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                            <?php if ($profilo_ok==3 or ($profilo_sistema==8 and $uo_inc=='uo_1')){ ?>
                             		<li>
                                     <a href="nuovo_sopralluogo.php">Nuovo presidio fisso</a>
                                 </li>
                                 <li>
                                     <a href="nuovo_sopralluogo_mobile.php">Nuovo presidio mobile</a>
                                 </li>
+                            <?php } ?>
                                 <li>
                                     <a href="elenco_sopralluoghi.php">Elenco presidi fissi attivi</a>
                                 </li>
@@ -190,7 +194,7 @@
                                     <a href="elenco_sopralluoghi_mobili.php">Elenco presidi mobili attivi</a>
                                 </li>
 								<li>
-                                    <a href="elenco_sopralluoghi_ev_chiusi.php">Elenco presidi fissi schiusi</a>
+                                    <a href="elenco_sopralluoghi_ev_chiusi.php">Elenco presidi fissi chiusi</a>
                                 </li>
                                 <li>
                                     <a href="elenco_sopralluoghi_mobili_ev_chiusi.php">Elenco presidi mobili chiusi</a>
@@ -202,6 +206,7 @@
                         <li>
                             <a href="#"><i class="fas fa-exclamation-triangle"></i> Provvedimenti cautelari <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                            <?php if ($profilo_ok==3){ ?>
                             		<li>
                                     <a href="nuovo_pc_sgombero.php">Sgombero civici</a>
                                 </li>
@@ -211,6 +216,7 @@
 								<li>
                                     <a href="nuovo_pc_strada.php">Chiusura strada</a>
                                 </li>
+                        <?php } ?>
 								<li>
                                     <a href="elenco_pc.php">Elenco provvedimenti cautelari (eventi aperti)</a>
                                 </li>
@@ -227,7 +233,9 @@
                             <a href="#"><i class="fa fa-address-book fa-fw"></i> Gestione utenti<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
 								 		<li>
-                                    <a href="elenco_utenti.php">Elenco utenti sistema</a>
+                                    <a href="elenco_utenti.php">
+									<i class="fas fa-user-clock">
+									</i>Elenco utenti sistema</a>
                                 </li>
                             	<li>
                                     <a href="add_volontario.php">
@@ -238,18 +246,25 @@
                                 <li>
                                     <a href="reperibilita_aziende.php"> 
                                     <i class="fas fa-user-clock">
-                                    </i> Reperibilità COC Esterni</a>
+                                    </i> Reperibilit&agrave� COC Esterni</a>
                                 </li>
 
                                 <li>
                                     <a href="lista_dipendenti.php">
                                     <i class="fas fa-user-tie"></i>
-                                    Permessi dipendenti</a>
+                                    Elenco dipendenti 
+									<?php if($profilo_sistema==1){ ?>
+									<small> (modifica permessi)</small>
+									<?php } ?>
+									</a>
                                 </li>
                                 <li>
                                     <a href="lista_volontari.php">
                                     <i class="fas fa-user-lock"></i>
-                                    Permessi utenti esterni</a>
+                                    Elenco utenti esterni
+									<?php if($profilo_sistema==1){ ?>
+									<small> (modifica permessi)</small></a>
+									<?php } ?>
                                 </li>
                                 <li>
                                     <a href="lista_mail.php">
@@ -257,9 +272,11 @@
                                     Contatti a cui notificare incarichi</a>
                                 </li>
                                 <li>
-                                    <a href="rubrica.php">
+                                    <!--a href="rubrica.php"-->
+									<a href="http://172.19.48.7/rubrica.php" target="_blank">
                                     <i class="fas fa-address-book"></i>
-                                    Rubrica Comune di Genova</a>
+                                    Rubrica Comune di Genova <small>(rete intranet)</small>
+									</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -272,10 +289,10 @@
                         <!--li>
                             <a href="reportistica.php"> <i class="fas fa-chart-pie"></i> Riepilogo e report</a>
                         </li-->
-                         <li>
+                         <!--li>
                             <a target="_guida_in_linea" href="https://manuale-sistema-di-gestione-emergenze-comune-di-genova.readthedocs.io/it/latest/"> 
                             <i class="fas fa-question"></i> Guida in linea</a>
-                        </li>
+                        </li-->
                         <?php if ($profilo_sistema==1){ ?>
                         <li>
                             <a href="#"><i class="fa fa-user-shield"></i> Funzionalità amministratore sistema<span class="fa arrow"></span></a>
@@ -293,21 +310,23 @@
                         
                     </ul>
                     
+                    <div style="text-align: center;">
                     
-                    
-                    <div class="panel panel-default">
+                    <!--div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-traffic-light fa-fw"></i> Mappa ufficiale <a target="_new" href="http://www.allertaliguria.gov.it">allertaliguria</a> 
                         </div>
-                        <div class="panel-body">
-                           
-							  <img class="pull-right img-responsive" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" src="https://mappe.comune.genova.it/allertaliguria/mappa_allerta_render.php">
-                        </div>                    
-                    </div>
+                        <div class="panel-body"-->
+                         <a target="_new" title="Vai al sito www.allertaliguria.gov.it" href="http://www.allertaliguria.gov.it">   
+							  <img class="nav nav-second-level" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" 
+							  width="98%" src="https://mappe.comune.genova.it/allertaliguria/mappa_allerta_render.php">
+                        </a>
+						<!--/div>                    
+                    </div-->
                   
-						<div style="text-align: center;">
+						
 						<hr>
-						   <a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
+						   <a title="Vai al sito rete OMIRL"  href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
                 		<img class="nav nav-second-level" src="../img/omirl.png" width="50%" alt="">
                 		</a>
                 		<hr>

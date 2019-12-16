@@ -81,7 +81,11 @@ echo "<br>";
 
 
 $query="INSERT INTO segnalazioni.t_storico_segnalazioni_in_lavorazione(id_segnalazione_in_lavorazione, log_aggiornamento) VALUES (";
-$query=$query."".$id_lavorazione.",'La segnalazione n. ".$id_segnalazione." è stata presa in carico come profilo ".$profilo."');";
+if ($_POST["mun"]=='on' and $id_profilo==3){
+	$query=$query."".$id_lavorazione.",'La segnalazione n. ".$id_segnalazione." è stata inviata dal municipio al profilo ".$profilo."');";
+} else {
+	$query=$query."".$id_lavorazione.",'La segnalazione n. ".$id_segnalazione." è stata presa in carico come profilo ".$profilo."');";
+}
 echo $query;
 //exit;
 $result = pg_query($conn, $query);

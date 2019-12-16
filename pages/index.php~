@@ -116,7 +116,7 @@ require('./check_evento.php');
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div >
-                                    
+<section id="segn_limbo_table">                                    
 <table  id="segnalazioni_limbo" class="table table-condensed" 
 style="word-break:break-all; word-wrap:break-word;" 
 data-toggle="table" data-url="./tables/griglia_segnalazioni_limbo.php" 
@@ -175,10 +175,12 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 
 </table>
 
+</section>
 <?php
  if ($profilo_ok==3){
 ?>
 
+<section id="segn_limbo2_table">   
 <hr>
 <h4>Segnalazioni provenienti dai municipi</h4>
 <table  id="segnalazioni" class="table table-condensed" 
@@ -262,7 +264,7 @@ function nameFormatterMappa1(value, row) {
 
 </table>
 
-
+</section>
 <?php
  }
 ?>

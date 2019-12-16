@@ -399,10 +399,13 @@ while($r = pg_fetch_assoc($result)) {
 		$f_mun= ' and id_municipio = '.$profilo_cod_munic.' ';
 	}
 	if(isset($f_mun)){
-		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. " AND fine_sospensione < '".$now_time."' ;";
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null ".$f_mun. " AND 
+		(fine_sospensione < '".$now_time."' OR fine_sospensione is null) ;";
 	} else {
-		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null AND fine_sospensione < '".$now_time."' ;";
+		$query= "SELECT id FROM segnalazioni.v_segnalazioni WHERE in_lavorazione is null AND 
+		(fine_sospensione < '".$now_time."' OR fine_sospensione is null) ;";
 	}
+	//echo $query ."<br>";
 	$id_segn_limbo=array();
 	$result = pg_query($conn, $query);
 	while($r = pg_fetch_assoc($result)) {
