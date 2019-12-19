@@ -26,7 +26,7 @@ bot = telepot.Bot(TOKEN)
 #chat_id= config.chat_id
 
 
-sito_allerta="http://www.allertaliguria.gov.it"
+sito_allerta="https://allertaliguria.regione.liguria.it"
 abs_path_bollettini="/opt/rh/httpd24/root/var/www/html"
 
 
