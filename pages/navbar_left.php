@@ -317,7 +317,7 @@
                             <i class="fa fa-traffic-light fa-fw"></i> Mappa ufficiale <a target="_new" href="http://www.allertaliguria.gov.it">allertaliguria</a> 
                         </div>
                         <div class="panel-body"-->
-                         <a target="_new" title="Vai al sito www.allertaliguria.gov.it" href="http://www.allertaliguria.gov.it">   
+                         <a target="_new" title="Vai al sito https://allertaliguria.regione.liguria.it/" href="https://allertaliguria.regione.liguria.it/">   
 							  <img class="nav nav-second-level" imageborder="0" alt="Problema di visualizzazione immagine causato da sito https://allertaliguria.regione.liguria.it/" 
 							  width="98%" src="https://allertaliguria.regione.liguria.it/mappa_allerta_render.php">
                         </a>
