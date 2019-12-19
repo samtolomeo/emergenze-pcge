@@ -318,8 +318,8 @@
                         </div>
                         <div class="panel-body"-->
                          <a target="_new" title="Vai al sito www.allertaliguria.gov.it" href="http://www.allertaliguria.gov.it">   
-							  <img class="nav nav-second-level" imageborder="0" alt="Problema di visualizzazione immagine causato da sito http://www.allertaliguria.gov.it/" 
-							  width="98%" src="https://mappe.comune.genova.it/allertaliguria/mappa_allerta_render.php">
+							  <img class="nav nav-second-level" imageborder="0" alt="Problema di visualizzazione immagine causato da sito https://allertaliguria.regione.liguria.it/" 
+							  width="98%" src="https://allertaliguria.regione.liguria.it/mappa_allerta_render.php">
                         </a>
 						<!--/div>                    
                     </div-->
