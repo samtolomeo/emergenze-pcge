@@ -51,9 +51,10 @@ def scarica_bollettino(tipo,nome,ora):
             query = "INSERT INTO eventi.t_bollettini(tipo, nomefile)VALUES ('{}', '{}')".format(tipo,nome);
         #print(query)
         curr.execute(query)
-        print("Download completed...")
+        print("Download of type {} completed...".format(tipo))
         #SEND BOT
         if tipo == 'PC':
+            print("Bollettino di PC")
             messaggio = "{}/docs/{}".format(sito_allerta,nome)
             # ciclo for sulle chat_id
             query_chat_id= "SELECT telegram_id from users.v_utenti_sistema where telegram_id !='' and telegram_attivo='t' and (id_profilo='1' or id_profilo ='2' or id_profilo ='3');"
@@ -66,7 +67,7 @@ def scarica_bollettino(tipo,nome,ora):
                 bot.sendMessage(chat_id, messaggio)
                 time.sleep(1)
     else:
-        print("File already download")
+        print("File of type {} already download".format(tipo))
         #if tipo == 'PC':
         #    messaggio = "{}/docs/{}".format(sito_allerta,nome)
         #    bot.sendMessage(chat_id, "Bollettino Protezione civile già scaricato!")
