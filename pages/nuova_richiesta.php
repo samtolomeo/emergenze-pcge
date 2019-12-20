@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Richiesta generica a n. verde"
+$subtitle="Nuova segnalazione / richiesta"
 
 ?>
 <!DOCTYPE html>
