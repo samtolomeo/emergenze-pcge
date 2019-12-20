@@ -34,7 +34,7 @@ while($r_max = pg_fetch_assoc($result_max)) {
 	}
 }
 
-echo $id_segnalante;
+//echo $id_segnalante;
 echo "<br>";
 
 
@@ -62,7 +62,7 @@ if ($note_segnalante!=''){
 
 $query=$query.");";
 
-echo $query;
+//echo $query;
 $result=pg_query($conn, $query);
 
 echo "<br>";
@@ -82,7 +82,7 @@ while($r_max = pg_fetch_assoc($result_max)) {
 	}
 }
 
-echo $id_segnalazione;
+//echo $id_segnalazione;
 echo "<br>";
 
 
@@ -92,8 +92,8 @@ $id_oggetto=''; // inizializzazione
 
 
 
-echo "id_civico: ". $_POST["id_civico"];
-echo "Latitudine: ". $_POST["lat"];
+//echo "id_civico: ". $_POST["id_civico"];
+//echo "Latitudine: ". $_POST["lat"];
 
 echo "<br>";
 
@@ -107,7 +107,7 @@ if ($_POST["id_civico"]!=''){
 	while($rc = pg_fetch_assoc($result_civico)) {
 		$geom="'".$rc["geom"]."'"; // messo fra apici per poi includerlo nella successiva query	
 	}
-	echo "Civico a rischio:" .$_POST["civrischio"]."<br>";
+	//echo "Civico a rischio:" .$_POST["civrischio"]."<br>";
 	if($_POST["civrischio"]=='t') {
 		// se ci fossero problemi controlla che la descrizione sia effettivamente 'Civici'
 		$query2="SELECT * FROM segnalazioni.tipo_oggetti_rischio WHERE valido='t' AND descrizione='Civici';";
@@ -125,7 +125,7 @@ if ($_POST["id_civico"]!=''){
 	
 	
 	
-	echo "Oggetto a rischio?:" .$_POST["oggrischio"]."<br>";
+	//echo "Oggetto a rischio?:" .$_POST["oggrischio"]."<br>";
 	if($_POST["oggrischio"]=='t') {
 		// devo cercare l'oggetto più vicino
 		// 1 . id tipo oggetto da form
@@ -164,8 +164,15 @@ $query_municipio="select codice_mun from geodb.municipi WHERE st_intersects(st_t
       while($r_m = pg_fetch_assoc($result_m)) {
       	$municipio=$r_m['codice_mun'];
       }
-      
-      
+if(isset($municipio)) {
+	echo "OK";      
+} else {
+	echo "<h1> La segnalazione inserita è fuori comune. Se sei in una zona confinante prova a usare il civico e poi sposta la segnalazione</h1>";
+	echo "<h2> Non usare il tasto indietro, ma <a href=\"../index.php\">torna alla prima pagina</a></h2>";
+	exit;
+}
+//echo $query_municipio;
+//exit;     
 echo "<br>";
 /* INSERT INTO segnalazioni.t_segnalazioni(
             id, data_ora, id_segnalante, descrizione, id_criticita, rischio, 

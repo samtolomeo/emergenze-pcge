@@ -20,14 +20,29 @@ echo "step 2<br>";
 $responce_param = null;
 try {
     $responce_param = $client->CountryISOCode($params);
-    print_r($responce_param->CountryISOCodeResponse->sCountryISOCodeResult);
-    echo $responce_param->CountryISOCode->sISOCode;
+	echo "Ho avuto una risposta anche se non so ancora quale<br>";
+	//echo $responce_param;
+    print_r($responce_param->CountryISOCodeResult);
+echo "<br>";
 } catch (Exception $e) {
     echo "<h2>Exception Error!</h2>";
     echo $e->getMessage();
 }
 
 
+
+
+$request_param = array('sCountryISOCode' => 'IT');
+$responce_param = null;
+try {
+    $responce_param = $client->CountryCurrency($request_param);
+
+    print_r($responce_param->CountryCurrencyResult->sISOCode);
+} catch (Exception $e) {
+    echo "<h2>Exception Error!</h2>";
+    echo $e->getMessage();
+}
+echo "<br>";
 #$result = $soapClient->__soapCall ("CountryISOCode",$params);
 echo "OK test";
 echo "<br>";

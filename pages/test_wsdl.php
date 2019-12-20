@@ -2,9 +2,52 @@
 
 
 
-$soapClient = new SoapClient("http://wsmanutenzionitest.comune.genova.it/Emergenze.asmx?WSDL");
+//$soapClient = new SoapClient("http://wsmanutenzionitest.comune.genova.it/Emergenze.asmx?WSDL");
 //$params = array('text' => 'ciao mondo');
 //$result = $soapClient->__call("echo", array($params));
+
+
+
+// Create the SoapClient instance
+$url         = "";
+$client     = new SoapClient($url, array("trace" => 1, "exception" => 0));
+
+
+
+$wsdl = "http://wsmanutenzionitest.comune.genova.it/Emergenze.asmx?WSDL";
+//$client = new SoapClient($wsdl, array('trace' => 1));  // The trace param will show you errors stack
+
+$wsdl = "http://apitest.comune.genova.it:28280/MANU_WSManutenzioni_MOGE/";
+
+
+
+
+// create bearer token Authorization header
+$token = "10ac7b40-c252-3544-9b5e-301836e485a5";
+
+$options['stream_context'] = stream_context_create([
+    'http' => [
+        'header' => sprintf('Authorization: Bearer %s', $token)
+    ]
+]);
+
+
+// form an array listing the http header
+/*$access_token = "10ac7b40-c252-3544-9b5e-301836e485a5";
+$httpHeaders = array(
+    'http' => array(
+        'protocol_version' => 1.1,
+        'header' => "Authorization:Bearer " . $access_token . "\r\n",
+    ));
+// form a stream context
+$context = stream_context_create($httpHeaders);
+// pass it in an array
+$hparams = array('stream_context' => $context);
+*/
+
+$client = new SoapClient($wsdl, $options);
+
+
 
 
 
@@ -31,7 +74,21 @@ $params = array('manutenzioneSegnalazioneInput' => $manutenzioneSegnalazioneInpu
 'autenticazione'  =>$autenticazione
 );
 
-$result = $soapClient->__soapCall ("InserimentoSegnalazione",$params);
+//$result = $soapClient->__soapCall ("InserimentoSegnalazione",$params);
+
+$responce_param = null;
+try {
+    $responce_param = $client->InserimentoSegnalazione($params);
+	print_r($responce_param->InserimentoSegnalazioneResult->Esito);
+	echo "<br>";
+    print_r($responce_param->InserimentoSegnalazioneResult->IdSegnalazione);
+} catch (Exception $e) {
+    echo "<h2>Exception Error!</h2>";
+    echo $e->getMessage();
+}
+
+echo "<br>";
+
 echo "OK test";
 echo "<br>";
 echo $params;
