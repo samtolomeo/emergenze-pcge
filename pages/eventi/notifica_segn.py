@@ -92,9 +92,9 @@ def main():
     for row in segn:
         if row[0] > 0:
             count_s=row[0]
-            print('Ci sono {} segnalazioni in sospeso.devo mandare notifica'.format(count_s))
-            messaggio = emoji.emojize(":warning: Ci sono {} segnalazioni in sospeso'".format(count_s),use_aliases=True)
-            messaggio2="{} (Questo è un messaggio automatico che ricevi ogni ora in quanto operatore di Protezione Civile)".format(messaggio)
+            print('Ci sono {} segnalazioni in sospeso. Devo mandare notifica'.format(count_s))
+            messaggio = emoji.emojize(":warning: Ci sono {} segnalazioni in sospeso".format(count_s),use_aliases=True)
+            messaggio2="{} (Questo è un messaggio automatico che ricevi ogni 6 ore in quanto operatore di Protezione Civile)".format(messaggio)
             # ciclo for sulle chat_id
             query_chat_id = "SELECT telegram_id from users.v_utenti_sistema where telegram_id !='' and telegram_attivo='t' and (id_profilo='1' or id_profilo ='2' or id_profilo ='3');"
             curr.execute(query_chat_id)
@@ -102,11 +102,14 @@ def main():
             # print("Print each row and it's columns values")
             for row2 in lista_chat_id:
                 chat_id = row2[0]
+                print(datetime.datetime.now())
                 print(messaggio2)
                 print(chat_id)
                 if chat_id=='708309739':
                     #bot.sendMessage(chat_id,emoji.emojize(":warning: Ci sono {} segnalazioni in sospeso. (Questo è un messaggio automatico che ricevi ogni ora in quanto operatore di Protezione Civile)'".format(count_s),use_aliases=True))
                     bot.sendMessage(chat_id, messaggio2)
+                    print('Messaggio inviato')
+                    print(datetime.datetime.now())
                 time.sleep(1)
 
         
