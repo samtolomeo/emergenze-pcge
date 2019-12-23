@@ -8,10 +8,6 @@
 
 
 
-// Create the SoapClient instance
-$url         = "";
-$client     = new SoapClient($url, array("trace" => 1, "exception" => 0));
-
 
 
 $wsdl = "http://wsmanutenzionitest.comune.genova.it/Emergenze.asmx?WSDL";
@@ -25,11 +21,23 @@ $wsdl = "http://apitest.comune.genova.it:28280/MANU_WSManutenzioni_MOGE/";
 // create bearer token Authorization header
 $token = "10ac7b40-c252-3544-9b5e-301836e485a5";
 
-$options['stream_context'] = stream_context_create([
+/*$options['stream_context'] = stream_context_create([
     'http' => [
         'header' => sprintf('Authorization: Bearer %s', $token)
     ]
-]);
+]);*/
+
+
+
+$opts = [
+  'http'=> [
+	  'header' => 'Authorization: Bearer ' . $token
+  ]
+];
+
+$context = stream_context_create($opts);
+
+
 
 
 // form an array listing the http header
@@ -45,7 +53,12 @@ $context = stream_context_create($httpHeaders);
 $hparams = array('stream_context' => $context);
 */
 
-$client = new SoapClient($wsdl, $options);
+//$client = new SoapClient($wsdl);
+
+
+$client = new SoapClient($wsdl, array(
+  'stream_context' => $context
+));
 
 
 
