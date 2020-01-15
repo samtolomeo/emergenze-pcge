@@ -1,4 +1,5 @@
 # ignore python telegram credential
+# remove file from repo https://help.github.com/en/github/managing-large-files/removing-files-from-a-repositorys-history
 pages/eventi/__pycache__/*.pyc
 pages/eventi/conn.py
 pages/eventi/conn.pyc
@@ -9,6 +10,9 @@ pages/incarichi_interni/credenziali_mail.php
 pages/sopralluoghi/credenziali_mail.php
 pages/provvedimenti_cautelari/credenziali_mail.php
 pages/token_telegram.php
+pages/segnalazioni/token_api_ge.py
+pages/segnalazioni/conn.py
+pages/segnalazioni/conn_mssql.py
 *.pyc
 pages/eventi/*.pyc
 pages/eventi/*.log
