@@ -162,6 +162,17 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									?>
 									<h4><br><b>Note chiusura</b>: <?php echo $r['descrizione_chiusura']; ?></h4>
 									<?php
+									$query_ch="SELECT invio_manutenzioni, id_man 
+									FROM segnalazioni.t_segnalazioni_in_lavorazione 
+									WHERE id = ".$id_lavorazione." ;";
+									//echo $query_ch;
+									$result_ch=pg_query($conn, $query_ch);
+									while($r_ch = pg_fetch_assoc($result_ch)) {
+										if ($r_ch['invio_manutenzioni']=='t'){
+											echo '<h4>Segnalazione inserita sul sistema manutenzioni
+											 con id = '. $r_ch['id_man'].'</h4>';
+										}
+									}
 						}
 						?>
 						<hr>
@@ -987,12 +998,15 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						        <h4 class="modal-title">Chiudi segnalazione</h4>
 						      </div>
 						      <div class="modal-body">
-						      
+
 						
-						        <form autocomplete="off" action="./segnalazioni/chiudi_segnalazione.php?id_lav=<?php echo $id_lavorazione;?>&id=<?php echo $r['id'];?>" method="POST">
+						<form autocomplete="off" action="./segnalazioni/chiudi_segnalazione.php?id_lav=<?php echo $id_lavorazione;?>&id=<?php echo $r['id'];?>" method="POST">
 								Proseguendo chiuderai la lavorazione di questa segnalazione e di tutte quelle unite a questa.
 								<br>Non sarà più possibile assegnare incarichi, presidi o provvedimenti cautelari associati a questa segnalazione.
 								<hr>
+								<input type="hidden" name="descr" id="hiddenField" value="<?php echo $r['descrizione']; ?>" />
+						      <input type="hidden" name="idcivico" id="hiddenField" value="<?php echo $id_civico ?>" />
+						      <input type="hidden" name="geom" id="hiddenField" value="<?php echo $geom ?>" />
 								<div class="form-group">
 								  <label for="note">Note chiusura:</label> <font color="red">*</font><br>
 								  <textarea class="form-control" rows="5" id="note" name="note" required=""></textarea>
@@ -1048,9 +1062,16 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$check_civico=0;
 						$query_civico="SELECT * FROM segnalazioni.".$table." where id_civico=".$r['id_civico']." and id !=".$id." and id_evento=".$r['id_evento']." and in_lavorazione='t';";
 						//echo $query_civico . "<br>";
+						$c=0;
 						$result_civico=pg_query($conn, $query_civico);
 								while($r_civico = pg_fetch_assoc($result_civico)) {
 									$check_civico=1;
+									if($c==0){
+									?>
+									<hr>
+									<?php
+									}
+									$c=$c+1;
 									?>
 									Altre segnalazioni sullo stesso civico:
 									<div class="panel-group">
@@ -1181,7 +1202,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						 }
 						 ?>
 						
-						
+						<hr>
 						<div style="text-align: center;">
 						<?php
 						//echo "test";
@@ -1201,7 +1222,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								
 								?>
 								</button>	
-						<?php }	?>
+						<?php }	else {
+							echo 'Il tuo profilo non può prendere in carico la segnalazione. Solo la Protezione Civile e il Municipio '.$id_municipio.' possono prendere in carico la segnalazione.';
+						}?>
 						</div>
 
 

@@ -68,7 +68,9 @@ require('./check_evento.php');
 			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
 			<h3>Evento n. <?php echo str_replace("'", "", $id); ?> - Tipo: 
 			<?php
-			$query_e='SELECT e.id, tt.descrizione, n.nota 
+			$query_e='SELECT e.id, tt.descrizione, n.nota, to_char(e.data_ora_inizio_evento, \'DD/MM/YYYY HH24:MI\'::text) AS data_ora_inizio_evento, 
+			to_char(e.data_ora_chiusura, \'DD/MM/YYYY HH24:MI\'::text) AS data_ora_chiusura, 
+			to_char(e.data_ora_fine_evento, \'DD/MM/YYYY HH24:MI\'::text) AS data_ora_fine_evento 
             FROM eventi.t_eventi e
             JOIN eventi.join_tipo_evento t ON t.id_evento=e.id
 			LEFT JOIN eventi.t_note_eventi n ON n.id_evento=e.id
@@ -78,6 +80,9 @@ require('./check_evento.php');
 				while($r_e = pg_fetch_assoc($result_e)) {
 					echo $r_e['descrizione'];
 					$nota_evento=$r_e['nota'];
+					$inizio_evento=$r_e['data_ora_inizio_evento'];
+					$chiusura_evento=$r_e['data_ora_chiusura'];
+					$fine_evento=$r_e['data_ora_fine_evento'];
 				}
 			?>
 			<button class="btn btn-info noprint" onclick="printDiv('page-wrapper')">
@@ -111,20 +116,32 @@ require('./check_evento.php');
 			if (isset($nota_evento)){
 				echo '<h2>'.$nota_evento.'</h2>'; 
 			}
-			echo '<br><b>Municipi interessati</b>: ';
-			$len2=count($municipi);
-			//echo $municipi[0][0];
-			//echo $id;
-			//echo $municipi[8][1];
-			//echo $len2;	              
+			echo '<b>Municipi interessati</b>: ';
+			$query3="SELECT  b.nome_munic From eventi.join_municipi a,geodb.municipi b  WHERE a.id_evento=".$id." and a.id_municipio::integer=b.codice_mun::integer;";
+			//echo $query3;
+			$result3 = pg_query($conn, $query3);
 			$k=0;
-			for ($j=0;$j<$len2;$j++){
-				
-				if ($municipi[$j][0]==str_replace("'", "", $id)){
-					//echo "ok<br>";
-					if ($k==0) {echo $municipi[$j][1];} else {echo ', '.$municipi[$j][1];};
-					$k=$k+1;
+			while($r3 = pg_fetch_assoc($result3)) {
+				if ($k>0){
+					echo ', ';
 				}
+				echo $r3["nome_munic"];
+				$k=$k+1;
+				//$municipir[]=array($id,$r3["nome_munic"]);
+			}
+			
+			echo '<br><b>Data e ora inizio</b>: '.$inizio_evento;
+			if ($chiusura_evento!=''){
+				echo '<br><b>Data e ora inizio fase di chiusura</b>: '.$chiusura_evento;
+			}
+			if ($fine_evento!=''){
+				echo '<br><b>Data e ora chiusura definitiva</b>: '.$fine_evento;
+			}
+			if ($chiusura_evento!='' && $fine_evento=='' ){
+				echo ' - <i class="fas fa-hourglass-end"></i> Evento in chiusura';
+			}
+			if ($chiusura_evento!='' && $fine_evento!='' ){
+				echo ' - <i class="fas fa-stop"></i> Evento chiuso';
 			}
 			echo '</div></div>';
 			?>

@@ -187,7 +187,7 @@
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
 			$query = $query. " LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
-				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
+				$query = $query. "where data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
 				$query = $query. "where data_start < now() and data_end > now() ";
 			}
@@ -221,34 +221,35 @@
 			}
 			
 			echo "---.---.---<br>";
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
-			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
-			$query = $query. "where data_start > now() ";
-			//$query = $query. " and id1=".$r0["id1"]."";
-			$query = $query. " order by data_start, cognome;";
-			
-			//echo $query;
-			
-			$check_reperibile=0;
-			$result = pg_query($conn, $query);
-			//echo "<ul>";
-			while($r = pg_fetch_assoc($result)) { 
-				$check_reperibile=1;
-				//echo "<li>";
-				echo "- ";
-				if($r['cognome']==''){
-					echo  "TURNO VUOTO - Dalle ";
-				} else {
-					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+			if ($id==''){
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
+				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+				$query = $query. "where data_start > now() ";
+				//$query = $query. " and id1=".$r0["id1"]."";
+				$query = $query. " order by data_start, cognome;";
+				
+				//echo $query;
+				
+				$check_reperibile=0;
+				$result = pg_query($conn, $query);
+				//echo "<ul>";
+				while($r = pg_fetch_assoc($result)) { 
+					$check_reperibile=1;
+					//echo "<li>";
+					echo "- ";
+					if($r['cognome']==''){
+						echo  "TURNO VUOTO - Dalle ";
+					} else {
+						echo  $r['cognome']." ".$r['nome']." - Dalle ";
+					}
+					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					
+					
+					//echo "</li>";
 				}
-				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
-				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
-				
-				
-				//echo "</li>";
 			}
-			
 			/*if ($check_reperibile==0){
 				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono coordinatori<br>';
 			}*/
@@ -450,7 +451,7 @@
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_monitoraggio_meteo r ";
 			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 if ($id != '') {
-				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
+				$query = $query. "where data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
 				$query = $query. "where data_start < now() and data_end > now() ";
 			}
@@ -487,35 +488,35 @@ if ($id != '') {
 			
 			echo "---.---.---<br>";
 			//echo "</ul>";
-			
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_monitoraggio_meteo r ";
-			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
-			$query = $query. "where data_start > now() ORDER by data_start;";
-			//$query = $query. " and id1=".$r0["id1"]."";
-			//$query = $query. " order by cognome;";
-			
-			//echo $query;
-			
-			$check_reperibile=0;
-			$result = pg_query($conn, $query);
-			//echo "<ul>";
-			while($r = pg_fetch_assoc($result)) { 
-				$check_reperibile=1;
-				//echo "<li>";
-				echo "- ";
-				if($r['cognome']==''){
-					echo  "TURNO VUOTO - Dalle ";
-				} else {
-					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+			if ($id==''){
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_monitoraggio_meteo r ";
+				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+				$query = $query. "where data_start > now() ORDER by data_start;";
+				//$query = $query. " and id1=".$r0["id1"]."";
+				//$query = $query. " order by cognome;";
+				
+				//echo $query;
+				
+				$check_reperibile=0;
+				$result = pg_query($conn, $query);
+				//echo "<ul>";
+				while($r = pg_fetch_assoc($result)) { 
+					$check_reperibile=1;
+					//echo "<li>";
+					echo "- ";
+					if($r['cognome']==''){
+						echo  "TURNO VUOTO - Dalle ";
+					} else {
+						echo  $r['cognome']." ".$r['nome']." - Dalle ";
+					}
+					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					
+					
+					//echo "</li>";
 				}
-				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
-				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
-				
-				
-				//echo "</li>";
 			}
-			
 			/*if ($check_reperibile==0){
 				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
 			}*/
@@ -720,7 +721,7 @@ if ($id != '') {
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_presidio_territoriale r ";
 			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
-				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
+				$query = $query. "where data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
 				$query = $query. "where data_start < now() and data_end > now() ";
 			}
@@ -757,35 +758,35 @@ if ($id != '') {
 			
 			echo "---.---.---<br>";
 			
-			
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_presidio_territoriale r ";
-			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
-			$query = $query. "where data_start > now() ORDER by data_start;";
-			//$query = $query. " and id1=".$r0["id1"]."";
-			//$query = $query. " order by cognome;";
-			
-			//echo $query;
-			
-			$check_reperibile=0;
-			$result = pg_query($conn, $query);
-			//echo "<ul>";
-			while($r = pg_fetch_assoc($result)) { 
-				$check_reperibile=1;
-				//echo "<li>";
-				echo "- ";
-				if($r['cognome']==''){
-					echo  "TURNO VUOTO - Dalle ";
-				} else {
-					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+			if ($id==''){
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_presidio_territoriale r ";
+				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+				$query = $query. "where data_start > now() ORDER by data_start;";
+				//$query = $query. " and id1=".$r0["id1"]."";
+				//$query = $query. " order by cognome;";
+				
+				//echo $query;
+				
+				$check_reperibile=0;
+				$result = pg_query($conn, $query);
+				//echo "<ul>";
+				while($r = pg_fetch_assoc($result)) { 
+					$check_reperibile=1;
+					//echo "<li>";
+					echo "- ";
+					if($r['cognome']==''){
+						echo  "TURNO VUOTO - Dalle ";
+					} else {
+						echo  $r['cognome']." ".$r['nome']." - Dalle ";
+					}
+					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					
+					
+					//echo "</li>";
 				}
-				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
-				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
-				
-				
-				//echo "</li>";
 			}
-			
 			/*if ($check_reperibile==0){
 				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
 			}*/
@@ -992,7 +993,7 @@ if ($id != '') {
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
 			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
-				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
+				$query = $query. "where data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
 				$query = $query. "where data_start < now() and data_end > now() ";
 			}
@@ -1027,34 +1028,35 @@ if ($id != '') {
 			}
 
 			echo "---.---.---<br>";
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
-			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
-			$query = $query. "where data_start > now();";
-			//$query = $query. " and id1=".$r0["id1"]."";
-			//$query = $query. " order by cognome;";
-			
-			//echo $query;
-			
-			$check_reperibile=0;
-			$result = pg_query($conn, $query);
-			//echo "<ul>";
-			while($r = pg_fetch_assoc($result)) { 
-				$check_reperibile=1;
-				//echo "<li>";
-				echo "- ";
-				if($r['cognome']==''){
-					echo  "TURNO VUOTO - Dalle ";
-				} else {
-					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+			if ($id==''){
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
+				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
+				$query = $query. "where data_start > now();";
+				//$query = $query. " and id1=".$r0["id1"]."";
+				//$query = $query. " order by cognome;";
+				
+				//echo $query;
+				
+				$check_reperibile=0;
+				$result = pg_query($conn, $query);
+				//echo "<ul>";
+				while($r = pg_fetch_assoc($result)) { 
+					$check_reperibile=1;
+					//echo "<li>";
+					echo "- ";
+					if($r['cognome']==''){
+						echo  "TURNO VUOTO - Dalle ";
+					} else {
+						echo  $r['cognome']." ".$r['nome']." - Dalle ";
+					}
+					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					
+					
+					//echo "</li>";
 				}
-				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
-				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
-				
-				
-				//echo "</li>";
 			}
-			
 			/*if ($check_reperibile==0){
 				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
 			}*/
@@ -1262,7 +1264,7 @@ if ($id != '') {
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
 			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			if ($id != '') {
-				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
+				$query = $query. "where data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
 				$query = $query. "where data_start < now() and data_end > now() ";
 			}
@@ -1297,34 +1299,35 @@ if ($id != '') {
 			}
 
 			echo "---.---.---<br>";
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
-			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
-			$query = $query. "where data_start > now() ORDER by data_start;";
-			//$query = $query. " and id1=".$r0["id1"]."";
-			//$query = $query. " order by cognome;";
-			
-			//echo $query;
-			
-			$check_reperibile=0;
-			$result = pg_query($conn, $query);
-			//echo "<ul>";
-			while($r = pg_fetch_assoc($result)) { 
-				$check_reperibile=1;
-				//echo "<li>";
-				echo "- ";
-				if($r['cognome']==''){
-					echo  "TURNO VUOTO - Dalle ";
-				} else {
-					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+			if ($id==''){
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
+				$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+				$query = $query. "where data_start > now() ORDER by data_start;";
+				//$query = $query. " and id1=".$r0["id1"]."";
+				//$query = $query. " order by cognome;";
+				
+				//echo $query;
+				
+				$check_reperibile=0;
+				$result = pg_query($conn, $query);
+				//echo "<ul>";
+				while($r = pg_fetch_assoc($result)) { 
+					$check_reperibile=1;
+					//echo "<li>";
+					echo "- ";
+					if($r['cognome']==''){
+						echo  "TURNO VUOTO - Dalle ";
+					} else {
+						echo  $r['cognome']." ".$r['nome']." - Dalle ";
+					}
+					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					
+					
+					//echo "</li>";
 				}
-				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
-				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
-				
-				
-				//echo "</li>";
 			}
-			
 			/*if ($check_reperibile==0){
 				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
 			}*/
@@ -1527,7 +1530,7 @@ if ($id != '') {
 			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_anpas r ";
 			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
 			if ($id != '') {
-				$query = $query. "where data_start < now() and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
+				$query = $query. "where data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
 				$query = $query. "where data_start < now() and data_end > now() ";
 			}
@@ -1562,34 +1565,35 @@ if ($id != '') {
 			}
 
 			echo "---.---.---<br>";
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_anpas r ";
-			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
-			$query = $query. "where data_start > now() ORDER by data_start;";
-			//$query = $query. " and id1=".$r0["id1"]."";
-			//$query = $query. " order by cognome;";
-			
-			//echo $query;
-			
-			$check_reperibile=0;
-			$result = pg_query($conn, $query);
-			//echo "<ul>";
-			while($r = pg_fetch_assoc($result)) { 
-				$check_reperibile=1;
-				//echo "<li>";
-				echo "- ";
-				if($r['cognome']==''){
-					echo  "TURNO VUOTO - Dalle ";
-				} else {
-					echo  $r['cognome']." ".$r['nome']." - Dalle ";
+			if ($id==''){
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_anpas r ";
+				$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+				$query = $query. "where data_start > now() ORDER by data_start;";
+				//$query = $query. " and id1=".$r0["id1"]."";
+				//$query = $query. " order by cognome;";
+				
+				//echo $query;
+				
+				$check_reperibile=0;
+				$result = pg_query($conn, $query);
+				//echo "<ul>";
+				while($r = pg_fetch_assoc($result)) { 
+					$check_reperibile=1;
+					//echo "<li>";
+					echo "- ";
+					if($r['cognome']==''){
+						echo  "TURNO VUOTO - Dalle ";
+					} else {
+						echo  $r['cognome']." ".$r['nome']." - Dalle ";
+					}
+					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
+					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					
+					
+					//echo "</li>";
 				}
-				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
-				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
-				
-				
-				//echo "</li>";
 			}
-			
 			/*if ($check_reperibile==0){
 				echo '- <i class="fas fa-circle" style="color: red;"></i> In questo momento non ci sono responsabili Monitoraggio Meteo <br>';
 			}*/

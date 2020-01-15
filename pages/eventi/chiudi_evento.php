@@ -14,7 +14,7 @@ echo $query;
 $result = pg_query($conn, $query);
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["Utente"] ."', 'Chiusura evento ".$_POST['id']."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["Utente"] ."', 'Chiusura evento definitiva ".$_POST['id']."');";
 $result = pg_query($conn, $query_log);
 
 
