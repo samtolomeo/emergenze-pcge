@@ -2,6 +2,7 @@
 
 $subtitle="Attività sala emergenze";
 
+$id=='';
 $id=$_GET['id'];
 
 

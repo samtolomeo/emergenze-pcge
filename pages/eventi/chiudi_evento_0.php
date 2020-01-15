@@ -8,13 +8,13 @@ $id=$_GET["id"];
 
 $id=str_replace("'", "", $id);
 
-$query="UPDATE eventi.t_eventi SET valido=NULL where id=$id;";
+$query="UPDATE eventi.t_eventi SET valido=NULL, data_ora_chiusura=now() where id=$id;";
 echo $query;
 //exit;
 $result = pg_query($conn, $query);
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["operatore"] ."', 'Chiusura evento ".$_POST['id']."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION["operatore"] ."', 'Chiusura evento ".$_POST['id']."- step 0');";
 $result = pg_query($conn, $query_log);
 
 

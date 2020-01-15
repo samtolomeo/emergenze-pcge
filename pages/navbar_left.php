@@ -56,14 +56,14 @@
                                  <li>
                                     <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi / reportistica </a>
                                 </li> 
+								<?php if ($profilo_ok==3){ ?>
                                 <li>
                                    <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i> Assegna turni sala emergenze</a>
                                 </li> 
                                 <li>
                                    <a href="storico_sala_emergenze.php"><i class="fas fa-history"></i> Storico turni sala emergenze</a> 
-
                                 </li> 			
-											<li>					                                  
+								<?php } ?>			<li>					                                  
   											<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
 								<!--li-->
@@ -242,13 +242,13 @@
                                     <i class="fas fa-user-plus"></i>
                                     Aggiunta utenti esterni</a>
                                 </li>
-                                
+                                <?php if($profilo_sistema<=3 or $profilo_sistema==8){ ?>
                                 <li>
                                     <a href="reperibilita_aziende.php"> 
                                     <i class="fas fa-user-clock">
-                                    </i> Reperibilit&agrave  COC Esterni</a>
+                                    </i> Reperibilit&agrave COC Esterni</a>
                                 </li>
-
+								<?php } ?>
                                 <li>
                                     <a href="lista_dipendenti.php">
                                     <i class="fas fa-user-tie"></i>
@@ -263,8 +263,8 @@
                                     <i class="fas fa-user-lock"></i>
                                     Elenco utenti esterni
 									<?php if($profilo_sistema==1){ ?>
-									<small> (modifica permessi)</small></a>
-									<?php } ?>
+									<small> (modifica permessi)</small>
+									<?php } ?></a>
                                 </li>
                                 <li>
                                     <a href="lista_mail.php">
