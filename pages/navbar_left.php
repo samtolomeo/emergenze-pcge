@@ -53,9 +53,11 @@
                                  <li>
                                     <a href="dettagli_evento_c.php"><i class="fas fa-hourglass-end faa-ring animated"></i> Dettagli eventi in fase di chiusura</a>
                                 </li>
+                                <?php if ($profilo_sistema<=6){ ?>
                                  <li>
                                     <a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi / reportistica </a>
                                 </li> 
+                                <?php } ?>
 								<?php if ($profilo_ok==3){ ?>
                                 <li>
                                    <a href="attivita_sala_emergenze.php"><i class="fas fa-sitemap"></i> Assegna turni sala emergenze</a>
@@ -249,6 +251,9 @@
                                     </i> Reperibilit&agrave COC Esterni</a>
                                 </li>
 								<?php } ?>
+								
+								 <?php if ($profilo_sistema<=6){ ?>
+                                 
                                 <li>
                                     <a href="lista_dipendenti.php">
                                     <i class="fas fa-user-tie"></i>
@@ -258,6 +263,7 @@
 									<?php } ?>
 									</a>
                                 </li>
+                                <?php } ?>
                                 <li>
                                     <a href="lista_volontari.php">
                                     <i class="fas fa-user-lock"></i>

@@ -97,7 +97,7 @@ require('./check_evento.php');
 					<div  class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-list fa-fw" ></i> Sintesi segnalazioni da elaborare
-                            <div class="pull-right">
+                            <!--div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                         Altro
@@ -108,8 +108,15 @@ require('./check_evento.php');
                                         <li><a href="elenco_segnalazioni.php">Vai all'elenco completo delle segnalazioni</a>
                                         </li>
                                     </ul>
+                                </div-->
+                            <div class="pull-right">
+                            <div class="btn-group">
+                            <a class="btn btn-default btn-xs" href="elenco_segnalazioni.php">
+                            <i class="fas fa-list"></i> Elenco segnalazioni</a>   
+                                    
                                 </div>
                             </div>
+                            
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -193,7 +200,7 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 					<div  class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-list fa-fw" ></i> Sintesi segnalazioni aperte
-                            <div class="pull-right">
+                            <!--div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                         Altro
@@ -205,6 +212,13 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
                                         </li>
                                     </ul>
                                 </div>
+                            </div-->
+                             <div class="pull-right">
+                            <div class="btn-group">
+                            <a class="btn btn-default btn-xs" href="elenco_segnalazioni.php">
+                            <i class="fas fa-list"></i> Elenco segnalazioni</a>   
+                                    
+                                </div>
                             </div>
                         </div>
                         <!-- /.panel-heading -->
@@ -215,12 +229,12 @@ data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" dat
 
 
 <?php
- if ($profilo_ok==3){
+ //if ($profilo_ok==3){
 ?>
 
 <section id="segn_limbo2_table">   
 <!--hr-->
-<h4>Segnalazioni in carico provenienti dai municipi</h4>
+<h4>Segnalazioni prese in carico provenienti dai municipi</h4>
 <table  id="segnalazioni" class="table table-condensed" 
 style="vertical-align: middle;" data-toggle="table" 
 data-url="./tables/griglia_segnalazioni_mun_pp.php" data-show-export="false" data-search="true" data-click-to-select="true" data-pagination="true"  data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
@@ -304,7 +318,7 @@ function nameFormatterMappa1(value, row) {
 
 </section>
 <?php
- }
+ //}
 ?>
 
 <hr>

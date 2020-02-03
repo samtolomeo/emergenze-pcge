@@ -1,0 +1,13 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Gter copyleft 2020
+
+url = 'http://apitest.comune.genova.it:28280/MANU_WSManutenzioni_MOGE'
+#url = 'http://wsmanutenzionitest.comune.genova.it/Emergenze.asmx'
+
+token='10ac7b40-c252-3544-9b5e-301836e485a5' # TEST
+#token='62377a72-fdab-3488-b337-e3182d72426f' # produzione
+
+IdSegnalante='21575' # test
+#IdSegnalante='21856' #produzione

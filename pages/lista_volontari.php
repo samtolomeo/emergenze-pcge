@@ -28,7 +28,7 @@ if ($profilo_sistema <= 3){
 }
 
 
-if ($profilo_sistema > 6){
+if ($profilo_sistema > 8){
 	header("location: ./divieto_accesso.php");
 }
 
