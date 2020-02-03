@@ -65,8 +65,9 @@ def get_response_from_provider(token, IdSegnalazionePC, Descrizione, IdManufatto
     """.format(IdManufatto, Descrizione, IdSegnalazionePC, CodViaDa, CivicoDa, ColoreDa, LetteraDa)
     response = requests.post(url, data=body1, headers=headers)
     # print("Info recieved...")
-    # print(response.content)
+    #print(response.content)
     root = et.fromstring(response.content)
+    print(root)
     # print('####################################################')
     id_segnalazione = root[0][0][0][1].text
     # id_segn = elem.attrib['IdSegnalazione']
@@ -162,13 +163,10 @@ def main():
 
     token = t.token
     IdSegnalante = t.IdSegnalante
-
-    response = \
-    get_response_from_provider(token, id_pc,  descrizione, id_manufatto, codvia, ncivico, colore, lettera)[
-        0]
-    id_segnalazione = \
-    get_response_from_provider(token, id_pc, descrizione, id_manufatto, codvia, ncivico, colore, lettera)[
-        1]
+    risposta=[]
+    risposta=get_response_from_provider(token, id_pc,  descrizione, id_manufatto, codvia, ncivico, colore, lettera)
+    response = risposta[0]
+    id_segnalazione = risposta [1]
     print(response.status_code)
     print(id_segnalazione)
     # print(response)
