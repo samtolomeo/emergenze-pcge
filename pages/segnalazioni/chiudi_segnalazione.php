@@ -51,7 +51,7 @@ if($_POST["invio"]=='man') {
 	}
 	$command_options= '-v '.$codvia.' -n '.$ncivico.' -i '.$id.' ';
 	if ($lettera!=''){
-		$command_options=$command_options. ' -l' .$lettera .' ';
+		$command_options=$command_options. ' -l ' .$lettera .' ';
 	}
 	if ($colore!=''){
 		$command_options=$command_options. ' -c ' .$colore .' ';
