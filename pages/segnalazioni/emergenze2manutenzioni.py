@@ -67,7 +67,7 @@ def get_response_from_provider(token, IdSegnalazionePC, Descrizione, IdManufatto
     # print("Info recieved...")
     #print(response.content)
     root = et.fromstring(response.content)
-    print(root)
+    #print(root)
     # print('####################################################')
     id_segnalazione = root[0][0][0][1].text
     # id_segn = elem.attrib['IdSegnalazione']

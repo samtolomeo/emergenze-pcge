@@ -49,7 +49,7 @@ if($_POST["invio"]=='man') {
 			$lettera=$rc['lettera'];
 		}
 	}
-	$command_options= '-v '.$codvia.' -n '.$ncivico.' -i '.$id.' ';
+	$command_options= ' -v '.$codvia.' -n '.$ncivico.' -i '.$id.' ';
 	if ($lettera!=''){
 		$command_options=$command_options. ' -l ' .$lettera .' ';
 	}
