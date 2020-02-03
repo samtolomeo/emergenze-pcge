@@ -1005,6 +1005,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								<br>Non sarà più possibile assegnare incarichi, presidi o provvedimenti cautelari associati a questa segnalazione.
 								<hr>
 								<input type="hidden" name="descr" id="hiddenField" value="<?php echo $r['descrizione']; ?>" />
+								<input type="hidden" name="crit" id="hiddenField" value="<?php echo $r['criticita']; ?>" />
 						      <input type="hidden" name="idcivico" id="hiddenField" value="<?php echo $id_civico ?>" />
 						      <input type="hidden" name="geom" id="hiddenField" value="<?php echo $geom ?>" />
 								<div class="form-group">

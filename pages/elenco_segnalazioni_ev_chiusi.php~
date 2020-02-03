@@ -268,18 +268,18 @@ require('./tables/filtri_segnalazioni.php');
  	<tr>
 	
 		<th data-field="state" data-checkbox="true"></th>
-		<th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" >Dettagli</th>
-		<th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Stato</th> 
+		<th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" data-filter-control="input">Dettagli</th>
+		<!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Stato</th--> 
 		<th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
-		<th data-field="criticita" data-sortable="true"   data-visible="true">Tipo<br>criticità</th>
+		<th data-field="criticita" data-sortable="true"   data-visible="true" data-filter-control="select">Tipo<br>criticità</th>
 		<th data-field="data_ora" data-sortable="true"  data-visible="true">Data e ora</th>
 		<th data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
-		<th data-field="nome_munic" data-sortable="true"  data-visible="true">Municipio</th>
-		<th data-field="localizzazione" data-sortable="true"  data-visible="true">Civico</th>
-		<th data-field="id" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>
+		<th data-field="nome_munic" data-sortable="true"  data-visible="true" data-filter-control="select">Municipio</th>
+		<th data-field="localizzazione" data-sortable="true"  data-visible="true" data-filter-control="input">Civico</th>
+		<th data-field="id2" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>
 		<th data-field="note" data-sortable="false" data-visible="true" >Note</th>
-		<th data-field="id_evento" data-sortable="true"  data-visible="true">Id<br>evento</th>
-		<th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th>
+		<th data-field="id_evento" data-sortable="true"  data-visible="true" data-filter-control="select">Id<br>evento</th>
+		<!--th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th-->
 	
 	
 	

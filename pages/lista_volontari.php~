@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Gestione utenti"
+$subtitle="Gestione utenti esterni (volontari, dipendenti partecipate, etc.)"
 
 ?>
 <!DOCTYPE html>
@@ -85,15 +85,16 @@ if ($profilo_sistema > 6){
             <th data-field="cf" data-sortable="false"  data-visible="true">CF</th>
             <th style="word-break:break-all; word-wrap:break-word; " data-field="cognome" data-sortable="true"  data-visible="true">Cognome</th>
             <th style="word-break:break-all; word-wrap:break-word; " data-field="nome" data-sortable="true"  data-visible="true">Nome</th>
-				<th data-field="livello1" data-sortable="true"  data-visible="true" >Unità<br>operativa</th>
+			<th data-field="livello1" data-sortable="true"  data-visible="true" >Unità<br>operativa</th>
 	         <th data-field="comune" data-sortable="true"  data-visible="true" >Comune</th>
-	    		<th data-field="provincia" data-sortable="true"  data-visible="true" >PR</th>
+	    	<th data-field="provincia" data-sortable="true"  data-visible="true" >PR</th>
              <th data-field="id_profilo" data-sortable="true"  data-visible="true" >Tipo<br>Profilo</th>
-             <th data-field="valido" data-sortable="true" data-formatter="nameFormatter_val"  data-visible="true" >Operativo</th>             
+			<th data-field="stato_profilo" data-sortable="true" data-formatter="nameFormatter0" data-visible="true" >Stato<br>profilo</th>
+
+             <th data-field="valido" data-sortable="true" data-formatter="nameFormatter_val"  data-visible="true" ><i class="fa fa-user-check" title="operativo" aria-hidden="true"></i></th>             
             <?php
 				if ($check_operatore == 1){
 				?>
-            <th data-field="stato_profilo" data-sortable="true" data-formatter="nameFormatter0" data-visible="true" >Stato<br>profilo</th>
             <th data-field="cf" data-sortable="false" data-formatter="nameFormatter" data-visible="true" > Edit </th>
             <?php
             }
@@ -164,9 +165,9 @@ function nameFormatter0(value) {
 function nameFormatter_val(value) {
 
 	if (value=='t'){
-        return '<i class="fa fa-user-check" aria-hidden="true"></i>';
+        return '<i class="fa fa-user-check" aria-hidden="true" title="Operativo"></i>';
 	} else if (value=='f') {
-		  return '<i class="fa fa-user-cross" aria-hidden="true"></i>';
+		  return '<i class="fa fa-user-cross" aria-hidden="true" title="Non operativo"></i>';
 	} else {
 		return '';
 	}
