@@ -37,7 +37,7 @@ while($r1 = pg_fetch_assoc($result1)) {
 		$tipo_eventi_attivi[]=array($r1["id"],$r2["descrizione"]);
 		//echo $r1["id"];
 	}
-	$query2="SELECT  nota From eventi.t_note_eventi WHERE id_evento=".$r1["id"]." ;";
+	$query2="select e.id, n.nota from eventi.t_eventi e LEFT JOIN eventi.t_note_eventi n ON e.id=n.id_evento WHERE n.id_evento=".$r1["id"]." ;";
 	//echo $query2;
 	$result2 = pg_query($conn, $query2);
 	while($r2 = pg_fetch_assoc($result2)) {
