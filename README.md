@@ -2,6 +2,10 @@
 
 Next documentation is in Italian because the system has been developed for an Italian public administration.
 
+## Author
+
+[Gter srl](http://www.gter.it) - +39 010 - 
+
 ## Introduzione
 
 ![alt text](dashboard.png)
