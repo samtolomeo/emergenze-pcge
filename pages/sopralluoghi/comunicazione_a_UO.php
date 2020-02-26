@@ -3,7 +3,7 @@
 session_start();
 
 //echo $_SESSION['user'];
-
+$allegato_array='';
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
 
@@ -22,18 +22,31 @@ $uo=$_POST["uo"];
 $id_evento=$_POST["id_evento"];
 
 
-echo "ID Squadra:". $uo."<br>";
-echo "sopralluogo:".$id. "<br>";
-echo "Note:".$note. "<br>";
+//echo "ID Squadra:". $uo."<br>";
+//echo "sopralluogo:".$id. "<br>";
+//echo "Note:".$note. "<br>";
 
 //exit;
 
 
 
+// Count total files
+$countfiles = count(array_filter($_FILES['userfile']['name']));
+//echo $countfiles;
+//exit;
+ 
+ // Looping all files
+ for($i=0;$i<$countfiles;$i++){
+   $filename = $_FILES['userfile']['name'][$i];
+   
+   // Upload file (example from internet)
+   //move_uploaded_file($_FILES['file']['tmp_name'][$i],'upload/'.$filename);
+
+
 // per prima cosa verifico che il file sia stato effettivamente caricato
-if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_name'])) {
+/*if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_name'])) {
   echo 'Non hai inviato nessun file...';    
-} else {
+} else {*/
 
 	//percorso della cartella dove mettere i file caricati dagli utenti
 
@@ -43,9 +56,10 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 	$uploaddir1= $uploaddir0. "e_".$id_evento."/";
 
 	if (file_exists($uploaddir1)) {
-		echo "The file $uploaddir1 exists <br>";
+		//echo "The file $uploaddir1 exists <br>";
+		echo "";
 	} else {
-		echo "The file $uploaddir1 does not exist <br>";
+		//echo "The file $uploaddir1 does not exist <br>";
 		$crea_folder="mkdir ".$uploaddir1;
 		exec($crea_folder);
 	}
@@ -53,30 +67,31 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 	$uploaddir= $uploaddir1. "s_".$id."/";
 
 	if (file_exists($uploaddir)) {
-		echo "The file $uploaddir exists <br>";
+		//echo "The file $uploaddir exists <br>";
+		echo "";
 	} else {
-		echo "The file $uploaddir does not exist <br>";
+		//echo "The file $uploaddir does not exist <br>";
 		$crea_folder="mkdir ".$uploaddir;
 		exec($crea_folder);
 	}
 
 	//Recupero il percorso temporaneo del file
-	$userfile_tmp = $_FILES['userfile']['tmp_name'];
+	$userfile_tmp = $_FILES['userfile']['tmp_name'][$i];
 
 	//recupero il nome originale del file caricato e tolgo gli spazi
 	//$userfile_name = $_FILES['userfile']['name'];
-	$userfile_name = preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($_FILES['userfile']["name"]));
+	$userfile_name = preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($_FILES['userfile']["name"][$i]));
 
 
 	$datafile=date("YmdHis");
 	$allegato=$uploaddir .$datafile."_". $userfile_name;
 
-	echo $allegato."<br>";
+	//echo $allegato."<br>";
 
 	//copio il file dalla sua posizione temporanea alla mia cartella upload
 	if (move_uploaded_file($userfile_tmp, $allegato)) {
 	  //Se l'operazione è andata a buon fine...
-	  echo 'File inviato con successo.';
+	  //echo 'File inviato con successo.';
 	}else{
 	  //Se l'operazione è fallta...
 	  echo 'Upload NON valido!'; 
@@ -84,6 +99,11 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 
 
 	$allegato=str_replace("../../../", "", $allegato); //allegato database
+	if ($allegato_array==''){
+		$allegato_array=$allegato;
+	} else {
+		$allegato_array=$allegato_array .";". $allegato;
+	}
 }
 
 //exit;
@@ -94,7 +114,7 @@ if ($allegato!=''){
 }
 $query= $query .")VALUES (".$id.", '".$note."'";
 if ($allegato!=''){
-	$query= $query . ",'". $allegato."'";
+	$query= $query . ",'". $allegato_array."'";
 }
 $query= $query .");";
 
@@ -208,9 +228,10 @@ if (!$mail->send()) {
 	?>
 	<script> alert(<?php echo "Problema nell'invio della mail: " . $mail->ErrorInfo;?>) </script>
 	<?php
-	echo '<br>La comunicazione è stata correttamente inserita a sistema, ma si è riscontrato un problema nell\'invio della mail.';
-	echo '<br>Entro 10" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
-	echo '<a href="../dettagli_sopralluogo.php?id='.$id.'">link</a> per saltare l\'attesa.</h3>' ;
+	echo '<div style="text-align: center;"><img src="../../img/no_mail_com.png" width="75%" alt=""></div>';
+	//echo '<br>La comunicazione è stata correttamente inserita a sistema, ma si è riscontrato un problema nell\'invio della mail.';
+	echo '<br><h1>Entro 10" verrai re-indirizzato alla pagina della tua segnalazione, clicca al seguente ';
+	echo '<a href="../dettagli_sopralluogo.php?id='.$id.'">link</a> per saltare l\'attesa.</h1>' ;
 	//sleep(30);
     header("refresh:10;url=../dettagli_sopralluogo.php?id=".$id);
 } else {

@@ -6,7 +6,7 @@ session_start();
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
-
+$allegato_array='';
 //echo "<h2> La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2>";
 
 
@@ -22,18 +22,33 @@ $note= str_replace("'", "''", $_POST["note"]);
 $uo=$_POST["uo"];
 $id_evento=$_POST["id_evento"];
 
-echo "Mittenre:".$mittente. "<br>";
+echo "Mittente:".$mittente. "<br>";
 echo "Segnalazione:".$id. "<br>";
 echo "Note:".$note. "<br>";
 
 //exit;
 
 
+// Count total files
+ $countfiles = count(array_filter($_FILES['userfile']['name']));
+
+//echo $countfiles;
+//echo "<br>";
+//echo count($_FILES);
+//exit;
+
+ // Looping all files
+ for($i=0;$i<$countfiles;$i++){
+   $filename = $_FILES['userfile']['name'][$i];
+   
+   // Upload file (example from internet)
+   //move_uploaded_file($_FILES['file']['tmp_name'][$i],'upload/'.$filename);
+
 
 // per prima cosa verifico che il file sia stato effettivamente caricato
-if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_name'])) {
+/*if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_name'])) {
   echo 'Non hai inviato nessun file...';    
-} else {
+} else {*/
 
 	//percorso della cartella dove mettere i file caricati dagli utenti
 
@@ -61,11 +76,11 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 	}
 
 	//Recupero il percorso temporaneo del file
-	$userfile_tmp = $_FILES['userfile']['tmp_name'];
+	$userfile_tmp = $_FILES['userfile']['tmp_name'][$i];
 
 	//recupero il nome originale del file caricato e tolgo gli spazi
 	//$userfile_name = $_FILES['userfile']['name'];
-	$userfile_name = preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($_FILES['userfile']["name"]));
+	$userfile_name = preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($_FILES['userfile']["name"][$i]));
 
 
 	$datafile=date("YmdHis");
@@ -84,6 +99,11 @@ if (!isset($_FILES['userfile']) || !is_uploaded_file($_FILES['userfile']['tmp_na
 
 
 	$allegato=str_replace("../../../", "", $allegato); //allegato database
+	if ($allegato_array==''){
+		$allegato_array=$allegato;
+	} else {
+		$allegato_array=$allegato_array .";". $allegato;
+	}
 }
 
 
@@ -99,8 +119,8 @@ if ($allegato!=''){
 	$query= $query . ", allegato";
 }
 $query= $query .")VALUES (".$id_lavorazione.", '".$mittente."', '".$note."'";
-if ($allegato!=''){
-	$query= $query . ",'". $allegato."'";
+if ($allegato_array!=''){
+	$query= $query . ",'". $allegato_array."'";
 }
 $query= $query .");";
 

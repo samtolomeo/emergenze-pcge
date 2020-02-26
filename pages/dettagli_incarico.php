@@ -218,7 +218,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						   <form autocomplete="off" action="incarichi/accetta.php?id=<?php echo $id; ?>" method="POST">
 							<input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" />
-							<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
+							<input type="hidden" name="id_lavorazione" value="<?php echo $id_lavorazione;?>" />
 							<!--input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" /-->
 								
 									 <div class="form-group">
@@ -449,7 +449,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					if ($stato_attuale==2){
 					?>
 						<hr>
-						<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mail"><i class="fas fa-comment"></i> Invia mail a squadra</button>
+						<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mail"><i class="fas fa-comment"></i> Invia mail </button>
 						 - 
 						<button class="btn btn-info noprint" onclick="printDiv('page-wrapper')">
                <i class="fa fa-print" aria-hidden="true"></i> Crea stampa o PDF 
@@ -471,8 +471,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						      
 						
 						        <form autocomplete="off"  enctype="multipart/form-data"  action="incarichi/comunicazione_da_UO.php?id=<?php echo $id; ?>" method="POST">
-									<input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" />
-									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
+									<input type="hidden" name="uo" value="<?php echo $uo_desc;?>" />
+									<input type="hidden" name="id_lavorazione" value="<?php echo $id_lavorazione;?>" />
 									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
 										 <div class="form-group">
 									    <label for="note">Testo comunicazione</label>  <font color="red">*</font>
@@ -482,7 +482,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
 									<div class="form-group">
 									   <label for="note">Eventuale allegato</label>
-										<input type="file" class="form-control-file" name="userfile" id="userfile">
+										<input type="file" class="form-control-file" name="userfile[]" id="userfile" multiple>
 									</div>
 						
 						        <button  id="conferma" type="submit" class="btn btn-primary">Invia comunicazione</button>
@@ -512,8 +512,8 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						      
 						
 						        <form autocomplete="off"  enctype="multipart/form-data" action="incarichi/comunicazione_a_UO.php?id=<?php echo $id; ?>" method="POST">
-									<input type="hidden" name="uo" value="<?php echo $r['id_uo'];?>" />
-									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
+									<input type="hidden" name="uo" value="<?php echo $id_uo;?>" />
+									<input type="hidden" name="id_lavorazione" value="<?php echo $id_lavorazione;?>" />
 									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
 										 <div class="form-group">
 									    <label for="note">Testo comunicazione</label>
@@ -523,7 +523,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
 									<div class="form-group">
 									   <label for="note">Eventuale allegato</label>
-										<input type="file" class="form-control-file" name="userfile" id="userfile">
+										<input type="file" class="form-control-file" name="userfile[]" id="userfile" multiple>
 									</div>
 						
 						
@@ -551,7 +551,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						        <h4 class="modal-title">Invio mail a squadra</h4>
+						        <h4 class="modal-title">Invio mail</h4>
 						      </div>
 						      <div class="modal-body">
 							  <ul>
@@ -560,7 +560,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							  <?php echo $uo_desc;?> registrate a sistema.</li>
 								</ul>
 						        <form autocomplete="off"  enctype="multipart/form-data"  action="incarichi/mail_squadra.php?id=<?php echo $id; ?>" method="POST">
-									<input type="hidden" name="uo" value="<?php echo $uo_desc;?>" />
+									<input type="hidden" name="uo" value="<?php echo $r['descrizione_uo'];?>" />
 									<input type="hidden" name="id_uo" value="<?php echo $id_uo_mail;?>" />
 									<input type="hidden" name="lat" value="<?php echo $lat;?>" />
 									<input type="hidden" name="lon" value="<?php echo $lon;?>" />

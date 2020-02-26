@@ -744,7 +744,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
 									<div class="form-group">
 									   <label for="note">Eventuale allegato</label>
-										<input type="file" class="form-control-file" name="userfile" id="userfile">
+										<input type="file" class="form-control-file" name="userfile[]" id="userfile" multiple>
 									</div>
 						
 						        <button  id="conferma" type="submit" class="btn btn-primary">Invia comunicazione</button>
@@ -785,7 +785,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
 									<div class="form-group">
 									   <label for="note">Eventuale allegato</label>
-										<input type="file" class="form-control-file" name="userfile" id="userfile">
+										<input type="file" class="form-control-file" name="userfile[]" id="userfile" multiple>
 									</div>
 						
 						
