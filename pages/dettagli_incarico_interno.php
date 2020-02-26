@@ -83,6 +83,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 					while($r = pg_fetch_assoc($result)) {
 						$id_squadra=$r['id_squadra'];
 						$id_squadra_attiva=$r['id_squadra'];
+						echo 'Id squadra'. $id_squadra. '<br>';
 						//$id_uo=$r['id_uo'];
 						if ($r['id_segnalazione']!=''){
 							$check_segnalazione=1;
@@ -709,7 +710,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
 									<div class="form-group">
 									   <label for="note">Eventuale allegato</label>
-										<input type="file" class="form-control-file" name="userfile" id="userfile">
+										<input type="file" class="form-control-file" name="userfile[]" id="userfile" multiple>
 									</div>
 						
 						        <button  id="conferma" type="submit" class="btn btn-primary">Invia comunicazione</button>
@@ -739,7 +740,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						      
 						
 						        <form autocomplete="off"  enctype="multipart/form-data" action="incarichi_interni/comunicazione_a_UO.php?id=<?php echo $id; ?>" method="POST">
-									<input type="hidden" name="uo" value="<?php echo $r['id_squadra'];?>" />
+									<input type="hidden" id="uo" name="uo" value="<?php echo $id_squadra;?>" />
 									<input type="hidden" name="id_lavorazione" value="<?php echo $r['id_lavorazione'];?>" />
 									<input type="hidden" name="id_evento" value="<?php echo $id_evento;?>" />
 										 <div class="form-group">
@@ -750,7 +751,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
 									<div class="form-group">
 									   <label for="note">Eventuale allegato</label>
-										<input type="file" class="form-control-file" name="userfile" id="userfile">
+										<input type="file" class="form-control-file" name="userfile[]" id="userfile" multiple>
 									</div>
 						
 						

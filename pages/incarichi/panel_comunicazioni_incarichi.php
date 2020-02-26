@@ -28,7 +28,14 @@
 					echo " - Da " .$r_comunicazioni['mittente']. " a ". $r_comunicazioni['destinatario'];
 					echo " : " .$r_comunicazioni['testo'];
 					if ($r_comunicazioni['allegato']!=''){
-						echo '<a href="../../'.$r_comunicazioni['allegato'].'"> Allegato </a>';
+						$allegati=explode(";",$r_comunicazioni['allegato']);
+						// Count total files
+						$countfiles = count($allegati);
+						// Looping all files
+						for($i=0;$i<$countfiles;$i++){
+							$n_a=$i+1;
+							$testo= $testo. ' - <a href="../../'.$allegati[$i].'"> Allegato '.$n_a.'</a>';
+						}
 					}
 					//echo " - <a class=\"btn btn-info\" href=\"dettagli_incarico.php?id=".$r_comunicazioni['id']."\"> <i class=\"fas fa-info\"></i> Dettagli</a>";
 				}

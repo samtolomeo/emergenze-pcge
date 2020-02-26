@@ -27,7 +27,16 @@ while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 	$testo= $testo. " - Da " .$r_comunicazioni['mittente']. " a ". $r_comunicazioni['destinatario'];
 	$testo= $testo. " : " .$r_comunicazioni['testo'];
 	if ($r_comunicazioni['allegato']!=''){
-		$testo= $testo. '<a href="../../'.$r_comunicazioni['allegato'].'"> Allegato </a>';
+		$allegati=explode(";",$r_comunicazioni['allegato']);
+		// Count total files
+		$countfiles = count($allegati);
+		// Looping all files
+		if($countfiles > 0) {
+			for($i=0;$i<$countfiles;$i++){
+				$n_a=$i+1;
+				$testo= $testo. ' - <a href="../../'.$allegati[$i].'"> Allegato '.$n_a.'</a>';
+			}
+		}
 	}
 }
 
@@ -151,7 +160,7 @@ while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 			<!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
 			<div class="form-group">
 			   <label for="note">Eventuale allegato</label>
-				<input type="file" class="form-control-file" name="userfile" id="userfile">
+				<input type="file" class="form-control-file" name="userfile[]" id="userfile" multiple>
 			</div>
 
 		<button  id="conferma" type="submit" class="btn btn-primary">Invia comunicazione</button>
