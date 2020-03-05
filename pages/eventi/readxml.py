@@ -67,9 +67,12 @@ def scarica_bollettino(tipo,nome,ora):
             for row in lista_chat_id:
                 chat_id=row[0]
                 print(chat_id)
-                bot.sendMessage(chat_id, "Nuovo bollettino Protezione civile!")
-                bot.sendMessage(chat_id, messaggio)
-                time.sleep(1)
+                try:
+                    bot.sendMessage(chat_id, "Nuovo bollettino Protezione civile!\n\n{}".format(messaggio))
+                except:
+                    print('Problema invio messaggio all\'utente con chat_id={}'.format(chat_id))
+                #bot.sendMessage(chat_id, messaggio)
+                #time.sleep(1)
     else:
         print("File of type {} already download".format(tipo))
         #if tipo == 'PC':
