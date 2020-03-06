@@ -288,7 +288,7 @@ require('./tables/filtri_segnalazioni.php');
 
  	<tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="id" data-sortable="true" data-formatter="nameFormatterEdit" data-visible="true" data-filter-control="input">Dettagli</th>
+            <th data-field="id" data-sortable="true" data-formatter="nameFormatterEdit" data-visible="true" data-filter-control="input">Numero</th>
             <th data-field="in_lavorazione" data-sortable="true" data-formatter="nameFormatter" data-visible="true" data-filter-control="select">Stato</th> 
             <th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
             <th data-field="criticita" data-sortable="true"   data-visible="true" data-filter-control="select">Tipo<br>criticità</th>

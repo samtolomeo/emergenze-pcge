@@ -2,7 +2,7 @@
 
 session_start();
 
-//echo $_SESSION['user'];
+echo $_SESSION['user'];
 
 include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
 
@@ -93,7 +93,7 @@ echo $query;
 $result=pg_query($conn, $query);
 
 
-$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$operatore ."', 'Creata squadra con id: ".$id_squadra."');";
+$query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('users','".$_SESSION['user'] ."', 'Creata squadra con id: ".$id_squadra."');";
 $result = pg_query($conn, $query_log);
 
 

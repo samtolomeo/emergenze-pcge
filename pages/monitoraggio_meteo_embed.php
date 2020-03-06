@@ -3,6 +3,10 @@
 
 ?>
 
+
+
+
+
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<hr>
 </div>
@@ -34,7 +38,7 @@
 				      <div class="modal-body">
       
 
-        <form autocomplete="off" action="report/nuovo_mon.php?id=<?php echo $id;?> " method="POST">
+        <form autocomplete="off" enctype="multipart/form-data" action="report/nuovo_mon.php?id=<?php echo $id;?> " method="POST">
 		
 						<div class="form-group">
 						<label for="data_inizio" >Data (AAAA-MM-GG) </label>                 
@@ -94,8 +98,14 @@
 				    <label for="aggiornamento">Aggiornamento</label> <font color="red">*</font>
 				    <textarea class="form-control" id="aggiornamento" name="aggiornamento" rows="6" required></textarea>
 				  </div>
-		           
-                  
+
+
+               <!--	RICORDA	  enctype="multipart/form-data" nella definizione del form    -->
+					<div class="form-group">
+					   <label for="note">Eventuali immagini allegate </label>
+						<input type="file" class="form-control-file" accept="image/*" onchange="preview_images();"name="userfile[]" id="userfile" multiple>
+					<br><div class="row" id="image_preview"></div>
+					</div>
 
 
 
@@ -103,6 +113,8 @@
             </form>
 
       </div>
+
+
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
       </div>
@@ -112,17 +124,32 @@
 </div>
 			
 			<?php
-			$query='SELECT id, data, aggiornamento FROM report.t_aggiornamento_meteo
+			$query='SELECT id, data, aggiornamento, allegati FROM report.t_aggiornamento_meteo
 			WHERE id_evento = '.$id.';';
 			//echo $query;
 			$result = pg_query($conn, $query);
 			while($r = pg_fetch_assoc($result)) {
-				echo '<button type="button" class="btn btn-info noprint"  data-toggle="modal" 
-				data-target="#update_mon_'.$r['id'].'">
-				<i class="fas fa-edit"></i> Edit </button>';
-				echo " <b>Aggiornamento meteo (".$r['data'].")</b>: ";
-				echo $r['aggiornamento']."<br><br>";
 				
+				echo " <b>Aggiornamento meteo (".$r['data'].")</b>: ";
+				echo $r['aggiornamento']."";
+				//echo $r['allegati']."<br><br>";
+				if ($r['allegati']!=''){
+					$allegati=explode(";",$r['allegati']);
+					// Count total files
+					$countfiles = count($allegati);
+					//echo $countfiles;
+					// Looping all files
+					if($countfiles > 0) {
+						for($i=0;$i<$countfiles;$i++){
+							$n_a=$i+1;
+							echo ' <img class="img-responsive" src="../../'.$allegati[$i].'" alt="L\'allegato caricato non ha un formato immagine">';
+							echo '<br> <button type="button" class="btn btn-info noprint"  data-toggle="modal" 
+							data-target="#update_mon_'.$r['id'].'">
+							<i class="fas fa-edit"></i> Edit </button>';
+							echo ' - <a class="btn btn-info noprint" href="../../'.$allegati[$i].'"> Scarica allegato '.$n_a.'</a><br><br><hr>';
+						}
+					}
+				}
 				?>
 				
 				<!-- Modal edit-->

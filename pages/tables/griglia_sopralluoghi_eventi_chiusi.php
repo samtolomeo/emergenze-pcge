@@ -18,7 +18,7 @@ $uo=$_GET["u"];
 //$filter=filtro($getfiltri);
 
 
-if (strlen($filtro_from)>=12 || strlen($filtro_to)>=12){
+if (strlen($filtro_from)>=10 || strlen($filtro_to)>=10){
 		$check2=1;
 	}
 	
@@ -26,15 +26,26 @@ if (strlen($filtro_from)>=12 || strlen($filtro_to)>=12){
 		$filter = $filter . " AND (" ;
 	}
 	
-	if (strlen($filtro_from)>=12 ) {
+	if (strlen($filtro_from)>=10 && strlen($filtro_to)< 10 ) {
 		$filter = $filter . " TO_TIMESTAMP(time_stop, 'DD/MM/YY HH24:MI:SS') > ".$filtro_from." ";
 	}
 	
-	if (strlen($filtro_from)>=12 && strlen($filtro_to)>=12) {
+	if (strlen($filtro_from)>=10 && strlen($filtro_to)>=10) {
+		$filter = $filter . " (TO_TIMESTAMP(time_stop, 'DD/MM/YY HH24:MI:SS') > ".$filtro_from." ";
 		$filter = $filter . " AND " ;
+		$filter = $filter . " TO_TIMESTAMP(time_preview, 'DD/MM/YY HH24:MI:SS') < ".$filtro_from.") OR";
+		$filter = $filter . " (TO_TIMESTAMP(time_stop, 'DD/MM/YY HH24:MI:SS') > ".$filtro_to." ";
+		$filter = $filter . " AND " ;
+		$filter = $filter . " TO_TIMESTAMP(time_preview, 'DD/MM/YY HH24:MI:SS') < ".$filtro_to.") OR";
+		$filter = $filter . " (TO_TIMESTAMP(time_preview, 'DD/MM/YY HH24:MI:SS') > ".$filtro_from." ";
+		$filter = $filter . " AND " ;
+		$filter = $filter . " TO_TIMESTAMP(time_stop, 'DD/MM/YY HH24:MI:SS') < ".$filtro_to.") OR";
+		$filter = $filter . " (TO_TIMESTAMP(time_stop, 'DD/MM/YY HH24:MI:SS') > ".$filtro_to." ";
+		$filter = $filter . " AND " ;
+		$filter = $filter . " TO_TIMESTAMP(time_preview, 'DD/MM/YY HH24:MI:SS') < ".$filtro_from.") ";
 	}
 	
-	if (strlen($filtro_to)>=12) {
+	if (strlen($filtro_from)<10 && strlen($filtro_to)>=10) {
 		$filter = $filter . " TO_TIMESTAMP(time_stop, 'DD/MM/YY HH24:MI:SS') < ".$filtro_to." ";
 	}
 	
@@ -66,7 +77,7 @@ if(!$conn) {
 	group by id_stato_sopralluogo, id_profilo, descrizione, id_evento, time_start, 
 	time_preview, time_stop, id ORDER BY id_evento desc;";
     
-    //echo $query  ."<br>";
+	//echo $query  ."<br>";
 	$result = pg_query($conn, $query);
 	#echo $query;
 	#exit;

@@ -230,6 +230,23 @@ function printDiv(divName) {
 
 
 </script>
+
+<script type="text/javascript" src="./jquery.form.js"></script>
+
+<script type="text/javascript" >
+function preview_images() 
+{
+ var total_file=document.getElementById("userfile").files.length;
+ //alert(total_file);
+ for(var i=0;i<total_file;i++)
+ {
+ 	if(event.target.files[i].type.indexOf("image")==-1){
+   	alert("L'allegato caricato non è un immagine! Non verrà visualizzato.");
+   }
+		$('#image_preview').append("<div class='col-md-3'><img class='img-responsive' src='"+URL.createObjectURL(event.target.files[i])+"'></div>");
+ }
+}
+</script>
     
 
 </body>
