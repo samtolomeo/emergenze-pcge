@@ -138,7 +138,9 @@ while($r_comunicazioni = pg_fetch_assoc($result_comunicazioni)) {
 
 
 <?php
-if ($profilo <=2){
+//echo $profilo_sistema;
+//echo 'profilo';
+if ($profilo_sistema <=2){
 	if ($check_segnalazione==1){
 		$query_riservate="SELECT * FROM segnalazioni.t_comunicazioni_segnalazioni_riservate WHERE id_segnalazione=".$id. ";";
 		//echo $query_riservate;
