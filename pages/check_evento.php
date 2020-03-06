@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
 
 $check_evento=0;

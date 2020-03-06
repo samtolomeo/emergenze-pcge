@@ -167,23 +167,31 @@ if ($profilo_sistema == 9 or  $profilo_sistema > 10){
              </div>
              
              <hr>
-             			<div class="row">       
+			<?php //echo $profilo_ok 	?>
+			<div class="row">       
 				<div class="form-group col-md-6">
 					<label for="nverde"> Operatore numero verde?</label> <font color="red">*</font><br>
-					<label class="radio-inline"><input type="radio" name="nverde" value="t" checked>Sì</label>
-					<label class="radio-inline"><input type="radio" name="nverde"value="f">No</label>
+					<label class="radio-inline"><input type="radio" name="nverde" value="t" 
+					<?php if ($profilo_ok ==11){	?>
+					checked
+					<?php }	?>
+					>Sì</label>
+					<label class="radio-inline"><input type="radio" name="nverde"value="f"
+					<?php if ($profilo_ok !=11){	?>
+					checked
+					<?php }	?>
+					>No</label>
 				</div>
-				</div> 
-				<hr>
-             	<div class="form-group">
+			</div> 
+			<hr>
+			<div class="row">
+             	<div class="form-group col-md-6">
 					<label for="nome"> Specifica se si tratta di una richiesta generica (es. sono aperte le Scuole?) 
 					o di una nuova segnalazione da inserire a sistema</label> <font color="red">*</font><br>
 					<label class="radio-inline"><input type="radio" name="ric" id="rich" required="">Richiesta</label>
 					<label class="radio-inline"><input type="radio" name="ric" id="segn">Segnalazione</label>
 				</div>
-            
-             
-             
+			</div>
             <div class="panel-group">
 				  <div class="panel panel-default">
 				    <div class="panel-heading">
@@ -195,9 +203,10 @@ if ($profilo_sistema == 9 or  $profilo_sistema > 10){
 				<div class="panel-body">
             
             <div class="row"> 
-
+			<div class="col-md-12">
             <h4><i class="fa fa-tasks"></i> Oggetto della segnalazione:</h4> 
-            
+            </div>
+			
              <div class="form-group col-md-6">
               <label for="naz">Tipo criticità:</label> <font color="red">*</font>
                             <select class="form-control" name="crit" id="crit" required="">
@@ -237,17 +246,22 @@ if ($profilo_sistema == 9 or  $profilo_sistema > 10){
 				</div>
 
 
-				
+				<div class="form-group col-md-6">
+					<label for="descrizione"> Ulteriori comunicazioni a carattere riservato</label> <font color="red">*</font>
+					<textarea class="form-control" rows="2" name="riservate" id="riservate"></textarea>
+					<small>Tali informazioni saranno visibili solo agli operatori di protezione civile.</small>
+				</div>	
 
 				
 				
 				</div> 
  				<hr>
             <div class="row">
-            <h4><i class="fa fa-map-marker-alt"></i> Geolocalizzazione:</h4> 
+				<div class="col-md-12">
+					<h4><i class="fa fa-map-marker-alt"></i> Geolocalizzazione:</h4> 
+				</div>
 
-
-				<div class="form-group">
+				<div class="form-group col-md-12">
 					<label for="nome"> Seleziona l'opzione che intendi usare per georeferenziare la segnalazione</label> <font color="red">*</font><br>
 					<label class="radio-inline"><input type="radio" name="georef" id="civico" required="">Tramite civico</label>
 					<label class="radio-inline"><input type="radio" name="georef" id="mappa">Tramite mappa</label>
@@ -255,7 +269,7 @@ if ($profilo_sistema == 9 or  $profilo_sistema > 10){
 				</div>
 
 
-				</div> 
+			</div> 
             <div class="row">
             
             
@@ -356,20 +370,20 @@ if ($profilo_sistema == 9 or  $profilo_sistema > 10){
 				
 				</div> 
             <div class="row">    
-
+			<div class="col-md-12">
 				<div class="panel-group">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" href="#collapse1">Mappa</a>
-      </h4>
-    </div>
-    <div id="collapse1" class="panel-collapse collapse">
-			<div id="mapid" style="width: 100%; height: 600px;"></div>
-    </div>
-  </div>
-</div>
-
+					<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h4 class="panel-title">
+							<a data-toggle="collapse" href="#collapse1">Mappa</a>
+						  </h4>
+						</div>
+						<div id="collapse1" class="panel-collapse collapse">
+								<div id="mapid" style="width: 100%; height: 600px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 <!--script type="text/javascript" >
@@ -382,9 +396,10 @@ $('#collapse1').on('shown.bs.collapse', function (e) {
 								       
 				
             </div> 
+			<hr>
             <div class="row">
-
-					<hr>
+			<div class="col-md-12">
+					
                <h4><i class="fa fa-plus"></i> Altro:</h4>      
                     
                      
@@ -400,7 +415,7 @@ $('#collapse1').on('shown.bs.collapse', function (e) {
 
             <button  type="submit" class="btn btn-primary">Invia segnalazione</button>
                          
-            
+            </div> 
             </div>
             <!-- FINE PANEL -->
             </div>

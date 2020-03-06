@@ -119,7 +119,7 @@ if ($allegato!=''){
 	$query= $query . ", allegato";
 }
 $query= $query .")VALUES (".$id_lavorazione.", '".$mittente."', '".$note."'";
-if ($allegato!=''){
+if ($allegato_array!=''){
 	$query= $query . ",'". $allegato_array."'";
 }
 $query= $query .");";

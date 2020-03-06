@@ -227,7 +227,11 @@ if ($profilo_sistema > 8){
 				</div>
 
 
-				
+			<div class="form-group col-md-6">
+                <label for="descrizione"> Ulteriori comunicazioni a carattere riservato</label> <font color="red">*</font>
+				<textarea class="form-control" rows="3" name="riservate" id="riservate"></textarea>
+				<small>Tali informazioni saranno visibili solo agli operatori di protezione civile.</small>
+             </div>	
 
 				
 				

@@ -237,6 +237,20 @@ if ($id_oggetto!=''){
 	echo $query_oggetto;
 	echo "<br>";	
 }
+
+if ($_POST["riservate"]!=''){
+	$query_operatore="SELECT nome, cognome, descrizione FROM users.v_utenti_sistema WHERE matricola_cf='".$operatore."'";
+	$result_operatore = pg_query($conn, $query_operatore);
+	while($r_op = pg_fetch_assoc($result_operatore)) {
+      	$nome_operatore=$r_op['cognome'] .' '.$r_op['nome']. ' ('. $r_op['descrizione'].')';
+    }
+	$query_riservate = "INSERT INTO segnalazioni.t_comunicazioni_segnalazioni_riservate(
+	id_segnalazione, mittente, testo)
+	VALUES (".$id_segnalazione.", '".$nome_operatore."', '".$_POST["riservate"]."');";
+	$result_riservate = pg_query($conn, $query_riservate);
+}
+
+
 //exit;
 $query_log= "INSERT INTO varie.t_log (schema,operatore, operazione) VALUES ('segnalazioni','".$operatore ."', 'Creazione segnalazione ".$id_segnalazione."');";
 $result = pg_query($conn, $query_log);
