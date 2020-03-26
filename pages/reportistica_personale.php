@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Riepilogo evento";
+$subtitle="Report esteso (dettagli squadre e personale impiegato)";
 
 $id=$_GET['id'];
 
@@ -1097,7 +1097,87 @@ function nameFormatterMappa1(value, row) {
 	
 ?>
 </div>  
+</div>
+
+<hr>
+<div class="row">              
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3>Elenco presidi fissi slegati da segnalazioni</h3>
+
+	<?php
+	$query2 = "SELECT i.id,
+	to_char(i.data_ora_invio, 'DD/MM/YYYY'::text) AS data_invio,
+	to_char(i.data_ora_invio, 'HH24:MI'::text) AS ora_invio,
+	i.descrizione,
+	to_char(i.time_preview, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_preview,
+	to_char(i.time_start, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_start,
+	to_char(i.time_stop, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_stop,
+	i.note_ente,
+	st.id_stato_sopralluogo,
+	jj.id_segnalazione_in_lavorazione,
+	t.descrizione AS descrizione_stato
+	FROM segnalazioni.t_sopralluoghi i
+	JOIN segnalazioni.stato_sopralluoghi st ON st.id_sopralluogo = i.id
+	JOIN segnalazioni.tipo_stato_sopralluoghi t ON t.id = st.id_stato_sopralluogo
+	JOIN segnalazioni.join_sopralluoghi_squadra ii ON ii.id_sopralluogo = i.id
+	JOIN users.v_squadre_all u ON u.id::text = ii.id_squadra::text
+	JOIN eventi.t_eventi e ON e.id = i.id_evento
+	LEFT JOIN segnalazioni.join_segnalazioni_sopralluoghi jj ON jj.id_sopralluogo=i.id
+	WHERE i.id_evento=".$id." AND id_segnalazione_in_lavorazione is null 
+	AND st.data_ora_stato = (select max(data_ora_stato) from segnalazioni.stato_sopralluoghi where id_sopralluogo =i.id) 
+	GROUP BY i.id, data_invio, ora_invio, i.descrizione, time_preview, time_start, time_stop, note_ente, descrizione_stato, id_stato_sopralluogo, id_segnalazione_in_lavorazione;";
+	//echo $query2 ."<br>";
+	echo "<ul>";
+	$result2 = pg_query($conn, $query2);
+	while($r2 = pg_fetch_assoc($result2)) {
+		echo "<li><h4> ";
+		if($r2['id_stato_sopralluogo']==1){
+			echo '<i class="fas fa-exclamation" title="Presidio inviato, ma non ancora preso in carico" style="color:#ff0000"></i>';
+		} else if ($r2['id_stato_sopralluogo']==2){
+			echo '<i class="fas fa-play" title="Presidio in lavorazione" style="color:#f2d921"></i>';
+		} else if($r2['id_stato_sopralluogo']==3){
+			echo '<i class="fas fa-check" title="Presidio chiuso" style="color:#5cb85c"></i>';
+		}else if($r2['id_stato_sopralluogo']==4){
+			echo '<i class="fas fa-exclamation" title="Presidio rifiutato" style="color:#ff0000"></i>';
+		}
+		echo " Presidio ".$r2['descrizione_stato']." assegnato il " .$r2['data_invio']. " alle " .$r2['ora_invio']. " ";
+		echo " - Descrizione Presidio: " .$r2['descrizione']." ";
+		if ($r2['note_ente']!=''){
+			echo ' - Note chiusura: '.$r2['note_ente'].' ';
+		}
+		echo "</h4>";
+		if($r2['id_stato_sopralluogo']==4){
+			$query_s="SELECT a.id, a.data_ora_invio as data_ora, a.data_ora_invio as data_ora_cambio, max(s.data_ora_stato) as time_stop, a.id_squadra::integer, b.nome
+			FROM segnalazioni.t_sopralluoghi a
+			JOIN users.t_squadre b ON a.id_squadra::integer = b.id::integer  
+			JOIN segnalazioni.stato_sopralluoghi s ON s.id_sopralluogo=a.id
+			WHERE a.id=".$r2['id']."
+			GROUP BY a.id, a.data_ora_invio, a.id_squadra, b.nome";
+		} else { 
+			$query_s="SELECT a.id_sopralluogo, a.data_ora, a.data_ora_cambio, c.time_stop,a.id_squadra, b.nome 
+			FROM segnalazioni.join_sopralluoghi_squadra a
+			JOIN users.t_squadre b ON a.id_squadra=b.id 
+			JOIN segnalazioni.t_sopralluoghi c ON c.id=a.id_sopralluogo
+			WHERE id_sopralluogo =".$r2['id']." 
+			ORDER BY data_ora";
+		}
+		//echo $query_s;
+		echo "<ul>";
+		require('./query_storico_squadre_incarichi.php');
+		echo "</ul>";
+
+	
+	echo "</li>";
+		}
+		echo "</ul>";
+	
+?>
 </div>  
+</div>
+
+
+
+  
 <hr> 
 <div class="row">              
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -1124,11 +1204,139 @@ data-show-toggle="false" data-show-columns="false" data-toolbar="#toolbar">
                where id_evento=".$id.";";
                $result = pg_query($conn, $query);
 					while($r = pg_fetch_assoc($result)) {
-						echo "<br><br><b>Residenti allontanati in questo momento::</b>".$r['sum']."<br><br>";
+						echo "<br><br><b>Residenti allontanati in questo momento:</b>".$r['sum']."<br><br>";
 					}
                 
                 
 				?>
+				
+				
+				
+				<hr>
+				
+				
+	<?php
+	$query2 = "SELECT i.id,
+	to_char(i.data_ora_invio, 'DD/MM/YYYY'::text) AS data_invio,
+	to_char(i.data_ora_invio, 'HH24:MI'::text) AS ora_invio,
+	i.descrizione,
+	to_char(i.time_preview, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_preview,
+	to_char(i.time_start, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_start,
+	to_char(i.time_stop, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_stop,
+	i.note_ente,
+	tt.descrizione AS tipo,
+	o.descrizione as descrizione_uo,
+	st.id_stato_provvedimenti_cautelari,
+	t.descrizione AS descrizione_stato,
+	i.rimosso,
+	to_char(h.data_ora_stato, 'DD/MM/YYYY'::text) AS data_rimozione,
+	to_char(h.data_ora_stato, 'HH24:MI'::text) AS ora_rimozione
+	FROM segnalazioni.t_provvedimenti_cautelari i
+	JOIN segnalazioni.stato_provvedimenti_cautelari st ON st.id_provvedimento = i.id
+	JOIN segnalazioni.tipo_stato_provvedimenti_cautelari t ON t.id = st.id_stato_provvedimenti_cautelari
+	JOIN users.tipo_origine_provvedimenti_cautelari o ON i.id_uo::integer=o.id
+	JOIN segnalazioni.tipo_provvedimenti_cautelari tt ON tt.id=i.id_tipo 
+	JOIN eventi.t_eventi e ON e.id = i.id_evento
+	LEFT JOIN segnalazioni.t_ora_rimozione_provvedimenti_cautelari h ON i.id=h.id_provvedimento
+	WHERE i.id_evento=".$id." 
+	AND st.data_ora_stato = (select max(data_ora_stato) from segnalazioni.stato_provvedimenti_cautelari where id_provvedimento =i.id) 
+	GROUP BY i.id, data_invio, ora_invio, i.descrizione, time_preview, time_start, time_stop, note_ente, descrizione_stato, descrizione_uo, id_stato_provvedimenti_cautelari, 
+	tipo, rimosso, data_rimozione, ora_rimozione 
+	ORDER BY tipo, i.data_ora_invio ;";
+	//echo $query2 ."<br>";
+	echo "<ul>";
+	$result2 = pg_query($conn, $query2);
+	while($r2 = pg_fetch_assoc($result2)) {
+		echo "<li><h4> ";
+		if($r2['id_stato_provvedimenti_cautelari']==1){
+			echo '<i class="fas fa-exclamation" title="Provvedimento inviato, ma non ancora preso in carico" style="color:#ff0000"></i>';
+		} else if ($r2['id_stato_provvedimenti_cautelari']==2){
+			echo '<i class="fas fa-play" title="Provvedimento in lavorazione" style="color:#f2d921"></i>';
+		} else if($r2['id_stato_provvedimenti_cautelari']==3){
+			echo '<i class="fas fa-check" title="Provvedimento chiuso" style="color:#5cb85c"></i>';
+		}else if($r2['id_stato_provvedimenti_cautelari']==4){
+			echo '<i class="fas fa-exclamation" title="Provvedimento rifiutato" style="color:#ff0000"></i>';
+		}
+		echo " ".$r2['tipo']." - ".$r2['descrizione_stato']." assegnato il " .$r2['data_invio']. " alle " .$r2['ora_invio']. " ";
+		echo "da: " .$r2['descrizione_uo']." - Descrizione Provvedimento: " .$r2['descrizione']." ";
+		if ($r2['note_ente']!=''){
+			echo ' - Note chiusura: '.$r2['note_ente'].' ';
+		}
+		if ($r2['rimosso']=='t'){
+			echo ' - Rimosso alle ore '.$r2['ora_rimozione'].' del '.$r2['data_rimozione'];
+		}
+		echo "</h4>";
+		
+		//*********************************************************************************************************
+		// cerco gli incarichi associati a quel provvedimento cautelare
+		
+		/*if ($r['conteggio_incarichi']>0){
+		if ($r['conteggio_incarichi']==1){
+			echo ' <h4> '.$r['conteggio_incarichi'].' incarico assegnato </h4>';
+		} else {
+			echo ' <h4> '.$r['conteggio_incarichi'].' incarichi assegnati </h4>';
+		}*/
+		$query3 = "SELECT i.id,
+		to_char(i.data_ora_invio, 'DD/MM/YYYY'::text) AS data_invio,
+		to_char(i.data_ora_invio, 'HH24:MI'::text) AS ora_invio,
+		i.descrizione,
+		u.descrizione AS descrizione_uo,
+		to_char(i.time_preview, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_preview,
+		to_char(i.time_start, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_start,
+		to_char(i.time_stop, 'DD/MM/YYYY HH24:MI:SS'::text) AS time_stop,
+		i.note_ente,
+		i.note_rifiuto,
+		st.id_stato_incarico,
+		t.descrizione AS descrizione_stato,
+		st.parziale
+	   FROM segnalazioni.t_incarichi i
+		 JOIN segnalazioni.join_incarico_provvedimenti_cautelari j ON j.id_incarico=i.id
+		 JOIN segnalazioni.stato_incarichi st ON st.id_incarico = i.id
+		 JOIN segnalazioni.tipo_stato_incarichi t ON t.id = st.id_stato_incarico
+		 JOIN varie.v_incarichi_mail u ON u.cod = i.id_uo::text 
+		WHERE j.id_provvedimento= ".$r2['id']." AND st.data_ora_stato = (select max(data_ora_stato) from segnalazioni.stato_incarichi where id_incarico =i.id) 
+		GROUP BY i.id, data_invio, ora_invio, i.descrizione, descrizione_uo, time_preview, time_start, time_stop, note_ente, note_rifiuto, descrizione_stato,parziale, id_stato_incarico;";
+		//echo $query3 ."<br>";
+		echo "<ul>";
+		$result3 = pg_query($conn, $query3);
+		while($r3 = pg_fetch_assoc($result3)) {
+			echo "<li> ";
+			if($r3['id_stato_incarico']==1){
+				echo '<i class="fas fa-exclamation" title="Incarico inviato, ma non ancora preso in carico" style="color:#f2d921"></i>';
+			} else if ($r3['id_stato_incarico']==2){
+				echo '<i class="fas fa-play" title="Incarico in lavorazione" style="color:#f2d921"></i>';
+			} else if($r3['id_stato_incarico']==3){
+				echo '<i class="fas fa-check" title="Incarico chiuso" style="color:#5cb85c"></i>';
+			}else if($r3['id_stato_incarico']==4){
+				echo '<i class="fas fa-exclamation" title="Incarico rifiutato" style="color:#ff0000"></i>';
+			}
+			echo " Incarico ".$r3['descrizione_stato']." assegnato il " .$r3['data_invio']. " alle " .$r3['ora_invio']. " ";
+			echo "a ".$r3[descrizione_uo]." <br>Descrizione incarico: " .$r3['descrizione']." ";
+			if ($r3['note_ente']!=''){
+				echo ' - Note chiusura: '.$r3['note_ente'].' ';
+			}
+			if ($r3['note_rifiuto']!=''){
+				echo ' - Note rifiuto: '.$r3['note_rifiuto'].' ';
+			}
+			if ($r3['parziale']=='t'){
+				echo ' - <i class="fas fa-exclamation"></i> Incarico eseguito solo in parte';
+			}
+			echo "</li>";
+		}
+		echo "</ul>";
+	/*} else {
+		echo 'Nessun incarico assegnato - ';
+	}*/
+		
+		
+		
+
+	echo '<a class="btn btn-info noprint" target="_new" href="dettagli_provvedimento_cautelare.php?id='.$r2["id"].'"> Visualizza dettagli in nuova scheda</a>';
+	echo "</li>";
+		}
+		echo "</ul>";
+	
+?>
             </div>
                 <!-- /.col-sm-4 -->
             </div>

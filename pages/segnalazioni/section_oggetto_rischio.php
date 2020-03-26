@@ -233,9 +233,8 @@ if ($descrizione_oggetto_rischio=='Civici'){
 							
 							?>
 							
-							<div id="rimuovi_pc_civico" class="modal fade" role="dialog">
-						  <div class="modal-dialog modal-lg">
-
+						<div id="rimuovi_pc_civico" class="modal fade" role="dialog">
+							<div class="modal-dialog modal-lg">
 							<!-- Modal content-->
 							<div class="modal-content">
 							  <div class="modal-header">
@@ -251,10 +250,9 @@ if ($descrizione_oggetto_rischio=='Civici'){
 								Solo una volta completati gli incarichi rimuovi il PC dal sistema.
 								<hr>
 								<form autocomplete="off" action="provvedimenti_cautelari/rimuovi.php?id=<?php echo $r_pc['id']; ?>" method="POST">
-									<button  id="conferma" type="submit" class="btn btn-warning noprint">Gli incarichi sono stati completati?
-									<br>Rimuovi il provvedimento cautelare</button>
+									<button  id="conferma" type="submit" class="btn btn-warning noprint">Gli incarichi sono stati completati?<br>Rimuovi il provvedimento cautelare</button>
 									
-									<button type="button" class="btn btn-default noprint" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+									<button type="button" class="btn btn-default noprint" data-dismiss="modal">Gli incarichi non sono stati completati?</button>
 								</form>
 	
 							  </div>
@@ -408,7 +406,7 @@ if ($descrizione_oggetto_rischio=='Civici'){
 									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
 									<br>Rimuovi il provvedimento cautelare</button>
 									
-									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal">Gli incarichi non sono stati completati?</button>
 								</form>
 	
 							  </div>

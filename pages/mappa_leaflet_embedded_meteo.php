@@ -22,7 +22,7 @@ require('./mappa_leaflet_embedded0.php');
         
         //legenda
         L.control.layers(baseLayers,overlayLayers,
-        {collapsed:true}
+        {collapsed:false}
         ).addTo(map);
         
         setBounds();

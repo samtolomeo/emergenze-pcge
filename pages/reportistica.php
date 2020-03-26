@@ -1,6 +1,6 @@
 <?php 
 
-$subtitle="Riepilogo evento";
+$subtitle="Report 8h (riepilogo segnalazioni in corso di evento)";
 
 $id=$_GET['id'];
 
