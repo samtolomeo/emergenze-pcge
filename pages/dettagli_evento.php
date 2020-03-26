@@ -50,9 +50,14 @@ require('./check_evento.php');
 	               for ($i=0;$i<$len;$i++){
 	               	echo '<div class="row">';
 	               	echo '<div class="col-lg-5"><h2><i class="fa fa-chevron-circle-down"></i> Evento in corso  <small>(id='.$eventi_attivi[$i].')</small>';
-	               	echo ' - <a href="reportistica.php?id='.$eventi_attivi[$i].'" class="btn btn-info">Riepilogo';
+	               	echo ' - <a href="reportistica.php?id='.$eventi_attivi[$i].'" class="btn btn-info"><i class="fa fa-file-invoice" aria-hidden="true"></i> Report 8h';
 					if($profilo_sistema<=2){
-						echo ' (stampa report)';
+						echo ' (stampa)';
+					}
+					echo '</a>';
+					echo ' - <a href="reportistica_personale.php?id='.$eventi_attivi[$i].'" class="btn btn-info"><i class="fa fa-file-invoice" aria-hidden="true"></i> Report esteso';
+					if($profilo_sistema<=2){
+						echo ' (stampa)';
 					}
 					echo '</a></h2></div>';
 	   					echo '<div class="col-lg-4"><div style="text-align: center;"><h3 id=timer'.$i.' > </h3></div></div>';

@@ -230,7 +230,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						$lon=$r['lon'];
 						$lat=$r['lat'];
 						$id_civico=$r['id_civico'];
-						$geom=$r['geom'];
+						$geom=$r['geom_inizio'];
 						$id_municipio=$r['id_municipio'];
 						$zoom=16;
             		$id_lavorazione=$r['id_lavorazione'];
@@ -264,6 +264,9 @@ while($r_e = pg_fetch_assoc($result_e)) {
 						
 						
 						echo $r['descrizione_stato'];
+						if ($r["rimosso"]=='t') {
+							echo " (rimosso)";
+						}
 						echo '</h2>';
 						echo '<hr>';
 						echo '<h4>Incarichi associati al provvedimento</h4>';
@@ -299,7 +302,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 							  echo $r_ore['ora'].' del '.$r_ore['data'];
 							}
 							echo "</h2><hr>";
-						} else if ($stato_attuale==3) {
+						} else { //if ($stato_attuale==3) {
 							echo "</h2><hr>";
 							$query_segn='SELECT in_lavorazione 
 							from segnalazioni.v_segnalazioni
@@ -314,18 +317,18 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								echo'<h5> Per rimuovere il provvedimento torna alla 
 								segnalazione e segui le istruzioni';
 							
-							// fine $query che verifica lo stato
-					$query= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_provvedimenti_cautelari =".$stato_attuale."  ORDER BY id_segnalazione;";
-					//echo $query
-					$result=pg_query($conn, $query);
-					while($r = pg_fetch_assoc($result)) {
-						//echo '<b>Unità operativa</b>: '.$r['descrizione_uo'];
-
-					?>
-									<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r["id_segnalazione"];?>"><i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r["id_segnalazione"];?></a>
-						</h5>
-						<?php
-					}
+								// fine $query che verifica lo stato
+								$query_s= "SELECT * FROM segnalazioni.".$table." WHERE id=".$id." and id_stato_provvedimenti_cautelari =".$stato_attuale."  ORDER BY id_segnalazione;";
+								//echo $query
+								$result_s=pg_query($conn, $query_s);
+								while($r_s = pg_fetch_assoc($result_s)) {
+									//echo '<b>Unità operativa</b>: '.$r['descrizione_uo'];
+									?>
+									<a class="btn btn-info" href="dettagli_segnalazione.php?id=<?php echo $r_s["id_segnalazione"];?>">
+									<i class="fas fa-undo"></i> Torna alla segnalazione <?php echo $r_s["id_segnalazione"];?></a>
+									</h5>
+									<?php
+								}
 							
 							} else {
 								echo'<h5> Se la situazione fosse tornata normale, <b>in presenza di una nuova ordinanza sindacale</b>, 
@@ -357,7 +360,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 								
 								
 								
-								<div id="rimuovi_pc" class="modal fade" role="dialog">
+						<div id="rimuovi_pc" class="modal fade" role="dialog">
 						  <div class="modal-dialog modal-lg">
 
 							<!-- Modal content-->
@@ -378,7 +381,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 									<button  id="conferma" type="submit" class="btn btn-warning">Gli incarichi sono stati completati?
 									<br>Rimuovi il provvedimento cautelare</button>
 									
-									<button type="button" class="btn btn-default" data-dismiss="modal">Gli inccarichi non sono stati completati?</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal">Gli incarichi non sono stati completati?</button>
 								</form>
 	
 							  </div>
@@ -823,9 +826,10 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										<br><b>Tipologia</b>: <?php echo $r['criticita']; ?>
 										<br> <a class="btn btn-info" href="./dettagli_segnalazione.php?id=<?php echo $r['id_segnalazione']; ?>" > Vai alla pagina della segnalazione </a>
 										<hr>
+										</div>
 										<?php
 										$id_segnalazione=$r['id_segnalazione'];
-										include './segnalazioni/section_oggetto_rischio.php';
+										//include './segnalazioni/section_oggetto_rischio.php';
 										?>
 										
 							
@@ -833,7 +837,7 @@ while($r_e = pg_fetch_assoc($result_e)) {
 										
 									
 									
-												</div>
+												<!--/div-->
 									    </div>
 									  </div>
 									</div>

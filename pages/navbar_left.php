@@ -36,7 +36,7 @@
 							</li>
 						<?php
 						}
-						if ($profilo_sistema!=10){
+						if (in_array($profilo_sistema, array(10,11))==false){
 						?>
 
                         <li>
@@ -68,6 +68,11 @@
 								<?php } ?>			<li>					                                  
   											<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
+								<li>
+									<a href="mappa_meteo.php">
+									<i class="fas fa-map"></i>
+									Mappa meteo</a>
+								</li>
 								<!--li-->
 								<!--a href="rete_idro.php"-->
 								<!--a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
@@ -85,29 +90,62 @@
                         </li>
  								<?php 
  								}
+								//****************************************************
+								// profili particolari  NUMERO VERDE
  								if ($profilo_sistema==10){ ?>
  								
- 								<li>
-                           <a href="nuova_richiesta.php">
-                           <i class="fas fa-plus"></i>
-                           Registra segnalazione /richiesta</a>
-                       </li>
-                       
-                       <li>
-                           <a href="elenco_richieste.php"> 
-                           <i class="fas fa-list-ul">
-                           </i> Elenco richieste
-                            <br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
-                       </li>
-                       <li>
-                           <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
-                           <br><small> (<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small>
-                           </a>
-                       </li>
+									<li>
+									   <a href="nuova_richiesta.php">
+									   <i class="fas fa-plus"></i>
+									   Registra segnalazione /richiesta</a>
+								   </li>
+						   
+								   <li>
+									   <a href="elenco_richieste.php"> 
+									   <i class="fas fa-list-ul">
+									   </i> Elenco richieste
+										<br> <small>(<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small></a>
+								   </li>
+								   <li>
+									   <a href="elenco_segnalazioni.php">Elenco delle segnalazioni 
+									   <br><small> (<i class="fas fa-play"></i>eventi in corso / <i class="fas fa-hourglass-half"></i> in chiusura)</small>
+									   </a>
+								   </li>
  								
  								<?php } 
- 								
- 								
+								//****************************************************
+								// profili particolari  MONITORAGGIO METEO
+ 								if ($profilo_sistema==10){ ?>
+								<li>
+								<a href="#"><i class="fa fa-stream fa-fw"></i> Gestione eventi<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level">
+									  
+									<li>
+										<a href="dettagli_evento.php"><i class="fas fa-info"></i> Dettagli eventi in corso</a>
+									</li>
+									<li>
+										<a href="dettagli_evento_c.php"><i class="fas fa-hourglass-end faa-ring animated"></i> Dettagli eventi in fase di chiusura</a>
+									</li>
+									<li>
+										<a href="lista_eventi.php"><i class="fas fa-list"></i> Lista eventi</a>
+									</li> 
+									<li>					                                  
+												<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
+									</li>
+								</ul>
+								<!-- /.nav-second-level -->
+								</li>
+								<li>
+									<a href="lista_mail_meteo.php">
+									<i class="fas fa-at"></i>
+									Contatti a cui inviare aggiornamento meteo</a>
+								</li>
+								<li>
+									<a href="mappa_meteo.php">
+									<i class="fas fa-map"></i>
+									Mappa meteo</a>
+								</li>
+ 								<?php }
  								if ($profilo_sistema<9){ ?>
  								
 
@@ -175,6 +213,12 @@
                                     <small> (<i class="fas fa-stop"></i> chiusi)</small>
                                     </a>
                                 </li>
+								<li>
+                                    <a href="elenco_comunicazioni.php"> <i class="fas fa-comments"></i>Elenco comunicazioni 
+
+                                    </a>
+                                </li>
+								
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -276,6 +320,11 @@
                                     <a href="lista_mail.php">
                                     <i class="fas fa-at"></i>
                                     Contatti a cui notificare incarichi</a>
+                                </li>
+								<li>
+                                    <a href="lista_mail_meteo.php">
+                                    <i class="fas fa-at"></i>
+                                    Contatti a cui inviare aggiornamento meteo</a>
                                 </li>
                                 <li>
                                     <!--a href="rubrica.php"-->
