@@ -68,11 +68,11 @@
 								<?php } ?>			<li>					                                  
   											<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
-								<li>
+								<!--li>
 									<a href="mappa_meteo.php">
 									<i class="fas fa-map"></i>
 									Mappa meteo</a>
-								</li>
+								</li-->
 								<!--li-->
 								<!--a href="rete_idro.php"-->
 								<!--a href="http://omirl.regione.liguria.it/Omirl/#/map" target="_blank">
