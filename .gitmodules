@@ -10,3 +10,9 @@
 [submodule "vendor/font-awesome-animation"]
 	path = vendor/font-awesome-animation
 	url = https://github.com/l-lin/font-awesome-animation.git
+[submodule "highcharts"]
+	path = highcharts
+	url = https://github.com/highcharts/highcharts.git
+[submodule "vendor/highcharts"]
+	path = vendor/highcharts
+	url = https://github.com/highcharts/highcharts.git
