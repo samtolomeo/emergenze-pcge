@@ -63,7 +63,7 @@ def get_response_from_provider(token, IdSegnalazionePC, Descrizione, IdManufatto
    </soap:Body>
 </soap:Envelope>
     """.format(IdManufatto, Descrizione, IdSegnalazionePC, CodViaDa, CivicoDa, ColoreDa, LetteraDa)
-    response = requests.post(url, data=body1, headers=headers)
+    response = requests.post(url, data=body1.encode(encoding='utf-8'), headers=headers)
     # print("Info recieved...")
     #print(response.content)
     root = et.fromstring(response.content)

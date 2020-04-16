@@ -16,3 +16,6 @@
 [submodule "vendor/highcharts"]
 	path = vendor/highcharts
 	url = https://github.com/highcharts/highcharts.git
+[submodule "vendor/omirl_data_ingestion"]
+	path = vendor/omirl_data_ingestion
+	url = https://github.com/gtergeomatica/omirl_data_ingestion.git
