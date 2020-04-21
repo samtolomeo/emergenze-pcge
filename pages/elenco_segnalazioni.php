@@ -313,14 +313,24 @@ require('./tables/filtri_segnalazioni.php');
 
 <script>
 
-
- function nameFormatter(value) {
+ function nameFormatterBKP(value) {
         if (value=='t'){
         		return '<i class="fas fa-play" style="color:#5cb85c"></i> in lavorazione';
         } else if (value=='f') {
         	   return '<i class="fas fa-stop"></i> chiusa';
         } else {
         	   return '<i class="fas fa-exclamation" style="color:#ff0000"></i> da prendere in carico';;
+        }
+
+    }
+
+ function nameFormatter(value) {
+        if (value=='t'){
+        		return 'in lavorazione';
+        } else if (value=='f') {
+        	   return 'chiusa';
+        } else {
+        	   return 'da prendere in carico';;
         }
 
     }
