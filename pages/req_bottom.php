@@ -19,6 +19,7 @@ $subtitle2=str_replace("'","\'",str_replace(' ','_',$subtitle));
     <script src="../vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
     <script src="../vendor/bootstrap-table/dist/bootstrap-table.min.js"></script>
 	 <script src="../vendor/bootstrap-table/dist/extensions/export/bootstrap-table-export.js" ></script>
+	 <script src="../vendor/bootstrap-table/dist/extensions/print/bootstrap-table-print.min.js" ></script>
 	<script src="../vendor/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.js" ></script>
 	 <script src="../vendor/bootstrap-select/dist/js/bootstrap-select.js"></script>
 	 
@@ -193,6 +194,18 @@ function printDiv(divName) {
 }
 
 
+
+function printClass(className) {
+	//it is an array so i using only the first element
+     var printContents = document.getElementsByClassName(className)[0].innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
 </script>
 
 
