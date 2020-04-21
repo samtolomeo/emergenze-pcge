@@ -296,7 +296,7 @@ require('./tables/filtri_segnalazioni.php');
             <th data-field="descrizione" data-sortable="true"  data-visible="true">Descrizione</th>
             <th data-field="nome_munic" data-sortable="true"  data-visible="true" data-filter-control="select">Municipio</th>
             <th data-field="localizzazione" data-sortable="true"  data-visible="true" data-filter-control="input" >Civico</th>
-            <th data-field="id2" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" Anteprima<br>mappa</th>
+            <th data-field="id2" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true"> Anteprima<br>mappa</th>
             <th data-field="note" data-sortable="false" data-visible="true" >Note</th>
             <th data-field="id_evento" data-sortable="true"  data-visible="true" data-filter-control="select">Id<br>evento</th>
             <th data-field="tipo_evento" data-sortable="true"  data-visible="true" data-filter-control="select">Tipo<br>evento</th>
