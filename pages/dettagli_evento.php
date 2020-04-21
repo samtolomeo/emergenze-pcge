@@ -935,7 +935,7 @@ require('./check_evento.php');
    
            
 				<div class="form-group">
-						<label for="data_inizio" >Data inizio allerta (AAAA-MM-GG) </label>                 
+						<label for="data_inizio" >Data inizio allerta (AAAA-MM-GG) </label> <font color="red">*</font>                
 						<input type="text" class="form-control" name="data_inizio" id="js-date<?php echo $i; ?>" required>
 						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
@@ -989,7 +989,7 @@ require('./check_evento.php');
 					
 					
 					<div class="form-group">
-						<label for="data_fine" >Data fine allerta (AAAA-MM-GG) </label>                 
+						<label for="data_fine" >Data fine allerta (AAAA-MM-GG) </label> <font color="red">*</font>                 
 						<input type="text" class="form-control" name="data_fine" id="js-date2<?php echo $i; ?>" required>
 						<!--div class="input-group-addon">
 							<span class="glyphicon glyphicon-th"></span>
