@@ -61,7 +61,7 @@ if($_POST["invio"]=='man') {
 	$command = escapeshellcmd('/usr/bin/python3 emergenze2manutenzioni.py '.$command_options.' ');
 	
 	echo '<br>';
-	//echo $command;
+	echo $command;
 	echo '<br>';
 	$output = shell_exec($command);
 	echo $output[1];

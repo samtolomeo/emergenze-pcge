@@ -36,8 +36,13 @@ if(!$conn) {
 	(select id_lettura 
 	 from geodb.lettura_mire  
 	 where num_id_mira = p.num_id and 
-	 data_ora > (now()- interval '1 hour') and data_ora < now() 
-	) as \"1\"
+	 data_ora > (now()- interval '1 hour') and data_ora < (now()- interval '10 minutes') 
+	) as \"1\",
+	(select id_lettura 
+	 from geodb.lettura_mire  
+	 where num_id_mira = p.num_id and 
+	 data_ora > (now()- interval '10 minutes') and data_ora < now() 
+	) as \"0\"
 	FROM geodb.punti_monitoraggio p
 	LEFT JOIN geodb.lettura_mire l ON l.num_id_mira = p.num_id
 	WHERE tipo ilike 'rivo'

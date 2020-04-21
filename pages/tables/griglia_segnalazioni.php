@@ -34,7 +34,7 @@ if(!$conn) {
 	//$idcivico=$_GET["id"];
 	$query="SELECT id, id as id2, data_ora, descrizione, criticita, 
        rischio, id_evento, tipo_evento, 
-       note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter[0]." ".$filter_r.";";
+       note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat FROM segnalazioni.v_segnalazioni_lista ".$filter[0]." ".$filter_r." ORDER BY id;";
     
     //echo $query."<br>";
 	$result = pg_query($conn, $query);

@@ -65,9 +65,12 @@
                                 <li>
                                    <a href="storico_sala_emergenze.php"><i class="fas fa-history"></i> Storico turni sala emergenze</a> 
                                 </li> 			
-								<?php } ?>			<li>					                                  
+								<?php } ?>			
+								<li>					                                  
   											<a href="bollettini_meteo.php"><i class="fas fa-list"></i> Lista bollettini</a>
                                 </li>
+								
+								
 								<!--li>
 									<a href="mappa_meteo.php">
 									<i class="fas fa-map"></i>
@@ -85,6 +88,31 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+						
+						<?php 
+						}
+						//****************************************************
+						// profili particolari  NUMERO VERDE
+						if ($profilo_sistema!=10){ ?>
+						<li>
+                            <a href="#"><i class="fas fa-cloud-sun-rain"></i> Monitoraggio <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+								<li>					                                  
+  									<a href="mire.php"><i class="fas fa-search"></i> Mire su corsi d'acqua</a>
+                                </li>
+								<li>					                                  
+  									<a href="idrometri_arpa.php"><i class="fas fa-chart-line"></i> Idrometri ARPA (Omirl) </a>
+                                </li>
+						    </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+						
+						<?php
+						}
+						if (in_array($profilo_sistema, array(10,11))==false){
+						?>
+						
+						
                         <li>
                             <a href="gestione_squadre.php"><i class="fa fa-users"></i> Gestione squadre</a>
                         </li>
@@ -115,7 +143,7 @@
  								<?php } 
 								//****************************************************
 								// profili particolari  MONITORAGGIO METEO
- 								if ($profilo_sistema==10){ ?>
+ 								if ($profilo_sistema==11){ ?>
 								<li>
 								<a href="#"><i class="fa fa-stream fa-fw"></i> Gestione eventi<span class="fa arrow"></span></a>
 								<ul class="nav nav-second-level">
@@ -140,18 +168,14 @@
 									<i class="fas fa-at"></i>
 									Contatti a cui inviare aggiornamento meteo</a>
 								</li>
-								<li>
-									<a href="mappa_meteo.php">
-									<i class="fas fa-map"></i>
-									Mappa meteo</a>
-								</li>
  								<?php }
- 								if ($profilo_sistema<9){ ?>
- 								
-
-
-
-                        
+ 						
+						
+						
+						
+						
+						if ($profilo_sistema<9){ ?>
+ 						                 
                         
                          <li>
                             <a href="#"><i class="fas fa-map-marked-alt"></i> Segnalazioni <span class="fa arrow"></span></a>
@@ -222,6 +246,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+						
                         <li>
                             <a href="#"><i class="fas fa-pencil-ruler"></i> Presidi <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -321,11 +346,14 @@
                                     <i class="fas fa-at"></i>
                                     Contatti a cui notificare incarichi</a>
                                 </li>
+								
+								<?php if($profilo_sistema==1 or $profilo_sistema==2){ ?>
 								<li>
                                     <a href="lista_mail_meteo.php">
                                     <i class="fas fa-at"></i>
                                     Contatti a cui inviare aggiornamento meteo</a>
                                 </li>
+								<?php } ?>
                                 <li>
                                     <!--a href="rubrica.php"-->
 									<a href="http://172.19.48.7/rubrica.php" target="_blank">

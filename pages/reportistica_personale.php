@@ -84,9 +84,11 @@ require('./check_evento.php');
 					$chiusura_evento=$r_e['data_ora_chiusura'];
 					$fine_evento=$r_e['data_ora_fine_evento'];
 				}
+			if ($profilo_sistema>0 and $profilo_sistema<=3){
 			?>
 			<button class="btn btn-info noprint" onclick="printDiv('page-wrapper')">
 			<i class="fa fa-print" aria-hidden="true"></i> Stampa pagina report (demo)</button>
+			<?php } ?>
 			</h3>
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">

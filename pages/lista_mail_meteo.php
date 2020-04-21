@@ -24,7 +24,7 @@ require('./check_evento.php');
 
 
 $check_operatore=0;
-if ($profilo_sistema <= 4.){
+if (($$profilo_sistema > 0 AND $profilo_sistema <= 4) OR $profilo_sistema==11){
 	$check_operatore=1;
 }
 
@@ -54,7 +54,7 @@ if ($profilo_sistema <= 4.){
             </div>
             <!-- /.row -->
             <?php
-				if ($profilo_sistema < 3){
+				if ($check_operatore ==1){
 				?>	
 				<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#new_mail">
 				<i class="fas fa-plus"></i> Aggiungi mail</button>
