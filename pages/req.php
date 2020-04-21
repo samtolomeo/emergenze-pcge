@@ -72,9 +72,11 @@ function integerToRoman($integer)
 
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+	
+	<!--link href="../vendor/highcharts/code/css/highcharts.css" rel="stylesheet"-->
 
     <!-- Custom Fonts -->
-    <link href="../vendor/fontawesome-free-5.2.0-web/css/all.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free-5.13.0-web/css/all.css" rel="stylesheet" type="text/css">
 	
 	<link href="../vendor/font-awesome-animation/dist/font-awesome-animation.css" rel="stylesheet" type="text/css">
     
@@ -199,6 +201,15 @@ function integerToRoman($integer)
 	
 	<!-- GRAFICI d3js -->
 	<script src="https://d3js.org/d3.v4.min.js"></script>
+	
+	<!-- GRAFICI highcart -->
+	<script src="../vendor/highcharts/code/highcharts.js"></script>
+	<script src="../vendor/highcharts/code/modules/stock.js"></script>
+	<script src="../vendor/highcharts/code/modules/data.js"></script>
+	<script src="../vendor/highcharts/code/modules/exporting.js"></script>
+	<script src="../vendor/highcharts/code/modules/export-data.js"></script>
+
+	
 
 <?php
 ?>
