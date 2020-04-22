@@ -313,7 +313,7 @@ require('./tables/filtri_segnalazioni.php');
 
 <script>
 
- function nameFormatter(value) {
+ function nameFormatterBKP(value) {
         if (value=='t'){
         		return '<i class="fas fa-play" style="color:#5cb85c"></i> in lavorazione';
         } else if (value=='f') {
@@ -324,7 +324,7 @@ require('./tables/filtri_segnalazioni.php');
 
     }
 
- function nameFormatterBKP(value) {
+ function nameFormatter(value) {
         if (value=='t'){
         		return 'in lavorazione';
         } else if (value=='f') {
