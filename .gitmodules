@@ -28,3 +28,6 @@
 [submodule "vendor/leaflet-list-markers"]
 	path = vendor/leaflet-list-markers
 	url = https://github.com/stefanocudini/leaflet-list-markers.git
+[submodule "vendor/bootstrap-table"]
+	path = vendor/bootstrap-table
+	url = https://github.com/wenzhixin/bootstrap-table.git
