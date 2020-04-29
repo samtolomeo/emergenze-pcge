@@ -17,3 +17,4 @@ pages/segnalazioni/conn_mssql.py
 pages/eventi/*.pyc
 pages/eventi/*.log
 pages/eventi/crash.log
+conn.php
