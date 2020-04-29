@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 if(!empty($_POST["cod"])) {
     $query = "SELECT * FROM varie.comuni_italia where \"Codice Provincia\"='".$_POST["cod"]."' OR \"Codice Città Metropolitana\"='".$_POST["cod"]."';";
     #echo $query;

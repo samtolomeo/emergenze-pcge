@@ -7,7 +7,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 //echo $_SESSION['user'];
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 require('../check_evento.php');
 

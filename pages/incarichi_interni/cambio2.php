@@ -5,7 +5,7 @@ session_start();
 
 //echo $_SESSION['user'];
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 
 $id_incarico= $_GET['id'];

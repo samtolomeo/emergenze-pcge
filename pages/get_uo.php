@@ -6,7 +6,7 @@ $classe= $_POST["cod"];
 echo $classe;
 
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 if(!empty($classe)) {
 	if($classe=='municipi'){

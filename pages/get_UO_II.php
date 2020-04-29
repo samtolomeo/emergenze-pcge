@@ -1,7 +1,7 @@
 <?php
 session_start();
 //echo"OK";
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 if(!empty($_POST["cod"])) {
     $query = "SELECT * FROM users.\"uo_2_livello\" where id1=".$_POST["cod"]." order by descrizione;";
     //echo $query;

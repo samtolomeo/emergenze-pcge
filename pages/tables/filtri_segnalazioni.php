@@ -57,7 +57,7 @@ function filtro2($idfilter, $idfilter1, $idfilter2, $idfilter3){
 	#'00100000000000'
 	#echo $idfilter[1];
 	#contatore
-	include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+	include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 
 	$filter = '';

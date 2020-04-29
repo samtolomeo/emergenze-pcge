@@ -35,7 +35,7 @@ $uri=basename($_SERVER['REQUEST_URI']);
 <?php 
 require('./req.php');
 
-require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
+require(explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php');
 
 require('./check_evento.php');
 

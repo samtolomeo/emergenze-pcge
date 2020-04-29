@@ -1,6 +1,6 @@
 <?php
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 $getfiltri=$_GET["f"];
 $filtro_evento_attivo=$_GET["a"];

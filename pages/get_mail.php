@@ -6,7 +6,7 @@ $cf= $_POST["cod"];
 echo $cf;
 
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 if(!empty($cf)) {
 	$query = "select mail from users.v_utenti_esterni WHERE cf='".$cf."';";

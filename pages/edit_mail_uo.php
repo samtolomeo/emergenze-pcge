@@ -2,7 +2,7 @@
 
 session_start();
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 $uo=str_replace("'", "", $_GET["id"]);
 
@@ -43,7 +43,7 @@ $subtitle="Specifica contatti mail per Unità Operativa"
 <?php 
 require('./req.php');
 
-require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
+require(explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php');
 
 require('./check_evento.php');
 ?>

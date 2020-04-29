@@ -2,7 +2,7 @@
 
 session_start();
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 $uo=$_GET["uo"];
 $mail=$_POST["mail"];

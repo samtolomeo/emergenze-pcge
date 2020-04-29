@@ -1,7 +1,7 @@
 <?php
 session_start();
 //echo"OK";
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 if(!empty($_POST["cod"])) {
 	 $id1=explode('_',$_POST["cod"])[0];
 	 $id2=explode('_',$_POST["cod"])[1];
