@@ -49,7 +49,7 @@ aaa
 
 
 ## I file con le credenziali
-Come si può vedere dal file .gitignore ci sono alcuni file con dati sensibili che non sono parte del presente repository: 
+Come si può vedere dal file .gitignore ci sono alcuni file con dati sensibili che non sono parte del presente repository e vanno ricreati manualmente per far funzionare  il sistema: 
 
 * *conn.php* :contiene le credenziali di accesso al DB 
 ```
