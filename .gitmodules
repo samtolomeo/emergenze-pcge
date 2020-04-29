@@ -25,3 +25,6 @@
 [submodule "vendor/bootstrap-datapicker"]
 	path = vendor/bootstrap-datapicker
 	url = https://github.com/uxsolutions/bootstrap-datepicker.git
+[submodule "vendor/leaflet-list-markers"]
+	path = vendor/leaflet-list-markers
+	url = https://github.com/stefanocudini/leaflet-list-markers.git
