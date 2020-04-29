@@ -51,6 +51,16 @@ aaa
 ## I file con le credenziali
 Come si può vedere dal file .gitignore ci sono alcuni file con dati sensibili che non sono parte del presente repository: 
 
+* *conn.php* :contiene le credenziali di accesso al DB 
+```
+<?php 
+$conn = pg_connect("host=127.0.0.1 port=5432 dbname=emergenze user=XXXXXX password=XXXXXXX");
+if (!$conn) {
+        die('Could not connect to DB, please contact the administrator.');
+}
+?>
+```
+
 * pages/eventi/conn.py
 * pages/eventi/config.py
 * pages/incarichi/credenziali_mail.php
