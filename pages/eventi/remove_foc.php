@@ -2,7 +2,7 @@
 
 session_start();
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 $id_evento=$_GET["e"];
 $id_foc=$_GET["a"];

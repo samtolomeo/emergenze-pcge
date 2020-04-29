@@ -4,7 +4,7 @@ session_start();
 
 //echo $_SESSION['user'];
 $allegato_array='';
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 require('../check_evento.php');
 
 //echo "<h2> La gestione degli incarichi e' attualmente in fase di test and debug. Ci scusiamo per il disagio</h2>";

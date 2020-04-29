@@ -5,7 +5,7 @@ session_start();
 
 //echo $_SESSION['operatore'];
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 
 $id_sopralluogo= $_GET['id'];

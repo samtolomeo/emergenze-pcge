@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
+require(explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php');
 
 $check_evento=0;
 $contatore_eventi=0;
@@ -10,7 +10,7 @@ $check_pausa=0;
 $descrizione_allerta='Nessuna allerta';
 $color_allerta='#5cb85c';
 
-//require('/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php');
+//require(explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php');
 
 $query1="SELECT * From \"eventi\".\"t_eventi\" WHERE valido='TRUE' ORDER BY id;";
 $result1 = pg_query($conn, $query1);

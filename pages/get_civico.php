@@ -3,7 +3,7 @@ session_start();
 
 
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 if(!empty($_POST["cod"])) {
     $query = "SELECT * FROM geodb.civici where \"codvia\"='".$_POST["cod"]."' ORDER BY testo;";
     #echo $query;

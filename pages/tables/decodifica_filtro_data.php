@@ -1,6 +1,6 @@
 <?php
 
-include '/home/local/COMGE/egter01/emergenze-pcge_credenziali/conn.php';
+include explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php';
 
 $pagina=$_POST["pagina"];
 $filtro_from=$_POST["startdate"];
