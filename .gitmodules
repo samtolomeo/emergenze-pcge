@@ -22,3 +22,6 @@
 [submodule "vendor/bootstrap-select"]
 	path = vendor/bootstrap-select
 	url = https://github.com/snapappointments/bootstrap-select.git
+[submodule "vendor/bootstrap-datapicker"]
+	path = vendor/bootstrap-datapicker
+	url = https://github.com/uxsolutions/bootstrap-datepicker.git
