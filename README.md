@@ -27,7 +27,7 @@ git submodule add https://github.com/highcharts/highcharts.git vendor/highcharts
 Quindi si può aggiornare  ad una specifica versione
 
 ```
-git update --remote vendor/highcharts
+git submodule update --remote vendor/highcharts
 cd vendor/highcharts 
 git checkout v8.0.4
 ```
