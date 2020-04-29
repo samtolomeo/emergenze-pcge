@@ -19,3 +19,6 @@
 [submodule "vendor/omirl_data_ingestion"]
 	path = vendor/omirl_data_ingestion
 	url = https://github.com/gtergeomatica/omirl_data_ingestion.git
+[submodule "vendor/bootstrap-select"]
+	path = vendor/bootstrap-select
+	url = https://github.com/snapappointments/bootstrap-select.git
