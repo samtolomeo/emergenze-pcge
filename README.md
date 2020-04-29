@@ -4,7 +4,7 @@ Next documentation is in Italian because the system has been developed for an It
 
 ## Author
 
-[Gter srl](http://www.gter.it) - +39 010 - 
+[Gter srl](http://www.gter.it) - +39 010 - 0899150
 
 ## Introduzione
 
@@ -15,22 +15,53 @@ Da alcuni anni la Protezione Civile del Comune di Genova ha deciso di dotarsi di
 ## Dipendenze
 Ci sono alcune librerie che sono state aggiunte come dipendenze. Si tratta di altri repository github che sono direttamente caricati dentro il repo:
 
-Un esempio è la libreria highcharts per realizzare grafici:
+Un esempio è la libreria bootstrap-table per realizzare grafici:
 
 Con il comando ```git submodule```  si aggiunge il repository: 
 
 ```
-git submodule add https://github.com/highcharts/highcharts.git vendor/highcharts
+git submodule add https://github.com/wenzhixin/bootstrap-table.git vendor/bootstrap-table
 ```
 
 
 Quindi si può aggiornare  ad una specifica versione
 
 ```
-git submodule update --remote vendor/highcharts
+git submodule update --remote vendor/bootstrap-table
 cd vendor/highcharts 
-git checkout v8.0.4
+git checkout 1.16.0
 ```
+
+Le dipendenze (al 2020-05-29) sono:
+
+* https://github.com/stefanocudini/leaflet-search.git
+* https://github.com/PHPMailer/PHPMailer.git
+* https://github.com/simsalabim/sisyphus.git
+* https://github.com/l-lin/font-awesome-animation.git
+* https://github.com/gtergeomatica/omirl_data_ingestion.git
+* https://github.com/snapappointments/bootstrap-select.git
+* https://github.com/stefanocudini/leaflet-list-markers.git
+* https://github.com/wenzhixin/bootstrap-table.git
+
+## IL DB
+
+aaa
+
+
+## I file con le credenziali
+Come si può vedere dal file .gitignore ci sono alcuni file con dati sensibili che non sono parte del presente repository: 
+
+* pages/eventi/conn.py
+* pages/eventi/config.py
+* pages/incarichi/credenziali_mail.php
+* pages/incarichi_interni/credenziali_mail.php
+* pages/sopralluoghi/credenziali_mail.php
+* pages/provvedimenti_cautelari/credenziali_mail.php
+* pages/token_telegram.php
+* pages/segnalazioni/token_api_ge.py
+* pages/segnalazioni/conn.py
+* pages/segnalazioni/conn_mssql.py
+
 
 ## Altro
 
