@@ -9,7 +9,7 @@ $contatore_allerte=0;
 $check_pausa=0;
 $descrizione_allerta='Nessuna allerta';
 $color_allerta='#5cb85c';
-
+$profilo_sistema=0;
 //require(explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php');
 
 $query1="SELECT * From \"eventi\".\"t_eventi\" WHERE valido='TRUE' ORDER BY id;";
@@ -315,13 +315,17 @@ while($r = pg_fetch_assoc($result)) {
 	}
 	
 	//notifiche
-	if ($profilo_sistema == 0 and
+	if ($profilo_sistema==0 and
 	basename($_SERVER['PHP_SELF'])!='divieto_accesso.php' and
 	basename($_SERVER['PHP_SELF'])!='add_volontario.php' and
-	basename($_SERVER['PHP_SELF'])!='check_evento.php') {
-		header("location: ./divieto_accesso.php");
+	basename($_SERVER['PHP_SELF'])!='check_evento.php'
+	) {
+		// non funziona con php 7 (????)
+		//header("location: ./divieto_accesso.php");
+		echo "<script> location.href='divieto_accesso.php'; </script>";
+        exit;
 	} else {
-		if ($privacy =='f')
+		if ($privacy !='t')
 		{
 			?>
 			
@@ -365,7 +369,7 @@ while($r = pg_fetch_assoc($result)) {
 						
 			
 			<?php
-		}
+		} 
 		
 	}
 	
