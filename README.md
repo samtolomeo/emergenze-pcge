@@ -12,6 +12,17 @@ Next documentation is in Italian because the system has been developed for an It
 
 Da alcuni anni la Protezione Civile del Comune di Genova ha deciso di dotarsi di un proprio sistema informativo per la gestione delle emergenze. In questo contesto, l’informazione territoriale gioca un ruolo fondamentale. Si tratta du un applicativo web che permette la condivisione delle informazioni fra i vari soggetti sia interni al Comune che esterni (volontari di protezione civile, aziende municipalizzate, VVF, Regione, etc) coinvolti a vario titolo nella gestione delle emergenze e quindi di supportare le operazioni di gestione e mitigazione del rischio. Tale sistema, inizialmente realizzato dal Comune di Genova con risorse interne quale replica di altri sistemi informativi in dotazione all’Ente è stato recentemente completamente rinnovato grazie a dei finanziamenti PON Metro 2014-2020. Il nuovo sistema, realizzato da [Gter srl](http://www.gter.it) , oltre ad aver subito un importante restyling grafico che, a detta degli operatori di protezione civile, ha permesso di incrementarne sostanzialmente l’usabilità, ha ora al centro l’aspetto territoriale. Ogni segnalazione e/o intervento svolto è infatti georeferenziato grazie al collegamento con la toponomastica comunale. Questo nuovo approccio permette di avere in ogni istante un quadro preciso di quanto sta avvenendo sul territorio e pertanto di ottimizzare la gestione delle poche risorse a disposizione. Collegato alle banche dati territoriali, non solo alla toponomastica, ma anche all’anagrafe, e ai principali elementi a rischio (rii, sottopassi etc), il sistema permette di gestire e registrare interventi puntuali quali sgomberi o interdizioni all’accesso in maniera sicura ed efficiente.
 
+
+## Tecnologie
+Il sistema è web-based e basato su un tema bootstrap con una serie di strumenti web che si trovano nella cartella *vendor*
+
+Lato server: 
+
+* il DBMS è PostgreSQL con estensione spaziale PostGIS
+* PHP è il linguaggio con cui sono implementate le pagine web
+* Python è il linguaggio di programmazione principalmente usato per l'interazione con altri sistemi (es. webservice di ARPA Liguria, sistema delle manutenzioni, etc.) 
+
+
 ## Dipendenze
 Ci sono alcune librerie che sono state aggiunte come dipendenze. Si tratta di altri repository github che sono direttamente caricati dentro il repo:
 
@@ -49,7 +60,17 @@ aaa
 
 
 ## I file con le credenziali
-Come si può vedere dal file .gitignore ci sono alcuni file con dati sensibili che non sono parte del presente repository: 
+Come si può vedere dal file .gitignore ci sono alcuni file con dati sensibili che non sono parte del presente repository e vanno ricreati manualmente per far funzionare  il sistema: 
+
+* *conn.php* :contiene le credenziali di accesso al DB 
+```
+<?php 
+$conn = pg_connect("host=127.0.0.1 port=5432 dbname=emergenze user=XXXXXX password=XXXXXXX");
+if (!$conn) {
+        die('Could not connect to DB, please contact the administrator.');
+}
+?>
+```
 
 * pages/eventi/conn.py
 * pages/eventi/config.py
