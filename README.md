@@ -18,9 +18,9 @@ Il sistema è web-based e basato su un tema bootstrap con una serie di strumenti
 
 Lato server: 
 
-* il DBMS è PostgreSQL con estensione spaziale PostGIS
-* PHP è il linguaggio con cui sono implementate le pagine web
-* Python è il linguaggio di programmazione principalmente usato per l'interazione con altri sistemi (es. webservice di ARPA Liguria, sistema delle manutenzioni, etc.) 
+* il DBMS è PostgreSQL v.11 (min 9.6) con estensione spaziale PostGIS v.2.5 (min 2.4)
+* PHP v 7.2 (min 7.1) è il linguaggio con cui sono implementate le pagine web 
+* Python 3.7 (min 2.7) è il linguaggio di programmazione principalmente usato per l'interazione con altri sistemi (es. webservice di ARPA Liguria, sistema delle manutenzioni, etc.) 
 
 
 ## Dipendenze
@@ -57,6 +57,14 @@ Le dipendenze (al 2020-05-29) sono:
 ## IL DB
 
 aaa
+
+## API del Comune di Genova utilizzate
+
+In questo momento il sistema usa le API del comune di Genova usate per interazione con altri servizi. In questo momento per interagire con il *SW Manutenzioni*. 
+Le API del Comune di Genova sono richiamate dal codice python *pages/segnalazioni/emergenze2manutenzioni.py* che è a sua volta richiamato dalla pagina php *pages/segnalazioni/chiudi_segnalazione.php* utilizzata appunto alla chiusura di una segnalazione. 
+Il sistema di API del Comune di Genova utilizza endpoint comuni a tutti i servizi che gestiscono l'autenticazione e reindirizzando ai singoli webservice (nel caso specifico ai webservice SOAP delle manutenzioni sviluppati da Goadev srl 
+
+
 
 
 ## I file con le credenziali
