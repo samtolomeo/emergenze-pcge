@@ -1,0 +1,134 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+applicationSuite: Piattaforma Web Gestione Emergenze
+categories:
+  - survey
+  - event-management
+  - geographic-information-systems
+  - data-visualization
+dependsOn:
+  open:
+    - name: PostgreSQL
+      optional: false
+      version: '11'
+      versionMax: ''
+      versionMin: '9.6'
+    - name: PHP
+      optional: false
+      version: '7.2'
+      versionMax: ''
+      versionMin: '7.1'
+    - name: Python
+      optional: false
+      version: '3.7'
+      versionMax: ''
+      versionMin: '2.7'
+    - name: Leaflet Control Search
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+    - name: PHPMailer
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+    - name: Sisyphus
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+    - name: font-awesome-animation
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+    - name: omirl_data_ingestion
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+    - name: bootstrap-select
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+    - name: Leaflet List Markers
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+    - name: Bootstrap Table
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: ''
+description:
+  it:
+    documentation: >-
+      https://manuale-sistema-di-gestione-emergenze-comune-di-genova.readthedocs.io/it/latest/
+    features:
+      - >-
+        Inserimento delle segnalazioni pervenute (numero verde, operatori,
+        municipi, ...)
+      - Gestione degli interventi
+      - Monitoraggio dei rivi
+      - Gestione delle squadre (anche tramite canale Telegram)
+    genericName: Piattaforma Web
+    longDescription: |2
+       Da alcuni anni la Protezione Civile del Comune di Genova ha deciso di  dotarsi di un proprio sistema informativo per la gestione delle  emergenze. In questo contesto, l’informazione territoriale gioca un  ruolo fondamentale. Si tratta du un applicativo web che permette la  condivisione delle informazioni fra i vari soggetti sia interni al  Comune che esterni (volontari di protezione civile, aziende  municipalizzate, VVF, Regione, etc) coinvolti a vario titolo nella  gestione delle emergenze e quindi di supportare le operazioni di  gestione e mitigazione del rischio.  Il nuovo sistema, realizzato da [Gter srl](http://www.gter.it/)  , oltre ad aver subito un importante restyling grafico che, a detta  degli operatori di protezione civile, ha permesso di incrementarne  sostanzialmente l’usabilità, ha ora al centro l’aspetto territoriale.  Ogni segnalazione e/o intervento svolto è infatti georeferenziato grazie  al collegamento con la toponomastica comunale. Questo nuovo approccio  permette di avere in ogni istante un quadro preciso di quanto sta  avvenendo sul territorio e pertanto di ottimizzare la gestione delle  poche risorse a disposizione. Collegato alle banche dati territoriali,  non solo alla toponomastica, ma anche all’anagrafe, e ai principali  elementi a rischio (rii, sottopassi etc), il sistema permette di gestire  e registrare interventi puntuali quali sgomberi o interdizioni  all’accesso in maniera sicura ed efficiente. Progetto finanziato con fondi PON Metro 2014-2020. 
+    screenshots:
+      - >-
+        https://raw.githubusercontent.com/ComuneDiGenova/emergenze-pcge/master/dashboard.png
+    shortDescription: Gestione delle emergenze di protezione civile
+developmentStatus: stable
+intendedAudience:
+  scope:
+    - emergency-services
+    - local-authorities
+isBasedOn:
+  - 'https://github.com/wenzhixin/bootstrap-table.git'
+it:
+  conforme:
+    gdpr: true
+    lineeGuidaDesign: false
+    misureMinimeSicurezza: true
+    modelloInteroperabilita: true
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: true
+    pagopa: false
+    spid: true
+  riuso:
+    codiceIPA: c_d969
+legal:
+  license: GPL-3.0-only
+  mainCopyrightOwner: GNU General Public License v3.0 only
+  repoOwner: Comune di Genova
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: false
+maintenance:
+  contacts:
+    - affiliation: GTER SRL
+      email: roberto.marzocchi@gter.it
+      name: Roberto Marzocchi
+      phone: '+390100899150'
+  contractors:
+    - name: GTER SRL
+      until: '2020-11-13'
+      website: 'https://www.gter.it/'
+  type: contract
+name: Nuovo Sistema Emergenze Protezione Civile
+platforms:
+  - web
+releaseDate: '2020-05-29'
+softwareType: standalone/web
+url: 'https://github.com/ComuneDiGenova/emergenze-pcge'
+usedBy:
+  - Comune di Genova
