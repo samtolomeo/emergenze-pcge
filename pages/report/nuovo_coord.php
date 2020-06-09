@@ -22,6 +22,9 @@ if ($d1 > $d2) {
 	echo '<br><a href="../reportistica.php"> Torna alla pagina precedente';
 	exit;
 }
+
+require('check_turni.php');
+
 //$d1 = DateTime::createFromFormat('Y-m-d H:M', strtotime($data_inizio));
 //$d2 = DateTime::createFromFormat('Y-m-d H:M', $data_fine);
 echo $data_inizio;
@@ -38,8 +41,8 @@ if ($d1 > $d2) {
 }
 
 
-$query="INSERT INTO report.t_coordinamento (matricola_cf,data_start,data_end) VALUES";
-$query= $query." ('".$cf."','".$data_inizio."','".$data_fine."');"; 
+$query="INSERT INTO report.t_coordinamento (matricola_cf,data_start,data_end, warning_turno) VALUES";
+$query= $query." ('".$cf."','".$data_inizio."','".$data_fine."','".$wt."');";
 echo $query;
 //exit;
 $result = pg_query($conn, $query);

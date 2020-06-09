@@ -45,12 +45,14 @@ require('./token_telegram.php')
                     <h1 class="page-header">Dettagli profilo <?php echo $CF; ?>;</h1>
                 </div>
 				<?php 
+				echo "profilo_sistema=".$profilo_sistema;
+				echo basename($_SERVER['PHP_SELF']);
 					echo "<b>Nome</b>: ". $nome;
 					echo "<br><b>Cognome</b>: ". $cognome;
 					echo "<br><b>Livello 1</b>: ".$livello1;
 					echo "<br><b>Livello 2</b>: ".$livello2;
 					echo "<br><b>Livello 3</b>: ".$livello3;
-						
+					echo "<br><b>Provacy</b>: ".$provacy;	
 					if ($matricola!=''){
 						echo "<br><b>Matricola</b>: ". $matricola;
 					}

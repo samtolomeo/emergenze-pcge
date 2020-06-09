@@ -184,7 +184,9 @@
 				
 				
 				
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
+			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. "from report.t_coordinamento r ";
 			$query = $query. " LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
 				$query = $query. "where (data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") OR (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") is null) and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
@@ -210,9 +212,15 @@
 				}
 				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
 				
-				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 				//echo "</li>";
 			}
 			
@@ -222,7 +230,9 @@
 			
 			echo "---.---.---<br>";
 			if ($id==''){
-				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_coordinamento r ";
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+				$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+				$query = $query. " from report.t_coordinamento r ";
 				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 				$query = $query. "where data_start > now() ";
 				//$query = $query. " and id1=".$r0["id1"]."";
@@ -244,7 +254,15 @@
 					}
 					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 					
 					
 					//echo "</li>";
@@ -448,7 +466,9 @@
 				
 				
 				
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_monitoraggio_meteo r ";
+			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. " from report.t_monitoraggio_meteo r ";
 			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 		    if ($id != '') {
 				//$query = $query. "where data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
@@ -476,7 +496,15 @@
 				}
 				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 				
 				
 				//echo "</li>";
@@ -490,7 +518,9 @@
 			echo "---.---.---<br>";
 			//echo "</ul>";
 			if ($id==''){
-				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_monitoraggio_meteo r ";
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+				$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+				$query = $query. " from report.t_monitoraggio_meteo r ";
 				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 				$query = $query. "where data_start > now() ORDER by data_start;";
 				//$query = $query. " and id1=".$r0["id1"]."";
@@ -512,7 +542,15 @@
 					}
 					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 					
 					
 					//echo "</li>";
@@ -719,7 +757,9 @@
 				
 				
 				
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_presidio_territoriale r ";
+			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. " from report.t_presidio_territoriale r ";
 			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
 				$query = $query. "where (data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") OR (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") is null) and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
@@ -746,7 +786,15 @@
 				}
 				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 				
 				
 				//echo "</li>";
@@ -760,7 +808,9 @@
 			echo "---.---.---<br>";
 			
 			if ($id==''){
-				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_presidio_territoriale r ";
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. " from report.t_presidio_territoriale r ";
 				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 				$query = $query. "where data_start > now() ORDER by data_start;";
 				//$query = $query. " and id1=".$r0["id1"]."";
@@ -782,7 +832,15 @@
 					}
 					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 					
 					
 					//echo "</li>";
@@ -991,7 +1049,9 @@
 				
 				
 				
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
+			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. " from report.t_tecnico_pc r ";
 			$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 			if ($id != '') {
 				$query = $query. "where (data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") OR (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") is null) and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
@@ -1018,7 +1078,15 @@
 				}
 				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 				
 				
 				//echo "</li>";
@@ -1030,7 +1098,9 @@
 
 			echo "---.---.---<br>";
 			if ($id==''){
-				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_tecnico_pc r ";
+				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. " from report.t_tecnico_pc r ";
 				$query = $query. "LEFT JOIN varie.v_dipendenti u ON r.matricola_cf=u.matricola ";
 				$query = $query. "where data_start > now();";
 				//$query = $query. " and id1=".$r0["id1"]."";
@@ -1052,7 +1122,15 @@
 					}
 					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 					
 					
 					//echo "</li>";
@@ -1262,8 +1340,16 @@
 				
 				
 				
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
+			$query = "SELECT r.matricola_cf,";
+			$query = $query. "case when u.cognome is not null then u.cognome ";
+			$query = $query. "when d.cognome is not null then d.cognome end as cognome, ";
+			$query = $query. "case when u.nome is not null then u.nome ";
+			$query = $query. "when d.nome is not null then d.nome end  as nome, ";
+			$query = $query. "r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. " from report.t_operatore_volontari r ";
 			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "LEFT JOIN varie.dipendenti d ON r.matricola_cf=d.matricola ";
 			if ($id != '') {
 				$query = $query. "where (data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") OR (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") is null) and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -1273,7 +1359,7 @@
 			//$query = $query. " and id1=".$r0["id1"]."";
 			$query = $query. " order by data_start, cognome;";
 			
-			//echo $query;
+			//echo $query."<br>";
 			
 			$check_reperibile=0;
 			$result = pg_query($conn, $query);
@@ -1289,7 +1375,15 @@
 				}
 				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 				
 				
 				//echo "</li>";
@@ -1301,8 +1395,20 @@
 
 			echo "---.---.---<br>";
 			if ($id==''){
-				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_volontari r ";
+				//$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+				//$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+				//$query = $query. " from report.t_operatore_volontari r ";
+				//$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+				$query = "SELECT r.matricola_cf,";
+				$query = $query. "case when u.cognome is not null then u.cognome ";
+				$query = $query. "when d.cognome is not null then d.cognome end as cognome, ";
+				$query = $query. "case when u.nome is not null then u.nome ";
+				$query = $query. "when d.nome is not null then d.nome end  as nome, ";
+				$query = $query. "r.data_start, r.data_end, warning_turno, ";
+				$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+				$query = $query. " from report.t_operatore_volontari r ";
 				$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+				$query = $query. "LEFT JOIN varie.dipendenti d ON r.matricola_cf=d.matricola ";
 				$query = $query. "where data_start > now() ORDER by data_start;";
 				//$query = $query. " and id1=".$r0["id1"]."";
 				//$query = $query. " order by cognome;";
@@ -1323,7 +1429,15 @@
 					}
 					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 					
 					
 					//echo "</li>";
@@ -1528,8 +1642,20 @@
 				
 				
 				
-			$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_anpas r ";
+			//$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+			//$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			//$query = $query. " from report.t_operatore_anpas r ";
+			//$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = "SELECT r.matricola_cf,";
+			$query = $query. "case when u.cognome is not null then u.cognome ";
+			$query = $query. "when d.cognome is not null then d.cognome end as cognome, ";
+			$query = $query. "case when u.nome is not null then u.nome ";
+			$query = $query. "when d.nome is not null then d.nome end  as nome, ";
+			$query = $query. "r.data_start, r.data_end, warning_turno, ";
+			$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+			$query = $query. " from report.t_operatore_anpas r ";
 			$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+			$query = $query. "LEFT JOIN varie.dipendenti d ON r.matricola_cf=d.matricola ";
 			if ($id != '') {
 				$query = $query. "where (data_start < (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") OR (select data_ora_chiusura FROM eventi.t_eventi where id =".$id.") is null) and data_start > (select data_ora_inizio_evento FROM eventi.t_eventi where id =".$id.") ";
 			} else {
@@ -1555,7 +1681,15 @@
 				}
 				//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 				echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+				echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 				
 				
 				//echo "</li>";
@@ -1567,8 +1701,20 @@
 
 			echo "---.---.---<br>";
 			if ($id==''){
-				$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end from report.t_operatore_anpas r ";
+				//$query = "SELECT r.matricola_cf, u.cognome, u.nome, r.data_start, r.data_end, warning_turno, ";
+				//$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+				//$query = $query. " from report.t_operatore_anpas r ";
+				//$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+				$query = "SELECT r.matricola_cf,";
+				$query = $query. "case when u.cognome is not null then u.cognome ";
+				$query = $query. "when d.cognome is not null then d.cognome end as cognome, ";
+				$query = $query. "case when u.nome is not null then u.nome ";
+				$query = $query. "when d.nome is not null then d.nome end  as nome, ";
+				$query = $query. "r.data_start, r.data_end, warning_turno, ";
+				$query = $query. "r.data_end-r.data_start > '10 hours' as warning_time ";
+				$query = $query. " from report.t_operatore_anpas r ";
 				$query = $query. "LEFT JOIN users.v_utenti_esterni u ON r.matricola_cf=u.cf ";
+				$query = $query. "LEFT JOIN varie.dipendenti d ON r.matricola_cf=d.matricola ";
 				$query = $query. "where data_start > now() ORDER by data_start;";
 				//$query = $query. " and id1=".$r0["id1"]."";
 				//$query = $query. " order by cognome;";
@@ -1589,7 +1735,15 @@
 					}
 					//echo  $r['data_start']. " alle ".$r['data_end']. "<br>";
 					echo date('H:i', strtotime($r['data_start'])). " del " .date('d-m-Y', strtotime($r['data_start']))." alle ";
-					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end'])). "<br>";
+					echo date('H:i', strtotime($r['data_end'])). " del " .date('d-m-Y', strtotime($r['data_end']));
+				
+				if ($r['warning_turno']=='t'){
+					echo '- <i class="fas fa-exclamation-triangle" style="color: orange;" title="Sovrapposizione con altri turni"></i>';
+				} 
+				if ($r['warning_time']=='t'){
+					echo '- <i class="fas fa-exclamation-circle" style="color: orange;" title="Il turno di questa persona dura più di 10 h"></i>';
+				}
+				echo "<br>";
 					
 					
 					//echo "</li>";

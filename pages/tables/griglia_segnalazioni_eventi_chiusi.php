@@ -26,7 +26,7 @@ if(!$conn) {
 } else {
 	//$idcivico=$_GET["id"];
 	$query="SELECT id, id as id2, data_ora, id_segnalante, descrizione, id_criticita, criticita, 
-       rischio, id_evento, tipo_evento, id_civico, id_municipio, id_operatore, 
+       rischio, id_evento, tipo_evento, id_civico, id_municipio, id_operatore, id_man, 
        note, id_lavorazione, in_lavorazione, localizzazione, nome_munic, st_x(geom) as lon, st_y(geom) as lat 
        FROM segnalazioni.v_segnalazioni_eventi_chiusi_lista ".$filter[0]." ;";
    //echo $query."<br>";

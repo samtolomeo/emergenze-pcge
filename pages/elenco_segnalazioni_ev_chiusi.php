@@ -246,9 +246,23 @@ require('./tables/filtri_segnalazioni.php');
 			} else {
 				echo ' <i class="fas fa-list-ul"></i> Dati completi';
 			}
-			
+			//echo $profilo_sistema;
+			if ($profilo_sistema==1){
 			?>
-		  
+			<button type="button" class="btn btn-info"onclick="location.href='seg2shp.php?t=c'">
+			Download shapefile <i class="fas fa-download"></i></button> 
+			 - 
+			<button type="button" class="btn btn-info"onclick="location.href='seg2geojson.php?t=c'">
+			Download geoJSON <i class="fas fa-download"></i></button> 
+			 - 
+			<button type="button" class="btn btn-info"onclick="location.href='seg2kml.php?t=c'">
+			Download KML <i class="fas fa-download"></i></button> 
+			 - 
+			<?php			
+			} // end if profilo_ok
+			?>
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#download">
+			Geoservizi WMS e WFS <i class="fa fa-map"></i></button>
 		  
         <div id="toolbar">
             <select class="form-control">
