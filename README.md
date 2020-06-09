@@ -23,6 +23,15 @@ Lato server:
 * Python 3.7 (min 2.7) è il linguaggio di programmazione principalmente usato per l'interazione con altri sistemi (es. webservice di ARPA Liguria, sistema delle manutenzioni, etc.) 
 
 
+## Struttura del repository
+Le principali cartelle usate dal repository sono
+* dist: file javascript e di stile ereditati dal tema *sb-admin-2*  (http://startbootstrap.com/template-overviews/sb-admin-2/ )
+* img cartella con le immagini usate dall'applicazione
+* pages: pagine web dell'applicazione e script
+* vendor: librerie utilizzate (jquery e javascript)
+* altre cartelle (data, js, less): eredità del tema bootstrap utilizzato
+
+
 ## Dipendenze
 Ci sono alcune librerie che sono state aggiunte come dipendenze. Si tratta di altri repository github che sono direttamente caricati dentro il repo:
 
@@ -39,7 +48,7 @@ Quindi si può aggiornare  ad una specifica versione
 
 ```
 git submodule update --remote vendor/bootstrap-table
-cd vendor/highcharts 
+cd vendor/bootstrap-table 
 git checkout 1.16.0
 ```
 
@@ -55,16 +64,24 @@ Le dipendenze (al 2020-05-29) sono:
 * https://github.com/wenzhixin/bootstrap-table.git
 
 ## IL DB
+Il DB è PostgreSQL con estensione spaziale PostGIS (v 2.5). Una copia del DB vuota sarà aggiunta al repository quanto prima.
 
-aaa
+
 
 ## API del Comune di Genova utilizzate
-
 In questo momento il sistema usa le API del comune di Genova usate per interazione con altri servizi. In questo momento per interagire con il *SW Manutenzioni*. 
 Le API del Comune di Genova sono richiamate dal codice python *pages/segnalazioni/emergenze2manutenzioni.py* che è a sua volta richiamato dalla pagina php *pages/segnalazioni/chiudi_segnalazione.php* utilizzata appunto alla chiusura di una segnalazione. 
 Il sistema di API del Comune di Genova utilizza endpoint comuni a tutti i servizi che gestiscono l'autenticazione e reindirizzando ai singoli webservice (nel caso specifico ai webservice SOAP delle manutenzioni sviluppati da Goadev srl 
 
 
+## Accesso all'applicazione tramite credenziali SPID
+Come illustrato nel manuale utente l'accesso all'applicazione *emergenze* è consentito con
+* il sistema SPID per gli utenti esterni
+* il sistema di autenticazione dell'ente per utenti interni
+La gestione dell'autenticazione è garantita dal sistema SIRAC SSO che è definito tra i service provider SPID 
+(https://registry.spid.gov.it/service-providers)
+
+Noto il CF dell'utente il sistema verifica in una tabella del DB PostgreSQL l'appartenenza dell'utente tra quelli di sistema.
 
 
 ## I file con le credenziali
@@ -92,7 +109,7 @@ if (!$conn) {
 * pages/segnalazioni/conn_mssql.py
 
 
-## Altro
+## Contatti
 
 to do ...
 
