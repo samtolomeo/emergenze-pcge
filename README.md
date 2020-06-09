@@ -116,7 +116,22 @@ if (!$conn) {
 * Amministrazione proprietaria: Comune di Genova
 * Soggetto incaricato al mantenimento: [Gter srl](http://www.gter.it)
 * Contatto e-mail referente di progetto (per segnalazioni e richiesta informazioni): roberto.marzocchi@gter.it
-* Gestione segnalazioni: tramite issues github
+* Contatto e-mail presso l'amministrazione: applicazionisit@comune.genova.it
+* Gestione segnalazioni: **tramite issues github**
+
+
+## Versioning
+
+La prima versione stabile è stata creata nel giugno 2020 all'atto dell'inserimento del SW nel catalogo del riuso.
+
+Altri tag possono essere creati su singoli commit da linea di comando con il seguente comando 
+```
+git tag -a vX.X.X Commit_number -m "Messaggio"
+git push origin vX.X.X
+```
+Il progetto è stabile al netto di continue migliorie e bug detection che sono possibili attraverso l'uso dell'ambiente in produzione presso la Protezione Civile del Comune di Genova
+
+
 
 
 ## Copyleft and License
