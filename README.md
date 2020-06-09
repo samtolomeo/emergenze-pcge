@@ -32,6 +32,8 @@ Le principali cartelle usate dal repository sono
 * altre cartelle (data, js, less): eredità del tema bootstrap utilizzato
 
 
+
+
 ## Dipendenze
 Ci sono alcune librerie che sono state aggiunte come dipendenze. Si tratta di altri repository github che sono direttamente caricati dentro il repo:
 
@@ -111,7 +113,10 @@ if (!$conn) {
 
 ## Contatti
 
-to do ...
+* Amministrazione proprietaria: Comune di Genova
+* Soggetto incaricato al mantenimento: [Gter srl](http://www.gter.it)
+* Contatto e-mail referente di progetto (per segnalazioni e richiesta informazioni): roberto.marzocchi@gter.it
+* Gestione segnalazioni: tramite issues github
 
 
 ## Copyleft and License
