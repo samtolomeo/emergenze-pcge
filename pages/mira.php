@@ -27,7 +27,7 @@ require(explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php');
 
 require('./check_evento.php');
 
-$query="SELECT nome FROM geodb.punti_monitoraggio WHERE num_id=".$id.";";
+$query="SELECT concat(p.nome,' (', replace(p.note,'LOCALITA',''),')') as nome FROM geodb.punti_monitoraggio_ok p WHERE id=".$id.";";
 //echo $query;
 $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
@@ -54,10 +54,10 @@ while($r = pg_fetch_assoc($result)) {
 		
              <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dati mira sul <?php echo $name_sensore ?> (n. <?php echo $id?>) 
+                    <h3 class="page-header">Dati mira sul <?php echo $name_sensore ?> (n. <?php echo $id?>) 
 					<button class="btn btn-info noprint" onclick="printClass('fixed-table-container')">
 					<i class="fa fa-print" aria-hidden="true"></i> Stampa tabella </button> - 
-					<a class="btn btn-info" href="mire.php"> Visualizza tutti i punti </a> </h1>
+					<a class="btn btn-info" href="mire.php"> Visualizza tutti i punti </a> </h3>
                 </div>
 				
 				<?php
@@ -112,7 +112,7 @@ while($r = pg_fetch_assoc($result)) {
 		<?php
 		if ($profilo_sistema>0 and $profilo_sistema<=2){
 		?>
-		<th data-field="num_id" data-sortable="false" data-formatter="nameFormatterInsert" data-visible="true">Edit</th>
+		<th data-field="id" data-sortable="false" data-formatter="nameFormatterInsert" data-visible="true">Edit</th>
 		<?php
 		}
 		?>

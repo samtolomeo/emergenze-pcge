@@ -55,6 +55,11 @@ require('./tables/filtri_segnalazioni.php');
 
         <?php 
             require('./navbar_up.php');
+			if ($check_test==1){
+				$url_manutenzioni="http://istest.comune.genova.it/isManutenzioni/0002484.asp?";
+			} else {
+				$url_manutenzioni="http://is.comune.genova.it/isManutenzioni/0001154.asp?";
+			}
         ?>  
         <?php 
             require('./navbar_left.php');
@@ -288,7 +293,7 @@ require('./tables/filtri_segnalazioni.php');
  	<tr>
 	
 		<th data-field="state" data-checkbox="true"></th>
-		<th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" data-filter-control="input">Numero</th>
+		<th data-field="id" data-sortable="false" data-formatter="nameFormatterEdit" data-visible="true" data-filter-control="input">Id</th>
 		<!--th data-field="in_lavorazione" data-sortable="false" data-formatter="nameFormatter" data-visible="true" >Stato</th--> 
 		<th data-field="rischio" data-sortable="true" data-formatter="nameFormatterRischio" data-visible="true">Persone<br>a rischio</th>
 		<th data-field="criticita" data-sortable="true"   data-visible="true" data-filter-control="select">Tipo<br>criticità</th>
@@ -298,6 +303,7 @@ require('./tables/filtri_segnalazioni.php');
 		<th data-field="localizzazione" data-sortable="true"  data-visible="true" data-filter-control="input">Civico</th>
 		<th data-field="id2" data-sortable="false" data-formatter="nameFormatterMappa1" data-visible="true" >Anteprima<br>mappa</th>
 		<th data-field="note" data-sortable="false" data-visible="true" >Note</th>
+		<th data-field="id_man" data-sortable="true" data-visible="true" data-formatter="manutenzioni" data-filter-control="input">Id<br>manut.</th>
 		<th data-field="id_evento" data-sortable="true"  data-visible="true" data-filter-control="select">Id<br>evento</th>
 		<!--th data-field="tipo_evento" data-sortable="true"  data-visible="true">Tipo<br>evento</th-->
 	
@@ -351,11 +357,19 @@ require('./tables/filtri_segnalazioni.php');
 
     }
     
- function nameFormatterEdit(value) {
+function nameFormatterEdit(value) {
         
 		return '<a class="btn btn-warning" href=./dettagli_segnalazione.php?id='+value+'> '+value+' </a>';
  
-    }
+}
+
+function manutenzioni(value) {
+	if (value){	
+		return '<a class="btn btn-info" target="_new" href="<?php echo $url_manutenzioni;?>id='+value+'"> '+value+' </a>';
+	} else {
+		return '-';
+	}
+}
 
   function nameFormatterRischio(value) {
         //return '<i class="fas fa-'+ value +'"></i>' ;
