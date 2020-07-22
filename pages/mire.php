@@ -78,15 +78,17 @@ require('./check_evento.php');
 				<table  id="t_mire" class="table-hover" data-toggle="table" data-url="./tables/griglia_mire.php" 
 				data-show-search-clear-button="true"   data-show-export="true" data-export-type=['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'doc', 'pdf'] 
 				data-search="true" data-click-to-select="true" data-show-print="true"  
-				data-pagination="true" data-page-size=50 data-page-list=[10,25,50,100,200,500]
-				data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" data-toolbar="#toolbar">
+				data-pagination="true" data-page-size=75 data-page-list=[10,25,50,75,100,200,500]
+				data-sidePagination="true" data-show-refresh="true" data-show-toggle="false" data-show-columns="true" 
+				data-filter-control="true" data-toolbar="#toolbar">
         
         
 <thead>
 
  	<tr>
         <th class="noprint" data-field="state" data-checkbox="true"></th>    
-		<th data-field="nome" data-sortable="false" data-visible="true">Rio</th>
+		<th data-field="nome" data-sortable="true" data-visible="true" data-filter-control="input">Rio</th>
+		<th data-field="tipo" data-sortable="true" data-visible="true" data-filter-control="select">Tipo</th>
 		<th data-field="last_update" data-sortable="false"  data-visible="true">Last update</th>
 		<th data-field="6" data-sortable="false" data-formatter="nameFormatterLettura" data-visible="true">6-5 h</th>
 		<th data-field="5" data-sortable="false" data-formatter="nameFormatterLettura" data-visible="true">5-4 h</th>            
@@ -95,7 +97,7 @@ require('./check_evento.php');
 		<th data-field="2" data-sortable="false" data-formatter="nameFormatterLettura" data-visible="true">2-1 h</th>
 		<th data-field="1" data-sortable="false" data-formatter="nameFormatterLettura" data-visible="true">1h -10'</th>
 		<th data-field="1" data-sortable="false" data-formatter="nameFormatterLettura" data-visible="true"><10'</th>
-		<th class="noprint" data-field="num_id" data-sortable="false" data-formatter="nameFormatterInsert" data-visible="true">Edit</th>
+		<th class="noprint" data-field="id" data-sortable="false" data-formatter="nameFormatterInsert" data-visible="true">Edit</th>
     </tr>
 </thead>
 </table>
@@ -129,15 +131,15 @@ function nameFormatterLettura(value) {
 	
 <i class="fas fa-search-plus"></i>
 <?php
-$query="SELECT p.nome,p.num_id 
-FROM geodb.punti_monitoraggio p
-WHERE tipo ilike 'rivo';";
+$query="SELECT p.nome,p.id 
+FROM geodb.punti_monitoraggio_ok p
+WHERE p.tipo ilike 'mira' OR p.tipo ilike 'rivo';";
 
 $result = pg_query($conn, $query);
 while($r = pg_fetch_assoc($result)) {
 ?>
 	<!-- Modal allerta-->
-	<div id="new_lettura<?php echo $r['num_id']; ?>" class="modal fade" role="dialog">
+	<div id="new_lettura<?php echo $r['id']; ?>" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -146,7 +148,7 @@ while($r = pg_fetch_assoc($result)) {
 			<h4 class="modal-title">Inserire lettura <?php echo $r['nome']; ?></h4>
 		  </div>
 		  <div class="modal-body">
-		  <form autocomplete="off" action="./eventi/nuova_lettura.php?id='<?php echo $r['num_id']; ?>'" method="POST">
+		  <form autocomplete="off" action="./eventi/nuova_lettura.php?id='<?php echo $r['id']; ?>'" method="POST">
 			   <div class="form-group">
 				  <label for="tipo">Valore lettura mira:</label> <font color="red">*</font>
 								<select class="form-control" name="tipo" id="tipo" required="">
@@ -163,7 +165,7 @@ while($r = pg_fetch_assoc($result)) {
 				 </div>
 				<div class="form-group">
 							<label for="data_inizio" >Data lettura (AAAA-MM-GG) </label> <font color="red">*</font>                 
-							<input type="text" class="form-control" name="data_inizio" id="js-date<?php echo $r["num_id"]; ?>" required>
+							<input type="text" class="form-control" name="data_inizio" id="js-date<?php echo $r["id"]; ?>" required>
 						</div> 
 						<div class="form-group"-->
 					<label for="ora_inizio"> Ora lettura:</label> <font color="red">*</font>
@@ -218,7 +220,7 @@ while($r = pg_fetch_assoc($result)) {
 
 	<script type="text/javascript" >
 	$(document).ready(function() {
-		$('#js-date<?php echo $r["num_id"]; ?>').datepicker({
+		$('#js-date<?php echo $r["id"]; ?>').datepicker({
 			format: "yyyy-mm-dd",
 			clearBtn: true,
 			autoclose: true,

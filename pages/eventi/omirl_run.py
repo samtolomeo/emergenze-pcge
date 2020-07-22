@@ -88,7 +88,7 @@ def main():
     lista_idrometri = curr.fetchall()
     # print("Print each row and it's columns values")
     for row in lista_idrometri:
-        print(row[0])
+        print("Leggo idrometro ",row[0])
         os.system('/usr/bin/python3 {}/vendor/omirl_data_ingestion/xml2json.py Idro {}'.format(path, row[0]))
         
         

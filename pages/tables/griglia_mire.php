@@ -6,47 +6,47 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT p.nome,p.num_id, 
+	$query="SELECT concat(p.nome,' (', replace(p.note,'LOCALITA',''),')') as nome, p.tipo, p.id, 
 	max(l.data_ora) as last_update,
 	(select id_lettura 
 	 from geodb.lettura_mire  
-	 where num_id_mira = p.num_id and 
+	 where num_id_mira = p.id and 
 	 data_ora > (now()- interval '6 hour') and data_ora < (now()- interval '5 hour') 
 	) as \"6\",
 	(select id_lettura 
 	 from geodb.lettura_mire  
-	 where num_id_mira = p.num_id and 
+	 where num_id_mira = p.id and 
 	 data_ora > (now()- interval '5 hour') and data_ora < (now()- interval '4 hour') 
 	) as \"5\",
 	(select id_lettura 
 	 from geodb.lettura_mire  
-	 where num_id_mira = p.num_id and 
+	 where num_id_mira = p.id and 
 	 data_ora > (now()- interval '4 hour') and data_ora < (now()- interval '3 hour') 
 	) as \"4\",
 	(select id_lettura 
 	 from geodb.lettura_mire  
-	 where num_id_mira = p.num_id and 
+	 where num_id_mira = p.id and 
 	 data_ora > (now()- interval '3 hour') and data_ora < (now()- interval '2 hour') 
 	) as \"3\",
 	(select id_lettura 
 	 from geodb.lettura_mire  
-	 where num_id_mira = p.num_id and 
+	 where num_id_mira = p.id and 
 	 data_ora > (now()- interval '2 hour') and data_ora < (now()- interval '1 hour') 
 	) as \"2\",
 	(select id_lettura 
 	 from geodb.lettura_mire  
-	 where num_id_mira = p.num_id and 
+	 where num_id_mira = p.id and 
 	 data_ora > (now()- interval '1 hour') and data_ora < (now()- interval '10 minutes') 
 	) as \"1\",
 	(select id_lettura 
 	 from geodb.lettura_mire  
-	 where num_id_mira = p.num_id and 
+	 where num_id_mira = p.id and 
 	 data_ora > (now()- interval '10 minutes') and data_ora < now() 
 	) as \"0\"
-	FROM geodb.punti_monitoraggio p
-	LEFT JOIN geodb.lettura_mire l ON l.num_id_mira = p.num_id
-	WHERE tipo ilike 'rivo'
-	group by p.nome, num_id
+	FROM geodb.punti_monitoraggio_ok p
+	LEFT JOIN geodb.lettura_mire l ON l.num_id_mira = p.id
+	WHERE p.tipo ilike 'mira' OR p.tipo ilike 'rivo' 
+	group by p.nome, p.id, p.note, p.tipo
 	order by nome;";
     
     //echo $query;
