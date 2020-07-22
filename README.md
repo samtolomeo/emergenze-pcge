@@ -65,6 +65,17 @@ Le dipendenze (al 2020-05-29) sono:
 * https://github.com/stefanocudini/leaflet-list-markers.git
 * https://github.com/wenzhixin/bootstrap-table.git
 
+Con pip3 (python package installer) sono stati installati i seguenti moduli necessari al funzionamento del sistema:
+* emoji 
+* psycopg2 
+* pymssql 
+* requests 
+* setuptools 
+* simplejson 
+* telepot 
+* urllib3 
+
+
 ## IL DB
 Il DB è PostgreSQL con estensione spaziale PostGIS (v 2.5). Una copia del DB vuota sarà aggiunta al repository quanto prima.
 
