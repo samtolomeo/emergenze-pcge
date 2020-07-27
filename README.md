@@ -46,13 +46,20 @@ git submodule add https://github.com/wenzhixin/bootstrap-table.git vendor/bootst
 ```
 
 
-Quindi si può aggiornare  ad una specifica versione
+Quindi si può aggiornare ad una specifica versione il submodule per aggiornare il repository (analogo del comando push).
 
 ```
 git submodule update --remote vendor/bootstrap-table
 cd vendor/bootstrap-table 
 git checkout 1.16.0
 ```
+
+Per "scaricare" l'aggiornamento ai submodules sul proprio server è possibile fare un *sync*: 
+
+```
+git submodule sync
+```
+
 
 Le dipendenze (al 2020-05-29) sono:
 
