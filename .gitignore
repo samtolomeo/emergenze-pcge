@@ -7,6 +7,7 @@ pages/eventi/conn.py
 pages/eventi/conn.pyc
 pages/eventi/config.py
 pages/eventi/config.pyc
+pages/eventi/conn_mysql.py
 pages/incarichi/credenziali_mail.php
 pages/incarichi_interni/credenziali_mail.php
 pages/sopralluoghi/credenziali_mail.php
