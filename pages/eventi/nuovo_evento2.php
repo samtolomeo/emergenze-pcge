@@ -116,7 +116,17 @@ while($r_telegram = pg_fetch_assoc($result_telegram)) {
 use PHPMailer\PHPMailer\PHPMailer;
 
 if ($notifiche =='t') {
-	$query="SELECT mail FROM users.t_mail_incarichi;";
+	$query="SELECT mail FROM users.t_mail_incarichi
+	where cod not ilike 'com_MU%' or cod ilike ";
+	foreach($check as $municipio) {
+	  $query=$query." 'com_MU00".$municipio."' or cod ilike ";
+	}
+	$query=$query." 'test'";
+	echo $query;
+	//exit;
+
+
+
 	$result=pg_query($conn, $query);
 	$mails=array();
 	while($r = pg_fetch_assoc($result)) {
