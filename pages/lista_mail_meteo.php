@@ -22,12 +22,13 @@ require(explode('emergenze-pcge',getcwd())[0].'emergenze-pcge/conn.php');
 
 require('./check_evento.php');
 
+echo $profilo_sistema;
 
-$check_operatore=0;
-if (($$profilo_sistema > 0 AND $profilo_sistema <= 4) OR $profilo_sistema==11){
+//$check_operatore=0;
+if (($profilo_sistema > 0 AND $profilo_sistema <= 4) OR $profilo_sistema==11){
 	$check_operatore=1;
 }
-
+//echo $check_operatore;
 
 ?>
     
